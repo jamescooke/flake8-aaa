@@ -7,7 +7,6 @@ def test_installed(flake8dir):
     assert 'aaa: 0.1' in result.out
 
 
-@pytest.mark.skip
 def test(flake8dir):
     flake8dir.make_example_py('''
     def test():
@@ -17,4 +16,4 @@ def test(flake8dir):
 
     result = flake8dir.run_flake8()
 
-    assert result.out_lines == ['./example.py:1:2: AAA01 no result variable set in test']
+    assert result.out_lines == ['./example.py:3:1: AAA01 no result variable set in test']
