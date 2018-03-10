@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 
 import setuptools
 
-
 setuptools.setup(
     name='flake8-aaa',
 

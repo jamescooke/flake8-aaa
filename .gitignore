@@ -33,3 +33,6 @@ MANIFEST
 .venv
 env/
 venv/
+
+# isort
+/isort.out
