@@ -1,3 +1,5 @@
+import ast
+
 import py
 
 
@@ -22,3 +24,18 @@ def is_test_file(filename):
     True
     """
     return py.path.local(filename).basename.startswith('test_')
+
+
+def find_test_functions(tree):
+    """
+    Args:
+        tree (ast.Module)
+
+    Returns:
+        list (ast.FunctionDef): Fuctions that look like tests.
+    """
+    test_nodes = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name.startswith('test'):
+            test_nodes.append(node)
+    return test_nodes
