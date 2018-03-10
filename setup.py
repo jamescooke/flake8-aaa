@@ -14,7 +14,7 @@ setuptools.setup(
     ],
     entry_points={
         'flake8.extension': [
-            'AAA = flake8_aaa:Thing',
+            'AAA = flake8_aaa:Checker',
         ],
     },
 )
