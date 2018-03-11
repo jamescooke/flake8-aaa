@@ -1,4 +1,4 @@
-from .helpers import is_test_file
+from .helpers import check_function, find_test_functions, is_test_file
 
 
 class Checker:
@@ -15,4 +15,6 @@ class Checker:
         (line_number, offset, text, check)
         """
         if is_test_file(self.filename):
-            yield (3, 0, 'AAA01 no result variable set in test', type(self))
+            for function_def in find_test_functions(self.tree):
+                for error in check_function(function_def):
+                    yield error + (type(self), )

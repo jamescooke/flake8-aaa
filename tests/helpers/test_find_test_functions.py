@@ -12,7 +12,8 @@ def test_empty():
 
 
 def test_some():
-    tree = ast.parse("""
+    tree = ast.parse(
+        """
 import pytest
 
 
@@ -29,7 +30,8 @@ def test_thing(a_number):
     result = a_number == 1
 
     assert result is True
-""")
+"""
+    )
 
     result = find_test_functions(tree)
 

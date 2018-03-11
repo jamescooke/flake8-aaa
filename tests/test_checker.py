@@ -15,4 +15,8 @@ def test(flake8dir):
 
     result = flake8dir.run_flake8()
 
-    assert result.out_lines == ['./test_plus.py:3:1: AAA01 no result variable set in test']
+    assert result.out_lines == ['./test_plus.py:3:5: AAA01 no result variable set in test']
+
+
+def test_fail():
+    assert True
