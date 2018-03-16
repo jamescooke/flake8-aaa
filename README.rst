@@ -9,12 +9,16 @@ of testing.
 Error codes
 -----------
 
-======= =====================
-Code    Message and rule info
-======= =====================
-AAA01   No result variable set in test.
+AAA01: No result variable set in test
+.....................................
 
-        Act blocks are expected to assign the test result to a `result`
-        variable. If you can't set a `result`, then mark the line considered
-        the test action with `#noqa AAA01`.
-======= =====================
+Act blocks are expected to assign the test result to a ``result``
+variable. If you can't set a ``result``, then mark the line considered
+the Act block with ``#noqa AAA01``.
+
+AAA02: Multiple results assigned
+................................
+
+There should only be one result assigned per test. If you have a test that
+contains more than one ``result =`` statement, then consider splitting that
+test into multiple tests.
