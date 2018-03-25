@@ -42,6 +42,16 @@ def find_test_functions(tree):
     return test_nodes
 
 
+def load_markers(file_tokens):
+    """
+    Args:
+        file_tokens (list (tokenize.TokenInfo))
+
+    Returns:
+        dict
+    """
+    return {}
+
 def check_function(function_def):
     """
     Check test function for errors. Test functions that are just 'pass' are
