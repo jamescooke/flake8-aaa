@@ -1,5 +1,5 @@
-import tokenize
 import io
+import tokenize
 
 import pytest
 

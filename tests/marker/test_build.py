@@ -16,16 +16,18 @@ def test(code_str, first_token):
     assert result.token.string == code_str
 
 
-@pytest.mark.parametrize('code_str', [
-    '#  aaa act ',
-    '#  aaa act',
-    '# aaa act other stuff',
-    '# aaa_act',
-    '# stuff',
-    '## noqa',
-    'aaa = act + 1',
-    'aaa  # noqa',
-])
+@pytest.mark.parametrize(
+    'code_str', [
+        '#  aaa act ',
+        '#  aaa act',
+        '# aaa act other stuff',
+        '# aaa_act',
+        '# stuff',
+        '## noqa',
+        'aaa = act + 1',
+        'aaa  # noqa',
+    ]
+)
 def test_not_a_marker(first_token):
     with pytest.raises(NotAMarker):  # noqa
         Marker.build(first_token)

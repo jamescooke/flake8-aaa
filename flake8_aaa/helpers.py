@@ -52,6 +52,7 @@ def load_markers(file_tokens):
     """
     return {}
 
+
 def check_function(function_def):
     """
     Check test function for errors. Test functions that are just 'pass' are
