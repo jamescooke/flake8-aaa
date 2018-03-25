@@ -2,6 +2,9 @@ import ast
 
 import py
 
+from flake8_aaa.exceptions import NotAMarker
+from flake8_aaa.marker import Marker
+
 
 def is_test_file(filename):
     """
@@ -48,9 +51,16 @@ def load_markers(file_tokens):
         file_tokens (list (tokenize.TokenInfo))
 
     Returns:
-        dict
+        dict: Key the dictionary using the starting line of the comment.
     """
-    return {}
+    out = {}
+    for token in file_tokens:
+        try:
+            marker = Marker.build(token)
+        except NotAMarker:
+            continue
+        out[marker.token.start[0]] = marker
+    return out
 
 
 def check_function(function_def):

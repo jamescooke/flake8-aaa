@@ -32,5 +32,5 @@ def test():
 def test_some(file_tokens):
     result = load_markers(file_tokens)
 
-    assert list(result) == [2]
-    assert result[2].string == '# aaa act'
+    assert list(result) == [3]
+    assert result[3].token.string == '# aaa act'
