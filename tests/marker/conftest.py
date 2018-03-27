@@ -1,4 +1,4 @@
-import io
+import six
 import tokenize
 
 import pytest
@@ -10,7 +10,9 @@ def first_token(code_str):
     Args:
         code_str (str): Code to be tokenized.
 
-    Return:
-        tokenize.TokenInfo
+    Returns:
+        tuple (py2)
+        tokenize.TokenInfo (py3)
     """
-    return list(tokenize.generate_tokens(io.StringIO(code_str).readline))[0]
+    string_io = six.StringIO(code_str)
+    return list(tokenize.generate_tokens(string_io.readline))[0]
