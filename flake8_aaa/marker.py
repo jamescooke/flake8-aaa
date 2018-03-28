@@ -3,12 +3,35 @@ import tokenize
 from .exceptions import NotAMarker
 
 
+class TokenWrapper:
+    """
+    A wrapper around tokens from ``tokenize.generate_tokens`` which can be
+    ``tuple`` or ``TokenInfo``.
+
+    Attributes:
+        _token: Original token that is wrapped
+        type (int): Type of Token
+        string (str): Content of Token
+    """
+
+    def __init__(self, token):
+        self._token = token
+        try:
+            self.type = self._token.type
+        except AttributeError:
+            self.type = self._token[0]
+        try:
+            self.string = self._token.string
+        except AttributeError:
+            self.string = self._token[1]
+
+
 class Marker:
     """
     A wrapper around comment tokens that are AAA markers.
 
     Attributes:
-        token (tokenize.TokenInfo)
+        token (TokenWrapper)
     """
 
     def __init__(self, token):
@@ -18,7 +41,7 @@ class Marker:
     def build(obj, token):
         """
         Args:
-            token (tokenize.TokenInfo): Any type of token can be passed.
+            token (TokenWrapper): Any type of token can be passed.
 
         Returns:
             Marker: Token is a comment and a flake8 AAA marker then a Marker is
@@ -27,6 +50,7 @@ class Marker:
         Raises:
             NotAMarker: Token is not a comment and not an AAA marker.
         """
+        token = TokenWrapper(token)
         if token.type == tokenize.COMMENT and token.string.lower() == '# aaa act':
             return obj(token)
         raise NotAMarker()
