@@ -1,5 +1,5 @@
 from .function import Function
-from .helpers import find_test_functions, is_test_file
+from .helpers import find_test_functions, is_test_file, load_markers
 
 
 class Checker:
@@ -22,7 +22,7 @@ class Checker:
         self.tree = tree
         self.file_tokens = file_tokens
         self.filename = filename
-        self.markers = {}
+        self.markers = load_markers(file_tokens)
 
     def run(self):
         """
@@ -31,5 +31,6 @@ class Checker:
         if is_test_file(self.filename):
             for function_def in find_test_functions(self.tree):
                 function = Function(function_def)
+                function.pull_markers(self.markers)
                 for error in function.check():
                     yield error + (type(self), )

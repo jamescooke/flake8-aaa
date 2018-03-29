@@ -1,45 +1,33 @@
-import ast
-
-from flake8_aaa.function import Function
-from flake8_aaa.helpers import find_test_functions
+import pytest
 
 
-def test_pass():
-    tree = ast.parse("""
+@pytest.mark.parametrize('code_str', ["""
 def test():
     pass
-""")
-    function_node = find_test_functions(tree)[0]
-    function = Function(function_node)
-
+"""])
+def test_pass(function):
     result = function.check()
 
     assert result == []
 
 
-def test_result_assigned():
-    tree = ast.parse("""
+@pytest.mark.parametrize('code_str', ["""
 def test():
     result = 1
 
     assert result == 1
-""")
-    function_node = find_test_functions(tree)[0]
-    function = Function(function_node)
-
+"""])
+def test_result_assigned(function):
     result = function.check()
 
     assert result == []
 
 
-def test_no_result():
-    tree = ast.parse("""
+@pytest.mark.parametrize('code_str', ["""
 def test():
     assert 1 + 1 == 2
-""")
-    function_node = find_test_functions(tree)[0]
-    function = Function(function_node)
-
+"""])
+def test_no_result(function):
     result = function.check()
 
     assert result == [
@@ -48,15 +36,12 @@ def test():
     ]
 
 
-def test_no_qa():
-    tree = ast.parse("""
+@pytest.mark.parametrize('code_str', ["""
 def test():
     x = 1 + 1  # noqa: AAA01
     assert x == 2
-""")
-    function_node = find_test_functions(tree)[0]
-    function = Function(function_node)
-
+"""])
+def test_no_qa(function):
     result = function.check()
 
     assert result == []

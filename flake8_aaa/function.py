@@ -1,5 +1,7 @@
 import ast
 
+import six
+
 
 class Function:
     """
@@ -7,6 +9,8 @@ class Function:
         node (ast.FunctionDef): AST for the test under lint.
         start_line (int): First line of test.
         end_line (int): Last line of test.
+        markers (dict): Comment markers for this function. Loaded with
+            ``pull_markers``.
     """
 
     def __init__(self, node):
@@ -19,8 +23,23 @@ class Function:
         self.end_line = self.node.body[-1].lineno
         self.markers = {}
 
-    def load_markers(self, all_markers):
-        return 0
+    def pull_markers(self, all_markers):
+        """
+        Pull any comment markers.
+
+        Args:
+            all_markers (dict)
+
+        Returns:
+            int: Number of markers found for this function.
+
+        Warning:
+            Side effect: Updates ``self.markers`` with markers found.
+        """
+        for key, value in six.iteritems(all_markers):
+            if self.start_line <= key and key <= self.end_line:
+                self.markers[key] = value
+        return len(self.markers)
 
     def check(self):
         """
