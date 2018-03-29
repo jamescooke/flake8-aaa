@@ -17,6 +17,10 @@ class Function:
         self.node = node
         self.start_line = self.node.lineno
         self.end_line = self.node.body[-1].lineno
+        self.markers = {}
+
+    def load_markers(self, all_markers):
+        return 0
 
     def check(self):
         """

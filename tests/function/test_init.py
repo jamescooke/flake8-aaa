@@ -38,3 +38,4 @@ def test(function_node):
     assert result.node == function_node
     assert result.start_line == 10
     assert result.end_line == 13
+    assert result.markers == {}

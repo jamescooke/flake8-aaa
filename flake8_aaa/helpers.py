@@ -61,29 +61,3 @@ def load_markers(file_tokens):
             continue
         out[marker.token.start[0]] = marker
     return out
-
-
-def check_function(function_def):
-    """
-    Check test function for errors. Test functions that are just 'pass' are
-    skipped.
-
-    Args:
-        (ast.FunctionDef)
-
-    Returns:
-        list (tuple): Errors in flake8 (line_number, offset, text)
-    """
-    if len(function_def.body) == 1:
-        if isinstance(function_def.body[0], ast.Pass):
-            return []
-
-    for node in function_def.body:
-        if isinstance(node, ast.Assign) and len(node.targets) == 1:
-            target = node.targets[0]
-            if isinstance(target, ast.Name) and target.id == 'result':
-                return []
-
-    return [
-        (node.lineno, node.col_offset, 'AAA01 no result variable set in test'),
-    ]
