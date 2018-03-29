@@ -5,6 +5,8 @@ class Function:
     """
     Attributes:
         node (ast.FunctionDef): AST for the test under lint.
+        start_line (int): First line of test.
+        end_line (int): Last line of test.
     """
 
     def __init__(self, node):
@@ -13,6 +15,8 @@ class Function:
             node (ast.FunctionDef)
         """
         self.node = node
+        self.start_line = self.node.lineno
+        self.end_line = self.node.body[-1].lineno
 
     def check(self):
         """
