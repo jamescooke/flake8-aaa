@@ -15,6 +15,9 @@ class TokenWrapper:
     """
 
     def __init__(self, token):
+        """
+        Sorry this is horrible. Will be cleaned up when back on green.
+        """
         self._token = token
         try:
             self.type = self._token.type
@@ -24,6 +27,10 @@ class TokenWrapper:
             self.string = self._token.string
         except AttributeError:
             self.string = self._token[1]
+        try:
+            self.start = self._token.start
+        except AttributeError:
+            self.start = self._token[2]
 
 
 class Marker:

@@ -15,3 +15,4 @@ def test(code_str, first_token):
 
     assert result.type == tokenize.COMMENT
     assert result.string == code_str
+    assert result.start == (1, 0)

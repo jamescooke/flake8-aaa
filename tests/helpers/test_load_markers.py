@@ -1,14 +1,6 @@
-import io
-import tokenize
-
 import pytest
 
 from flake8_aaa.helpers import load_markers
-
-
-@pytest.fixture
-def file_tokens(code_str):
-    return list(tokenize.generate_tokens(io.StringIO(code_str).readline))
 
 
 @pytest.mark.parametrize('code_str', [

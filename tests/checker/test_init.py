@@ -1,18 +1,16 @@
 import ast
-import io
-import tokenize
+
+import pytest
 
 from flake8_aaa import Checker
 
 
-def test():
-    file_contents = """
+@pytest.mark.parametrize('code_str', ("""
 def test():
     pass
-"""
-    tree = ast.parse(file_contents)
-    file_tokens = list(tokenize.generate_tokens(io.StringIO(file_contents).readline))
-
+""", ))
+def test(code_str, file_tokens):
+    tree = ast.parse(code_str)
     result = Checker(tree, '__FILENAME__', file_tokens)
 
     assert result.tree == tree
