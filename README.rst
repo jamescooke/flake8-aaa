@@ -1,3 +1,8 @@
+.. image:: https://img.shields.io/travis/jamescooke/flake8-aaa/master.svg
+    :target: https://travis-ci.org/jamescooke/flake8-aaa/branches
+    :alt: Travis build
+
+
 flake8-aaa plugin
 =================
 
@@ -14,7 +19,7 @@ AAA01: No result variable set in test
 
 Act blocks are expected to assign the test result to a ``result``
 variable. If you can't set a ``result``, then mark the line considered
-the Act block with ``#noqa AAA01``.
+the Act block with ``# aaa act`` (case insensitive).
 
 AAA02: Multiple results assigned
 ................................

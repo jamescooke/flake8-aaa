@@ -1,0 +1,2 @@
+class NotAMarker(Exception):
+    pass

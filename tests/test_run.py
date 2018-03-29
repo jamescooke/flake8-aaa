@@ -1,3 +1,6 @@
+# Integration tests that flake8 runs and checks using this plugin
+
+
 def test_installed(flake8dir):
     result = flake8dir.run_flake8(extra_args=['--version'])
 
