@@ -1,3 +1,5 @@
+lint_files=setup.py flake8_aaa tests
+
 venv:
 	virtualenv venv --python=python3
 	venv/bin/pip install -U pip
@@ -13,7 +15,6 @@ dev: venv venv/bin/pip-sync
 build:
 	venv/bin/python setup.py build
 
-lint_files=setup.py flake8_aaa tests
 .PHONY: lint
 lint:
 	@echo "=== flake8 ==="
@@ -23,3 +24,10 @@ lint:
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
 	@echo "=== yapf ==="
 	yapf --recursive --diff $(lint_files)
+
+.PHONY: fixlint
+fixlint:
+	@echo "=== fixing isort ==="
+	isort --quiet --recursive $(lint_files)
+	@echo "=== fixing yapf ==="
+	yapf --recursive --in-place $(lint_files)
