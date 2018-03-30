@@ -12,7 +12,8 @@ def function_node():
     Returns:
         ast.FunctionDef: A test function.
     """
-    tree = ast.parse("""import pytest
+    tree = ast.parse(
+        """import pytest
 
 # Do nothing :D
 
@@ -25,7 +26,8 @@ def test(thing):
     result = thing
 
     assert result == 'thing'
-""")
+"""
+    )
     return find_test_functions(tree)[0]
 
 

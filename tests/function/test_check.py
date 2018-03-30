@@ -38,7 +38,7 @@ def test_no_result(function):
 
 @pytest.mark.parametrize('code_str', ["""
 def test():
-    x = 1 + 1  # noqa: AAA01
+    x = 1 + 1  # AAA act
     assert x == 2
 """])
 def test_no_qa(function):

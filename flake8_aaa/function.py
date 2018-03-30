@@ -59,6 +59,11 @@ class Function:
                 if isinstance(target, ast.Name) and target.id == 'result':
                     return []
 
+        # For now assume that if any marker is found it's for the Act block,
+        # wherever it is in the function.
+        if len(self.markers):
+            return []
+
         return [
             (node.lineno, node.col_offset, 'AAA01 no result variable set in test'),
         ]
