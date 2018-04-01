@@ -15,3 +15,16 @@ class ActBlock:
         """
         self.node = node
         self.block_type = block_type
+
+    @classmethod
+    def build(obj, node):
+        """
+        Args:
+            node
+
+        Returns:
+            ActBlock
+
+        Raises:
+        """
+        return obj(node, obj.RESULT_EQUALS)
