@@ -1,3 +1,6 @@
+from .helpers import node_is_pytest_raises, node_is_result_equals
+
+
 class ActBlock:
     """
     Attributes:
@@ -5,6 +8,7 @@ class ActBlock:
         block_type (str)
     """
 
+    PYTEST_RAISES = 'pytest_raises'
     RESULT_EQUALS = 'result_equals'
 
     def __init__(self, node, block_type):
@@ -20,11 +24,14 @@ class ActBlock:
     def build(obj, node):
         """
         Args:
-            node
+            node: An ``ast`` node.
 
         Returns:
             ActBlock
 
         Raises:
         """
-        return obj(node, obj.RESULT_EQUALS)
+        if node_is_result_equals(node):
+            return obj(node, obj.RESULT_EQUALS)
+        elif node_is_pytest_raises(node):
+            return obj(node, obj.PYTEST_RAISES)

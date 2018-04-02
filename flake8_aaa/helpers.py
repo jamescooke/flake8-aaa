@@ -1,5 +1,6 @@
 import ast
 
+import astroid
 import py
 
 from flake8_aaa.exceptions import NotAMarker
@@ -66,13 +67,29 @@ def load_markers(file_tokens):
 def node_is_result_equals(node):
     """
     Args:
-        node: An ``ast`` node.
+        node: An ``astroid`` node.
 
     Returns:
-        bool: ``node`` correspondes to the code ``result =``, assignment to the
+        bool: ``node`` corresponds to the code ``result =``, assignment to the
         ``result `` variable.
     """
     return (
-        isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)
-        and node.targets[0].id == 'result'
+        isinstance(node, astroid.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], astroid.AssignName)
+        and node.targets[0].name == 'result'
     )
+
+
+def node_is_pytest_raises(node):
+    """
+    Args:
+        node: An ``astroid`` node.
+
+    Returns:
+        bool: ``node`` corresponds to a With node where the context manager is
+        ``pytest.raises``.
+    """
+    if (isinstance(node, astroid.With)):
+        child = next(node.get_children())
+        if child.as_string().startswith('pytest.raises'):
+            return True
+    return False
