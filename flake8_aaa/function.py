@@ -2,6 +2,8 @@ import ast
 
 import six
 
+from .helpers import node_is_result_equals
+
 
 class Function:
     """
@@ -54,10 +56,8 @@ class Function:
                 return []
 
         for node in self.node.body:
-            if isinstance(node, ast.Assign) and len(node.targets) == 1:
-                target = node.targets[0]
-                if isinstance(target, ast.Name) and target.id == 'result':
-                    return []
+            if node_is_result_equals(node):
+                return []
 
         # For now assume that if any marker is found it's for the Act block,
         # wherever it is in the function.

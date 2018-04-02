@@ -61,3 +61,18 @@ def load_markers(file_tokens):
             continue
         out[marker.token.start[0]] = marker
     return out
+
+
+def node_is_result_equals(node):
+    """
+    Args:
+        node: An ``ast`` node.
+
+    Returns:
+        bool: ``node`` correspondes to the code ``result =``, assignment to the
+        ``result `` variable.
+    """
+    return (
+        isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)
+        and node.targets[0].id == 'result'
+    )
