@@ -1,10 +1,10 @@
-import ast
+import astroid
 
 from flake8_aaa.act_block import ActBlock
 
 
 def test_result_equals():
-    node = ast.parse('result = do_thing()').body[0]
+    node = astroid.parse('result = do_thing()').body[0]
 
     result = ActBlock.build(node)
 
@@ -14,7 +14,7 @@ def test_result_equals():
 
 
 def test_pytest_raises():
-    node = ast.parse('''with pytest.raises(Exception):
+    node = astroid.parse('''with pytest.raises(Exception):
     do_thing()''').body[0]
 
     result = ActBlock.build(node)
