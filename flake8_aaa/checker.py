@@ -7,6 +7,20 @@ class Checker:
     Attributes:
         markers (dict (int: list(Marker))): List of markers per line, keyed by
             the line number of where they appear in the file.
+
+    TODO: Checker should parse and tokenise the file if it's a test file:
+
+        tree = astroid.parse(code)
+        tokens = asttokens.ASTTokens(code, tree=tree)
+        first_node = tree.get_children().__next__()
+
+    Get text for a node:
+
+        tokens.get_text(first_node)
+
+    Get tokens for a node, including comments:
+
+        list(tokens.get_tokens(first_node, include_extra=True))
     """
 
     name = 'aaa'
