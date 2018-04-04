@@ -1,5 +1,3 @@
-import ast
-
 import astroid
 import py
 
@@ -34,14 +32,14 @@ def is_test_file(filename):
 def find_test_functions(tree):
     """
     Args:
-        tree (ast.Module)
+        tree (astroid.Module)
 
     Returns:
-        list (ast.FunctionDef): Fuctions that look like tests.
+        list (astroid.FunctionDef): Fuctions that look like tests.
     """
     test_nodes = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef) and node.name.startswith('test'):
+    for node in tree.get_children():
+        if node.is_function and node.name.startswith('test'):
             test_nodes.append(node)
     return test_nodes
 

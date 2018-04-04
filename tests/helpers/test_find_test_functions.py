@@ -1,10 +1,10 @@
-import ast
+import astroid
 
 from flake8_aaa.helpers import find_test_functions
 
 
 def test_empty():
-    tree = ast.parse("print('hi')")
+    tree = astroid.parse("print('hi')")
 
     result = find_test_functions(tree)
 
@@ -12,7 +12,7 @@ def test_empty():
 
 
 def test_some():
-    tree = ast.parse(
+    tree = astroid.parse(
         """
 import pytest
 
