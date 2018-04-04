@@ -5,6 +5,7 @@
 #    pip-compile --output-file dev.txt dev.in
 #
 astroid==1.6.2
+asttokens==1.1.10
 attrs==17.4.0
 click==6.7                # via pip-tools
 decorator==4.2.1          # via ipython, traitlets
