@@ -5,8 +5,9 @@ from .helpers import find_test_functions, is_test_file, load_markers
 class Checker:
     """
     Attributes:
-        markers (dict (int: list(Marker))): List of markers per line, keyed by
-            the line number of where they appear in the file.
+        filename (str): Name of file under check.
+        tokens (asttokens.ASTTokens): Tokens for the file.
+        tree (astroid.Module): Astroid tree loaded from file.
 
     TODO: Checker should parse and tokenise the file if it's a test file:
 
@@ -26,17 +27,14 @@ class Checker:
     name = 'aaa'
     version = '0.1'
 
-    def __init__(self, tree, filename, file_tokens):
+    def __init__(self, filename):
         """
         Args:
-            tree (ast.Module): AST tree of the file under check.
             filename (str)
-            file_tokens (list (tokenize.TokenInfo))
         """
-        self.tree = tree
-        self.file_tokens = file_tokens
         self.filename = filename
-        self.markers = load_markers(file_tokens)
+        self.tree = None
+        self.tokens = None
 
     def run(self):
         """
