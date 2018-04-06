@@ -1,27 +1,24 @@
+import astroid
+import asttokens
+
 from .function import Function
-from .helpers import find_test_functions, is_test_file, load_markers
+from .helpers import find_test_functions, is_test_file
 
 
 class Checker:
     """
     Attributes:
         filename (str): Name of file under check.
-        tokens (asttokens.ASTTokens): Tokens for the file.
+        ast_tokens (asttokens.ASTTokens): Tokens for the file.
         tree (astroid.Module): Astroid tree loaded from file.
-
-    TODO: Checker should parse and tokenise the file if it's a test file:
-
-        tree = astroid.parse(code)
-        tokens = asttokens.ASTTokens(code, tree=tree)
-        first_node = tree.get_children().__next__()
 
     Get text for a node:
 
-        tokens.get_text(first_node)
+        self.ast_tokens.get_text(first_node)
 
     Get tokens for a node, including comments:
 
-        list(tokens.get_tokens(first_node, include_extra=True))
+        list(self.ast_tokens.get_tokens(first_node, include_extra=True))
     """
 
     name = 'aaa'
@@ -34,7 +31,13 @@ class Checker:
         """
         self.filename = filename
         self.tree = None
-        self.tokens = None
+        self.ast_tokens = None
+
+    def load(self):
+        with open(self.filename) as f:
+            file_contents = f.read()
+        self.tree = astroid.parse(file_contents)
+        self.ast_tokens = asttokens.ASTTokens(file_contents, tree=self.tree)
 
     def run(self):
         """

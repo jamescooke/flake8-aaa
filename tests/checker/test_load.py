@@ -1,3 +1,5 @@
+import astroid
+
 from flake8_aaa import Checker
 
 
@@ -9,3 +11,6 @@ def test(tmpdir):
     result = checker.load()
 
     assert result is None
+    assert len(checker.tree.body) == 1
+    assert type(checker.tree.body[0]) == astroid.Assert
+    assert len(checker.ast_tokens.tokens) == 7
