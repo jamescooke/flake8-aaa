@@ -1,9 +1,6 @@
 import astroid
 import py
 
-from flake8_aaa.exceptions import NotAMarker
-from flake8_aaa.marker import Marker
-
 
 def is_test_file(filename):
     """
@@ -42,24 +39,6 @@ def find_test_functions(tree):
         if node.is_function and node.name.startswith('test'):
             test_nodes.append(node)
     return test_nodes
-
-
-def load_markers(file_tokens):
-    """
-    Args:
-        file_tokens (list (tokenize.TokenInfo))
-
-    Returns:
-        dict: Key the dictionary using the starting line of the comment.
-    """
-    out = {}
-    for token in file_tokens:
-        try:
-            marker = Marker.build(token)
-        except NotAMarker:
-            continue
-        out[marker.token.start[0]] = marker
-    return out
 
 
 def node_is_result_equals(node):
