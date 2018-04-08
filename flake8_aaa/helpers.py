@@ -41,7 +41,7 @@ def find_test_functions(tree):
     return test_nodes
 
 
-def node_is_result_equals(node):
+def node_is_result_assignment(node):
     """
     Args:
         node: An ``astroid`` node.

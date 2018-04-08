@@ -1,5 +1,5 @@
 from .exceptions import NotActionBlock
-from .helpers import node_is_pytest_raises, node_is_result_equals
+from .helpers import node_is_pytest_raises, node_is_result_assignment
 
 
 class ActBlock:
@@ -11,7 +11,7 @@ class ActBlock:
 
     MARKED_ACT = 'marked_act'
     PYTEST_RAISES = 'pytest_raises'
-    RESULT_EQUALS = 'result_equals'
+    RESULT_ASSIGNMENT = 'result_assignment'
 
     def __init__(self, node, block_type):
         """
@@ -35,8 +35,8 @@ class ActBlock:
         Raises:
             NotActionBlock: When ``node`` does not look like an Act block.
         """
-        if node_is_result_equals(node):
-            return obj(node, obj.RESULT_EQUALS)
+        if node_is_result_assignment(node):
+            return obj(node, obj.RESULT_ASSIGNMENT)
         elif node_is_pytest_raises(node):
             return obj(node, obj.PYTEST_RAISES)
 
