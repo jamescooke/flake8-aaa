@@ -70,3 +70,14 @@ def node_is_pytest_raises(node):
         if child.as_string().startswith('pytest.raises'):
             return True
     return False
+
+
+def function_is_noop(function_node):
+    """
+    Args:
+        function_node (astroid.FunctionDef): A function.
+
+    Returns:
+        bool: Function does nothing - is just ``pass`` or docstring.
+    """
+    return all(type(node) is astroid.Pass for node in function_node.body)

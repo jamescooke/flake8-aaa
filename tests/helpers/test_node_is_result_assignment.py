@@ -9,7 +9,7 @@ from flake8_aaa.helpers import node_is_result_assignment
     'result = lambda x: x + 1',
 ))
 def test(code_str):
-    node = astroid.parse(code_str).body[0]
+    node = astroid.extract_node(code_str)
 
     result = node_is_result_assignment(node)
 
