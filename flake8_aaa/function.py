@@ -1,47 +1,42 @@
-import ast
-
-import six
-
-from .helpers import node_is_result_equals
+from .act_block import ActBlock
+from .exceptions import NotActionBlock
 
 
 class Function:
     """
     Attributes:
-        node (ast.FunctionDef): AST for the test under lint.
-        start_line (int): First line of test.
-        end_line (int): Last line of test.
-        markers (dict): Comment markers for this function. Loaded with
-            ``pull_markers``.
+        act_blocks (list (ActBlock)): List of nodes that are considered Act
+            blocks for this test. Defaults to ``None`` when function has not
+            been parsed.
+        node (astroid.FunctionDef): AST for the test under lint.
+        tokens (asttokens.ASTTokens): Tokens for the file under test.
     """
 
-    def __init__(self, node):
+    def __init__(self, node, tokens):
         """
         Args:
             node (ast.FunctionDef)
+            tokens (asttokens.ASTTokens)
         """
         self.node = node
-        self.start_line = self.node.lineno
-        self.end_line = self.node.body[-1].lineno
-        self.markers = {}
+        self.tokens = tokens
+        self.act_blocks = None
 
-    def pull_markers(self, all_markers):
+    def parse(self):
         """
-        Pull any comment markers.
-
-        Args:
-            all_markers (dict)
+        Processes the child nodes of ``node`` to find Act blocks which are kept
+        in the ``act_blocks`` attribute.
 
         Returns:
-            int: Number of markers found for this function.
-
-        Warning:
-            Side effect: Updates ``self.markers`` with markers found.
+            int: Number of Act blocks found.
         """
-        for key, value in six.iteritems(all_markers):
-            if self.start_line <= key and key <= self.end_line:
-                self.markers[key] = value
-        return len(self.markers)
+        self.act_blocks = []
+        for child_node in self.node.get_children():
+            try:
+                self.act_blocks.append(ActBlock.build(child_node, self.tokens))
+            except NotActionBlock:
+                continue
+        return len(self.act_blocks)
 
     def check(self):
         """
@@ -51,19 +46,7 @@ class Function:
         Returns:
             list (tuple): Errors in flake8 (line_number, offset, text)
         """
-        if len(self.node.body) == 1:
-            if isinstance(self.node.body[0], ast.Pass):
-                return []
-
-        for node in self.node.body:
-            if node_is_result_equals(node):
-                return []
-
-        # For now assume that if any marker is found it's for the Act block,
-        # wherever it is in the function.
-        if len(self.markers):
-            return []
-
+        return []
         return [
-            (node.lineno, node.col_offset, 'AAA01 no result variable set in test'),
+            (self.node.lineno, self.node.col_offset, 'AAA01 no result variable set in test'),
         ]
