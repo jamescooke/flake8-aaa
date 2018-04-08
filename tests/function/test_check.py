@@ -4,8 +4,7 @@ from flake8_aaa.exceptions import FunctionNotParsed
 
 
 @pytest.mark.parametrize(
-    'code_str',
-    [
+    'code_str', [
         'def test():\n    pass',
         'def test_docstring():\n    """This test will work great"""',
     ]
@@ -60,14 +59,18 @@ def test_no_qa(function):
     assert result == []
 
 
-@pytest.mark.parametrize('code_str', ['''
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
 def test(user):
     result = login(user)  # Logging in User returns True
     assert result is True
 
     result = login(user)  # Already logged in User returns False
     assert result is False
-'''])
+'''
+    ]
+)
 def test_multi_act(function):
     function.parse()
 
@@ -77,6 +80,7 @@ def test_multi_act(function):
         # (line_number, offset, text)
         (2, 0, 'AAA02 multiple Act blocks found in test'),
     ]
+
 
 # --- FAILURES ---
 
