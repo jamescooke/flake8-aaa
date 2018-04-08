@@ -1,3 +1,4 @@
+from .exceptions import NotActionBlock
 from .helpers import node_is_pytest_raises, node_is_result_equals
 
 
@@ -8,6 +9,7 @@ class ActBlock:
         block_type (str)
     """
 
+    MARKED_ACT = 'marked_act'
     PYTEST_RAISES = 'pytest_raises'
     RESULT_EQUALS = 'result_equals'
 
@@ -21,17 +23,26 @@ class ActBlock:
         self.block_type = block_type
 
     @classmethod
-    def build(obj, node):
+    def build(obj, node, tokens):
         """
         Args:
-            node: An ``ast`` node.
+            node (astroid.*): An astroid node.
+            tokens (asttokens.ASTTokens): Tokens that contain this node.
 
         Returns:
             ActBlock
 
         Raises:
+            NotActionBlock: When ``node`` does not look like an Act block.
         """
         if node_is_result_equals(node):
             return obj(node, obj.RESULT_EQUALS)
         elif node_is_pytest_raises(node):
             return obj(node, obj.PYTEST_RAISES)
+
+        # Check if line marked with '# act'
+        line = next(tokens.get_tokens(node, include_extra=True)).line
+        if line.strip().lower().endswith('# act'):
+            return obj(node, obj.MARKED_ACT)
+
+        raise NotActionBlock()
