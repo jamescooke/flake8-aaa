@@ -18,7 +18,7 @@ def test(flake8dir):
 
     result = flake8dir.run_flake8()
 
-    assert result.out_lines == ['./test_plus.py:3:5: AAA01 no result variable set in test']
+    assert result.out_lines == ['./test_plus.py:3:5: AAA01 no Act block found in test']
 
 
 def test_ignore(flake8dir):
