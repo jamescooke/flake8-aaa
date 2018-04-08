@@ -18,7 +18,8 @@ def test(flake8dir):
 
     result = flake8dir.run_flake8()
 
-    assert result.out_lines == ['./test_plus.py:3:5: AAA01 no Act block found in test']
+    assert len(result.out_lines)
+    assert result.out_lines[0] == './test_plus.py:1:1: AAA01 no Act block found in test'
 
 
 def test_ignore(flake8dir):
@@ -43,7 +44,7 @@ def test_noqa(flake8dir):
     flake8dir.make_py_files(
         test_plus='''
             def test():
-                x = 1 + 1  # AAA act
+                x = 1 + 1  # act
                 assert x == 2
         ''',
     )

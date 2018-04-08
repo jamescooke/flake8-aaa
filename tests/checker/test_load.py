@@ -6,7 +6,7 @@ from flake8_aaa import Checker
 def test(tmpdir):
     target_file = tmpdir.join('test.py')
     target_file.write('assert 1 + 2 == 3')
-    checker = Checker(target_file.strpath)
+    checker = Checker(None, target_file.strpath)
 
     result = checker.load()
 
