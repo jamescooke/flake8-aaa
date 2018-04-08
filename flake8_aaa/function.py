@@ -69,10 +69,14 @@ class Function:
         if self.is_noop:
             return []
 
-        if len(self.act_blocks) == 1:
-            return []
-
-        if len(self.act_blocks) == 0:
+        if len(self.act_blocks) < 1:
             return [
-                (self.node.lineno, self.node.col_offset, 'AAA01 no result variable set in test'),
+                (self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test'),
             ]
+
+        if len(self.act_blocks) > 1:
+            return [
+                (self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test'),
+            ]
+
+        return []

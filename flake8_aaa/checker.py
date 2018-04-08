@@ -44,8 +44,9 @@ class Checker:
         (line_number, offset, text, check)
         """
         if is_test_file(self.filename):
+            self.load()
             for function_def in find_test_functions(self.tree):
                 function = Function(function_def)
-                function.pull_markers(self.markers)
+                function.load()
                 for error in function.check():
                     yield error + (type(self), )
