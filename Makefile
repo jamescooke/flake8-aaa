@@ -31,3 +31,8 @@ fixlint:
 	isort --quiet --recursive $(lint_files)
 	@echo "=== fixing yapf ==="
 	yapf --recursive --in-place $(lint_files)
+
+.PHONY: clean
+clean:
+	rm -rf dist build .tox .pytest_cache flake8_aaa.egg-info
+	find . -name '*.pyc' -delete
