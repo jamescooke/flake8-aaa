@@ -1,12 +1,16 @@
+import astroid
 import pytest
 
 
 @pytest.mark.parametrize('code_str', ["""
 def test():
-    pass  # AAA act
+    pass  # act
 """])
 def test(function):
     result = function
 
-    assert list(result.markers) == [3]
-    assert result.markers[3].token.string == '# AAA act'
+    assert result.node.name == 'test'
+    pass_node = list(result.node.get_children())[-1]
+    assert isinstance(pass_node, astroid.Pass)
+    first_pass_token = next(result.tokens.get_tokens(pass_node, include_extra=True))
+    assert first_pass_token.line.strip().endswith('# act')

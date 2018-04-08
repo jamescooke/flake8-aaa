@@ -14,6 +14,8 @@ setuptools.setup(
     packages=['flake8_aaa'],
     py_modules=['flake8_aaa'],
     install_requires=[
+        'astroid >= 1.6',
+        'asttokens >= 1.1.10',
         'flake8 >= 3',
         'py >= 1.5',
         'six >= 1.11.0',

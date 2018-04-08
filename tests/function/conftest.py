@@ -1,22 +1,32 @@
-import ast
-
+import astroid
+import asttokens
 import pytest
 
 from flake8_aaa.function import Function
-from flake8_aaa.helpers import find_test_functions, load_markers
 
 
 @pytest.fixture
-def function(code_str, file_tokens):
+def function_node(code_str):
     """
     Args:
+        code_str (str): Should contain only one function which can be
+            extracted.
+
+    Returns:
+        astroid.FunctionDef
+    """
+    return astroid.extract_node(code_str)
+
+
+@pytest.fixture
+def function(function_node, code_str):
+    """
+    Args:
+        function_node (astroid.FunctionDef)
         code_str (str)
 
     Returns:
         Function
     """
-    tree = ast.parse(code_str)
-    function_node = find_test_functions(tree)[0]
-    function = Function(function_node)
-    function.pull_markers(load_markers(file_tokens))
-    return function
+    tokens = asttokens.ASTTokens(code_str, tree=function_node)
+    return Function(function_node, tokens)

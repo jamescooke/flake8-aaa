@@ -1,36 +1,46 @@
+import astroid
+import asttokens
+
 from .function import Function
-from .helpers import find_test_functions, is_test_file, load_markers
+from .helpers import find_test_functions, is_test_file
 
 
 class Checker:
     """
     Attributes:
-        markers (dict (int: list(Marker))): List of markers per line, keyed by
-            the line number of where they appear in the file.
+        ast_tokens (asttokens.ASTTokens): Tokens for the file.
+        filename (str): Name of file under check.
+        tree (astroid.Module): Astroid tree loaded from file.
     """
 
     name = 'aaa'
     version = '0.1'
 
-    def __init__(self, tree, filename, file_tokens):
+    def __init__(self, tree, filename):
         """
         Args:
-            tree (ast.Module): AST tree of the file under check.
+            tree: Ignored, but is required for flake8 to recognise this as a
+                plugin.
             filename (str)
-            file_tokens (list (tokenize.TokenInfo))
         """
-        self.tree = tree
-        self.file_tokens = file_tokens
         self.filename = filename
-        self.markers = load_markers(file_tokens)
+        self.tree = None
+        self.ast_tokens = None
+
+    def load(self):
+        with open(self.filename) as f:
+            file_contents = f.read()
+        self.tree = astroid.parse(file_contents)
+        self.ast_tokens = asttokens.ASTTokens(file_contents, tree=self.tree)
 
     def run(self):
         """
         (line_number, offset, text, check)
         """
         if is_test_file(self.filename):
+            self.load()
             for function_def in find_test_functions(self.tree):
-                function = Function(function_def)
-                function.pull_markers(self.markers)
+                function = Function(function_def, self.ast_tokens)
+                function.parse()
                 for error in function.check():
                     yield error + (type(self), )

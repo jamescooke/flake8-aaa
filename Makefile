@@ -2,7 +2,7 @@ lint_files=setup.py flake8_aaa tests
 
 venv:
 	virtualenv venv --python=python3
-	venv/bin/pip install -U pip
+	venv/bin/pip install -U "pip<10"
 
 venv/bin/pip-sync: venv
 	venv/bin/pip install pip-tools
@@ -31,3 +31,8 @@ fixlint:
 	isort --quiet --recursive $(lint_files)
 	@echo "=== fixing yapf ==="
 	yapf --recursive --in-place $(lint_files)
+
+.PHONY: clean
+clean:
+	rm -rf dist build .tox .pytest_cache flake8_aaa.egg-info
+	find . -name '*.pyc' -delete

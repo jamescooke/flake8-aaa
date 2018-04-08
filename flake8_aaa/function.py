@@ -1,69 +1,82 @@
-import ast
-
-import six
+from .act_block import ActBlock
+from .exceptions import FunctionNotParsed, NotActionBlock
+from .helpers import function_is_noop
 
 
 class Function:
     """
     Attributes:
-        node (ast.FunctionDef): AST for the test under lint.
-        start_line (int): First line of test.
-        end_line (int): Last line of test.
-        markers (dict): Comment markers for this function. Loaded with
-            ``pull_markers``.
+        act_blocks (list (ActBlock)): List of nodes that are considered Act
+            blocks for this test. Defaults to ``None`` when function has not
+            been parsed.
+        node (astroid.FunctionDef): AST for the test under lint.
+        tokens (asttokens.ASTTokens): Tokens for the file under test.
+        is_noop (bool): Function is considered empty. Consists just of comments
+            or ``pass``.
+        parsed (bool): Function's nodes have been parsed.
     """
 
-    def __init__(self, node):
+    def __init__(self, node, tokens):
         """
         Args:
             node (ast.FunctionDef)
+            tokens (asttokens.ASTTokens)
         """
         self.node = node
-        self.start_line = self.node.lineno
-        self.end_line = self.node.body[-1].lineno
-        self.markers = {}
+        self.tokens = tokens
+        self.act_blocks = []
+        self.is_noop = False
+        self.parsed = False
 
-    def pull_markers(self, all_markers):
+    def parse(self):
         """
-        Pull any comment markers.
-
-        Args:
-            all_markers (dict)
+        Processes the child nodes of ``node`` to find Act blocks which are kept
+        in the ``act_blocks`` attribute. Sets ``parsed`` to ``True``.
 
         Returns:
-            int: Number of markers found for this function.
-
-        Warning:
-            Side effect: Updates ``self.markers`` with markers found.
+            int: Number of Act blocks found.
         """
-        for key, value in six.iteritems(all_markers):
-            if self.start_line <= key and key <= self.end_line:
-                self.markers[key] = value
-        return len(self.markers)
+        self.act_blocks = []
+
+        if function_is_noop(self.node):
+            self.parsed = True
+            self.is_noop = True
+            return 0
+
+        for child_node in self.node.get_children():
+            try:
+                self.act_blocks.append(ActBlock.build(child_node, self.tokens))
+            except NotActionBlock:
+                continue
+
+        self.parsed = True
+        return len(self.act_blocks)
 
     def check(self):
         """
-        Check test function for errors. Test functions that are just 'pass' are
-        skipped.
+        Check test function for errors.
 
         Returns:
             list (tuple): Errors in flake8 (line_number, offset, text)
+
+        Raises:
+            FunctionNotParsed: When ``parse`` has not been called on this
+                instance yet.
         """
-        if len(self.node.body) == 1:
-            if isinstance(self.node.body[0], ast.Pass):
-                return []
+        if not self.parsed:
+            raise FunctionNotParsed()
 
-        for node in self.node.body:
-            if isinstance(node, ast.Assign) and len(node.targets) == 1:
-                target = node.targets[0]
-                if isinstance(target, ast.Name) and target.id == 'result':
-                    return []
-
-        # For now assume that if any marker is found it's for the Act block,
-        # wherever it is in the function.
-        if len(self.markers):
+        if self.is_noop:
             return []
 
-        return [
-            (node.lineno, node.col_offset, 'AAA01 no result variable set in test'),
-        ]
+        if len(self.act_blocks) < 1:
+            return [
+                (self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test'),
+            ]
+
+        if len(self.act_blocks) > 1:
+            return [
+                (self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test'),
+            ]
+
+        return []

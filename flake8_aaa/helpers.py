@@ -1,9 +1,5 @@
-import ast
-
+import astroid
 import py
-
-from flake8_aaa.exceptions import NotAMarker
-from flake8_aaa.marker import Marker
 
 
 def is_test_file(filename):
@@ -33,31 +29,55 @@ def is_test_file(filename):
 def find_test_functions(tree):
     """
     Args:
-        tree (ast.Module)
+        tree (astroid.Module)
 
     Returns:
-        list (ast.FunctionDef): Fuctions that look like tests.
+        list (astroid.FunctionDef): Fuctions that look like tests.
     """
     test_nodes = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef) and node.name.startswith('test'):
+    for node in tree.get_children():
+        if node.is_function and node.name.startswith('test'):
             test_nodes.append(node)
     return test_nodes
 
 
-def load_markers(file_tokens):
+def node_is_result_assignment(node):
     """
     Args:
-        file_tokens (list (tokenize.TokenInfo))
+        node: An ``astroid`` node.
 
     Returns:
-        dict: Key the dictionary using the starting line of the comment.
+        bool: ``node`` corresponds to the code ``result =``, assignment to the
+        ``result `` variable.
     """
-    out = {}
-    for token in file_tokens:
-        try:
-            marker = Marker.build(token)
-        except NotAMarker:
-            continue
-        out[marker.token.start[0]] = marker
-    return out
+    return (
+        isinstance(node, astroid.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], astroid.AssignName)
+        and node.targets[0].name == 'result'
+    )
+
+
+def node_is_pytest_raises(node):
+    """
+    Args:
+        node: An ``astroid`` node.
+
+    Returns:
+        bool: ``node`` corresponds to a With node where the context manager is
+        ``pytest.raises``.
+    """
+    if (isinstance(node, astroid.With)):
+        child = next(node.get_children())
+        if child.as_string().startswith('pytest.raises'):
+            return True
+    return False
+
+
+def function_is_noop(function_node):
+    """
+    Args:
+        function_node (astroid.FunctionDef): A function.
+
+    Returns:
+        bool: Function does nothing - is just ``pass`` or docstring.
+    """
+    return all(type(node) is astroid.Pass for node in function_node.body)

@@ -1,43 +1,20 @@
-import ast
-
+import asttokens
 import pytest
 
 from flake8_aaa.function import Function
-from flake8_aaa.helpers import find_test_functions
 
 
-@pytest.fixture
-def function_node():
-    """
-    Returns:
-        ast.FunctionDef: A test function.
-    """
-    tree = ast.parse(
-        """import pytest
+@pytest.mark.parametrize('code_str', ['''
+    def test():
+        pass
+    '''])
+def test(function_node, code_str):
+    tokens = asttokens.ASTTokens(code_str, tree=function_node)
 
-# Do nothing :D
-
-@pytest.fixture
-def thing():
-    return 'thing'
-
-
-def test(thing):
-    result = thing
-
-    assert result == 'thing'
-"""
-    )
-    return find_test_functions(tree)[0]
-
-
-# --- TESTS ---
-
-
-def test(function_node):
-    result = Function(function_node)
+    result = Function(function_node, tokens)
 
     assert result.node == function_node
-    assert result.start_line == 10
-    assert result.end_line == 13
-    assert result.markers == {}
+    assert result.tokens == tokens
+    assert result.act_blocks == []
+    assert result.parsed is False
+    assert result.is_noop is False

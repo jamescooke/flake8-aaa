@@ -11,19 +11,58 @@ Python tests against the rules of the `Arrange Act Assert pattern
 <http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
 of testing.
 
+
+Test discovery
+--------------
+
+* Filename must start with ``test_`` and have been collected for linting by
+  ``flake8``.
+
+* Test must be a function where its name starts with ``test``.
+
+* Tests that contain only comments, docstrings or ``pass`` are skipped.
+
+
 Error codes
 -----------
 
-AAA01: No result variable set in test
-.....................................
+AAA01: no Act block found in test
+:::::::::::::::::::::::::::::::::
 
-Act blocks are expected to assign the test result to a ``result``
-variable. If you can't set a ``result``, then mark the line considered
-the Act block with ``# aaa act`` (case insensitive).
+Test found to have no Act block.
 
-AAA02: Multiple results assigned
-................................
+An Act block is usually a line like ``result =`` or a check that an exception
+is raised using ``with pytest.raises(Exception):``.
 
-There should only be one result assigned per test. If you have a test that
-contains more than one ``result =`` statement, then consider splitting that
-test into multiple tests.
+Resolution
+..........
+
+Add an Act block to the test or mark a line that should be considered the
+action.
+
+Even if the result of a test action is ``None``, assign that result and test
+it::
+
+    result = action()
+
+    assert result is None
+
+If you can't set a ``result``, then mark the end of the line considered the Act
+block with ``# act`` (case insensitive)::
+
+    data['new_key'] = 1  # act
+
+AAA02: multiple Act blocks found in test
+::::::::::::::::::::::::::::::::::::::::
+
+There must be one and only one Act block in every test. The linter found more
+than one potential Act block in this test.
+
+A test that contains more than one ``result =`` statement or more than one line
+marked ``# act`` creates ambiguity and raises this error code.
+
+Resolution
+..........
+
+Splitting the failing test into multiple tests. Where there is complicated or
+reused set-up code then that should be extracted into fixtures.
