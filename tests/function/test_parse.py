@@ -7,6 +7,7 @@ def test_none(function):
 
     assert result == 0
     assert function.act_blocks == []
+    assert function.parsed is True
 
 
 @pytest.mark.parametrize('code_str', ['def test():\n    result = 1\n\n    assert result is 1'])

@@ -15,4 +15,6 @@ def test(function_node, code_str):
 
     assert result.node == function_node
     assert result.tokens == tokens
-    assert result.act_blocks is None
+    assert result.act_blocks == []
+    assert result.parsed is False
+    assert result.is_noop is False
