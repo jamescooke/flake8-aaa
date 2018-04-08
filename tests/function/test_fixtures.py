@@ -1,5 +1,5 @@
-import pytest
 import astroid
+import pytest
 
 
 @pytest.mark.parametrize('code_str', ["""

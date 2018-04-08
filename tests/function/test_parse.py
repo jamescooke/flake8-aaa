@@ -8,6 +8,7 @@ def test_none(function):
     assert result == 0
     assert function.act_blocks == []
     assert function.parsed is True
+    assert function.is_noop is True
 
 
 @pytest.mark.parametrize('code_str', ['def test():\n    result = 1\n\n    assert result is 1'])
@@ -15,6 +16,8 @@ def test_one(function):
     result = function.parse()
 
     assert result == 1
+    assert function.parsed is True
+    assert function.is_noop is False
 
 
 @pytest.mark.parametrize(
@@ -40,3 +43,5 @@ def test_multi(function):
     result = function.parse()
 
     assert result == 2
+    assert function.parsed is True
+    assert function.is_noop is False

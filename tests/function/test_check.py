@@ -3,11 +3,14 @@ import pytest
 from flake8_aaa.exceptions import FunctionNotParsed
 
 
-@pytest.mark.parametrize('code_str', ["""
-def test():
-    pass
-"""])
-def test_pass(function):
+@pytest.mark.parametrize(
+    'code_str',
+    [
+        'def test():\n    pass',
+        'def test_docstring():\n    """This test will work great"""',
+    ]
+)
+def test_noop(function):
     function.parse()
 
     result = function.check()

@@ -1,5 +1,6 @@
 from .act_block import ActBlock
 from .exceptions import FunctionNotParsed, NotActionBlock
+from .helpers import function_is_noop
 
 
 class Function:
@@ -36,11 +37,18 @@ class Function:
             int: Number of Act blocks found.
         """
         self.act_blocks = []
+
+        if function_is_noop(self.node):
+            self.parsed = True
+            self.is_noop = True
+            return 0
+
         for child_node in self.node.get_children():
             try:
                 self.act_blocks.append(ActBlock.build(child_node, self.tokens))
             except NotActionBlock:
                 continue
+
         self.parsed = True
         return len(self.act_blocks)
 
@@ -50,9 +58,16 @@ class Function:
 
         Returns:
             list (tuple): Errors in flake8 (line_number, offset, text)
+
+        Raises:
+            FunctionNotParsed: When ``parse`` has not been called on this
+                instance yet.
         """
         if not self.parsed:
             raise FunctionNotParsed()
+
+        if self.is_noop:
+            return []
 
         if len(self.act_blocks) == 1:
             return []
