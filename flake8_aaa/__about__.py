@@ -1,0 +1,10 @@
+from __future__ import absolute_import, print_function, unicode_literals
+
+__name__ = 'flake8-aaa'
+__version__ = '0.1.0'
+
+__author__ = 'James Cooke'
+__copyright__ = '2018, {}'.format(__author__)
+
+__description__ = 'Flake8 plugin that checks Pytest tests follow the Arrange Act Assert pattern'
+__email__ = 'github@jamescooke.info'
