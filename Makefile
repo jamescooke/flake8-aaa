@@ -9,6 +9,7 @@ venv/bin/pip-sync: venv
 
 .PHONY: dev
 dev: venv venv/bin/pip-sync
+	venv/bin/pip install -U "pip<10"
 	venv/bin/pip-sync requirements/dev.txt
 
 .PHONY: build
