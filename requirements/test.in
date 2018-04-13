@@ -4,6 +4,7 @@ flake8
 isort
 pytest
 pytest-flake8dir
+restructuredtext-lint
 six
 tox
 yapf

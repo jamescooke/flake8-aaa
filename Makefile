@@ -1,4 +1,5 @@
 lint_files=setup.py flake8_aaa tests
+rst_files=README.rst CHANGELOG.rst
 
 venv:
 	virtualenv venv --python=python3
@@ -25,6 +26,10 @@ lint:
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
 	@echo "=== yapf ==="
 	yapf --recursive --diff $(lint_files)
+	@echo "=== rst ==="
+	$(bin_prefix)restructuredtext-lint $(rst_files)
+	@echo "=== setup.py ==="
+	$(bin_prefix)python setup.py check --metadata --strict
 
 .PHONY: fixlint
 fixlint:

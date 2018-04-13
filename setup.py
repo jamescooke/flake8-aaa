@@ -23,6 +23,9 @@ setup(
     description=about['__description__'],
     license='MIT',
     long_description=readme(),
+    author='James Cooke',
+    author_email='github@jamescooke.info',
+    url='https://github.com/jamescooke/flake8-aaa',
 
     # --- Python ---
     packages=['flake8_aaa'],
@@ -37,7 +40,6 @@ setup(
             'AAA = flake8_aaa:Checker',
         ],
     },
-    zip_safe=False,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Framework :: Flake8',
@@ -49,4 +51,5 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python',
     ],
+    zip_safe=False,
 )
