@@ -1,5 +1,6 @@
+import os
+
 import astroid
-import py
 
 
 def is_test_file(filename):
@@ -23,7 +24,7 @@ def is_test_file(filename):
         >>> is_test_file('./test_helpers.py')
         True
     """
-    return py.path.local(filename).basename.startswith('test_')
+    return os.path.basename(filename).startswith('test_')
 
 
 def find_test_functions(tree):

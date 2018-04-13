@@ -31,7 +31,6 @@ setup(
         'astroid >= 1.6',
         'asttokens >= 1.1.10',
         'flake8 >= 3',
-        'py >= 1.5',
     ],
     entry_points={
         'flake8.extension': [
