@@ -11,6 +11,17 @@ Python tests against the rules of the `Arrange Act Assert pattern
 <http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
 of testing.
 
+Resources
+---------
+
+* `Changelog <CHANGELOG.rst>`_
+
+
+Docs
+====
+
+(to be extracted to RTD)
+
 
 Test discovery
 --------------
