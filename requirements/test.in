@@ -4,5 +4,6 @@ flake8
 isort
 pytest
 pytest-flake8dir
+six
 tox
 yapf

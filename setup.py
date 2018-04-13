@@ -32,7 +32,6 @@ setup(
         'asttokens >= 1.1.10',
         'flake8 >= 3',
         'py >= 1.5',
-        'six >= 1.11.0',
     ],
     entry_points={
         'flake8.extension': [
