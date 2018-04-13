@@ -37,4 +37,17 @@ setup(
             'AAA = flake8_aaa:Checker',
         ],
     },
+
+    zip_safe=False,
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Framework :: Flake8',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python',
+    ],
 )
