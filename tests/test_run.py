@@ -1,10 +1,12 @@
 # Integration tests that flake8 runs and checks using this plugin
 
+from flake8_aaa.__about__ import __version__
+
 
 def test_installed(flake8dir):
     result = flake8dir.run_flake8(extra_args=['--version'])
 
-    assert 'aaa: 0.1' in result.out
+    assert 'aaa: {}'.format(__version__) in result.out
 
 
 def test(flake8dir):

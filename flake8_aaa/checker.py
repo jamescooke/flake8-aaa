@@ -1,6 +1,7 @@
 import astroid
 import asttokens
 
+from .__about__ import __short_name__, __version__
 from .function import Function
 from .helpers import find_test_functions, is_test_file
 
@@ -13,8 +14,8 @@ class Checker:
         tree (astroid.Module): Astroid tree loaded from file.
     """
 
-    name = 'aaa'
-    version = '0.1'
+    name = __short_name__
+    version = __version__
 
     def __init__(self, tree, filename):
         """
