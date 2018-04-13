@@ -37,7 +37,6 @@ setup(
             'AAA = flake8_aaa:Checker',
         ],
     },
-
     zip_safe=False,
     classifiers=[
         'Development Status :: 3 - Alpha',
