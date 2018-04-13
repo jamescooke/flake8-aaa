@@ -11,4 +11,9 @@ Versioning <http://semver.org/spec/v2.0.0.html>`_.
 Unreleased_
 -----------
 
+0.1.0 - 2018/04/13
+------------------
+
 Initial alpha release.
+
+.. _Unreleased: https://github.com/constructpm/pysyncgateway/compare/v0.1.0...HEAD
