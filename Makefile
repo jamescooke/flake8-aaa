@@ -63,6 +63,10 @@ testpypi: clean sdist bdist_wheel
 pypi: clean sdist bdist_wheel
 	twine upload dist/*
 
+.PHONY: on_master
+on_master:
+	./on_master.sh
+
 .PHONY: tag
-tag:
+tag: on_master
 	git tag -a $$(python -c 'from flake8_aaa.__about__ import __version__; print("v{}".format(__version__))')
