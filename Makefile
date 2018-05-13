@@ -3,14 +3,13 @@ rst_files=README.rst CHANGELOG.rst
 
 venv:
 	virtualenv venv --python=python3
-	venv/bin/pip install -U "pip<10"
+	venv/bin/pip install -U pip
 
 venv/bin/pip-sync: venv
 	venv/bin/pip install pip-tools
 
 .PHONY: dev
 dev: venv venv/bin/pip-sync
-	venv/bin/pip install -U "pip<10"
 	venv/bin/pip-sync requirements/dev.txt
 
 .PHONY: tox
@@ -63,6 +62,10 @@ testpypi: clean sdist bdist_wheel
 pypi: clean sdist bdist_wheel
 	twine upload dist/*
 
+.PHONY: on_master
+on_master:
+	./on_master.sh
+
 .PHONY: tag
-tag:
+tag: on_master
 	git tag -a $$(python -c 'from flake8_aaa.__about__ import __version__; print("v{}".format(__version__))')

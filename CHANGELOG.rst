@@ -16,4 +16,4 @@ Unreleased_
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/constructpm/pysyncgateway/compare/v0.1.0...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.1.0...HEAD
