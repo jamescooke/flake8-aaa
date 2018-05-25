@@ -4,6 +4,9 @@ from flake8_aaa.act_block import ActBlock
 from flake8_aaa.exceptions import NotActionBlock
 
 
+# TODO act blocks need testing with 'result =' indented
+# TODO act blocks need testing with indentation in general
+
 @pytest.mark.parametrize(
     'code_str, expected_type', [
         ('result = do_thing()', ActBlock.RESULT_ASSIGNMENT),
