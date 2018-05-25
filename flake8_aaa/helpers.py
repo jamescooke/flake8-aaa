@@ -65,27 +65,24 @@ def node_is_result_assignment(node):
     Returns:
         bool: ``node`` corresponds to the code ``result =``, assignment to the
         ``result `` variable.
+
+    Note:
+        Performs a very weak test that the line starts with 'result =' rather
+        than testing the tokens.
     """
-    return (
-        isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.AssignName)
-        and node.targets[0].name == 'result'
-    )
+    return node.first_token.line.startswith('result =')
 
 
 def node_is_pytest_raises(node):
     """
     Args:
-        node: An ``ast`` node.
+        node: An ``ast`` node, augmented with ASTTokens
 
     Returns:
         bool: ``node`` corresponds to a With node where the context manager is
         ``pytest.raises``.
     """
-    if (isinstance(node, ast.With)):
-        child = next(node.get_children())
-        if child.as_string().startswith('pytest.raises'):
-            return True
-    return False
+    return isinstance(node, ast.With) and node.first_token.line.startswith('with pytest.raises')
 
 
 def node_is_noop(node):

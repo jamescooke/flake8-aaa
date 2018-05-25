@@ -1,4 +1,6 @@
-import astroid
+import ast
+
+import asttokens
 import pytest
 
 from flake8_aaa.helpers import node_is_result_assignment
@@ -9,7 +11,9 @@ from flake8_aaa.helpers import node_is_result_assignment
     'result = lambda x: x + 1',
 ))
 def test(code_str):
-    node = astroid.extract_node(code_str)
+    tree = ast.parse(code_str)
+    asttokens.ASTTokens(code_str, tree=tree)
+    node = tree.body[0]
 
     result = node_is_result_assignment(node)
 
@@ -26,7 +30,9 @@ def test(code_str):
     )
 )
 def test_no(code_str):
-    node = astroid.parse(code_str).body[0]
+    tree = ast.parse(code_str)
+    asttokens.ASTTokens(code_str, tree=tree)
+    node = tree.body[0]
 
     result = node_is_result_assignment(node)
 

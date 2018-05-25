@@ -1,4 +1,6 @@
-import astroid
+import ast
+
+import asttokens
 import pytest
 
 from flake8_aaa.helpers import node_is_pytest_raises
@@ -12,7 +14,9 @@ from flake8_aaa.helpers import node_is_pytest_raises
     ]
 )
 def test(code_str):
-    node = astroid.parse(code_str).body[0]
+    tree = ast.parse(code_str)
+    asttokens.ASTTokens(code_str, tree=tree)
+    node = tree.body[0]
 
     result = node_is_pytest_raises(node)
 
@@ -24,7 +28,9 @@ def test(code_str):
     f.read()''',
 ])
 def test_no(code_str):
-    node = astroid.parse(code_str).body[0]
+    tree = ast.parse(code_str)
+    asttokens.ASTTokens(code_str, tree=tree)
+    node = tree.body[0]
 
     result = node_is_pytest_raises(node)
 
