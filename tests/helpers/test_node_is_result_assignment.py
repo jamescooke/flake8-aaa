@@ -4,7 +4,8 @@ from flake8_aaa.helpers import node_is_result_assignment
 
 
 @pytest.mark.parametrize(
-    ('code_str', 'expected_result'), [
+    ('code_str', 'expected_result'),
+    [
         ('result = 1', True),
         ('result = lambda x: x + 1', True),
         ('xresult = 1', False),
