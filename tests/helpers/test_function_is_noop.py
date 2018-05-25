@@ -1,4 +1,5 @@
-import astroid
+import ast
+
 import pytest
 
 from flake8_aaa.helpers import function_is_noop
@@ -11,7 +12,7 @@ from flake8_aaa.helpers import function_is_noop
     ]
 )
 def test(code_str):
-    node = astroid.extract_node(code_str)
+    node = ast.parse(code_str).body[0]
 
     result = function_is_noop(node)
 
@@ -22,7 +23,7 @@ def test(code_str):
     'def test_tomorrow():\n    # TODO write this test\n    result = 1',
 ])
 def test_not_noop(code_str):
-    node = astroid.extract_node(code_str)
+    node = ast.parse(code_str).body[0]
 
     result = function_is_noop(node)
 
