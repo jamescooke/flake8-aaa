@@ -9,8 +9,9 @@ class Function:
         act_blocks (list (ActBlock)): List of nodes that are considered Act
             blocks for this test. Defaults to ``None`` when function has not
             been parsed.
-        node (astroid.FunctionDef): AST for the test under lint.
-        tokens (asttokens.ASTTokens): Tokens for the file under test.
+        node (ast.FunctionDef): AST for the test under lint.
+        tokens (asttokens.ASTTokens): Tokens for the file under test. (Might
+            not be required)
         is_noop (bool): Function is considered empty. Consists just of comments
             or ``pass``.
         parsed (bool): Function's nodes have been parsed.
@@ -43,9 +44,9 @@ class Function:
             self.is_noop = True
             return 0
 
-        for child_node in self.node.get_children():
+        for child_node in self.node.body:
             try:
-                self.act_blocks.append(ActBlock.build(child_node, self.tokens))
+                self.act_blocks.append(ActBlock.build(child_node))
             except NotActionBlock:
                 continue
 

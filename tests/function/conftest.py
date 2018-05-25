@@ -1,4 +1,5 @@
-import astroid
+import ast
+
 import asttokens
 import pytest
 
@@ -13,16 +14,17 @@ def function_node(code_str):
             extracted.
 
     Returns:
-        astroid.FunctionDef
+        ast.FunctionDef
     """
-    return astroid.extract_node(code_str)
+    function_tree = ast.parse(code_str)
+    return function_tree.body[0]
 
 
 @pytest.fixture
 def function(function_node, code_str):
     """
     Args:
-        function_node (astroid.FunctionDef)
+        function_node (ast.FunctionDef)
         code_str (str)
 
     Returns:

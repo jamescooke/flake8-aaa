@@ -23,19 +23,19 @@ def test_one(function):
 @pytest.mark.parametrize(
     'code_str', [
         '''
-    def test(user):
-        result = login(user)  # Logging in User returns True
-        assert result is True
+def test(user):
+    result = login(user)  # Logging in User returns True
+    assert result is True
 
-        result = login(user)  # Already logged in User returns False
-        assert result is False
+    result = login(user)  # Already logged in User returns False
+    assert result is False
     ''',
         '''
-    def test():
-        chickens = 1  # act
-        eggs = 1  # act
+def test():
+    chickens = 1  # act
+    eggs = 1  # act
 
-        assert chickens + eggs == 2
+    assert chickens + eggs == 2
     ''',
     ]
 )
