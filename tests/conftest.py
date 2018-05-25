@@ -1,3 +1,6 @@
+import ast
+
+import asttokens
 import pytest
 from flake8.defaults import MAX_LINE_LENGTH
 from flake8.processor import FileProcessor
@@ -48,3 +51,17 @@ def first_token(file_tokens):
         First token of provided list.
     """
     return file_tokens[0]
+
+
+@pytest.fixture
+def first_node_with_tokens(code_str):
+    """
+    Given ``code_str`` fixture, parse that string with ``ast.parse`` and then
+    augment it with ``asttokens.ASTTokens``.
+
+    Returns:
+        ast.node: First node in parsed tree.
+    """
+    tree = ast.parse(code_str)
+    asttokens.ASTTokens(code_str, tree=tree)
+    return tree.body[0]
