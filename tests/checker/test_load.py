@@ -1,4 +1,3 @@
-import astroid
 import ast
 
 from flake8_aaa import Checker

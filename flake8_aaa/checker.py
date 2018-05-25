@@ -1,4 +1,3 @@
-import astroid
 import asttokens
 
 from .__about__ import __short_name__, __version__
@@ -12,7 +11,7 @@ class Checker:
         ast_tokens (asttokens.ASTTokens): Tokens for the file.
         filename (str): Name of file under check.
         lines (list (str))
-        tree (astroid.Module): Astroid tree loaded from file.
+        tree (ast.Module): Tree passed from flake8.
     """
 
     name = __short_name__
