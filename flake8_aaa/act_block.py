@@ -40,7 +40,7 @@ class ActBlock:
             return obj(node, obj.PYTEST_RAISES)
 
         # Check if line marked with '# act'
-        if node.first_token.line.endswith('# act'):
+        if node.first_token.line.strip().endswith('# act'):
             return obj(node, obj.MARKED_ACT)
 
         raise NotActionBlock()
