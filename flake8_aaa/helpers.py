@@ -82,7 +82,7 @@ def node_is_pytest_raises(node):
         bool: ``node`` corresponds to a With node where the context manager is
         ``pytest.raises``.
     """
-    return isinstance(node, ast.With) and node.first_token.line.startswith('with pytest.raises')
+    return isinstance(node, ast.With) and node.first_token.line.strip().startswith('with pytest.raises')
 
 
 def node_is_noop(node):
