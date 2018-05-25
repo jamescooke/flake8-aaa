@@ -70,7 +70,7 @@ def node_is_result_assignment(node):
         Performs a very weak test that the line starts with 'result =' rather
         than testing the tokens.
     """
-    return node.first_token.line.startswith('result =')
+    return node.first_token.line.strip().startswith('result =')
 
 
 def node_is_pytest_raises(node):
