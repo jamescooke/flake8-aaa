@@ -1,4 +1,8 @@
+# encoding: utf-8
+
 # Integration tests that flake8 runs and checks using this plugin
+
+# Some unicode text: Réne has £10 - ensure that this file is loaded with Python 2
 
 from flake8_aaa.__about__ import __version__
 

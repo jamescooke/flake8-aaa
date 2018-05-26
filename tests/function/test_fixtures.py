@@ -1,4 +1,5 @@
-import astroid
+import ast
+
 import pytest
 
 
@@ -6,11 +7,11 @@ import pytest
 def test():
     pass  # act
 """])
-def test(function):
-    result = function
+def test(first_node_with_tokens):
+    result = first_node_with_tokens
 
-    assert result.node.name == 'test'
-    pass_node = list(result.node.get_children())[-1]
-    assert isinstance(pass_node, astroid.Pass)
-    first_pass_token = next(result.tokens.get_tokens(pass_node, include_extra=True))
-    assert first_pass_token.line.strip().endswith('# act')
+    assert result.name == 'test'
+    assert len(result.body) == 1
+    pass_node = result.body[0]
+    assert isinstance(pass_node, ast.Pass)
+    assert pass_node.first_token.line.strip().endswith('# act')

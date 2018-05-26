@@ -1,9 +1,27 @@
-import astroid
-import asttokens
 import pytest
 
 from flake8_aaa.act_block import ActBlock
 from flake8_aaa.exceptions import NotActionBlock
+
+# TODO act blocks need testing with 'result =' indented
+# TODO act blocks need testing with indentation in general
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        """
+def test_not_actions(first_node_with_tokens):
+    with pytest.raises(NotActionBlock):
+        ActBlock.build(first_node_with_tokens)
+"""
+    ]
+)
+def test_raises_block(first_node_with_tokens):
+    result = ActBlock.build(first_node_with_tokens.body[0])
+
+    assert isinstance(result, ActBlock)
+    assert result.node == first_node_with_tokens.body[0]
+    assert result.block_type == ActBlock.PYTEST_RAISES
 
 
 @pytest.mark.parametrize(
@@ -13,14 +31,11 @@ from flake8_aaa.exceptions import NotActionBlock
         ('data[new_key] = value  # act', ActBlock.MARKED_ACT),
     ]
 )
-def test(code_str, expected_type):
-    node = astroid.extract_node(code_str)
-    tokens = asttokens.ASTTokens(code_str, tree=node)
-
-    result = ActBlock.build(node, tokens)
+def test(expected_type, first_node_with_tokens):
+    result = ActBlock.build(first_node_with_tokens)
 
     assert isinstance(result, ActBlock)
-    assert result.node == node
+    assert result.node == first_node_with_tokens
     assert result.block_type == expected_type
 
 
@@ -34,9 +49,6 @@ def test(code_str, expected_type):
         'with open("data.txt") as f:\n    f.read()',
     ]
 )
-def test_not_actions(code_str):
-    node = astroid.extract_node(code_str)
-    tokens = asttokens.ASTTokens(code_str, tree=node)
-
+def test_not_actions(first_node_with_tokens):
     with pytest.raises(NotActionBlock):
-        ActBlock.build(node, tokens)
+        ActBlock.build(first_node_with_tokens)

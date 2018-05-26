@@ -14,7 +14,7 @@ def readme():
 
 about = {}
 with open(os.path.join(basedir, 'flake8_aaa', '__about__.py')) as f:
-    exec(f.read(), about)
+    exec(f.read(), about)  # yapf: disable
 
 setup(
     # --- META ---
@@ -31,7 +31,6 @@ setup(
     packages=['flake8_aaa'],
     py_modules=['flake8_aaa'],
     install_requires=[
-        'astroid >= 1.6',
         'asttokens >= 1.1.10',
         'flake8 >= 3',
     ],

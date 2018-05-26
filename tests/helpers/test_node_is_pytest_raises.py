@@ -1,4 +1,6 @@
-import astroid
+import ast
+
+import asttokens
 import pytest
 
 from flake8_aaa.helpers import node_is_pytest_raises
@@ -6,15 +8,22 @@ from flake8_aaa.helpers import node_is_pytest_raises
 
 @pytest.mark.parametrize(
     'code_str', [
-        '''with pytest.raises(Exception):
-    do_thing()''', '''with pytest.raises(Exception) as excinfo:
-    do_thing()'''
+        '''
+def test():
+    with pytest.raises(Exception):
+        do_thing()
+''',
+        '''
+def test_other():
+    with pytest.raises(Exception) as excinfo:
+        do_thing()
+''',
     ]
 )
-def test(code_str):
-    node = astroid.parse(code_str).body[0]
+def test(first_node_with_tokens):
+    with_node = first_node_with_tokens.body[0]
 
-    result = node_is_pytest_raises(node)
+    result = node_is_pytest_raises(with_node)
 
     assert result is True
 
@@ -24,7 +33,9 @@ def test(code_str):
     f.read()''',
 ])
 def test_no(code_str):
-    node = astroid.parse(code_str).body[0]
+    tree = ast.parse(code_str)
+    asttokens.ASTTokens(code_str, tree=tree)
+    node = tree.body[0]
 
     result = node_is_pytest_raises(node)
 

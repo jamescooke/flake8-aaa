@@ -23,11 +23,10 @@ class ActBlock:
         self.block_type = block_type
 
     @classmethod
-    def build(obj, node, tokens):
+    def build(obj, node):
         """
         Args:
-            node (astroid.*): An astroid node.
-            tokens (asttokens.ASTTokens): Tokens that contain this node.
+            node (ast.node): A node, decorated with ``ASTTokens``.
 
         Returns:
             ActBlock
@@ -41,8 +40,7 @@ class ActBlock:
             return obj(node, obj.PYTEST_RAISES)
 
         # Check if line marked with '# act'
-        line = next(tokens.get_tokens(node, include_extra=True)).line
-        if line.strip().lower().endswith('# act'):
+        if node.first_token.line.strip().endswith('# act'):
             return obj(node, obj.MARKED_ACT)
 
         raise NotActionBlock()

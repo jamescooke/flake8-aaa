@@ -1,6 +1,5 @@
+import ast
 import os
-
-import astroid
 
 
 def is_test_file(filename):
@@ -27,58 +26,82 @@ def is_test_file(filename):
     return os.path.basename(filename).startswith('test_')
 
 
+class TestFuncLister(ast.NodeVisitor):
+    """
+    Helper to walk the ast Tree and find functions that looks like tests.
+    Matching function nodes are kept in ``_found_func`` attr.
+
+    Attributes:
+        _found_func (list (ast.node))
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(TestFuncLister, self).__init__(*args, **kwargs)
+        self._found_funcs = []
+
+    def visit_FunctionDef(self, node):
+        if node.name.startswith('test'):
+            self._found_funcs.append(node)
+
+
 def find_test_functions(tree):
     """
     Args:
-        tree (astroid.Module)
+        tree (ast.Module)
 
     Returns:
-        list (astroid.FunctionDef): Fuctions that look like tests.
+        list (ast.FunctionDef): Functions that look like tests.
     """
-    test_nodes = []
-    for node in tree.get_children():
-        if node.is_function and node.name.startswith('test'):
-            test_nodes.append(node)
-    return test_nodes
+    function_finder = TestFuncLister()
+    function_finder.visit(tree)
+    return function_finder._found_funcs
 
 
 def node_is_result_assignment(node):
     """
     Args:
-        node: An ``astroid`` node.
+        node: An ``ast`` node.
 
     Returns:
         bool: ``node`` corresponds to the code ``result =``, assignment to the
         ``result `` variable.
+
+    Note:
+        Performs a very weak test that the line starts with 'result =' rather
+        than testing the tokens.
     """
-    return (
-        isinstance(node, astroid.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], astroid.AssignName)
-        and node.targets[0].name == 'result'
-    )
+    return node.first_token.line.strip().startswith('result =')
 
 
 def node_is_pytest_raises(node):
     """
     Args:
-        node: An ``astroid`` node.
+        node: An ``ast`` node, augmented with ASTTokens
 
     Returns:
         bool: ``node`` corresponds to a With node where the context manager is
         ``pytest.raises``.
     """
-    if (isinstance(node, astroid.With)):
-        child = next(node.get_children())
-        if child.as_string().startswith('pytest.raises'):
-            return True
-    return False
+    return isinstance(node, ast.With) and node.first_token.line.strip().startswith('with pytest.raises')
+
+
+def node_is_noop(node):
+    """
+    Args:
+        node (ast.node)
+
+    Returns:
+        bool: Node does nothing.
+    """
+    return (type(node) is ast.Expr and type(node.value) is ast.Str) or (type(node) is ast.Pass)
 
 
 def function_is_noop(function_node):
     """
     Args:
-        function_node (astroid.FunctionDef): A function.
+        function_node (ast.FunctionDef): A function.
 
     Returns:
         bool: Function does nothing - is just ``pass`` or docstring.
     """
-    return all(type(node) is astroid.Pass for node in function_node.body)
+    return all(node_is_noop(n) for n in function_node.body)
