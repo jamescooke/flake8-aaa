@@ -4,15 +4,23 @@
 
 # Some unicode text: Réne has £10 - ensure that this file is loaded with Python 2
 
+import os
+
+import pytest
+
 from flake8_aaa.__about__ import __version__
 
+skip_not_tox = pytest.mark.skipif(not os.getenv('IN_TOX', False), reason='Not running inside Tox')
 
+
+@skip_not_tox
 def test_installed(flake8dir):
     result = flake8dir.run_flake8(extra_args=['--version'])
 
     assert 'aaa: {}'.format(__version__) in result.out
 
 
+@skip_not_tox
 def test(flake8dir):
     flake8dir.make_py_files(
         test_plus='''

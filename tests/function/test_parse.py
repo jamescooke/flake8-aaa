@@ -1,5 +1,7 @@
 import pytest
 
+from flake8_aaa.act_block import ActBlock
+
 
 @pytest.mark.parametrize('code_str', ['def test():\n    pass'])
 def test_none(function):
@@ -45,3 +47,25 @@ def test_multi(function):
     assert result == 2
     assert function.parsed is True
     assert function.is_noop is False
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
+def test(existing_user):
+    result = existing_user.delete()
+
+    assert result is True
+    assert result.retrieved is False
+    with pytest.raises(DoesNotExist):
+        result.retrieve()
+'''
+    ]
+)
+def test(function):
+    result = function.parse()
+
+    assert result == 1
+    assert function.parsed is True
+    assert function.is_noop is False
+    assert function.act_blocks[0].block_type == ActBlock.RESULT_ASSIGNMENT

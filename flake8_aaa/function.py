@@ -46,6 +46,12 @@ class Function:
             except NotActionBlock:
                 continue
 
+        # Allow `pytest.raises` in assert blocks
+        if len(self.act_blocks) > 1:
+            self.act_blocks = [self.act_blocks[0]] + list(
+                filter(lambda ab: ab.block_type != ActBlock.PYTEST_RAISES, self.act_blocks[1:])
+            )
+
         self.parsed = True
         return len(self.act_blocks)
 
