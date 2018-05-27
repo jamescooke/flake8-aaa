@@ -2,6 +2,10 @@
     :target: https://travis-ci.org/jamescooke/flake8-aaa/branches
     :alt: Travis build
 
+.. image:: https://img.shields.io/readthedocs/flake8-aaa.svg
+    :alt: Read the Docs
+    :target: https://flake8-aaa.readthedocs.io/
+
 .. image:: https://img.shields.io/pypi/v/flake8-aaa.svg
     :alt: PyPI
     :target: https://pypi.org/project/flake8-aaa/
