@@ -2,9 +2,25 @@
     :target: https://travis-ci.org/jamescooke/flake8-aaa/branches
     :alt: Travis build
 
+.. image:: https://img.shields.io/readthedocs/flake8-aaa.svg
+    :alt: Read the Docs
+    :target: https://flake8-aaa.readthedocs.io/
 
-flake8-aaa plugin
-=================
+.. image:: https://img.shields.io/pypi/v/flake8-aaa.svg
+    :alt: PyPI
+    :target: https://pypi.org/project/flake8-aaa/
+
+.. image:: https://img.shields.io/pypi/pyversions/flake8-aaa.svg
+    :alt: PyPI - Python Version
+    :target: https://pypi.org/project/flake8-aaa/
+
+.. image:: https://img.shields.io/github/license/jamescooke/flake8-aaa.svg
+    :alt: flake8-aaa is licensed under the MIT License
+    :target: https://github.com/jamescooke/flake8-aaa/blob/master/LICENSE
+
+
+flake8-aaa
+==========
 
 A `flake8 <http://flake8.pycqa.org/en/latest/index.html>`_ plugin for linting
 Python tests against the rules of the `Arrange Act Assert pattern
@@ -14,66 +30,14 @@ of testing.
 Resources
 ---------
 
-* `Changelog <CHANGELOG.rst>`_
+* `Documentation on ReadTheDocs <https://flake8-aaa.readthedocs.io/>`_
 
+* `Package on PyPI <https://pypi.org/project/flake8-aaa/>`_
 
-Docs
-====
+* `Source code on GitHub <https://github.com/jamescooke/flake8-aaa>`_
 
-(to be extracted to RTD)
+* `Licensed on MIT <https://github.com/jamescooke/flake8-aaa/blob/master/LICENSE>`_
 
+* `Changelog <https://github.com/jamescooke/blob/master/CHANGELOG.rst>`_
 
-Test discovery
---------------
-
-* Filename must start with ``test_`` and have been collected for linting by
-  ``flake8``.
-
-* Test must be a function where its name starts with ``test``.
-
-* Tests that contain only comments, docstrings or ``pass`` are skipped.
-
-
-Error codes
------------
-
-AAA01: no Act block found in test
-:::::::::::::::::::::::::::::::::
-
-Test found to have no Act block.
-
-An Act block is usually a line like ``result =`` or a check that an exception
-is raised using ``with pytest.raises(Exception):``.
-
-Resolution
-..........
-
-Add an Act block to the test or mark a line that should be considered the
-action.
-
-Even if the result of a test action is ``None``, assign that result and test
-it::
-
-    result = action()
-
-    assert result is None
-
-If you can't set a ``result``, then mark the end of the line considered the Act
-block with ``# act`` (case insensitive)::
-
-    data['new_key'] = 1  # act
-
-AAA02: multiple Act blocks found in test
-::::::::::::::::::::::::::::::::::::::::
-
-There must be one and only one Act block in every test. The linter found more
-than one potential Act block in this test.
-
-A test that contains more than one ``result =`` statement or more than one line
-marked ``# act`` creates ambiguity and raises this error code.
-
-Resolution
-..........
-
-Splitting the failing test into multiple tests. Where there is complicated or
-reused set-up code then that should be extracted into fixtures.
+Tested on Pythons 2.7 and 3.6.

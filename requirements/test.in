@@ -1,10 +1,13 @@
 -r base.txt
 
+Sphinx
 flake8
 isort
+pygments
 pytest
 pytest-flake8dir
 restructuredtext-lint
 six
+sphinx-rtd-theme
 tox
 yapf

@@ -36,5 +36,8 @@ venv/
 # Custom: python2 venv
 venv2/
 
+# Sphinx documentation
+docs/_build/
+
 # isort
 /isort.out

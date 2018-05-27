@@ -1,5 +1,5 @@
 lint_files=setup.py flake8_aaa tests
-rst_files=README.rst CHANGELOG.rst
+rst_files=README.rst CHANGELOG.rst docs/discovery.rst docs/rules.rst
 
 venv:
 	virtualenv venv --python=python3
@@ -31,12 +31,18 @@ lint:
 	@echo "=== setup.py ==="
 	python setup.py check --metadata --strict
 
+
 .PHONY: fixlint
 fixlint:
 	@echo "=== fixing isort ==="
 	isort --quiet --recursive $(lint_files)
 	@echo "=== fixing yapf ==="
 	yapf --recursive --in-place $(lint_files)
+
+
+.PHONY: doc
+doc:
+	$(MAKE) -C docs html
 
 
 # --- Building / Publishing ---
