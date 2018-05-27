@@ -31,12 +31,18 @@ lint:
 	@echo "=== setup.py ==="
 	python setup.py check --metadata --strict
 
+
 .PHONY: fixlint
 fixlint:
 	@echo "=== fixing isort ==="
 	isort --quiet --recursive $(lint_files)
 	@echo "=== fixing yapf ==="
 	yapf --recursive --in-place $(lint_files)
+
+
+.PHONY: doc
+doc:
+	$(MAKE) -C docs html
 
 
 # --- Building / Publishing ---
