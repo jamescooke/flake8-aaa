@@ -1,5 +1,5 @@
 lint_files=setup.py flake8_aaa tests
-rst_files=README.rst CHANGELOG.rst
+rst_files=README.rst CHANGELOG.rst docs/discovery.rst docs/rules.rst
 
 venv:
 	virtualenv venv --python=python3
