@@ -17,12 +17,25 @@ def test_noop(function):
     assert result == []
 
 
-@pytest.mark.parametrize('code_str', ['''
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
 def test():
     result = 1
 
     assert result == 1
-'''])
+''',
+        '''
+def test(existing_user):
+    result = existing_user.delete()
+
+    assert result is True
+    assert result.retrieved is False
+    with pytest.raises(DoesNotExist):
+        result.retrieve()
+''',
+    ]
+)
 def test_result_assigned(function):
     function.parse()
 
@@ -51,7 +64,7 @@ def test():
     x = 1 + 1  # act
     assert x == 2
 '''])
-def test_no_qa(function):
+def test_act(function):
     function.parse()
 
     result = function.check()
