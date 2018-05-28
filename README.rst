@@ -38,6 +38,6 @@ Resources
 
 * `Licensed on MIT <https://github.com/jamescooke/flake8-aaa/blob/master/LICENSE>`_
 
-* `Changelog <https://github.com/jamescooke/blob/master/CHANGELOG.rst>`_
+* `Changelog <https://github.com/jamescooke/flake8-aaa/blob/master/CHANGELOG.rst>`_
 
 Tested on Pythons 2.7 and 3.6.

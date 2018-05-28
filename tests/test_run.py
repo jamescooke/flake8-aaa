@@ -54,7 +54,7 @@ def test_ignore(flake8dir):
     assert result.out_lines == []
 
 
-def test_noqa(flake8dir):
+def test_act(flake8dir):
     flake8dir.make_py_files(
         test_plus='''
             def test():

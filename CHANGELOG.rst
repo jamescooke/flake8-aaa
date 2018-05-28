@@ -11,9 +11,25 @@ Versioning <http://semver.org/spec/v2.0.0.html>`_.
 Unreleased_
 -----------
 
+0.2.0_ - 2018/05/28
+-------------------
+
+Added
+.....
+
+* `Documentation on RTD <https://flake8-aaa.readthedocs.io/>`_
+
+Fixed
+.....
+
+* Allow parsing of files containing unicode.
+
+* Do not parse ``pytest.raises`` blocks in Assert block as Actions.
+
 0.1.0 - 2018/04/13
 ------------------
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.1.0...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.2.0...HEAD
+.. _0.2.0: https://github.com/jamescooke/flake8-aaa/compare/v0.1.0...v0.2.0
