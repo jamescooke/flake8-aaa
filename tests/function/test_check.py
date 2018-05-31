@@ -75,6 +75,35 @@ def test_act(function):
 @pytest.mark.parametrize(
     'code_str', [
         '''
+def test(file_resource):
+    file_resource.connect()
+    result = file_resource.retrieve()
+
+    assert result.success is True
+''',
+        '''
+def test_push(queue):
+    item = Document()
+    queue.push(item)  # act
+
+    assert queue.pop() == item
+''',
+    ]
+)
+def test_missing_space_before_act(function):
+    function.parse()
+
+    result = function.check()
+
+    assert result == [
+        # (line_number, offset, text)
+        (2, 0, 'AAA03 expected 1 blank line before Act block, found none'),
+    ]
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
 def test(user):
     result = login(user)  # Logging in User returns True
     assert result is True
