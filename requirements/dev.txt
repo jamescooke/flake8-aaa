@@ -8,7 +8,7 @@ alabaster==0.7.10
 asttokens==1.1.10
 atomicwrites==1.1.5
 attrs==18.1.0
-babel==2.5.3
+babel==2.6.0
 backcall==0.1.0           # via ipython
 certifi==2018.4.16
 chardet==3.0.4
@@ -30,7 +30,7 @@ mccabe==0.6.1
 more-itertools==4.2.0
 packaging==17.1
 parso==0.2.1              # via jedi
-pexpect==4.5.0            # via ipython
+pexpect==4.6.0            # via ipython
 pickleshare==0.7.4        # via ipython
 pip-tools==2.0.2
 pkginfo==1.4.2            # via twine
@@ -52,7 +52,7 @@ simplegeneric==0.8.1      # via ipython
 six==1.11.0
 snowballstemmer==1.2.1
 sphinx-rtd-theme==0.3.1
-sphinx==1.7.4
+sphinx==1.7.5
 sphinxcontrib-websupport==1.0.1
 tox==3.0.0
 tqdm==4.23.4              # via twine
