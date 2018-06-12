@@ -65,3 +65,14 @@ def first_node_with_tokens(code_str):
     tree = ast.parse(code_str)
     asttokens.ASTTokens(code_str, tree=tree)
     return tree.body[0]
+
+
+@pytest.fixture
+def lines(code_str):
+    """
+    Given ``code_str`` chop it into lines as flake8 would pass to a plugin.
+
+    Returns:
+        list (str)
+    """
+    return ['{}\n'.format(line) for line in code_str.split('\n')]

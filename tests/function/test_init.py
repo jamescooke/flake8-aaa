@@ -7,8 +7,10 @@ from flake8_aaa.function import Function
 def test():
     pass
 '''])
-def test(first_node_with_tokens):
+def test(first_node_with_tokens, lines):
     result = Function(first_node_with_tokens)
+    import ipdb
+    ipdb.set_trace()
 
     assert result.node == first_node_with_tokens
     assert result.act_blocks == []
