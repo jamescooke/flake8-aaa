@@ -9,21 +9,25 @@ class Function:
         act_blocks (list (ActBlock)): List of nodes that are considered Act
             blocks for this test. Defaults to ``None`` when function has not
             been parsed.
-        node (ast.FunctionDef): AST for the test under lint.
         is_noop (bool): Function is considered empty. Consists just of comments
             or ``pass``.
+        lines (list (str)): Lines that make up this function. Extracted from
+            the lines passed by Flake8.
+        node (ast.FunctionDef): AST for the test under lint.
         parsed (bool): Function's nodes have been parsed.
     """
 
-    def __init__(self, node):
+    def __init__(self, node, file_lines):
         """
         Args:
             node (ast.FunctionDef)
+            file_lines (list (str)): Lines of file under test.
         """
         self.node = node
         self.act_blocks = []
         self.is_noop = False
         self.parsed = False
+        self.lines = file_lines[self.node.lineno - 1:self.node.last_token.end[0]]
 
     def parse(self):
         """
