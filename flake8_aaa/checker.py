@@ -39,7 +39,7 @@ class Checker:
         if is_test_file(self.filename):
             self.load()
             for function_def in find_test_functions(self.tree):
-                function = Function(function_def)
+                function = Function(function_def, self.lines)
                 function.parse()
                 for error in function.check():
                     yield error + (type(self), )
