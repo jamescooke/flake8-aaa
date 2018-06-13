@@ -1,8 +1,9 @@
 import pytest
 
 
-@pytest.mark.parametrize('code_str', [
-    '''
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
 
 # stuff
 
@@ -17,7 +18,9 @@ def test():
     assert result == 4
 
 # End
-'''])
+'''
+    ]
+)
 @pytest.mark.parametrize('offset, expected_line', [
     [1, '    # Finished stuff\n'],
     [-1, '    # Do stuff\n'],
@@ -33,11 +36,9 @@ def test(function, offset, expected_line):
 # --- FAILURES ---
 
 
-@pytest.mark.parametrize(
-    'code_str', [
-        'def test():\n    pass',
-    ]
-)
+@pytest.mark.parametrize('code_str', [
+    'def test():\n    pass',
+])
 def test_out_of_bounds(function, first_node_with_tokens):
     with pytest.raises(IndexError):
         function.get_line_relative_to_node(first_node_with_tokens, 2)

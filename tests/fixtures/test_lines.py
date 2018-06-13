@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.parametrize('code_str', ["""
 def test():
     pass
