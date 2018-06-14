@@ -23,6 +23,16 @@ class Function:
         self.act_blocks = []
         self.is_noop = False
 
+    def check_all(self):
+        """
+        Run everything required for checking this function.
+
+        Returns:
+            list (tuple): Errors in flake8 (line_number, offset, text)
+        """
+        self.parse()
+        return self.check()
+
     def parse(self):
         """
         Processes the child nodes of ``node`` to find Act blocks which are kept

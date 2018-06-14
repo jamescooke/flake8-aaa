@@ -39,7 +39,5 @@ class Checker:
         if is_test_file(self.filename):
             self.load()
             for function_def in find_test_functions(self.tree):
-                function = Function(function_def)
-                function.parse()
-                for error in function.check():
+                for error in Function(function_def).check_all():
                     yield error + (type(self), )
