@@ -58,9 +58,8 @@ class Function:
 
         # Allow `pytest.raises` in assert blocks
         if len(act_blocks) > 1:
-            act_blocks = [act_blocks[0]] + list(
-                filter(lambda ab: ab.block_type != ActBlock.PYTEST_RAISES, act_blocks[1:])
-            )
+            act_blocks = [act_blocks[0]
+                          ] + list(filter(lambda ab: ab.block_type != ActBlock.PYTEST_RAISES, act_blocks[1:]))
 
         if len(act_blocks) < 1:
             raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')
