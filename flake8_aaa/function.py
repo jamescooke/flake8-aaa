@@ -1,5 +1,5 @@
 from .act_block import ActBlock
-from .exceptions import NotActionBlock
+from .exceptions import NotActionBlock, ValidationError
 from .helpers import function_is_noop
 
 
@@ -31,7 +31,9 @@ class Function:
             list (tuple): Errors in flake8 (line_number, offset, text)
         """
         self.parse()
-        return self.check()
+        errors = self.check()
+        if errors:
+            raise ValidationError(*errors[0])
 
     def parse(self):
         """
