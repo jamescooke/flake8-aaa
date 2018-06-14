@@ -1,5 +1,5 @@
 from .act_block import ActBlock
-from .exceptions import FunctionNotParsed, NotActionBlock
+from .exceptions import NotActionBlock
 from .helpers import function_is_noop
 
 
@@ -12,7 +12,6 @@ class Function:
         node (ast.FunctionDef): AST for the test under lint.
         is_noop (bool): Function is considered empty. Consists just of comments
             or ``pass``.
-        parsed (bool): Function's nodes have been parsed.
     """
 
     def __init__(self, node):
@@ -23,12 +22,11 @@ class Function:
         self.node = node
         self.act_blocks = []
         self.is_noop = False
-        self.parsed = False
 
     def parse(self):
         """
         Processes the child nodes of ``node`` to find Act blocks which are kept
-        in the ``act_blocks`` attribute. Sets ``parsed`` to ``True``.
+        in the ``act_blocks`` attribute.
 
         Returns:
             int: Number of Act blocks found.
@@ -36,7 +34,6 @@ class Function:
         self.act_blocks = []
 
         if function_is_noop(self.node):
-            self.parsed = True
             self.is_noop = True
             return 0
 
@@ -52,7 +49,6 @@ class Function:
                 filter(lambda ab: ab.block_type != ActBlock.PYTEST_RAISES, self.act_blocks[1:])
             )
 
-        self.parsed = True
         return len(self.act_blocks)
 
     def check(self):
@@ -61,14 +57,7 @@ class Function:
 
         Returns:
             list (tuple): Errors in flake8 (line_number, offset, text)
-
-        Raises:
-            FunctionNotParsed: When ``parse`` has not been called on this
-                instance yet.
         """
-        if not self.parsed:
-            raise FunctionNotParsed()
-
         if self.is_noop:
             return []
 

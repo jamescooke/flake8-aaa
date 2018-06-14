@@ -1,7 +1,5 @@
 import pytest
 
-from flake8_aaa.exceptions import FunctionNotParsed
-
 
 @pytest.mark.parametrize(
     'code_str', [
@@ -93,12 +91,3 @@ def test_multi_act(function):
         # (line_number, offset, text)
         (2, 0, 'AAA02 multiple Act blocks found in test'),
     ]
-
-
-# --- FAILURES ---
-
-
-@pytest.mark.parametrize('code_str', ['x = 1'])
-def test_not_parsed(function):
-    with pytest.raises(FunctionNotParsed):
-        function.check()

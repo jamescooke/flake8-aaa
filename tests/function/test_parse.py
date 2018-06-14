@@ -9,7 +9,6 @@ def test_none(function):
 
     assert result == 0
     assert function.act_blocks == []
-    assert function.parsed is True
     assert function.is_noop is True
 
 
@@ -18,7 +17,6 @@ def test_one(function):
     result = function.parse()
 
     assert result == 1
-    assert function.parsed is True
     assert function.is_noop is False
 
 
@@ -45,7 +43,6 @@ def test_multi(function):
     result = function.parse()
 
     assert result == 2
-    assert function.parsed is True
     assert function.is_noop is False
 
 
@@ -66,6 +63,5 @@ def test(function):
     result = function.parse()
 
     assert result == 1
-    assert function.parsed is True
     assert function.is_noop is False
     assert function.act_blocks[0].block_type == ActBlock.RESULT_ASSIGNMENT
