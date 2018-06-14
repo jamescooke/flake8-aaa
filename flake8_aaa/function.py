@@ -28,12 +28,46 @@ class Function:
         Run everything required for checking this function.
 
         Returns:
-            list (tuple): Errors in flake8 (line_number, offset, text)
+            None: On success.
+
+        Raises:
+            ValidationError: When an error is found.
         """
+        if function_is_noop(self.node):
+            return
+
         self.parse()
         errors = self.check()
         if errors:
             raise ValidationError(*errors[0])
+
+    def load_act_block(self):
+        """
+        Returns:
+            ActBlock
+
+        Raises:
+            ValidationError
+        """
+        act_blocks = []
+        for child_node in self.node.body:
+            try:
+                act_blocks.append(ActBlock.build(child_node))
+            except NotActionBlock:
+                continue
+
+        # Allow `pytest.raises` in assert blocks
+        if len(act_blocks) > 1:
+            act_blocks = [act_blocks[0]] + list(
+                filter(lambda ab: ab.block_type != ActBlock.PYTEST_RAISES, act_blocks[1:])
+            )
+
+        if len(act_blocks) < 1:
+            raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')
+        if len(act_blocks) > 1:
+            raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test')
+
+        return act_blocks[0]
 
     def parse(self):
         """
