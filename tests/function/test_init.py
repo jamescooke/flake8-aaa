@@ -11,5 +11,4 @@ def test(first_node_with_tokens):
     result = Function(first_node_with_tokens)
 
     assert result.node == first_node_with_tokens
-    assert result.act_blocks == []
-    assert result.is_noop is False
+    assert result.act_block is None
