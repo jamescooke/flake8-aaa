@@ -1,6 +1,7 @@
 import asttokens
 
 from .__about__ import __short_name__, __version__
+from .exceptions import ValidationError
 from .function import Function
 from .helpers import find_test_functions, is_test_file
 
@@ -39,7 +40,7 @@ class Checker:
         if is_test_file(self.filename):
             self.load()
             for function_def in find_test_functions(self.tree):
-                function = Function(function_def)
-                function.parse()
-                for error in function.check():
-                    yield error + (type(self), )
+                try:
+                    Function(function_def).check_all()
+                except ValidationError as error:
+                    yield error.to_flake8(type(self))
