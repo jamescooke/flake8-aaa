@@ -2,6 +2,7 @@ import pytest
 
 from flake8_aaa.act_block import ActBlock
 from flake8_aaa.exceptions import ValidationError
+from flake8_aaa.types import ActBlockType
 
 
 @pytest.mark.parametrize('code_str', ['''
@@ -14,7 +15,7 @@ def test_assignment(function):
     result = function.load_act_block()
 
     assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlock.RESULT_ASSIGNMENT
+    assert result.block_type == ActBlockType.result_assignment
     assert result.node.first_token.line == '    result = 1\n'
 
 
@@ -28,7 +29,7 @@ def test_act_marker(function):
     result = function.load_act_block()
 
     assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlock.MARKED_ACT
+    assert result.block_type == ActBlockType.marked_act
     assert result.node.first_token.line == '    x = y + 1  # act\n'
 
 
@@ -49,7 +50,7 @@ def test_raises_in_assert(function):
     result = function.load_act_block()
 
     assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlock.RESULT_ASSIGNMENT
+    assert result.block_type == ActBlockType.result_assignment
     assert result.node.first_token.line == '    result = existing_user.delete()\n'
 
 
