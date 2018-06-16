@@ -26,9 +26,9 @@ def test():
     [-1, '    # Do stuff\n'],
 ])
 def test(function, offset, expected_line):
-    function.parse()
+    act_block = function.load_act_block()
 
-    result = function.get_line_relative_to_node(function.act_blocks[0].node, -1)
+    result = function.get_line_relative_to_node(act_block.node, -1)
 
     assert result == '    # Do stuff\n'
 

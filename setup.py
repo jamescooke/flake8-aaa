@@ -32,6 +32,8 @@ setup(
     py_modules=['flake8_aaa'],
     install_requires=[
         'asttokens >= 1.1.10',
+        # Skip enum34 because it's not needed for py3 and because flake8 will
+        # install it for py2.
         'flake8 >= 3',
     ],
     entry_points={
