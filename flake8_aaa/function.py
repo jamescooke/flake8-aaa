@@ -1,6 +1,7 @@
 from .act_block import ActBlock
 from .exceptions import NotActionBlock, ValidationError
 from .helpers import function_is_noop
+from .types import ActBlockType
 
 
 class Function:
@@ -52,7 +53,7 @@ class Function:
         # are `pytest.raises` blocks that are not the first.
         if len(act_blocks) > 1:
             act_blocks = [act_blocks[0]
-                          ] + list(filter(lambda ab: ab.block_type != ActBlock.PYTEST_RAISES, act_blocks[1:]))
+                          ] + list(filter(lambda ab: ab.block_type != ActBlockType.pytest_raises, act_blocks[1:]))
 
         if len(act_blocks) < 1:
             raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')

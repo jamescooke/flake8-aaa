@@ -2,6 +2,7 @@ import pytest
 
 from flake8_aaa.act_block import ActBlock
 from flake8_aaa.exceptions import NotActionBlock
+from flake8_aaa.types import ActBlockType
 
 # TODO act blocks need testing with 'result =' indented
 # TODO act blocks need testing with indentation in general
@@ -21,14 +22,14 @@ def test_raises_block(first_node_with_tokens):
 
     assert isinstance(result, ActBlock)
     assert result.node == first_node_with_tokens.body[0]
-    assert result.block_type == ActBlock.PYTEST_RAISES
+    assert result.block_type == ActBlockType.pytest_raises
 
 
 @pytest.mark.parametrize(
     'code_str, expected_type', [
-        ('result = do_thing()', ActBlock.RESULT_ASSIGNMENT),
-        ('with pytest.raises(Exception):\n    do_thing()', ActBlock.PYTEST_RAISES),
-        ('data[new_key] = value  # act', ActBlock.MARKED_ACT),
+        ('result = do_thing()', ActBlockType.result_assignment),
+        ('with pytest.raises(Exception):\n    do_thing()', ActBlockType.pytest_raises),
+        ('data[new_key] = value  # act', ActBlockType.marked_act),
     ]
 )
 def test(expected_type, first_node_with_tokens):
