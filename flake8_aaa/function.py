@@ -1,4 +1,5 @@
 from .act_block import ActBlock
+from .arrange_block import ArrangeBlock
 from .exceptions import NotActionBlock, ValidationError
 from .helpers import function_is_noop
 from .types import ActBlockType
@@ -63,6 +64,25 @@ class Function:
             raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test')
 
         return act_blocks[0]
+
+    def load_arrange_block(self):
+        """
+        Returns:
+            ArrangeBlock: Or ``None`` if no Act block is found.
+
+        Raises:
+            ValidationError
+        """
+        arrange_block = ArrangeBlock()
+        for node in self.node.body:
+            if node == self.act_block.node:
+                break
+            arrange_block.add_node(node)
+
+        if len(arrange_block.nodes) > 0:
+            return arrange_block
+
+        return None
 
     def get_line_relative_to_node(self, target_node, offset):
         """

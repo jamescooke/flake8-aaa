@@ -11,3 +11,13 @@ def function(first_node_with_tokens, lines):
         are passed to Function.
     """
     return Function(first_node_with_tokens, lines)
+
+
+@pytest.fixture
+def function_with_act_block(function):
+    """
+    Returns:
+        Function: With Act block loaded.
+    """
+    function.act_block = function.load_act_block()
+    return function
