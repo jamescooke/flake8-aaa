@@ -41,6 +41,6 @@ class Checker:
             self.load()
             for function_def in find_test_functions(self.tree):
                 try:
-                    Function(function_def).check_all()
+                    Function(function_def, self.lines).check_all()
                 except ValidationError as error:
                     yield error.to_flake8(type(self))
