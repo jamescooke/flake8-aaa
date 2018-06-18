@@ -84,6 +84,9 @@ class Function:
 
         return None
 
+    def check_act_arrange_spacing(self):
+        pass
+
     def get_line_relative_to_node(self, target_node, offset):
         """
         Args:

@@ -21,3 +21,13 @@ def function_with_act_block(function):
     """
     function.act_block = function.load_act_block()
     return function
+
+
+@pytest.fixture
+def function_with_arrange_act_blocks(function_with_act_block):
+    """
+    Returns:
+        Function: With Arrange and Act blocks loaded.
+    """
+    function_with_act_block.arrange_block = function_with_act_block.load_arrange_block()
+    return function_with_act_block
