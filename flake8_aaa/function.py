@@ -85,7 +85,28 @@ class Function:
         return None
 
     def check_act_arrange_spacing(self):
-        pass
+        """
+        When Function has an Arrange block, then ensure that there is a blank
+        line between that and the Act block.
+
+        Returns:
+            None
+
+        Raises:
+            ValidationError: When no space found.
+
+        Note:
+            Due to Flake8's error ``E303``, we do not have to check that there
+            is more than one space.
+        """
+        if self.arrange_block:
+            line_before_act = self.get_line_relative_to_node(self.act_block.node, -1)
+            if line_before_act != '\n':
+                raise ValidationError(
+                    line_number=self.act_block.node.lineno,
+                    offset=self.act_block.node.col_offset,
+                    text='AAA03 Expected 1 blank line before Act block, found none',
+                )
 
     def get_line_relative_to_node(self, target_node, offset):
         """
