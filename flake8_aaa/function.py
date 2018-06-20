@@ -107,7 +107,7 @@ class Function:
                 raise ValidationError(
                     line_number=self.act_block.node.lineno,
                     offset=self.act_block.node.col_offset,
-                    text='AAA03 Expected 1 blank line before Act block, found none',
+                    text='AAA03 expected 1 blank line before Act block, found none',
                 )
 
     def get_line_relative_to_node(self, target_node, offset):

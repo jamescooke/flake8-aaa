@@ -14,7 +14,7 @@ Unreleased_
 Added
 -----
 
-* New rule ``AAA03`` "Expected 1 blank line before Act block, found none"
+* New rule ``AAA03`` "expected 1 blank line before Act block, found none"
 
 0.2.0_ - 2018/05/28
 -------------------
