@@ -90,7 +90,14 @@ class Function:
             AssertBlock: Or ``None`` if no Assert block is found.
         """
         assert_block = AssertBlock()
-        return assert_block
+        for node in self.node.body:
+            if node.lineno > self.act_block.node.lineno:
+                assert_block.add_node(node)
+
+        if len(assert_block.nodes) > 0:
+            return assert_block
+
+        return None
 
     def check_act_arrange_spacing(self):
         """
