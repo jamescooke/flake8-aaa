@@ -6,7 +6,7 @@ import six
 
 @pytest.mark.skipif(six.PY2, reason='py2')
 @pytest.mark.parametrize('code_str', ['# stuff'])
-def test_comment_token_py3(first_token):
+def test_first_token_py3(first_token):
     result = first_token
 
     assert isinstance(result, tokenize.TokenInfo)
@@ -16,7 +16,7 @@ def test_comment_token_py3(first_token):
 
 @pytest.mark.skipif(six.PY3, reason='py3')
 @pytest.mark.parametrize('code_str', ['# stuff'])
-def test_comment_token_py2(first_token):
+def test_first_token_py2(first_token):
     result = first_token
 
     assert isinstance(result, tuple)

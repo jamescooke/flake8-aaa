@@ -13,10 +13,8 @@ Resolution
 ..........
 
 Add an Act block to the test or mark a line that should be considered the
-action.
-
-Even if the result of a test action is ``None``, assign that result and pint it
-with a test::
+action. Even if the result of a test action is ``None``, assign that result and
+pin it with a test::
 
     result = action()
 
@@ -41,3 +39,22 @@ Resolution
 
 Splitting the failing test into multiple tests. Where there is complicated or
 reused set-up code then that should be extracted into one or more fixtures.
+
+AAA03: expected 1 blank line before Act block, found none
+---------------------------------------------------------
+
+For tests that have an Arrange block, there must be a blank line between the
+Arrange and Act blocks. The linter could not find a blank line before the Act
+block.
+
+This blank line creates separation between the arrangement and the action and
+makes the Act block easy to spot.
+
+This rule works best with `pycodestyle
+<https://pypi.org/project/pycodestyle/>`_'s ``E303`` rule enabled because it
+ensures that there are not multiple blank lines between the blocks.
+
+Resolution
+..........
+
+Add a blank line before the Act block.

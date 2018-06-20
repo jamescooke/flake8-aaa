@@ -11,6 +11,11 @@ Versioning <http://semver.org/spec/v2.0.0.html>`_.
 Unreleased_
 -----------
 
+Added
+-----
+
+* New rule ``AAA03`` "expected 1 blank line before Act block, found none"
+
 0.2.0_ - 2018/05/28
 -------------------
 
