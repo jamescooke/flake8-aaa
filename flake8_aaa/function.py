@@ -1,5 +1,6 @@
 from .act_block import ActBlock
 from .arrange_block import ArrangeBlock
+from .assert_block import AssertBlock
 from .exceptions import NotActionBlock, ValidationError
 from .helpers import function_is_noop
 from .types import ActBlockType
@@ -71,9 +72,6 @@ class Function:
         """
         Returns:
             ArrangeBlock: Or ``None`` if no Act block is found.
-
-        Raises:
-            ValidationError
         """
         arrange_block = ArrangeBlock()
         for node in self.node.body:
@@ -85,6 +83,14 @@ class Function:
             return arrange_block
 
         return None
+
+    def load_assert_block(self):
+        """
+        Returns:
+            AssertBlock: Or ``None`` if no Assert block is found.
+        """
+        assert_block = AssertBlock()
+        return assert_block
 
     def check_act_arrange_spacing(self):
         """
