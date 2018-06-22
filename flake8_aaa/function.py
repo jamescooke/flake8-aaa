@@ -123,6 +123,12 @@ class Function:
                     text='AAA03 expected 1 blank line before Act block, found none',
                 )
 
+    def check_act_assert_spacing(self):
+        """
+        Raises:
+            ValidationError: When no space found
+        """
+
     def get_line_relative_to_node(self, target_node, offset):
         """
         Args:
