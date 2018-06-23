@@ -59,6 +59,7 @@ def test_act(flake8dir):
         test_plus='''
             def test():
                 x = 1 + 1  # act
+
                 assert x == 2
         ''',
     )
