@@ -39,6 +39,8 @@ class Function:
         self.act_block = self.load_act_block()
         self.arrange_block = self.load_arrange_block()
         self.check_act_arrange_spacing()
+        self.assert_block = self.load_assert_block()
+        self.check_act_assert_spacing()
 
     def load_act_block(self):
         """
