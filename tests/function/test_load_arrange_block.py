@@ -10,8 +10,6 @@ def test():
     assert result == 1
 '''])
 def test_none(function_with_act_block):
-    function_with_act_block.load_act_block()
-
     result = function_with_act_block.load_arrange_block()
 
     assert result is None
@@ -29,8 +27,6 @@ def test():
 ''']
 )
 def test_simple(function_with_act_block):
-    function_with_act_block.load_act_block()
-
     result = function_with_act_block.load_arrange_block()
 
     assert isinstance(result, ArrangeBlock)

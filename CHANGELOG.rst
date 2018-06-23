@@ -16,6 +16,8 @@ Added
 
 * New rule ``AAA03`` "expected 1 blank line before Act block, found none"
 
+* New rule ``AAA04`` "expected 1 blank line before Assert block, found none"
+
 0.2.0_ - 2018/05/28
 -------------------
 

@@ -21,7 +21,8 @@ def test_no_arrange(function_with_arrange_act_blocks):
 
 @pytest.mark.parametrize(
     'code_str',
-    ['''
+    [
+        '''
 def test():
     x = 1
     y = 2
@@ -29,8 +30,18 @@ def test():
     result = x + y
 
     assert result == 3
-'''],
-    ids=['well spaced test'],
+''', '''
+def test(person):
+    """
+    Person can't be loaded
+    """
+    with pytest.raises(KeyError):
+        person.load(-1)
+
+    assert person.loaded is False
+'''
+    ],
+    ids=['well spaced test', 'spaced test with pytest.raises'],
 )
 def test_has_act_block_good_spacing(function_with_arrange_act_blocks):
     result = function_with_arrange_act_blocks.check_act_arrange_spacing()

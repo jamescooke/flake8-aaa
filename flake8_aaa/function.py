@@ -1,5 +1,6 @@
 from .act_block import ActBlock
 from .arrange_block import ArrangeBlock
+from .assert_block import AssertBlock
 from .exceptions import NotActionBlock, ValidationError
 from .helpers import function_is_noop
 from .types import ActBlockType
@@ -38,6 +39,8 @@ class Function:
         self.act_block = self.load_act_block()
         self.arrange_block = self.load_arrange_block()
         self.check_act_arrange_spacing()
+        self.assert_block = self.load_assert_block()
+        self.check_act_assert_spacing()
 
     def load_act_block(self):
         """
@@ -71,9 +74,6 @@ class Function:
         """
         Returns:
             ArrangeBlock: Or ``None`` if no Act block is found.
-
-        Raises:
-            ValidationError
         """
         arrange_block = ArrangeBlock()
         for node in self.node.body:
@@ -83,6 +83,21 @@ class Function:
 
         if len(arrange_block.nodes) > 0:
             return arrange_block
+
+        return None
+
+    def load_assert_block(self):
+        """
+        Returns:
+            AssertBlock: Or ``None`` if no Assert block is found.
+        """
+        assert_block = AssertBlock()
+        for node in self.node.body:
+            if node.lineno > self.act_block.node.lineno:
+                assert_block.add_node(node)
+
+        if len(assert_block.nodes) > 0:
+            return assert_block
 
         return None
 
@@ -108,6 +123,20 @@ class Function:
                     line_number=self.act_block.node.lineno,
                     offset=self.act_block.node.col_offset,
                     text='AAA03 expected 1 blank line before Act block, found none',
+                )
+
+    def check_act_assert_spacing(self):
+        """
+        Raises:
+            ValidationError: When no space found
+        """
+        if self.assert_block:
+            line_before_assert = self.get_line_relative_to_node(self.assert_block.nodes[0], -1)
+            if line_before_assert != '\n':
+                raise ValidationError(
+                    line_number=self.assert_block.nodes[0].lineno,
+                    offset=self.assert_block.nodes[0].col_offset,
+                    text='AAA04 expected 1 blank line before Assert block, found none',
                 )
 
     def get_line_relative_to_node(self, target_node, offset):
