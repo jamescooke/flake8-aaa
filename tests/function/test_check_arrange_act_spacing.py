@@ -14,7 +14,7 @@ def test():
     ids=['no arrange'],
 )
 def test_no_arrange(function_with_arrange_act_blocks):
-    result = function_with_arrange_act_blocks.check_act_arrange_spacing()
+    result = function_with_arrange_act_blocks.check_arrange_act_spacing()
 
     assert result is None
 
@@ -44,7 +44,7 @@ def test(person):
     ids=['well spaced test', 'spaced test with pytest.raises'],
 )
 def test_has_act_block_good_spacing(function_with_arrange_act_blocks):
-    result = function_with_arrange_act_blocks.check_act_arrange_spacing()
+    result = function_with_arrange_act_blocks.check_arrange_act_spacing()
 
     assert result is None
 
@@ -65,7 +65,7 @@ def test():
 )
 def test_missing_leading_space(function_with_arrange_act_blocks):
     with pytest.raises(ValidationError) as excinfo:
-        function_with_arrange_act_blocks.check_act_arrange_spacing()
+        function_with_arrange_act_blocks.check_arrange_act_spacing()
 
     assert excinfo.value.line_number == 5
     assert excinfo.value.offset == 4

@@ -38,7 +38,7 @@ class Function:
 
         self.act_block = self.load_act_block()
         self.arrange_block = self.load_arrange_block()
-        self.check_act_arrange_spacing()
+        self.check_arrange_act_spacing()
         self.assert_block = self.load_assert_block()
         self.check_act_assert_spacing()
 
@@ -101,7 +101,7 @@ class Function:
 
         return None
 
-    def check_act_arrange_spacing(self):
+    def check_arrange_act_spacing(self):
         """
         When Function has an Arrange block, then ensure that there is a blank
         line between that and the Act block.
