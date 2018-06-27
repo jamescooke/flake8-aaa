@@ -43,7 +43,11 @@ version signature::
 
 The ``aaa: 0.3.0`` part of that output tells you ``flake8`` found this plugin.
 
-Full error codes are listed...
+There is more information on invoking ``flake8`` on the `Invoking Flake8
+<http://flake8.pycqa.org/en/latest/user/invocation.html>`_ documentation page.
+
+See the `full list of error codes on ReadTheDocs
+<https://flake8-aaa.readthedocs.io/en/stable/rules.html>`_.
 
 
 Resources
