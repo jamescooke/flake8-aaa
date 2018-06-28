@@ -11,6 +11,9 @@ Versioning <http://semver.org/spec/v2.0.0.html>`_.
 Unreleased_
 -----------
 
+0.3.0_ - 2018/06/28
+-------------------
+
 Added
 -----
 
@@ -38,5 +41,6 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.2.0...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.3.0...HEAD
+.. _0.3.0: https://github.com/jamescooke/flake8-aaa/compare/v0.2.0...v0.3.0
 .. _0.2.0: https://github.com/jamescooke/flake8-aaa/compare/v0.1.0...v0.2.0
