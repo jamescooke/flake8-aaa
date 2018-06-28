@@ -27,6 +27,29 @@ Python tests against the rules of the `Arrange Act Assert pattern
 <http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
 of testing.
 
+
+Installation
+------------
+
+Install with ``pip``::
+
+    $ pip install flake8-aaa
+
+Check that ``flake8-aaa`` was installed correctly by asking ``flake8`` for its
+version signature::
+
+    $ flake8 --version
+    3.5.0 (aaa: 0.3.0, mccabe: 0.6.1, pycodestyle: 2.3.1, pyflakes: 1.6.0) CPython 3.5.2 on Linux
+
+The ``aaa: 0.3.0`` part of that output tells you ``flake8`` found this plugin.
+
+There is more information on invoking ``flake8`` on the `Invoking Flake8
+<http://flake8.pycqa.org/en/latest/user/invocation.html>`_ documentation page.
+
+See the `full list of error codes on ReadTheDocs
+<https://flake8-aaa.readthedocs.io/en/stable/rules.html>`_.
+
+
 Resources
 ---------
 
