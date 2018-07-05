@@ -6,7 +6,7 @@ from .helpers import function_is_noop
 from .types import ActBlockType
 
 
-class Function:
+class Function(object):
     """
     Attributes:
         act_block (ActBlock): Act block for the test.

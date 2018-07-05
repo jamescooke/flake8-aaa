@@ -1,7 +1,7 @@
 import ast
 
 
-class ArrangeBlock:
+class ArrangeBlock(object):
     """
     Attributes:
         nodes (list (ast Node))

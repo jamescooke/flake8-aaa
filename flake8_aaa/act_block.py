@@ -3,7 +3,7 @@ from .helpers import node_is_pytest_raises, node_is_result_assignment
 from .types import ActBlockType
 
 
-class ActBlock:
+class ActBlock(object):
     """
     Attributes:
         node
