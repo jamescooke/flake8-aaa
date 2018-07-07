@@ -22,10 +22,9 @@
 flake8-aaa
 ==========
 
-A `flake8 <http://flake8.pycqa.org/en/latest/index.html>`_ plugin for linting
-Python tests against the rules of the `Arrange Act Assert pattern
-<http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
-of testing.
+Extends `Flake8 <http://flake8.pycqa.org/en/latest/index.html>`_to check Python
+tests follow the `Arrange Act Assert pattern
+<http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
 
 
 Installation

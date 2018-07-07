@@ -7,5 +7,5 @@ __version__ = '0.3.0'
 __author__ = 'James Cooke'
 __copyright__ = '2018, {}'.format(__author__)
 
-__description__ = 'Extends Flake8 to check that tests follow the Arrange Act Assert pattern'
+__description__ = 'Extends Flake8 to check Python tests follow the Arrange Act Assert pattern'
 __email__ = 'github@jamescooke.info'
