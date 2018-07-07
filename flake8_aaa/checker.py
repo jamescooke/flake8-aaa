@@ -6,7 +6,7 @@ from .function import Function
 from .helpers import find_test_functions, is_test_file
 
 
-class Checker:
+class Checker(object):
     """
     Attributes:
         ast_tokens (asttokens.ASTTokens): Tokens for the file.

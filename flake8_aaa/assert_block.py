@@ -1,4 +1,4 @@
-class AssertBlock:
+class AssertBlock(object):
     """
     Attributes:
         nodes (list (ast Node))

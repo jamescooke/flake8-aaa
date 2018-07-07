@@ -39,7 +39,7 @@ class TestFuncLister(ast.NodeVisitor):
         super(TestFuncLister, self).__init__(*args, **kwargs)
         self._found_funcs = []
 
-    def visit_FunctionDef(self, node):
+    def visit_FunctionDef(self, node):  # pylint: disable=invalid-name
         if node.name.startswith('test'):
             self._found_funcs.append(node)
 
@@ -93,7 +93,7 @@ def node_is_noop(node):
     Returns:
         bool: Node does nothing.
     """
-    return (type(node) is ast.Expr and type(node.value) is ast.Str) or (type(node) is ast.Pass)
+    return (isinstance(node, ast.Expr) and isinstance(node.value, ast.Str)) or isinstance(node, ast.Pass)
 
 
 def function_is_noop(function_node):

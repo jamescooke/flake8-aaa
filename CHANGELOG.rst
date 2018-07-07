@@ -11,6 +11,9 @@ Versioning <http://semver.org/spec/v2.0.0.html>`_.
 Unreleased_
 -----------
 
+See also `latest documentation
+<https://flake8-aaa.readthedocs.io/en/latest/>`_.
+
 0.3.0_ - 2018/06/28
 -------------------
 

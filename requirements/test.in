@@ -4,6 +4,7 @@ Sphinx
 flake8
 isort
 pygments
+pylint
 pytest
 pytest-flake8dir
 restructuredtext-lint

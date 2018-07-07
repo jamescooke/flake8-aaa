@@ -6,7 +6,7 @@ from .helpers import function_is_noop
 from .types import ActBlockType
 
 
-class Function:
+class Function(object):
     """
     Attributes:
         act_block (ActBlock): Act block for the test.
@@ -57,16 +57,14 @@ class Function:
             except NotActionBlock:
                 continue
 
-        # Allow `pytest.raises` in assert blocks - ignore all act blocks that
-        # are `pytest.raises` blocks that are not the first.
-        if len(act_blocks) > 1:
-            act_blocks = [act_blocks[0]
-                          ] + list(filter(lambda ab: ab.block_type != ActBlockType.pytest_raises, act_blocks[1:]))
-
         if len(act_blocks) < 1:
             raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')
+
         if len(act_blocks) > 1:
-            raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test')
+            # Allow `pytest.raises` in assert blocks - if any of the additional
+            # act blocks are `pytest.raises` blocks, then raise
+            if list(filter(lambda ab: ab.block_type != ActBlockType.pytest_raises, act_blocks[1:])):
+                raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test')
 
         return act_blocks[0]
 
@@ -81,7 +79,7 @@ class Function:
                 break
             arrange_block.add_node(node)
 
-        if len(arrange_block.nodes) > 0:
+        if arrange_block.nodes:
             return arrange_block
 
         return None
@@ -96,7 +94,7 @@ class Function:
             if node.lineno > self.act_block.node.lineno:
                 assert_block.add_node(node)
 
-        if len(assert_block.nodes) > 0:
+        if assert_block.nodes:
             return assert_block
 
         return None
