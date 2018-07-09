@@ -54,6 +54,66 @@ def test_raises_in_assert(function):
     assert result.node.first_token.line == '    result = existing_user.delete()\n'
 
 
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
+def test(existing_user):
+    with mock.patch('stats.deletion_manager.deleted'):
+        result = existing_user.delete()
+
+    assert result is True
+    assert result.retrieved is False
+'''
+    ],
+    ids=['act in context manager'],
+)
+def test_in_cm(function):
+    result = function.load_act_block()
+
+    assert isinstance(result, ActBlock)
+    assert result.block_type == ActBlockType.result_assignment
+    assert result.node.first_token.line == '        result = existing_user.delete()\n'
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
+def test_no_recreate(existing_user):
+    with mock.patch('stats.creation_manager.created'):
+        with pytest.raises(ValidationError):
+            existing_user.create()
+'''
+    ],
+    ids=['pytest raises in context manager'],
+)
+def test_raises_in_cm(function):
+    result = function.load_act_block()
+
+    assert isinstance(result, ActBlock)
+    assert result.block_type == ActBlockType.pytest_raises
+    assert result.node.first_token.line == '            existing_user.create()\n'
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
+def test_creation(stub_user):
+    with mock.patch('stats.creation_manager.created'):
+        stub_user.create()  # act
+
+    assert stub_user.exists()
+'''
+    ],
+    ids=['marked act block in context manager'],
+)
+def test_marked_in_cm(function):
+    result = function.load_act_block()
+
+    assert isinstance(result, ActBlock)
+    assert result.block_type == ActBlockType.pytest_raises
+    assert result.node.first_token.line == '        stub_user.create()  # act'
+
+
 # --- FAILURES ---
 
 
