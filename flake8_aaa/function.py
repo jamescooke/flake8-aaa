@@ -1,7 +1,7 @@
 from .act_block import ActBlock
 from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
-from .exceptions import NotActionBlock, ValidationError
+from .exceptions import ValidationError
 from .helpers import function_is_noop
 from .types import ActBlockType
 
@@ -50,12 +50,7 @@ class Function(object):
         Raises:
             ValidationError
         """
-        act_blocks = []
-        for child_node in self.node.body:
-            try:
-                act_blocks.append(ActBlock.build(child_node))
-            except NotActionBlock:
-                continue
+        act_blocks = ActBlock.build_body(self.node.body)
 
         if len(act_blocks) < 1:
             raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')

@@ -42,6 +42,19 @@ def test(expected_type, first_node_with_tokens):
 
 @pytest.mark.parametrize(
     'code_str', [
+        "with mock.patch('stats.deletion_manager.deleted'):\n    result = existing_user.delete()",
+    ]
+)
+def test_nested(first_node_with_tokens):
+    result = ActBlock.build(first_node_with_tokens)
+
+    assert isinstance(result, ActBlock)
+    assert result.block_type == ActBlockType.result_assignment
+    assert result.node == first_node_with_tokens.body[0]
+
+
+@pytest.mark.parametrize(
+    'code_str', [
         'act = "#"',
         'actions +=1  # actions speak louder than words!',
         'person = User("Rene")',
