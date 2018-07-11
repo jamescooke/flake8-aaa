@@ -20,7 +20,7 @@ tox:
 .PHONY: lint
 lint:
 	@echo "=== flake8 ==="
-	flake8 $(lint_files)
+	flake8 $(lint_files) examples
 	@echo "=== pylint ==="
 	./run_pylint.sh
 	@echo "=== isort ==="
