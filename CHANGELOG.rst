@@ -14,6 +14,12 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Changed
+-------
+
+* Improved loading of Act blocks so that they can be found within context
+  managers.
+
 0.3.0_ - 2018/06/28
 -------------------
 
