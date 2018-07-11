@@ -91,7 +91,7 @@ def test_raises_in_cm(function):
 
     assert isinstance(result, ActBlock)
     assert result.block_type == ActBlockType.pytest_raises
-    assert result.node.first_token.line == '            existing_user.create()\n'
+    assert result.node.first_token.line == '        with pytest.raises(ValidationError):\n'
 
 
 @pytest.mark.parametrize(
@@ -110,8 +110,8 @@ def test_marked_in_cm(function):
     result = function.load_act_block()
 
     assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlockType.pytest_raises
-    assert result.node.first_token.line == '        stub_user.create()  # act'
+    assert result.block_type == ActBlockType.marked_act
+    assert result.node.first_token.line == '        stub_user.create()  # act\n'
 
 
 # --- FAILURES ---
