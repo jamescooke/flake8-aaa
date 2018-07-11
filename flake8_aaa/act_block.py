@@ -1,6 +1,5 @@
 import ast
 
-from .exceptions import NotActionBlock
 from .helpers import node_is_pytest_raises, node_is_result_assignment
 from .types import ActBlockType
 
@@ -32,10 +31,7 @@ class ActBlock(object):
         """
         act_blocks = []
         for child_node in body:
-            try:
-                act_blocks.append(ActBlock.build(child_node))
-            except NotActionBlock:
-                continue
+            act_blocks += ActBlock.build(child_node)
         return act_blocks
 
     @classmethod
@@ -45,26 +41,19 @@ class ActBlock(object):
             node (ast.node): A node, decorated with ``ASTTokens``.
 
         Returns:
-            ActBlock
-
-        Raises:
-            NotActionBlock: When ``node`` does not look like an Act block.
+            list(ActBlock)
         """
         if node_is_result_assignment(node):
-            return cls(node, ActBlockType.result_assignment)
+            return [cls(node, ActBlockType.result_assignment)]
         elif node_is_pytest_raises(node):
-            return cls(node, ActBlockType.pytest_raises)
+            return [cls(node, ActBlockType.pytest_raises)]
 
         # Check if line marked with '# act'
         if node.first_token.line.strip().endswith('# act'):
-            return cls(node, ActBlockType.marked_act)
+            return [cls(node, ActBlockType.marked_act)]
 
         # Recurse if it's a context manager
         if isinstance(node, ast.With):
-            try:
-                # TODO: Convert to returning a list of ActBlock inst
-                return cls.build_body(node.body)[0]
-            except IndexError:
-                pass
+            return cls.build_body(node.body)
 
-        raise NotActionBlock()
+        return []

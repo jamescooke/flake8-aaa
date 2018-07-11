@@ -1,7 +1,6 @@
 import pytest
 
 from flake8_aaa.act_block import ActBlock
-from flake8_aaa.exceptions import NotActionBlock
 from flake8_aaa.types import ActBlockType
 
 # TODO act blocks need testing with 'result =' indented
@@ -20,9 +19,11 @@ def test_not_actions(first_node_with_tokens):
 def test_raises_block(first_node_with_tokens):
     result = ActBlock.build(first_node_with_tokens.body[0])
 
-    assert isinstance(result, ActBlock)
-    assert result.node == first_node_with_tokens.body[0]
-    assert result.block_type == ActBlockType.pytest_raises
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert isinstance(result[0], ActBlock)
+    assert result[0].node == first_node_with_tokens.body[0]
+    assert result[0].block_type == ActBlockType.pytest_raises
 
 
 @pytest.mark.parametrize(
@@ -35,9 +36,11 @@ def test_raises_block(first_node_with_tokens):
 def test(expected_type, first_node_with_tokens):
     result = ActBlock.build(first_node_with_tokens)
 
-    assert isinstance(result, ActBlock)
-    assert result.node == first_node_with_tokens
-    assert result.block_type == expected_type
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert isinstance(result[0], ActBlock)
+    assert result[0].node == first_node_with_tokens
+    assert result[0].block_type == expected_type
 
 
 @pytest.mark.parametrize(
@@ -48,9 +51,11 @@ def test(expected_type, first_node_with_tokens):
 def test_nested(first_node_with_tokens):
     result = ActBlock.build(first_node_with_tokens)
 
-    assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlockType.result_assignment
-    assert result.node == first_node_with_tokens.body[0]
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert isinstance(result[0], ActBlock)
+    assert result[0].block_type == ActBlockType.result_assignment
+    assert result[0].node == first_node_with_tokens.body[0]
 
 
 @pytest.mark.parametrize(
@@ -64,5 +69,6 @@ def test_nested(first_node_with_tokens):
     ]
 )
 def test_not_actions(first_node_with_tokens):
-    with pytest.raises(NotActionBlock):
-        ActBlock.build(first_node_with_tokens)
+    result = ActBlock.build(first_node_with_tokens)
+
+    assert result == []

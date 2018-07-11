@@ -55,7 +55,8 @@ def test_raises_in_assert(function):
 
 
 @pytest.mark.parametrize(
-    'code_str', [
+    'code_str',
+    [
         '''
 def test(existing_user):
     with mock.patch('stats.deletion_manager.deleted'):
@@ -76,7 +77,8 @@ def test_in_cm(function):
 
 
 @pytest.mark.parametrize(
-    'code_str', [
+    'code_str',
+    [
         '''
 def test_no_recreate(existing_user):
     with mock.patch('stats.creation_manager.created'):
@@ -95,7 +97,8 @@ def test_raises_in_cm(function):
 
 
 @pytest.mark.parametrize(
-    'code_str', [
+    'code_str',
+    [
         '''
 def test_creation(stub_user):
     with mock.patch('stats.creation_manager.created'):
@@ -146,6 +149,17 @@ def test():
     eggs = 1  # act
 
     assert chickens + eggs == 2
+    ''',
+        '''
+def test_read(self):
+    with open('data') as data_file:
+        result = data_file.read()
+
+        assert result == ''
+
+        result = data_file.read()
+
+        assert result == ''
     ''',
     ]
 )
