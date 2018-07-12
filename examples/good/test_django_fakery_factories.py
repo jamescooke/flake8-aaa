@@ -38,7 +38,7 @@ class TestUserFactory(TestCase):
         database.
         """
         with self.assertRaises(IntegrityError) as cm:
-            for expected_num_created in range(1, 100):  # act
+            for expected_num_created in range(1, 100):
                 with transaction.atomic():
                     UserFactory()
 
