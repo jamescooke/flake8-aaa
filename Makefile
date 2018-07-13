@@ -33,6 +33,10 @@ lint:
 	@echo "=== setup.py ==="
 	python setup.py check --metadata --strict
 
+.PHONY: test
+test:
+	pytest tests
+
 
 .PHONY: fixlint
 fixlint:
