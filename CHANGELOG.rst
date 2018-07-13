@@ -14,6 +14,11 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Added
+-----
+
+* Support for unittest tests.
+
 Changed
 -------
 

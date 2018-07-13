@@ -8,16 +8,17 @@ for Python developers
 AAA01: no Act block found in test
 ---------------------------------
 
-Test found to have no Act block.
-
 An Act block is usually a line like ``result =`` or a check that an exception
-is raised using ``with pytest.raises(Exception):``.
+is raised. ``flake8-aaa`` could not find an Act block in the indicated test
+function.
 
 Resolution
 ..........
 
 Add an Act block to the test or mark a line that should be considered the
-action. Even if the result of a test action is ``None``, assign that result and
+action.
+
+Even if the result of a test action is ``None``, assign that result and
 pin it with a test::
 
     result = action()
@@ -28,6 +29,9 @@ If you can not assign a ``result``, then mark the end of the line considered
 the Act block with ``# act`` (case insensitive)::
 
     data['new_key'] = 1  # act
+
+Code blocks wrapped in ``pytest.raises()`` and ``unittest.assertRaises()``
+context managers are recognised as Act blocks.
 
 AAA02: multiple Act blocks found in test
 ----------------------------------------
@@ -40,8 +44,9 @@ act``. Multiple Act blocks create ambiguity and raise this error code.
 Resolution
 ..........
 
-Splitting the failing test into multiple tests. Where there is complicated or
-reused set-up code then that should be extracted into one or more fixtures.
+Split the failing test into multiple tests. Where there is complicated or
+reused set-up code then apply the DRY principle and extract the reused code
+into one or more fixtures.
 
 AAA03: expected 1 blank line before Act block, found none
 ---------------------------------------------------------
