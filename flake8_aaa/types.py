@@ -1,3 +1,6 @@
 from enum import Enum
 
-ActBlockType = Enum('ActBlockType', 'marked_act pytest_raises result_assignment')  # pylint: disable=invalid-name
+ActBlockType = Enum(  # pylint: disable=invalid-name
+    'ActBlockType',
+    'marked_act pytest_raises result_assignment unittest_raises',
+)

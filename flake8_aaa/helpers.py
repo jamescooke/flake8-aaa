@@ -85,7 +85,7 @@ def node_is_pytest_raises(node):
     return isinstance(node, ast.With) and node.first_token.line.strip().startswith('with pytest.raises')
 
 
-def node_is_unittest_assertRaises(node):
+def node_is_unittest_raises(node):
     """
     Args:
         node: An ``ast`` node, augmented with ASTTokens

@@ -16,7 +16,7 @@ def test_not_actions(first_node_with_tokens):
 """
     ]
 )
-def test_raises_block(first_node_with_tokens):
+def test_pytest_raises_block(first_node_with_tokens):
     result = ActBlock.build(first_node_with_tokens.body[0])
 
     assert isinstance(result, list)
@@ -24,6 +24,25 @@ def test_raises_block(first_node_with_tokens):
     assert isinstance(result[0], ActBlock)
     assert result[0].node == first_node_with_tokens.body[0]
     assert result[0].block_type == ActBlockType.pytest_raises
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        """
+def test_not_actions(self):
+    with self.assertRaises(ValidationError):
+        self.serializer.is_valid(raise_exception=True)
+"""
+    ]
+)
+def test_unittest_raises_block(first_node_with_tokens):
+    result = ActBlock.build(first_node_with_tokens.body[0])
+
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert isinstance(result[0], ActBlock)
+    assert result[0].node == first_node_with_tokens.body[0]
+    assert result[0].block_type == ActBlockType.unittest_raises
 
 
 @pytest.mark.parametrize(
