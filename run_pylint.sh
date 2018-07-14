@@ -11,13 +11,13 @@ ERROR_MESSAGE=2
 CONVENTION_MESSAGE=16
 USAGE_ERROR=32
 
+echo "> Raising on FATAL_MESSAGE, ERROR_MESSAGE, CONVENTION_MESSAGE, USAGE_ERROR"
+
 set +e
 pylint flake8_aaa
 lint_code=$?
 set -e
 
 (((lint_code&FATAL_MESSAGE)>0 || (lint_code&ERROR_MESSAGE)>0 || (lint_code&USAGE_ERROR)>0 || (lint_code&CONVENTION_MESSAGE)>0)) && exit $lint_code
-
-echo "Ignoring WARNING_MESSAGE, REFACTOR_MESSAGE"
 
 exit 0

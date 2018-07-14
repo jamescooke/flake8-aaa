@@ -55,10 +55,11 @@ class Function(object):
         if len(act_blocks) < 1:
             raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')
 
-        if len(act_blocks) > 1:
-            # Allow `pytest.raises` in assert blocks - if any of the additional
-            # act blocks are `pytest.raises` blocks, then raise
-            if list(filter(lambda ab: ab.block_type != ActBlockType.pytest_raises, act_blocks[1:])):
+        # Allow `pytest.raises` and `self.assertRaises()` in assert blocks - if
+        # any of the additional act blocks are `pytest.raises` blocks, then
+        # raise
+        for a_b in act_blocks[1:]:
+            if a_b.block_type in [ActBlockType.marked_act, ActBlockType.result_assignment]:
                 raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA02 multiple Act blocks found in test')
 
         return act_blocks[0]

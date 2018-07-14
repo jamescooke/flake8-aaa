@@ -34,7 +34,8 @@ def test_act_marker(function):
 
 
 @pytest.mark.parametrize(
-    'code_str', [
+    'code_str',
+    [
         '''
 def test(existing_user):
     result = existing_user.delete()
@@ -43,8 +44,20 @@ def test(existing_user):
     assert result.retrieved is False
     with pytest.raises(DoesNotExist):
         result.retrieve()
-'''
-    ]
+''',
+        '''
+def test(self):
+    existing_user = self.get_user()
+
+    result = existing_user.delete()
+
+    self.assertIs(result, True)
+    self.assertIs(result.retrieved, False)
+    with self.assertRaises(DoesNotExist):
+        result.retrieve()
+''',
+    ],
+    ids=['pytest raises in Assert', 'unittest raises in Assert'],
 )
 def test_raises_in_assert(function):
     result = function.load_act_block()

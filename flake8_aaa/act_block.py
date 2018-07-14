@@ -1,6 +1,6 @@
 import ast
 
-from .helpers import node_is_pytest_raises, node_is_result_assignment
+from .helpers import node_is_pytest_raises, node_is_result_assignment, node_is_unittest_raises
 from .types import ActBlockType
 
 
@@ -47,6 +47,8 @@ class ActBlock(object):
             return [cls(node, ActBlockType.result_assignment)]
         elif node_is_pytest_raises(node):
             return [cls(node, ActBlockType.pytest_raises)]
+        elif node_is_unittest_raises(node):
+            return [cls(node, ActBlockType.unittest_raises)]
 
         # Check if line marked with '# act'
         if node.first_token.line.strip().endswith('# act'):
