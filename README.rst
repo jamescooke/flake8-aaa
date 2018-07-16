@@ -38,9 +38,9 @@ Check that ``flake8-aaa`` was installed correctly by asking ``flake8`` for its
 version signature::
 
     $ flake8 --version
-    3.5.0 (aaa: 0.3.0, mccabe: 0.6.1, pycodestyle: 2.3.1, pyflakes: 1.6.0) CPython 3.5.2 on Linux
+    3.5.0 (aaa: 0.4.0, mccabe: 0.6.1, pycodestyle: 2.3.1, pyflakes: 1.6.0) CPython 3.5.2 on Linux
 
-The ``aaa: 0.3.0`` part of that output tells you ``flake8`` found this plugin.
+The ``aaa: 0.4.0`` part of that output tells you ``flake8`` found this plugin.
 
 There is more information on invoking ``flake8`` on the `Invoking Flake8
 <http://flake8.pycqa.org/en/latest/user/invocation.html>`_ documentation page.
