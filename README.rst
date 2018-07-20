@@ -22,8 +22,8 @@
 flake8-aaa
 ==========
 
-Extends `Flake8 <http://flake8.pycqa.org/en/latest/index.html>`_to check Python
-tests follow the `Arrange Act Assert pattern
+Extends `Flake8 <http://flake8.pycqa.org/en/latest/index.html>`_ to check
+Python tests follow the `Arrange Act Assert pattern
 <http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
 
 
@@ -44,9 +44,6 @@ The ``aaa: 0.4.0`` part of that output tells you ``flake8`` found this plugin.
 
 There is more information on invoking ``flake8`` on the `Invoking Flake8
 <http://flake8.pycqa.org/en/latest/user/invocation.html>`_ documentation page.
-
-See the `full list of error codes on ReadTheDocs
-<https://flake8-aaa.readthedocs.io/en/stable/rules.html>`_.
 
 
 Resources
