@@ -14,3 +14,17 @@ def test(api_client, url):
 
     assert result.status_code == 400
     assert callback.call_count == 0
+
+
+def test2(api_client, url):
+    # Alternative layout
+    data = {
+        'user_id': 0,
+        'project_permission': 'admin',
+    }
+    with catch_signal(user_perms_changed) as callback:
+
+        result = api_client.put(url, data=data)
+
+    assert result.status_code == 400
+    assert callback.call_count == 0
