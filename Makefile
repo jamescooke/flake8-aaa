@@ -22,7 +22,7 @@ lint:
 	@echo "=== flake8 ==="
 	flake8 $(lint_files) examples
 	@echo "=== pylint ==="
-	./run_pylint.sh
+	./run_pylint.sh flake8_aaa
 	@echo "=== isort ==="
 	isort --quiet --recursive --diff $(lint_files) > isort.out
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
