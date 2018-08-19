@@ -5,6 +5,10 @@ venv:
 	virtualenv venv --python=python3
 	venv/bin/pip install -U pip
 
+venv2:
+	virtualenv venv2 --python=python2
+	venv/bin/pip install -U pip
+
 venv/bin/pip-sync: venv
 	venv/bin/pip install pip-tools
 
