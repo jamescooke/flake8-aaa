@@ -14,7 +14,7 @@ USAGE_ERROR=32
 echo "> Raising on FATAL_MESSAGE, ERROR_MESSAGE, CONVENTION_MESSAGE, USAGE_ERROR"
 
 set +e
-pylint flake8_aaa
+pylint "$1"
 lint_code=$?
 set -e
 

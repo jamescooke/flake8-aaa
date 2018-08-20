@@ -52,7 +52,7 @@ class Function(object):
         """
         act_blocks = ActBlock.build_body(self.node.body)
 
-        if len(act_blocks) < 1:
+        if not act_blocks:
             raise ValidationError(self.node.lineno, self.node.col_offset, 'AAA01 no Act block found in test')
 
         # Allow `pytest.raises` and `self.assertRaises()` in assert blocks - if
