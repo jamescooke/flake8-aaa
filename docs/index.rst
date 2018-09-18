@@ -1,11 +1,11 @@
-Welcome to Flake8-AAA's documentation!
-======================================
+Welcome to Flake8-AAA's documentation
+=====================================
 
 .. include:: ../README.rst
 
 .. toctree::
     :maxdepth: 2
-    :caption: Contents:
+    :caption: Contents
 
     discovery
     rules

@@ -5,6 +5,14 @@ The rules applied by ``flake8-aaa`` are from the `Arrange Act Assert pattern
 for Python developers
 <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
 
+.. note::
+
+    The rules applied by ``flake8-aaa`` are only a subset of the rules and
+    guidelines of the Arrange Act Assert pattern itself. Please see `the
+    published guidelines for the pattern
+    <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
+    and read these rules in the context of the definition there.
+
 AAA01: no Act block found in test
 ---------------------------------
 
