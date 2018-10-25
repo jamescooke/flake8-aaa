@@ -9,3 +9,4 @@ Welcome to Flake8-AAA's documentation
 
     discovery
     rules
+    commands
