@@ -1,3 +1,5 @@
+import typing
+
 from .act_block import ActBlock
 from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
@@ -41,6 +43,25 @@ class Function(object):
         self.check_arrange_act_spacing()
         self.assert_block = self.load_assert_block()
         self.check_act_assert_spacing()
+
+    def get_errors(self) -> typing.List[tuple]:
+        """
+        Currently, any function can only have a single error - exceptions are
+        used to pass that single error up the chain with a ValidationError.
+        This wrapper flattens that exception into a list so that the API can be
+        used more easily with the command line wrappers.
+
+        Returns:
+            list (tuple ()):
+        """
+        try:
+            self.check_all()
+        except ValidationError as error:
+            # Warning: Flake8 wants to know the class that raised the error,
+            # this should really be changed to Checker if this function gets
+            # used for ``Checker.run()``.
+            return [error.to_flake8(Function)]
+        return []
 
     def load_act_block(self):
         """
