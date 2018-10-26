@@ -25,6 +25,8 @@ tox:
 lint:
 	@echo "=== flake8 ==="
 	flake8 $(lint_files) examples
+	@echo "=== mypy ==="
+	mypy flake8_aaa --ignore-missing-imports
 	@echo "=== pylint ==="
 	./run_pylint.sh flake8_aaa
 	@echo "=== isort ==="
