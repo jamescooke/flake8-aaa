@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import os
 
 from setuptools import setup
@@ -46,9 +44,8 @@ setup(
         'Framework :: Flake8',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python',
     ],

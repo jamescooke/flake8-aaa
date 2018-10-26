@@ -1,5 +1,3 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
 __short_name__ = 'aaa'
 __name__ = 'flake8-{}'.format(__short_name__)
 __version__ = '0.4.0'
