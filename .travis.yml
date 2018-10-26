@@ -2,8 +2,8 @@ language: python
 matrix:
     include:
         - python: 3.5
-          env: TOXENV=py35
+          env: TOXENV=py35-install,py35-test,py35-lint
         - python: 3.6
-          env: TOXENV=py36
+          env: TOXENV=py36-install,py36-test,py36-lint
 install: pip install tox
 script: tox
