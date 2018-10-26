@@ -1,6 +1,9 @@
 language: python
-python:
-    - "3.5"
-    - "3.6"
+matrix:
+    include:
+        - python: 3.5
+          env: TOXENV=py35
+        - python: 3.6
+          env: TOXENV=py36
 install: pip install tox
-script: tox --skip-missing-interpreters
+script: tox
