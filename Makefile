@@ -5,10 +5,6 @@ venv:
 	virtualenv venv --python=python3
 	venv/bin/pip install -U pip
 
-venv2:
-	virtualenv venv2 --python=python2
-	venv/bin/pip install -U pip
-
 venv/bin/pip-sync: venv
 	venv/bin/pip install pip-tools
 
@@ -25,6 +21,8 @@ tox:
 lint:
 	@echo "=== flake8 ==="
 	flake8 $(lint_files) examples
+	@echo "=== mypy ==="
+	mypy flake8_aaa --ignore-missing-imports
 	@echo "=== pylint ==="
 	./run_pylint.sh flake8_aaa
 	@echo "=== isort ==="

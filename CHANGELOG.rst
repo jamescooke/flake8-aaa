@@ -14,6 +14,16 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Added
+-----
+
+* Python 3.5 now supported.
+
+Removed
+-------
+
+* Python 2.7 support removed.
+
 0.4.0_ - 2018/07/17
 -------------------
 
