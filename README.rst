@@ -67,4 +67,5 @@ Resources
 
 * `Changelog <https://github.com/jamescooke/flake8-aaa/blob/master/CHANGELOG.rst>`_
 
-Tested on Pythons 2.7 and 3.6.
+Tested on Pythons 3.5 and 3.6. Python 2 supported up to `v0.4.0
+<https://pypi.org/project/flake8-aaa/0.4.0/>`_.
