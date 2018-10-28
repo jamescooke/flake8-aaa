@@ -6,6 +6,7 @@ def test_noop(function):
     result = function.get_errors()
 
     assert result == []
+    assert function._errors == result
 
 
 @pytest.mark.parametrize(
@@ -27,3 +28,4 @@ def test_one(function):
     assert result[0][1] == 4
     assert result[0][2].startswith('AAA03 ')
     assert result[0][3] is type(function)
+    assert function._errors == result
