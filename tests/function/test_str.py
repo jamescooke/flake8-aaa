@@ -84,6 +84,7 @@ def test_processed(function):
  2 DEF|def test(file_resource):
  3 ARR|    file_resource.connect()
  4 ACT|    result = file_resource.retrieve()
+           ^ AAA03 expected 1 blank line before Act block, found none
  5 BL |
  6 ASS|    assert result.success is True
 ------+------------------------------------------------------------------------

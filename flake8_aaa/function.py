@@ -48,6 +48,10 @@ class Function:
                 block=str(self.line_types[i]),
                 line=line,
             )
+            if self._errors:
+                for error in self._errors:
+                    if error[0] == i + self.first_line_no:
+                        out += '       {}^ {}\n'.format(error[1] * ' ', error[2])
         out += '------+------------------------------------------------------------------------\n'
         out += format_errors(self._errors)
         return out

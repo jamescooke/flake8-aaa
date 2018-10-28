@@ -49,6 +49,7 @@ def test(example_file, capsys):
     assert capsys.readouterr().out == '''
 ------+------------------------------------------------------------------------
  2 DEF|def test():
+       ^ AAA01 no Act block found in test
  3 ???|    do_stuff()
 ------+------------------------------------------------------------------------
     1 | ERROR
