@@ -56,10 +56,12 @@ class Function:
         Raises:
             ValidationError: When an error is found.
         """
+        self.mark_line_types()
         if function_is_noop(self.node):
             return
 
         self.act_block = self.load_act_block()
+        self.act_block.mark_line_types(self.line_types, self.first_line_no)
         self.arrange_block = self.load_arrange_block()
         self.check_arrange_act_spacing()
         self.assert_block = self.load_assert_block()
@@ -176,3 +178,12 @@ class Function:
                 Function's lines.
         """
         return self.lines[target_node.lineno - self.node.lineno + offset]
+
+    def mark_line_types(self) -> None:
+        """
+        Mark up the test function.
+
+        Note:
+            Mutates the ``line_types`` attribute.
+        """
+        self.line_types[0] = LineType.func_def

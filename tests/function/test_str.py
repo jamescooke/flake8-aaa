@@ -29,3 +29,31 @@ def test_unprocessed(function):
 ------+------------------------------------------------------------------------
     0 | ERRORS (yet)
 '''.lstrip()
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
+def test(file_resource):
+    file_resource.connect()
+    result = file_resource.retrieve()
+
+    assert result.success is True
+''',
+    ]
+)
+def test_processed(function):
+    function.get_errors()
+
+    result = str(function)
+
+    assert result == '''
+------+------------------------------------------------------------------------
+ 2 DEF|def test(file_resource):
+ 3 ???|    file_resource.connect()
+ 4 ACT|    result = file_resource.retrieve()
+ 5 ???|
+ 6 ???|    assert result.success is True
+------+------------------------------------------------------------------------
+    1 | ERROR
+'''.lstrip()

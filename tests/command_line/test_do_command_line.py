@@ -42,7 +42,15 @@ def test_example_file_has_functions(example_file):
 # --- TESTS ---
 
 
-def test(example_file):
+def test(example_file, capsys):
     result = do_command_line(example_file)
 
     assert result == 1
+    assert capsys.readouterr().out == '''
+------+------------------------------------------------------------------------
+ 2 DEF|def test():
+ 3 ???|    do_stuff()
+------+------------------------------------------------------------------------
+    1 | ERROR
+
+'''.lstrip()

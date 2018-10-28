@@ -4,7 +4,8 @@ from flake8_aaa.types import LineType
 
 
 @pytest.mark.parametrize('name, stringy', [
-    ('func_def', 'def'),
+    ('act_block', 'ACT'),
+    ('func_def', 'DEF'),
     ('unprocessed', '???'),
 ])
 def test_str(name, stringy):

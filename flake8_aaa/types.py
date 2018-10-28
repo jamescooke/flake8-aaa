@@ -8,11 +8,11 @@ ActBlockType = Enum(  # pylint: disable=invalid-name
 
 class LineType(Enum):
     # Act
-    act_block = 'act'
+    act_block = 'ACT'
     # Function definition
-    func_def = 'def'
+    func_def = 'DEF'
     # Not processed line
-    unprocessed = 'qqq'
+    unprocessed = 'QQQ'
 
     def __str__(self) -> str:
-        return '???' if self.value == 'qqq' else self.value
+        return '???' if self == self.unprocessed else self.value
