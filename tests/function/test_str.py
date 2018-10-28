@@ -53,7 +53,7 @@ def test_processed(function):
  3 ARR|    file_resource.connect()
  4 ACT|    result = file_resource.retrieve()
  5 ???|
- 6 ???|    assert result.success is True
+ 6 ASS|    assert result.success is True
 ------+------------------------------------------------------------------------
     1 | ERROR
 '''.lstrip()

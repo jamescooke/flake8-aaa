@@ -58,17 +58,23 @@ class Function:
         Raises:
             ValidationError: When an error is found.
         """
+        # Function def
         self.mark_line_types()
         if function_is_noop(self.node):
             return
-
+        # ACT
         self.act_block = self.load_act_block()
         self.act_block.mark_line_types(self.line_types, self.first_line_no)
+        # ARRANGE
         self.arrange_block = self.load_arrange_block()
         if self.arrange_block:
             self.arrange_block.mark_line_types(self.line_types, self.first_line_no)
-        self.check_arrange_act_spacing()
+        # ASSERT
         self.assert_block = self.load_assert_block()
+        if self.assert_block:
+            self.assert_block.mark_line_types(self.line_types, self.first_line_no)
+        # SPACING
+        self.check_arrange_act_spacing()
         self.check_act_assert_spacing()
 
     def get_errors(self) -> List[Tuple[int, int, str, type]]:

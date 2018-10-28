@@ -7,6 +7,7 @@ from flake8_aaa.types import LineType
     'name, stringy', [
         ('act_block', 'ACT'),
         ('arrange_block', 'ARR'),
+        ('assert_block', 'ASS'),
         ('func_def', 'DEF'),
         ('unprocessed', '???'),
     ]

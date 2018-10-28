@@ -11,6 +11,8 @@ class LineType(Enum):
     act_block = 'ACT'
     # Arrange
     arrange_block = 'ARR'
+    # Assert
+    assert_block = 'ASS'
     # Function definition
     func_def = 'DEF'
     # Not processed line
