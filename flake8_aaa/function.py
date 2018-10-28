@@ -13,6 +13,7 @@ class Function:
     """
     Attributes:
         act_block: Act block for the test. Defaults to ``None``.
+        arrange_block: Arrange block for this test. Defaults to ``None``.
         _errors: List of errors for this Function. Defaults to ``None`` when
             Function has not been checked. Empty list ``[]`` means that the
             Function has been checked and is free of errors.
@@ -34,13 +35,14 @@ class Function:
         end = self.node.last_token.end[0]  # type: ignore
         self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
         self.act_block = None  # type: Optional[ActBlock]
+        self.arrange_block = None  # type: Optional[ArrangeBlock]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
         self.line_types = len(self.lines) * [LineType.unprocessed]  # type: List[LineType]
 
     def __str__(self) -> str:
         out = '------+------------------------------------------------------------------------\n'
         for i, line in enumerate(self.lines):
-            out += ' {line_no} {block}|{line}'.format(
+            out += '{line_no:>2} {block}|{line}'.format(
                 line_no=i + self.first_line_no,
                 block=str(self.line_types[i]),
                 line=line,
@@ -63,6 +65,8 @@ class Function:
         self.act_block = self.load_act_block()
         self.act_block.mark_line_types(self.line_types, self.first_line_no)
         self.arrange_block = self.load_arrange_block()
+        if self.arrange_block:
+            self.arrange_block.mark_line_types(self.line_types, self.first_line_no)
         self.check_arrange_act_spacing()
         self.assert_block = self.load_assert_block()
         self.check_act_assert_spacing()

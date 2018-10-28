@@ -9,6 +9,8 @@ ActBlockType = Enum(  # pylint: disable=invalid-name
 class LineType(Enum):
     # Act
     act_block = 'ACT'
+    # Arrange
+    arrange_block = 'ARR'
     # Function definition
     func_def = 'DEF'
     # Not processed line

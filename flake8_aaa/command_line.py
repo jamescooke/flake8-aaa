@@ -20,5 +20,5 @@ def do_command_line(infile):
     checker.load()
     for func in checker.all_funcs():
         errors = func.get_errors()
-        print(func)
+        print(func, end='')
     return len(errors)
