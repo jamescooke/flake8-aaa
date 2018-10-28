@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, unique
 
 ActBlockType = Enum(  # pylint: disable=invalid-name
     'ActBlockType',
@@ -6,6 +6,7 @@ ActBlockType = Enum(  # pylint: disable=invalid-name
 )
 
 
+@unique
 class LineType(Enum):
     # Act
     act_block = 'ACT'
@@ -13,6 +14,8 @@ class LineType(Enum):
     arrange_block = 'ARR'
     # Assert
     assert_block = 'ASS'
+    # Blank line
+    blank_line = 'BL '
     # Function definition
     func_def = 'DEF'
     # Not processed line

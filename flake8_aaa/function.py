@@ -34,8 +34,9 @@ class Function:
         # Ignore type because last_token is added by asttokens
         end = self.node.last_token.end[0]  # type: ignore
         self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
-        self.act_block = None  # type: Optional[ActBlock]
         self.arrange_block = None  # type: Optional[ArrangeBlock]
+        self.act_block = None  # type: Optional[ActBlock]
+        self.assert_block = None  # type: Optional[AssertBlock]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
         self.line_types = len(self.lines) * [LineType.unprocessed]  # type: List[LineType]
 
@@ -191,9 +192,12 @@ class Function:
 
     def mark_line_types(self) -> None:
         """
-        Mark up the test function.
+        Mark up the test function with function def and blank lines.
 
         Note:
             Mutates the ``line_types`` attribute.
         """
         self.line_types[0] = LineType.func_def
+        for i, line in enumerate(self.lines):
+            if line.strip() == '':
+                self.line_types[i] = LineType.blank_line
