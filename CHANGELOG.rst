@@ -19,6 +19,9 @@ Added
 
 * Python 3.5 now supported.
 
+* Command line functionality now available to assist with development and
+  debugging.
+
 Removed
 -------
 
