@@ -22,7 +22,7 @@ lint:
 	@echo "=== flake8 ==="
 	flake8 $(lint_files) examples
 	@echo "=== mypy ==="
-	mypy flake8_aaa --ignore-missing-imports
+	$(MAKE) mypy
 	@echo "=== pylint ==="
 	./run_pylint.sh flake8_aaa
 	@echo "=== isort ==="
@@ -34,6 +34,10 @@ lint:
 	restructuredtext-lint $(rst_files)
 	@echo "=== setup.py ==="
 	python setup.py check --metadata --strict
+
+.PHONY: mypy
+mypy:
+	mypy flake8_aaa --ignore-missing-imports
 
 .PHONY: test
 test:
