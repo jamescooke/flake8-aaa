@@ -17,7 +17,8 @@ def test(function):
     result = function.mark_line_types()
 
     assert result is None
-    assert function.line_types == [
+    print(function.line_markers.data)
+    assert function.line_markers.data == [
         LineType.func_def,
         LineType.unprocessed,
         LineType.blank_line,
