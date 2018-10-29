@@ -4,16 +4,17 @@
 # particular blocks.
 
 import argparse
+import sys
 
 from .command_line import do_command_line
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(description='flake8-aaa command line debug')
     parser.add_argument('infile', type=argparse.FileType('r'), help='File to be linted')
     args = parser.parse_args()
-    do_command_line(args.infile)
+    return do_command_line(args.infile)
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
