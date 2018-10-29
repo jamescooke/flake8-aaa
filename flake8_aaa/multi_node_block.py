@@ -33,6 +33,9 @@ class MultiNodeBlock(metaclass=ABCMeta):
         start_line = self.nodes[0].first_token.start[0]  # type:ignore
         end_line = self.nodes[-1].last_token.end[0]  # type:ignore
         for file_line_no in range(start_line, end_line + 1):
-            assert line_types[file_line_no - first_line_no] is LineType.unprocessed
+            current_line_type = line_types[file_line_no - first_line_no]
+            if current_line_type is LineType.blank_line:
+                continue
+            assert current_line_type is LineType.unprocessed
             line_types[file_line_no - first_line_no] = self.line_type
         return line_types

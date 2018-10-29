@@ -9,6 +9,7 @@ from flake8_aaa.types import LineType
     ["""
 def test():
     x = 1
+
     y = [
         2,
     ]
@@ -25,12 +26,13 @@ def test(first_node_with_tokens):
     line_types = [
         LineType.func_def,  # def test():
         LineType.unprocessed,  # x = 1
+        LineType.blank_line,  #
         LineType.unprocessed,  # y = [
         LineType.unprocessed,  # 2,
         LineType.unprocessed,  # ]
-        LineType.unprocessed,  #
+        LineType.blank_line,  #
         LineType.act_block,  # result = [x] + y
-        LineType.unprocessed,  #
+        LineType.blank_line,  #
         LineType.unprocessed,  # assert result == [1, 2]
     ]
 
@@ -39,11 +41,12 @@ def test(first_node_with_tokens):
     assert result == [
         LineType.func_def,  # def test():
         LineType.arrange_block,  # x = 1
+        LineType.blank_line,  # << Blank line in Act Block is not overwritten
         LineType.arrange_block,  # y = [
         LineType.arrange_block,  # 2,
         LineType.arrange_block,  # ]
-        LineType.unprocessed,  #
+        LineType.blank_line,  #
         LineType.act_block,  # result = [x] + y
-        LineType.unprocessed,  #
+        LineType.blank_line,  #
         LineType.unprocessed,  # assert result == [1, 2]
     ]
