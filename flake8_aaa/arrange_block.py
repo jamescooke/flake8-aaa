@@ -1,21 +1,16 @@
 import ast
+from typing import List  # noqa
+
+from .multi_node_block import MultiNodeBlock
+from .types import LineType
 
 
-class ArrangeBlock(object):
-    """
-    Attributes:
-        nodes (list (ast Node))
-    """
+class ArrangeBlock(MultiNodeBlock):
+    line_type = LineType.arrange_block
 
-    def __init__(self):
-        self.nodes = []
-
-    def add_node(self, node):
+    def add_node(self, node: ast.AST) -> bool:
         """
         Add node if it's an "arrangement node".
-
-        Returns:
-            bool: Node is an arrangement node.
         """
         if isinstance(node, ast.Pass):
             return False
