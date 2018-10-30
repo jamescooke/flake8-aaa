@@ -3,10 +3,9 @@ from flake8_aaa.types import LineType
 
 
 def test():
-    result = LineMarkers(1, 5)
+    result = LineMarkers(5)
 
-    assert result.first_line_no == 1
-    assert result.data == [
+    assert result == [
         LineType.unprocessed,
         LineType.unprocessed,
         LineType.unprocessed,
