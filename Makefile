@@ -37,7 +37,7 @@ lint:
 
 .PHONY: mypy
 mypy:
-	mypy flake8_aaa --ignore-missing-imports
+	mypy flake8_aaa tests --ignore-missing-imports
 
 .PHONY: test
 test:
