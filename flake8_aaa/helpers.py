@@ -2,6 +2,8 @@ import ast
 import os
 from typing import List, Optional, Tuple
 
+from asttokens.util import Token
+
 
 def is_test_file(filename: str) -> bool:
     """
@@ -120,3 +122,21 @@ def format_errors(errors: Optional[List[Tuple[int, int, str, type]]]) -> str:
         assert len(errors) == 1
         return '    1 | ERROR\n'
     return '    0 | ERRORS\n'
+
+
+def get_first_token(node: ast.AST) -> Token:
+    """
+    Wrapper to solve typing errors. mypy complains that ``ast.AST`` has no
+    property ``first_token`` or ``last_token``. That's because these are added
+    by the asttokens library. For now, this ignoring of type, which I think is
+    required to get mypy to pass at this time, is encapsulated in this helper
+    function.
+    """
+    return node.first_token  # type: ignore
+
+
+def get_last_token(node: ast.AST) -> Token:
+    """
+    Performs same purpose as get_first_token.
+    """
+    return node.last_token  # type: ignore
