@@ -66,7 +66,6 @@ class Function:
         """
         # Function def
         self.mark_def()
-        self.mark_line_types()
         if function_is_noop(self.node):
             return
         # ACT
@@ -84,6 +83,7 @@ class Function:
             # TODO upgrade to footprint passing
             self.assert_block.mark_line_types(self.line_markers, self.first_line_no)
         # SPACING
+        self.mark_bl()
         self.check_arrange_act_spacing()
         self.check_act_assert_spacing()
 
@@ -218,19 +218,34 @@ class Function:
             # Fn has no args, so end of function is the fn def itself...
             end_token = get_first_token(self.node)
         last_line = end_token.end[0] - self.first_line_no
-        self.line_markers.update(list(range(first_line, last_line + 1)), LineType.func_def, self.first_line_no)
-        return last_line - first_line + 1
+        lines = list(range(first_line, last_line + 1))
+        self.line_markers.update(lines, LineType.func_def, self.first_line_no)
+        return len(lines)
 
-    def mark_line_types(self) -> None:
+    def mark_bl(self) -> int:
         """
-        Mark up the test function with function def and blank lines.
+        Mark unprocessed lines that have no content and no nodes covering them
+        as blank line BL.
 
-        Note:
-            Mutates the ``line_types`` attribute.
+        Returns:
+            Number of blank lines found with no parent node.
         """
-        # TODO Only mark blank lines not touched by any nodes
-        self.line_markers.update(
-            [i for i, line in enumerate(self.lines) if line.strip() == ''],
-            LineType.blank_line,
-            self.first_line_no,
-        )
+        counter = 0
+        for i, line_marker in enumerate(self.line_markers):
+            if line_marker is not LineType.unprocessed or self.lines[i].strip() != '':
+                continue
+            real_line_no = i + self.first_line_no
+            covered = False
+            for node in self.node.body:
+                # Check if this line is covered by any nodes in the function
+                # and if so, then set the covered flag and bail out
+                if get_first_token(node).start[0] <= real_line_no and real_line_no <= get_last_token(node).end[0]:
+                    covered = True
+                    break
+            if covered:
+                continue
+
+            counter += 1
+            self.line_markers[i] = LineType.blank_line
+
+        return counter
