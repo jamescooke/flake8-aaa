@@ -30,9 +30,9 @@ def file_tokens(code_str, tmpdir, fake_options):
         code_str (str): Code to be tokenized.
 
     Returns:
-        list: List contains instances of ``tuple`` on Python2 and of
-        ``tokenize.TokenInfo`` on Python3. This is to emulate the behaviour of
-        ``FileProcessor`` which is using ``tokenize.generate_tokens``.
+        list: List contains instances of ``tokenize.TokenInfo`` on Python3.
+        This is to emulate the behaviour of ``FileProcessor`` which is using
+        ``tokenize.generate_tokens``.
     """
     code_file = tmpdir.join('code_file.py')
     code_file.write(code_str)
