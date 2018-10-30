@@ -5,7 +5,7 @@ from .act_block import ActBlock
 from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
 from .exceptions import ValidationError
-from .helpers import format_errors, function_is_noop
+from .helpers import format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
 from .types import ActBlockType, LineType
 
@@ -65,6 +65,7 @@ class Function:
             ValidationError: When an error is found.
         """
         # Function def
+        self.mark_def()
         self.mark_line_types()
         if function_is_noop(self.node):
             return
@@ -198,6 +199,28 @@ class Function:
         """
         return self.lines[target_node.lineno - self.node.lineno + offset]
 
+    def mark_def(self) -> int:
+        """
+        Marks up this Function's definition lines (including decorators) into
+        the ``line_markers`` attribute.
+
+        Returns:
+            Number of lines found for the definition.
+
+        Note:
+            Does not spot the closing ``):`` of a function when it occurs on
+            its own line.
+        """
+        first_line = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
+        try:
+            end_token = get_last_token(self.node.args.args[-1])
+        except IndexError:
+            # Fn has no args, so end of function is the fn def itself...
+            end_token = get_first_token(self.node)
+        last_line = end_token.end[0] - self.first_line_no
+        self.line_markers.update(list(range(first_line, last_line + 1)), LineType.func_def, self.first_line_no)
+        return last_line - first_line + 1
+
     def mark_line_types(self) -> None:
         """
         Mark up the test function with function def and blank lines.
@@ -205,8 +228,6 @@ class Function:
         Note:
             Mutates the ``line_types`` attribute.
         """
-        # TODO Mark whole function - don't guess it's a single line
-        self.line_markers.update([0], LineType.func_def, self.first_line_no)
         # TODO Only mark blank lines not touched by any nodes
         self.line_markers.update(
             [i for i, line in enumerate(self.lines) if line.strip() == ''],

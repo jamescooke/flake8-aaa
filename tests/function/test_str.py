@@ -46,6 +46,7 @@ def test_marked(function):
     """
     Function has marked itself, but not processed errors
     """
+    function.mark_def()
     function.mark_line_types()
 
     result = str(function)
