@@ -6,8 +6,8 @@ from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
 from .exceptions import ValidationError
 from .helpers import format_errors, function_is_noop
-from .types import ActBlockType, LineType
 from .line_markers import LineMarkers
+from .types import ActBlockType, LineType
 
 
 class Function:
@@ -39,14 +39,14 @@ class Function:
         self.act_block = None  # type: Optional[ActBlock]
         self.assert_block = None  # type: Optional[AssertBlock]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
-        self.line_markers = LineMarkers(self.first_line_no, len(self.lines))  # type: LineMarkers
+        self.line_markers = LineMarkers(len(self.lines))  # type: LineMarkers
 
     def __str__(self) -> str:
         out = '------+------------------------------------------------------------------------\n'
         for i, line in enumerate(self.lines):
             out += '{line_no:>2} {block}|{line}'.format(
                 line_no=i + self.first_line_no,
-                block=str(self.line_markers.data[i]),
+                block=str(self.line_markers[i]),
                 line=line,
             )
             if self._errors:
@@ -71,17 +71,17 @@ class Function:
         # ACT
         self.act_block = self.load_act_block()
         # TODO upgrade to footprint passing
-        self.act_block.mark_line_types(self.line_markers.data, self.first_line_no)
+        self.act_block.mark_line_types(self.line_markers, self.first_line_no)
         # ARRANGE
         self.arrange_block = self.load_arrange_block()
         if self.arrange_block:
             # TODO upgrade to footprint passing
-            self.arrange_block.mark_line_types(self.line_markers.data, self.first_line_no)
+            self.arrange_block.mark_line_types(self.line_markers, self.first_line_no)
         # ASSERT
         self.assert_block = self.load_assert_block()
         if self.assert_block:
             # TODO upgrade to footprint passing
-            self.assert_block.mark_line_types(self.line_markers.data, self.first_line_no)
+            self.assert_block.mark_line_types(self.line_markers, self.first_line_no)
         # SPACING
         self.check_arrange_act_spacing()
         self.check_act_assert_spacing()
@@ -205,5 +205,11 @@ class Function:
         Note:
             Mutates the ``line_types`` attribute.
         """
-        self.line_markers.update([self.first_line_no], LineType.func_def)
-        self.line_markers.update([i + self.first_line_no for i, line in enumerate(self.lines) if line.strip() == ''], LineType.blank_line)
+        # TODO Mark whole function - don't guess it's a single line
+        self.line_markers.update([0], LineType.func_def, self.first_line_no)
+        # TODO Only mark blank lines not touched by any nodes
+        self.line_markers.update(
+            [i for i, line in enumerate(self.lines) if line.strip() == ''],
+            LineType.blank_line,
+            self.first_line_no,
+        )
