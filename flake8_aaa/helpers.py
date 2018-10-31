@@ -1,6 +1,8 @@
 import ast
 import os
-from typing import List, Optional, Tuple
+from typing import List, Optional, Set, Tuple
+
+from asttokens.util import Token
 
 
 def is_test_file(filename: str) -> bool:
@@ -120,3 +122,41 @@ def format_errors(errors: Optional[List[Tuple[int, int, str, type]]]) -> str:
         assert len(errors) == 1
         return '    1 | ERROR\n'
     return '    0 | ERRORS\n'
+
+
+def get_first_token(node: ast.AST) -> Token:
+    """
+    Wrapper to solve typing errors. mypy complains that ``ast.AST`` has no
+    property ``first_token`` or ``last_token``. That's because these are added
+    by the asttokens library. For now, this ignoring of type, which I think is
+    required to get mypy to pass at this time, is encapsulated in this helper
+    function.
+    """
+    return node.first_token  # type: ignore
+
+
+def get_last_token(node: ast.AST) -> Token:
+    """
+    Performs same purpose as get_first_token.
+    """
+    return node.last_token  # type: ignore
+
+
+def build_footprint(node: ast.AST, first_line_no: int) -> Set[int]:
+    """
+    Generates a list of lines that the passed node covers, relative to the
+    marked lines list - i.e. start of function is line 0.
+    """
+    return set(
+        range(
+            get_first_token(node).start[0] - first_line_no,
+            get_last_token(node).end[0] - first_line_no + 1,
+        )
+    )
+
+
+def build_multinode_footprint(nodes: List[ast.AST], first_line_no: int) -> Set[int]:
+    out = set()  # type: Set[int]
+    for node in nodes:
+        out = out.union(build_footprint(node, first_line_no))
+    return out

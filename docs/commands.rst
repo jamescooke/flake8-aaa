@@ -18,6 +18,8 @@ Disabling Flake8-AAA selectively
 When Flake8-AAA finds the ``# noqa`` comment at the end of the line that
 defines a test function, it will ignore it.
 
+.. _command-line:
+
 Command line
 ------------
 
@@ -67,6 +69,8 @@ And once the error above is fixed, the return value returns to zero::
         0 | ERRORS
     $ echo "$?"
     0 
+
+.. _line-markers:
 
 Line markers
 ............

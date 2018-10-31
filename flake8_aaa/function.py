@@ -5,7 +5,15 @@ from .act_block import ActBlock
 from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
 from .exceptions import ValidationError
-from .helpers import format_errors, function_is_noop
+from .helpers import (
+    build_footprint,
+    build_multinode_footprint,
+    format_errors,
+    function_is_noop,
+    get_first_token,
+    get_last_token,
+)
+from .line_markers import LineMarkers
 from .types import ActBlockType, LineType
 
 
@@ -19,7 +27,7 @@ class Function:
             Function has been checked and is free of errors.
         first_line_no
         lines
-        line_types
+        line_markers: Line-wise marking for this function.
         node: AST for the test under lint.
     """
 
@@ -38,14 +46,14 @@ class Function:
         self.act_block = None  # type: Optional[ActBlock]
         self.assert_block = None  # type: Optional[AssertBlock]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
-        self.line_types = len(self.lines) * [LineType.unprocessed]  # type: List[LineType]
+        self.line_markers = LineMarkers(len(self.lines))  # type: LineMarkers
 
     def __str__(self) -> str:
         out = '------+------------------------------------------------------------------------\n'
         for i, line in enumerate(self.lines):
             out += '{line_no:>2} {block}|{line}'.format(
                 line_no=i + self.first_line_no,
-                block=str(self.line_types[i]),
+                block=str(self.line_markers[i]),
                 line=line,
             )
             if self._errors:
@@ -64,21 +72,34 @@ class Function:
             ValidationError: When an error is found.
         """
         # Function def
-        self.mark_line_types()
+        self.mark_def()
         if function_is_noop(self.node):
             return
         # ACT
         self.act_block = self.load_act_block()
-        self.act_block.mark_line_types(self.line_types, self.first_line_no)
+        self.line_markers.update(
+            build_footprint(self.act_block.node, self.first_line_no),
+            LineType.act_block,
+            self.first_line_no,
+        )
         # ARRANGE
         self.arrange_block = self.load_arrange_block()
         if self.arrange_block:
-            self.arrange_block.mark_line_types(self.line_types, self.first_line_no)
+            self.line_markers.update(
+                build_multinode_footprint(self.arrange_block.nodes, self.first_line_no),
+                LineType.arrange_block,
+                self.first_line_no,
+            )
         # ASSERT
         self.assert_block = self.load_assert_block()
         if self.assert_block:
-            self.assert_block.mark_line_types(self.line_types, self.first_line_no)
+            self.line_markers.update(
+                build_multinode_footprint(self.assert_block.nodes, self.first_line_no),
+                LineType.assert_block,
+                self.first_line_no,
+            )
         # SPACING
+        self.mark_bl()
         self.check_arrange_act_spacing()
         self.check_act_assert_spacing()
 
@@ -105,7 +126,8 @@ class Function:
     def load_act_block(self) -> ActBlock:
         """
         Raises:
-            ValidationError
+            ValidationError: AAA01 when no act block is found and AAA02 when
+                multiple act blocks are found.
         """
         act_blocks = ActBlock.build_body(self.node.body)
 
@@ -194,14 +216,57 @@ class Function:
         """
         return self.lines[target_node.lineno - self.node.lineno + offset]
 
-    def mark_line_types(self) -> None:
+    def mark_def(self) -> int:
         """
-        Mark up the test function with function def and blank lines.
+        Marks up this Function's definition lines (including decorators) into
+        the ``line_markers`` attribute.
+
+        Returns:
+            Number of lines found for the definition.
 
         Note:
-            Mutates the ``line_types`` attribute.
+            Does not spot the closing ``):`` of a function when it occurs on
+            its own line.
+
+        Note:
+            Can not use ``helpers.build_footprint()`` because function nodes
+            cover the whole function. In this case, just the def lines are
+            wanted with any decorators.
         """
-        self.line_types[0] = LineType.func_def
-        for i, line in enumerate(self.lines):
-            if line.strip() == '':
-                self.line_types[i] = LineType.blank_line
+        first_line = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
+        try:
+            end_token = get_last_token(self.node.args.args[-1])
+        except IndexError:
+            # Fn has no args, so end of function is the fn def itself...
+            end_token = get_first_token(self.node)
+        last_line = end_token.end[0] - self.first_line_no
+        lines = range(first_line, last_line + 1)
+        self.line_markers.update(lines, LineType.func_def, self.first_line_no)
+        return len(lines)
+
+    def mark_bl(self) -> int:
+        """
+        Mark unprocessed lines that have no content and no nodes covering them
+        as blank line BL.
+
+        Returns:
+            Number of blank lines found with no parent node.
+        """
+        counter = 0
+        for i, line_marker in enumerate(self.line_markers):
+            if line_marker is not LineType.unprocessed or self.lines[i].strip() != '':
+                continue
+            covered = False
+            for node in self.node.body:
+                # Check if this line is covered by any nodes in the function
+                # and if so, then set the covered flag and bail out
+                if i in build_footprint(node, self.first_line_no):
+                    covered = True
+                    break
+            if covered:
+                continue
+
+            counter += 1
+            self.line_markers[i] = LineType.blank_line
+
+        return counter
