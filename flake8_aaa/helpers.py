@@ -153,3 +153,10 @@ def build_footprint(node: ast.AST, first_line_no: int) -> Set[int]:
             get_last_token(node).end[0] - first_line_no + 1,
         )
     )
+
+
+def build_multinode_footprint(nodes: List[ast.AST], first_line_no: int) -> Set[int]:
+    out = set()  # type: Set[int]
+    for node in nodes:
+        out = out.union(build_footprint(node, first_line_no))
+    return out

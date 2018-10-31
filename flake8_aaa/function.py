@@ -70,9 +70,11 @@ class Function:
             return
         # ACT
         self.act_block = self.load_act_block()
-        # TODO upgrade to footprint passing
-        # self.line_markers.update(self.act_block.get_footprint(), LineType.act_block)
-        self.act_block.mark_line_types(self.line_markers, self.first_line_no)
+        self.line_markers.update(
+            build_footprint(self.act_block.node, self.first_line_no),
+            LineType.act_block,
+            self.first_line_no,
+        )
         # ARRANGE
         self.arrange_block = self.load_arrange_block()
         if self.arrange_block:
@@ -225,7 +227,7 @@ class Function:
             # Fn has no args, so end of function is the fn def itself...
             end_token = get_first_token(self.node)
         last_line = end_token.end[0] - self.first_line_no
-        lines = list(range(first_line, last_line + 1))
+        lines = range(first_line, last_line + 1)
         self.line_markers.update(lines, LineType.func_def, self.first_line_no)
         return len(lines)
 
