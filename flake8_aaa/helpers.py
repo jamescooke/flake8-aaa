@@ -1,6 +1,6 @@
 import ast
 import os
-from typing import List, Optional, Tuple
+from typing import List, Optional, Set, Tuple
 
 from asttokens.util import Token
 
@@ -140,3 +140,16 @@ def get_last_token(node: ast.AST) -> Token:
     Performs same purpose as get_first_token.
     """
     return node.last_token  # type: ignore
+
+
+def build_footprint(node: ast.AST, first_line_no: int) -> Set[int]:
+    """
+    Generates a list of lines that the passed node covers, relative to the
+    marked lines list - i.e. start of function is line 0.
+    """
+    return set(
+        range(
+            get_first_token(node).start[0] - first_line_no,
+            get_last_token(node).end[0] - first_line_no + 1,
+        )
+    )

@@ -5,7 +5,7 @@ from .act_block import ActBlock
 from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
 from .exceptions import ValidationError
-from .helpers import format_errors, function_is_noop, get_first_token, get_last_token
+from .helpers import build_footprint, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
 from .types import ActBlockType, LineType
 
@@ -71,6 +71,7 @@ class Function:
         # ACT
         self.act_block = self.load_act_block()
         # TODO upgrade to footprint passing
+        # self.line_markers.update(self.act_block.get_footprint(), LineType.act_block)
         self.act_block.mark_line_types(self.line_markers, self.first_line_no)
         # ARRANGE
         self.arrange_block = self.load_arrange_block()
@@ -110,7 +111,8 @@ class Function:
     def load_act_block(self) -> ActBlock:
         """
         Raises:
-            ValidationError
+            ValidationError: AAA01 when no act block is found and AAA02 when
+                multiple act blocks are found.
         """
         act_blocks = ActBlock.build_body(self.node.body)
 
@@ -210,6 +212,11 @@ class Function:
         Note:
             Does not spot the closing ``):`` of a function when it occurs on
             its own line.
+
+        Note:
+            Can not use ``helpers.build_footprint()`` because function nodes
+            cover the whole function. In this case, just the def lines are
+            wanted with any decorators.
         """
         first_line = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
         try:
@@ -239,7 +246,7 @@ class Function:
             for node in self.node.body:
                 # Check if this line is covered by any nodes in the function
                 # and if so, then set the covered flag and bail out
-                if get_first_token(node).start[0] <= real_line_no and real_line_no <= get_last_token(node).end[0]:
+                if real_line_no in build_footprint(node, self.first_line_no):
                     covered = True
                     break
             if covered:
