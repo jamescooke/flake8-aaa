@@ -37,7 +37,7 @@ class LineMarkers(list):
             raise ValueError('"{}" for line {} is not LineType'.format(value, key))
         current_type = self.__getitem__(key)
         if current_type is not LineType.unprocessed:
-            raise ValueError('Collision when marking this line as {}, was already {}'.format(
+            raise ValueError('collision when marking this line as {}, was already {}'.format(
                 value,
                 current_type,
             ))

@@ -60,10 +60,10 @@ def test_double_space(function):
         LineType.unprocessed,  # def test()
         LineType.unprocessed,  # x = 1
         LineType.unprocessed,  # y = 1
-        LineType.blank_line,   # ===  line no = 5
-        LineType.blank_line,   # ===  line no = 6
+        LineType.blank_line,  # ===  line no = 5
+        LineType.blank_line,  # ===  line no = 6
         LineType.unprocessed,  # result = ...
-        LineType.blank_line,   # ===  line no = 8
+        LineType.blank_line,  # ===  line no = 8
         LineType.unprocessed,  # assert ...
     ]
     assert result == 3

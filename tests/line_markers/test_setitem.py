@@ -26,7 +26,7 @@ def test_reassign():
     with pytest.raises(ValueError) as excinfo:
         line_markers[0] = LineType.act_block
 
-    assert str(excinfo.value) == 'Collision when marking this line as ACT, was already DEF'
+    assert str(excinfo.value) == 'collision when marking this line as ACT, was already DEF'
 
 
 def test_out_of_range():
