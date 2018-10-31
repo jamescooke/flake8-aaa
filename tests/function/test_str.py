@@ -101,3 +101,35 @@ def test_processed(function):
 ------+------------------------------------------------------------------------
     1 | ERROR
 '''.lstrip()
+
+
+@pytest.mark.parametrize(
+    'code_str', ['''
+def test():
+    x = 1
+    y = 1
+
+
+    result = x + y
+
+    assert result == 2
+''']
+)
+def test_multi_spaces(function):
+    function.get_errors()
+
+    result = str(function)
+
+    assert result == '''
+------+------------------------------------------------------------------------
+ 2 DEF|def test():
+ 3 ARR|    x = 1
+ 4 ARR|    y = 1
+ 5 BL |
+ 6 BL |
+ 7 ACT|    result = x + y
+ 8 BL |
+ 9 ASS|    assert result == 2
+------+------------------------------------------------------------------------
+    0 | ERRORS
+'''.lstrip()

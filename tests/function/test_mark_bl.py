@@ -39,3 +39,31 @@ def test(function):
         LineType.blank_line,
         LineType.unprocessed,  # assert ...
     ]
+
+
+@pytest.mark.parametrize(
+    'code_str', ['''
+def test():
+    x = 1
+    y = 1
+
+
+    result = x + y
+
+    assert result == 2
+''']
+)
+def test_double_space(function):
+    result = function.mark_bl()
+
+    assert function.line_markers == [
+        LineType.unprocessed,  # def test()
+        LineType.unprocessed,  # x = 1
+        LineType.unprocessed,  # y = 1
+        LineType.blank_line,   # ===  line no = 5
+        LineType.blank_line,   # ===  line no = 6
+        LineType.unprocessed,  # result = ...
+        LineType.blank_line,   # ===  line no = 8
+        LineType.unprocessed,  # assert ...
+    ]
+    assert result == 3

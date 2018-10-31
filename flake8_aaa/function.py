@@ -256,12 +256,11 @@ class Function:
         for i, line_marker in enumerate(self.line_markers):
             if line_marker is not LineType.unprocessed or self.lines[i].strip() != '':
                 continue
-            real_line_no = i + self.first_line_no
             covered = False
             for node in self.node.body:
                 # Check if this line is covered by any nodes in the function
                 # and if so, then set the covered flag and bail out
-                if real_line_no in build_footprint(node, self.first_line_no):
+                if i in build_footprint(node, self.first_line_no):
                     covered = True
                     break
             if covered:
