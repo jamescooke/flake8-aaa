@@ -22,6 +22,9 @@ Added
 * Command line functionality now available to assist with development and
   debugging.
 
+* New line-wise analysis, including updated blank line checking and a new
+  ``AAA99`` rule for node to line mapping collisions.
+
 Removed
 -------
 

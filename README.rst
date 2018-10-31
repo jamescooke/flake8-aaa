@@ -19,13 +19,21 @@
     :target: https://github.com/jamescooke/flake8-aaa/blob/master/LICENSE
 
 
-flake8-aaa
+Flake8-AAA
 ==========
 
-A `Flake8 <http://flake8.pycqa.org/en/latest/index.html>`_ plugin that checks
-Python tests follow the `Arrange Act Assert pattern
-<http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
+A linter for Python tests.
 
+* Pytest and unittest styles supported.
+
+* Tests are linted against the `Arrange Act Assert pattern
+  <http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
+
+* Provides a Flake8 interface to automatically lint test files as part of your
+  Flake8 run.
+
+* Provides a command line interface for custom (non-Flake8) usage and
+  debugging.
 
 Installation
 ------------
@@ -34,24 +42,20 @@ Install with ``pip``::
 
     $ pip install flake8-aaa
 
-Check that ``flake8-aaa`` was installed correctly by asking ``flake8`` for its
+Integration with Flake8
+-----------------------
+
+Check that Flake8-AAA was installed correctly by asking ``flake8`` for its
 version signature::
 
     $ flake8 --version
     3.5.0 (aaa: 0.4.0, mccabe: 0.6.1, pycodestyle: 2.3.1, pyflakes: 1.6.0) CPython 3.5.2 on Linux
 
 The ``aaa: 0.4.0`` part of that output tells you ``flake8`` found this plugin.
-
-Usage
------
-
-Run ``flake8`` as usual against your project and ``flake8-aaa`` will check your
-tests::
+Now you can run ``flake8`` as usual against your project and Flake8-AAA will
+lint your tests::
 
     $ flake8
-
-There is more information on invoking ``flake8`` on the `Invoking Flake8
-<http://flake8.pycqa.org/en/latest/user/invocation.html>`_ documentation page.
 
 
 Resources
@@ -67,5 +71,9 @@ Resources
 
 * `Changelog <https://github.com/jamescooke/flake8-aaa/blob/master/CHANGELOG.rst>`_
 
-Tested on Pythons 3.5 and 3.6. Python 2 supported up to `v0.4.0
-<https://pypi.org/project/flake8-aaa/0.4.0/>`_.
+Tested on Pythons 3.5 and 3.6.
+
+Python 2 supported up to ``v0.4.0``:
+`pypi <https://pypi.org/project/flake8-aaa/0.4.0/>`_,
+`docs <https://flake8-aaa.readthedocs.io/en/v0.4.0/>`_,
+`tag <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.4.0>`_.
