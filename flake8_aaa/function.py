@@ -5,7 +5,14 @@ from .act_block import ActBlock
 from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
 from .exceptions import ValidationError
-from .helpers import build_footprint, format_errors, function_is_noop, get_first_token, get_last_token
+from .helpers import (
+    build_footprint,
+    build_multinode_footprint,
+    format_errors,
+    function_is_noop,
+    get_first_token,
+    get_last_token,
+)
 from .line_markers import LineMarkers
 from .types import ActBlockType, LineType
 
@@ -78,13 +85,19 @@ class Function:
         # ARRANGE
         self.arrange_block = self.load_arrange_block()
         if self.arrange_block:
-            # TODO upgrade to footprint passing
-            self.arrange_block.mark_line_types(self.line_markers, self.first_line_no)
+            self.line_markers.update(
+                build_multinode_footprint(self.arrange_block.nodes, self.first_line_no),
+                LineType.arrange_block,
+                self.first_line_no,
+            )
         # ASSERT
         self.assert_block = self.load_assert_block()
         if self.assert_block:
-            # TODO upgrade to footprint passing
-            self.assert_block.mark_line_types(self.line_markers, self.first_line_no)
+            self.line_markers.update(
+                build_multinode_footprint(self.assert_block.nodes, self.first_line_no),
+                LineType.assert_block,
+                self.first_line_no,
+            )
         # SPACING
         self.mark_bl()
         self.check_arrange_act_spacing()
