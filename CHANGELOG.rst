@@ -30,6 +30,9 @@ Removed
 
 * Python 2.7 support removed.
 
+* ``flake8`` package removed as a dependency since Flake8-AAA can be run on a
+  command line without it.
+
 0.4.0_ - 2018/07/17
 -------------------
 
