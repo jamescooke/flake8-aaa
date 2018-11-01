@@ -18,7 +18,7 @@ with open(os.path.join(basedir, 'flake8_aaa', '__about__.py')) as f:
 
 # -- Project information -----------------------------------------------------
 
-project = about['__name__']
+project = about['__iam__']
 copyright = about['__copyright__']
 author = about['__author__']
 

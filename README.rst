@@ -45,15 +45,16 @@ Install with ``pip``::
 Integration with Flake8
 -----------------------
 
-Check that Flake8-AAA was installed correctly by asking ``flake8`` for its
-version signature::
+Given that you already have Flake8 installed in the same environment, check
+that Flake8-AAA was installed correctly by asking ``flake8`` for its version
+signature::
 
     $ flake8 --version
-    3.5.0 (aaa: 0.4.0, mccabe: 0.6.1, pycodestyle: 2.3.1, pyflakes: 1.6.0) CPython 3.5.2 on Linux
+    3.6.0 (aaa: 0.4.0, mccabe: 0.6.1, pycodestyle: 2.4.0, pyflakes: 2.0.0) CPython 3.6.7 on Linux
 
-The ``aaa: 0.4.0`` part of that output tells you ``flake8`` found this plugin.
-Now you can run ``flake8`` as usual against your project and Flake8-AAA will
-lint your tests::
+The ``(aaa: 0.4.0, ...`` part of that output tells you ``flake8`` found this
+plugin. Now you can run ``flake8`` as usual against your project and Flake8-AAA
+will lint your tests via its plugin::
 
     $ flake8
 
