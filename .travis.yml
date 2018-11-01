@@ -1,9 +1,9 @@
 language: python
-matrix:
-    include:
-        - python: 3.5
-          env: TOXENV=py35-install,py35-test,py35-lint,py35-doc
-        - python: 3.6
-          env: TOXENV=py36-install,py36-test,py36-lint
+python:
+    - "3.5"
+    - "3.6"
 install: pip install tox
-script: tox
+script:
+    - TOXENV=$(tox --listenvs | grep "py${TRAVIS_PYTHON_VERSION/./}-" | tr '\n' ',')
+    - export TOXENV
+    - tox
