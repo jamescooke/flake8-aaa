@@ -28,9 +28,9 @@ setup(
     # --- Python ---
     packages=['flake8_aaa'],
     py_modules=['flake8_aaa'],
+    python_requires='>=3.5, <4',
     install_requires=[
         'asttokens >= 1.1.10',
-        'flake8 >= 3',
     ],
     entry_points={
         'flake8.extension': [
