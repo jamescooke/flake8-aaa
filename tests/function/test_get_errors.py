@@ -24,8 +24,8 @@ def test_one(function):
     result = function.get_errors()
 
     assert len(result) == 1
-    assert result[0][0] == 4
-    assert result[0][1] == 4
+    assert result[0][0] == 3
+    assert result[0][1] == 0
     assert result[0][2].startswith('AAA03 ')
     assert result[0][3] is type(function)
     assert function._errors == result

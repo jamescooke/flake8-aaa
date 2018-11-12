@@ -60,7 +60,7 @@ def test_no_gap():
     with pytest.raises(ValidationError) as excinfo:
         line_markers.check_arrange_act_spacing()
 
-    assert excinfo.value.line_number == 8
+    assert excinfo.value.line_number == 7
     assert excinfo.value.offset == 0
     assert excinfo.value.text == 'AAA03 expected 1 blank line before Act block, found none'
 

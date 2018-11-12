@@ -84,13 +84,13 @@ class LineMarkers(list):
         ]
         if not blank_lines:
             # TODO get a real offset for the line
+            # Point at line above act block
             raise ValidationError(
-                self.fn_offset + first_act_lineno,
+                self.fn_offset + first_act_lineno - 1,
                 0,
                 'AAA03 expected 1 blank line before Act block, found none',
             )
         if len(blank_lines) > 1:
-            print(blank_lines)
             # Too many blank lines - point at the first extra one, the 2nd
             raise ValidationError(
                 self.fn_offset + blank_lines[1][0],

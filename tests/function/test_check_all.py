@@ -41,8 +41,8 @@ def test_missing_space_before_act(function):
     with pytest.raises(ValidationError) as excinfo:
         function.check_all()
 
-    assert excinfo.value.line_number == 4
-    assert excinfo.value.offset == 4
+    assert excinfo.value.line_number == 3
+    assert excinfo.value.offset == 0
     assert excinfo.value.text == 'AAA03 expected 1 blank line before Act block, found none'
 
 

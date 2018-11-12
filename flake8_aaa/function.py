@@ -97,7 +97,7 @@ class Function:
             )
         # SPACING
         self.mark_bl()
-        self.check_arrange_act_spacing()
+        self.line_markers.check_arrange_act_spacing()
         self.check_act_assert_spacing()
 
     def get_errors(self) -> List[Tuple[int, int, str, type]]:
@@ -168,29 +168,6 @@ class Function:
             return assert_block
 
         return None
-
-    def check_arrange_act_spacing(self) -> None:
-        """
-        When Function has an Arrange block, then ensure that there is a blank
-        line between that and the Act block.
-
-        Raises:
-            ValidationError: When no space found.
-
-        Note:
-            Due to Flake8's error ``E303``, we do not have to check that there
-            is more than one space when run as a plugin. However, when run in
-            stand alone mode, checking the number of spaces could be helpful.
-        """
-        assert self.act_block
-        if self.arrange_block:
-            line_before_act = self.get_line_relative_to_node(self.act_block.node, -1)
-            if line_before_act != '\n':
-                raise ValidationError(
-                    line_number=self.act_block.node.lineno,
-                    offset=self.act_block.node.col_offset,
-                    text='AAA03 expected 1 blank line before Act block, found none',
-                )
 
     def check_act_assert_spacing(self) -> None:
         """
