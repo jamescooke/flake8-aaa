@@ -14,6 +14,14 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Fixed
+-----
+
+* Spacing between Arrange and Act analysis fixed. Now recognises comment
+  blocks.
+
+* Spacing between Act and Assert analysis fixed. Now recognises comment blocks.
+
 0.5.0_ - 2018/11/01
 -------------------
 
