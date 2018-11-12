@@ -46,7 +46,7 @@ class Function:
         self.act_block = None  # type: Optional[ActBlock]
         self.assert_block = None  # type: Optional[AssertBlock]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
-        self.line_markers = LineMarkers(len(self.lines))  # type: LineMarkers
+        self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
 
     def __str__(self) -> str:
         out = '------+------------------------------------------------------------------------\n'
@@ -80,7 +80,6 @@ class Function:
         self.line_markers.update(
             build_footprint(self.act_block.node, self.first_line_no),
             LineType.act_block,
-            self.first_line_no,
         )
         # ARRANGE
         self.arrange_block = self.load_arrange_block()
@@ -88,7 +87,6 @@ class Function:
             self.line_markers.update(
                 build_multinode_footprint(self.arrange_block.nodes, self.first_line_no),
                 LineType.arrange_block,
-                self.first_line_no,
             )
         # ASSERT
         self.assert_block = self.load_assert_block()
@@ -96,7 +94,6 @@ class Function:
             self.line_markers.update(
                 build_multinode_footprint(self.assert_block.nodes, self.first_line_no),
                 LineType.assert_block,
-                self.first_line_no,
             )
         # SPACING
         self.mark_bl()
@@ -242,7 +239,7 @@ class Function:
             end_token = get_first_token(self.node)
         last_line = end_token.end[0] - self.first_line_no
         lines = range(first_line, last_line + 1)
-        self.line_markers.update(lines, LineType.func_def, self.first_line_no)
+        self.line_markers.update(lines, LineType.func_def)
         return len(lines)
 
     def mark_bl(self) -> int:

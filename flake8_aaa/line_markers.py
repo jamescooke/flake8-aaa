@@ -10,8 +10,9 @@ class LineMarkers(list):
     line.
     """
 
-    def __init__(self, size: int) -> None:
+    def __init__(self, size: int, fn_offset: int) -> None:
         super().__init__([LineType.unprocessed] * size)
+        self.fn_offset = fn_offset  # type: int
 
     @overload  # noqa: F811
     def __setitem__(self, key: int, value: Any) -> None:
@@ -43,7 +44,7 @@ class LineMarkers(list):
             ))
         return super().__setitem__(key, value)
 
-    def update(self, footprint: Union[range, Set[int]], line_type: LineType, offset: int) -> None:
+    def update(self, footprint: Union[range, Set[int]], line_type: LineType) -> None:
         """
         Updates line types for a block's footprint.
 
@@ -51,9 +52,6 @@ class LineMarkers(list):
             footprint: This is a range or set of 0 indexed positions in the
                 function that will be updated.
             line_type: The type of line to update to.
-            offset: Line number of the 0th line of the test function in the
-                test file. This is used to revert any exceptions raised back to
-                the line number of the test file.
 
         Raises:
             ValidationError: A special error on collision. This prevents Flake8
@@ -65,26 +63,37 @@ class LineMarkers(list):
             try:
                 self.__setitem__(i, line_type)
             except ValueError as error:
-                raise ValidationError(i + offset, 1, 'AAA99 {}'.format(error))
+                raise ValidationError(i + self.fn_offset, 1, 'AAA99 {}'.format(error))
 
     def check_arrange_act_spacing(self) -> None:
         """
         * When no spaces found, point error at act block
         * When too many spaces found, point error at 2nd blank line
         """
+        numbered_lines = list(enumerate(self))
         # Find last line of arrange block. If no arrange block in test, then quit
-        arrange_lines = list(filter(lambda l: l[1] is LineType.arrange_block, enumerate(self)))
+        arrange_lines = list(filter(lambda l: l[1] is LineType.arrange_block, numbered_lines))
         if not arrange_lines:
             return None
         last_arrange_lineno = arrange_lines[-1][0]
         # Find first line number of act block - act block must exist.
-        first_act_lineno = next(filter(lambda l: l[1] is LineType.act_block, enumerate(self)))[0]
+        first_act_lineno = next(filter(lambda l: l[1] is LineType.act_block, numbered_lines))[0]
         # Check that there is a single blank line between blocks
-        blank_lines = [bl for bl in self[last_arrange_lineno + 1:first_act_lineno] if bl is LineType.blank_line]
-        if len(blank_lines) == 1:
-            return None
-        if len(blank_lines) == 0:
+        blank_lines = [
+            bl for bl in numbered_lines[last_arrange_lineno + 1:first_act_lineno] if bl[1] is LineType.blank_line
+        ]
+        if not blank_lines:
             # TODO get a real offset for the line
-            # TODO how to resolve real line number?
-            offset = 0
-            raise ValidationError(first_act_lineno, offset, 'AAA03')
+            raise ValidationError(
+                self.fn_offset + first_act_lineno,
+                0,
+                'AAA03 expected 1 blank line before Act block, found none',
+            )
+        if len(blank_lines) > 1:
+            print(blank_lines)
+            # Too many blank lines - point at the first extra one, the 2nd
+            raise ValidationError(
+                self.fn_offset + blank_lines[1][0],
+                0,
+                'AAA03 expected 1 blank line before Act block, found {}'.format(len(blank_lines)),
+            )

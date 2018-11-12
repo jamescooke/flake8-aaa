@@ -25,4 +25,5 @@ def test(first_node_with_tokens, lines):
     assert result.act_block is None
     assert result._errors is None
     assert result.line_markers == [LineType.unprocessed, LineType.unprocessed]
+    assert result.line_markers.fn_offset == 3
     assert result.first_line_no == 3
