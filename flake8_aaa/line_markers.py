@@ -70,34 +70,11 @@ class LineMarkers(list):
         * When no spaces found, point error at line above act block
         * When too many spaces found, point error at 2nd blank line
         """
-        # error_message = 'AAA03 expected 1 blank line before Act block, found {}'
-        numbered_lines = list(enumerate(self))
-        # Find last line of arrange block. If no arrange block in test, then quit
-        arrange_lines = list(filter(lambda l: l[1] is LineType.arrange_block, numbered_lines))
-        if not arrange_lines:
-            return None
-        last_arrange_lineno = arrange_lines[-1][0]
-        # Find first line number of act block - act block must exist.
-        first_act_lineno = next(filter(lambda l: l[1] is LineType.act_block, numbered_lines))[0]
-        # Check that there is a single blank line between blocks
-        blank_lines = [
-            bl for bl in numbered_lines[last_arrange_lineno + 1:first_act_lineno] if bl[1] is LineType.blank_line
-        ]
-        if not blank_lines:
-            # TODO get a real offset for the line
-            # Point at line above act block
-            raise ValidationError(
-                self.fn_offset + first_act_lineno - 1,
-                0,
-                'AAA03 expected 1 blank line before Act block, found none',
-            )
-        if len(blank_lines) > 1:
-            # Too many blank lines - point at the first extra one, the 2nd
-            raise ValidationError(
-                self.fn_offset + blank_lines[1][0],
-                0,
-                'AAA03 expected 1 blank line before Act block, found {}'.format(len(blank_lines)),
-            )
+        self.check_block_spacing(
+            LineType.arrange_block,
+            LineType.act_block,
+            'AAA03 expected 1 blank line before Act block, found {}',
+        )
 
     def check_act_assert_spacing(self) -> None:
         """
@@ -112,7 +89,11 @@ class LineMarkers(list):
 
     def check_block_spacing(self, first_block_type: LineType, second_block_type: LineType, error_message: str) -> None:
         numbered_lines = list(enumerate(self))
-        first_block_lineno = list(filter(lambda l: l[1] is first_block_type, numbered_lines))[-1][0]
+        try:
+            first_block_lineno = list(filter(lambda l: l[1] is first_block_type, numbered_lines))[-1][0]
+        except IndexError:
+            # First block has no lines
+            return
         second_block_lineno = next(filter(lambda l: l[1] is second_block_type, numbered_lines))[0]
         blank_lines = [
             bl for bl in numbered_lines[first_block_lineno + 1:second_block_lineno] if bl[1] is LineType.blank_line
