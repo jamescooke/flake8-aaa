@@ -182,7 +182,8 @@ class Function:
 
         Note:
             Due to Flake8's error ``E303``, we do not have to check that there
-            is more than one space.
+            is more than one space when run as a plugin. However, when run in
+            stand alone mode, checking the number of spaces could be helpful.
         """
         assert self.act_block
         if self.arrange_block:

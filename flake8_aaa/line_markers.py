@@ -66,3 +66,16 @@ class LineMarkers(list):
                 self.__setitem__(i, line_type)
             except ValueError as error:
                 raise ValidationError(i + offset, 1, 'AAA99 {}'.format(error))
+
+    def check_arrange_act_spacing(self) -> None:
+        # Find last line of arrange block. If no arrange block in test, then quit
+        arrange_lines = list(filter(lambda l: l[1] is LineType.arrange_block, enumerate(self)))
+        if not arrange_lines:
+            return None
+        last_arrange_lineno = arrange_lines[-1][0]
+        # Find first line number of act block - act block must exist.
+        first_act_lineno = next(filter(lambda l: l[1] is LineType.act_block, enumerate(self)))[0]
+        # Check that there is a single blank line between blocks
+        blank_lines = [bl for bl in self[last_arrange_lineno + 1:first_act_lineno] if bl is LineType.blank_line]
+        if len(blank_lines) == 1:
+            return None
