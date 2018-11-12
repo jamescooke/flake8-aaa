@@ -38,3 +38,46 @@ def test_no_arrange():
     result = line_markers.check_arrange_act_spacing()
 
     assert result is None
+
+
+# --- FAILURES ---
+
+
+def test_no_gap():
+    """
+    No gap raises - error points at act block because no spaces
+    """
+    line_markers = LineMarkers(7)
+    line_markers[0] = LineType.arrange_block  # x = 1
+    line_markers[1] = LineType.unprocessed  # Sum do stuff
+    line_markers[2] = LineType.act_block  # result = x + 3
+    line_markers[3] = LineType.blank_line
+    line_markers[4] = LineType.assert_block  # assert result == 4
+
+    with pytest.raises(ValidationError) as excinfo:
+        line_markers.check_arrange_act_spacing()
+
+    assert excinfo.value.line_number == 2
+    assert excinfo.value.text == 'AAA03'
+    # TODO Ensure error says "None found"
+
+
+def test_too_big_gap():
+    """
+    Multiple BL raises. First extra line is pointed to
+    """
+    line_markers = LineMarkers(7)
+    line_markers[0] = LineType.arrange_block  # x = 1
+    line_markers[1] = LineType.blank_line
+    line_markers[2] = LineType.blank_line
+    line_markers[3] = LineType.unprocessed  # Sum do stuff
+    line_markers[4] = LineType.act_block  # result = x + 3
+    line_markers[5] = LineType.blank_line
+    line_markers[6] = LineType.assert_block  # assert result == 4
+
+    with pytest.raises(ValidationError) as excinfo:
+        line_markers.check_arrange_act_spacing()
+
+    assert excinfo.value.line_number == 2
+    assert excinfo.value.text == 'AAA03'
+    # TODO Ensure error says "2 found"

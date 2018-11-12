@@ -68,6 +68,10 @@ class LineMarkers(list):
                 raise ValidationError(i + offset, 1, 'AAA99 {}'.format(error))
 
     def check_arrange_act_spacing(self) -> None:
+        """
+        * When no spaces found, point error at act block
+        * When too many spaces found, point error at 2nd blank line
+        """
         # Find last line of arrange block. If no arrange block in test, then quit
         arrange_lines = list(filter(lambda l: l[1] is LineType.arrange_block, enumerate(self)))
         if not arrange_lines:
@@ -79,3 +83,8 @@ class LineMarkers(list):
         blank_lines = [bl for bl in self[last_arrange_lineno + 1:first_act_lineno] if bl is LineType.blank_line]
         if len(blank_lines) == 1:
             return None
+        if len(blank_lines) == 0:
+            # TODO get a real offset for the line
+            # TODO how to resolve real line number?
+            offset = 0
+            raise ValidationError(first_act_lineno, offset, 'AAA03')
