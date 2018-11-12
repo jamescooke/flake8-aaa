@@ -67,9 +67,10 @@ class LineMarkers(list):
 
     def check_arrange_act_spacing(self) -> None:
         """
-        * When no spaces found, point error at act block
+        * When no spaces found, point error at line above act block
         * When too many spaces found, point error at 2nd blank line
         """
+        # error_message = 'AAA03 expected 1 blank line before Act block, found {}'
         numbered_lines = list(enumerate(self))
         # Find last line of arrange block. If no arrange block in test, then quit
         arrange_lines = list(filter(lambda l: l[1] is LineType.arrange_block, numbered_lines))
@@ -97,3 +98,29 @@ class LineMarkers(list):
                 0,
                 'AAA03 expected 1 blank line before Act block, found {}'.format(len(blank_lines)),
             )
+
+    def check_act_assert_spacing(self) -> None:
+        """
+        * When no spaces found, point error at line above assert block
+        * When too many spaces found, point error at 2nd blank line
+        """
+        self.check_block_spacing(
+            LineType.act_block,
+            LineType.assert_block,
+            'AAA04 expected 1 blank line before Assert block, found {}',
+        )
+
+    def check_block_spacing(self, first_block_type: LineType, second_block_type: LineType, error_message: str) -> None:
+        numbered_lines = list(enumerate(self))
+        first_block_lineno = list(filter(lambda l: l[1] is first_block_type, numbered_lines))[-1][0]
+        second_block_lineno = next(filter(lambda l: l[1] is second_block_type, numbered_lines))[0]
+        blank_lines = [
+            bl for bl in numbered_lines[first_block_lineno + 1:second_block_lineno] if bl[1] is LineType.blank_line
+        ]
+        if not blank_lines:
+            # TODO get a real offset for the line
+            # Point at line above second block
+            raise ValidationError(self.fn_offset + second_block_lineno - 1, 0, error_message.format('none'))
+        if len(blank_lines) > 1:
+            # Too many blank lines - point at the first extra one, the 2nd
+            raise ValidationError(self.fn_offset + blank_lines[1][0], 0, error_message.format(len(blank_lines)))

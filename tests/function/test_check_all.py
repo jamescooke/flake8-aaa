@@ -70,6 +70,6 @@ def test_missing_space_before_assert(function):
     with pytest.raises(ValidationError) as excinfo:
         function.check_all()
 
-    assert excinfo.value.line_number == 6
-    assert excinfo.value.offset == 4
+    assert excinfo.value.line_number == 5
+    assert excinfo.value.offset == 0
     assert excinfo.value.text == 'AAA04 expected 1 blank line before Assert block, found none'

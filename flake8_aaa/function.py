@@ -98,7 +98,7 @@ class Function:
         # SPACING
         self.mark_bl()
         self.line_markers.check_arrange_act_spacing()
-        self.check_act_assert_spacing()
+        self.line_markers.check_act_assert_spacing()
 
     def get_errors(self) -> List[Tuple[int, int, str, type]]:
         """
@@ -168,20 +168,6 @@ class Function:
             return assert_block
 
         return None
-
-    def check_act_assert_spacing(self) -> None:
-        """
-        Raises:
-            ValidationError: When no space found
-        """
-        if self.assert_block:
-            line_before_assert = self.get_line_relative_to_node(self.assert_block.nodes[0], -1)
-            if line_before_assert != '\n':
-                raise ValidationError(
-                    line_number=self.assert_block.nodes[0].lineno,
-                    offset=self.assert_block.nodes[0].col_offset,
-                    text='AAA04 expected 1 blank line before Assert block, found none',
-                )
 
     def get_line_relative_to_node(self, target_node: ast.AST, offset: int) -> str:
         """
