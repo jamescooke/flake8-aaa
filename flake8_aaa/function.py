@@ -46,7 +46,7 @@ class Function:
         self.act_block = None  # type: Optional[ActBlock]
         self.assert_block = None  # type: Optional[AssertBlock]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
-        self.line_markers = LineMarkers(len(self.lines))  # type: LineMarkers
+        self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
 
     def __str__(self) -> str:
         out = '------+------------------------------------------------------------------------\n'
@@ -80,7 +80,6 @@ class Function:
         self.line_markers.update(
             build_footprint(self.act_block.node, self.first_line_no),
             LineType.act_block,
-            self.first_line_no,
         )
         # ARRANGE
         self.arrange_block = self.load_arrange_block()
@@ -88,7 +87,6 @@ class Function:
             self.line_markers.update(
                 build_multinode_footprint(self.arrange_block.nodes, self.first_line_no),
                 LineType.arrange_block,
-                self.first_line_no,
             )
         # ASSERT
         self.assert_block = self.load_assert_block()
@@ -96,12 +94,11 @@ class Function:
             self.line_markers.update(
                 build_multinode_footprint(self.assert_block.nodes, self.first_line_no),
                 LineType.assert_block,
-                self.first_line_no,
             )
         # SPACING
         self.mark_bl()
-        self.check_arrange_act_spacing()
-        self.check_act_assert_spacing()
+        self.line_markers.check_arrange_act_spacing()
+        self.line_markers.check_act_assert_spacing()
 
     def get_errors(self) -> List[Tuple[int, int, str, type]]:
         """
@@ -172,42 +169,6 @@ class Function:
 
         return None
 
-    def check_arrange_act_spacing(self) -> None:
-        """
-        When Function has an Arrange block, then ensure that there is a blank
-        line between that and the Act block.
-
-        Raises:
-            ValidationError: When no space found.
-
-        Note:
-            Due to Flake8's error ``E303``, we do not have to check that there
-            is more than one space.
-        """
-        assert self.act_block
-        if self.arrange_block:
-            line_before_act = self.get_line_relative_to_node(self.act_block.node, -1)
-            if line_before_act != '\n':
-                raise ValidationError(
-                    line_number=self.act_block.node.lineno,
-                    offset=self.act_block.node.col_offset,
-                    text='AAA03 expected 1 blank line before Act block, found none',
-                )
-
-    def check_act_assert_spacing(self) -> None:
-        """
-        Raises:
-            ValidationError: When no space found
-        """
-        if self.assert_block:
-            line_before_assert = self.get_line_relative_to_node(self.assert_block.nodes[0], -1)
-            if line_before_assert != '\n':
-                raise ValidationError(
-                    line_number=self.assert_block.nodes[0].lineno,
-                    offset=self.assert_block.nodes[0].col_offset,
-                    text='AAA04 expected 1 blank line before Assert block, found none',
-                )
-
     def get_line_relative_to_node(self, target_node: ast.AST, offset: int) -> str:
         """
         Raises:
@@ -241,7 +202,7 @@ class Function:
             end_token = get_first_token(self.node)
         last_line = end_token.end[0] - self.first_line_no
         lines = range(first_line, last_line + 1)
-        self.line_markers.update(lines, LineType.func_def, self.first_line_no)
+        self.line_markers.update(lines, LineType.func_def)
         return len(lines)
 
     def mark_bl(self) -> int:
