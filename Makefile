@@ -1,5 +1,5 @@
 lint_files=setup.py flake8_aaa tests
-rst_files=README.rst CHANGELOG.rst docs/discovery.rst docs/rules.rst
+rst_files=README.rst CHANGELOG.rst
 
 venv:
 	virtualenv venv --python=python3
@@ -21,8 +21,10 @@ tox:
 lint:
 	@echo "=== flake8 ==="
 	flake8 $(lint_files) examples
+	@echo "=== mypy ==="
+	$(MAKE) mypy
 	@echo "=== pylint ==="
-	./run_pylint.sh
+	./run_pylint.sh flake8_aaa
 	@echo "=== isort ==="
 	isort --quiet --recursive --diff $(lint_files) > isort.out
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
@@ -32,6 +34,10 @@ lint:
 	restructuredtext-lint $(rst_files)
 	@echo "=== setup.py ==="
 	python setup.py check --metadata --strict
+
+.PHONY: mypy
+mypy:
+	mypy flake8_aaa tests --ignore-missing-imports
 
 .PHONY: test
 test:

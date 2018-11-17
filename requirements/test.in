@@ -3,6 +3,7 @@
 Sphinx
 flake8
 isort
+mypy
 pygments
 pylint
 pytest

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import os
 
 from setuptools import setup
@@ -18,7 +16,7 @@ with open(os.path.join(basedir, 'flake8_aaa', '__about__.py')) as f:
 
 setup(
     # --- META ---
-    name=about['__name__'],
+    name=about['__iam__'],
     version=about['__version__'],
     description=about['__description__'],
     license='MIT',
@@ -30,11 +28,9 @@ setup(
     # --- Python ---
     packages=['flake8_aaa'],
     py_modules=['flake8_aaa'],
+    python_requires='>=3.5, <4',
     install_requires=[
         'asttokens >= 1.1.10',
-        # Skip enum34 because it's not needed for py3 and because flake8 will
-        # install it for py2.
-        'flake8 >= 3',
     ],
     entry_points={
         'flake8.extension': [
@@ -46,9 +42,9 @@ setup(
         'Framework :: Flake8',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python',
     ],

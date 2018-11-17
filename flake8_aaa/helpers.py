@@ -1,14 +1,14 @@
 import ast
 import os
+from typing import List, Optional, Set, Tuple
+
+from asttokens.util import Token
 
 
-def is_test_file(filename):
+def is_test_file(filename: str) -> bool:
     """
-    Args:
-        filename (str): Path to file being checked passed by flake8
-
-    Returns:
-        bool: This looks like a pytest test file.
+    Check that path to file being checked passed by flake8 looks like a pytest
+    test file.
 
     Examples:
         1.  Non-test files give False.
@@ -30,34 +30,30 @@ class TestFuncLister(ast.NodeVisitor):
     """
     Helper to walk the ast Tree and find functions that looks like tests.
     Matching function nodes are kept in ``_found_func`` attr.
-
-    Attributes:
-        _found_func (list (ast.node))
     """
 
     def __init__(self, *args, **kwargs):
         super(TestFuncLister, self).__init__(*args, **kwargs)
-        self._found_funcs = []
+        self._found_funcs = []  # type: List[ast.FunctionDef]
 
     def visit_FunctionDef(self, node):  # pylint: disable=invalid-name
         if node.name.startswith('test'):
             self._found_funcs.append(node)
 
+    def get_found_funcs(self) -> List[ast.FunctionDef]:
+        return self._found_funcs
 
-def find_test_functions(tree):
+
+def find_test_functions(tree: ast.AST) -> List[ast.FunctionDef]:
     """
-    Args:
-        tree (ast.Module)
-
-    Returns:
-        list (ast.FunctionDef): Functions that look like tests.
+    Collect functions that look like tests.
     """
     function_finder = TestFuncLister()
     function_finder.visit(tree)
-    return function_finder._found_funcs
+    return function_finder.get_found_funcs()
 
 
-def node_is_result_assignment(node):
+def node_is_result_assignment(node: ast.AST) -> bool:
     """
     Args:
         node: An ``ast`` node.
@@ -70,10 +66,12 @@ def node_is_result_assignment(node):
         Performs a very weak test that the line starts with 'result =' rather
         than testing the tokens.
     """
-    return node.first_token.line.strip().startswith('result =')
+    # `.first_token` is added by asttokens
+    token = node.first_token  # type: ignore
+    return token.line.strip().startswith('result =')
 
 
-def node_is_pytest_raises(node):
+def node_is_pytest_raises(node: ast.AST) -> bool:
     """
     Args:
         node: An ``ast`` node, augmented with ASTTokens
@@ -82,38 +80,83 @@ def node_is_pytest_raises(node):
         bool: ``node`` corresponds to a With node where the context manager is
         ``pytest.raises``.
     """
-    return isinstance(node, ast.With) and node.first_token.line.strip().startswith('with pytest.raises')
+    # `.first_token` is added by asttokens
+    token = node.first_token  # type: ignore
+    return isinstance(node, ast.With) and token.line.strip().startswith('with pytest.raises')
 
 
-def node_is_unittest_raises(node):
+def node_is_unittest_raises(node: ast.AST) -> bool:
     """
-    Args:
-        node: An ``ast`` node, augmented with ASTTokens
-
-    Returns:
-        bool: ``node`` corresponds to a With node where the context manager is
-        unittest's ``self.assertRaises``.
+    ``node`` corresponds to a With node where the context manager is unittest's
+    ``self.assertRaises``.
     """
-    return isinstance(node, ast.With) and node.first_token.line.strip().startswith('with self.assertRaises')
+    # `.first_token` is added by asttokens
+    token = node.first_token  # type: ignore
+    return isinstance(node, ast.With) and token.line.strip().startswith('with self.assertRaises')
 
 
-def node_is_noop(node):
+def node_is_noop(node: ast.AST) -> bool:
     """
-    Args:
-        node (ast.node)
-
-    Returns:
-        bool: Node does nothing.
+    Node does nothing.
     """
-    return (isinstance(node, ast.Expr) and isinstance(node.value, ast.Str)) or isinstance(node, ast.Pass)
+    return isinstance(node.value, ast.Str) if isinstance(node, ast.Expr) else isinstance(node, ast.Pass)
 
 
-def function_is_noop(function_node):
+def function_is_noop(function_node: ast.FunctionDef) -> bool:
     """
-    Args:
-        function_node (ast.FunctionDef): A function.
-
-    Returns:
-        bool: Function does nothing - is just ``pass`` or docstring.
+    Function does nothing - is just ``pass`` or docstring.
     """
     return all(node_is_noop(n) for n in function_node.body)
+
+
+def format_errors(errors: Optional[List[Tuple[int, int, str, type]]]) -> str:
+    """
+    Formats a Function's errors for command line use.
+
+    Note:
+        Only works with a single error per Function.
+    """
+    if errors is None:
+        return '    0 | ERRORS (yet)\n'
+    if errors:
+        assert len(errors) == 1
+        return '    1 | ERROR\n'
+    return '    0 | ERRORS\n'
+
+
+def get_first_token(node: ast.AST) -> Token:
+    """
+    Wrapper to solve typing errors. mypy complains that ``ast.AST`` has no
+    property ``first_token`` or ``last_token``. That's because these are added
+    by the asttokens library. For now, this ignoring of type, which I think is
+    required to get mypy to pass at this time, is encapsulated in this helper
+    function.
+    """
+    return node.first_token  # type: ignore
+
+
+def get_last_token(node: ast.AST) -> Token:
+    """
+    Performs same purpose as get_first_token.
+    """
+    return node.last_token  # type: ignore
+
+
+def build_footprint(node: ast.AST, first_line_no: int) -> Set[int]:
+    """
+    Generates a list of lines that the passed node covers, relative to the
+    marked lines list - i.e. start of function is line 0.
+    """
+    return set(
+        range(
+            get_first_token(node).start[0] - first_line_no,
+            get_last_token(node).end[0] - first_line_no + 1,
+        )
+    )
+
+
+def build_multinode_footprint(nodes: List[ast.AST], first_line_no: int) -> Set[int]:
+    out = set()  # type: Set[int]
+    for node in nodes:
+        out = out.union(build_footprint(node, first_line_no))
+    return out

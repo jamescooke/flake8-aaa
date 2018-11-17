@@ -41,3 +41,6 @@ docs/_build/
 
 # isort
 /isort.out
+
+# mypy
+.mypy_cache/

@@ -14,6 +14,36 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Fixed
+-----
+
+* Spacing between Arrange and Act analysis fixed. Now recognises comment
+  blocks.
+
+* Spacing between Act and Assert analysis fixed. Now recognises comment blocks.
+
+0.5.0_ - 2018/11/01
+-------------------
+
+Added
+-----
+
+* Python 3.5 now supported.
+
+* Command line functionality now available to assist with development and
+  debugging.
+
+* New line-wise analysis, including updated blank line checking and a new
+  ``AAA99`` rule for node to line mapping collisions.
+
+Removed
+-------
+
+* Python 2.7 support removed.
+
+* ``flake8`` package removed as a dependency since Flake8-AAA can be run on a
+  command line without it.
+
 0.4.0_ - 2018/07/17
 -------------------
 
@@ -58,7 +88,8 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.4.0...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.5.0...HEAD
+.. _0.5.0: https://github.com/jamescooke/flake8-aaa/compare/v0.4.0...v0.5.0
 .. _0.4.0: https://github.com/jamescooke/flake8-aaa/compare/v0.3.0...v0.4.0
 .. _0.3.0: https://github.com/jamescooke/flake8-aaa/compare/v0.2.0...v0.3.0
 .. _0.2.0: https://github.com/jamescooke/flake8-aaa/compare/v0.1.0...v0.2.0

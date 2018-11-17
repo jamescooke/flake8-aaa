@@ -1,3 +1,6 @@
+import typing
+
+
 class Flake8AAAException(Exception):
     pass
 
@@ -15,7 +18,7 @@ class ValidationError(Flake8AAAException):
         self.offset = offset
         self.text = text
 
-    def to_flake8(self, checker_cls):
+    def to_flake8(self, checker_cls: typing.Type) -> typing.Tuple[int, int, str, typing.Type]:
         """
         Args:
             checker_cls (type): Class performing the check to be passed back to
