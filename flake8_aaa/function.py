@@ -148,9 +148,8 @@ class Function:
         assert self.act_block
         arrange_block = ArrangeBlock()
         for node in self.node.body:
-            if node == self.act_block.node:
-                break
-            arrange_block.add_node(node)
+            if node.lineno < self.act_block.node.lineno:
+                arrange_block.add_node(node)
 
         if arrange_block.nodes:
             return arrange_block
