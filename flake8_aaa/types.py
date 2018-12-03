@@ -1,8 +1,14 @@
 from enum import Enum, unique
 
+# TODO Adjust to Act Node types, not Act Block
 ActBlockType = Enum(  # pylint: disable=invalid-name
     'ActBlockType',
-    'marked_act pytest_raises result_assignment unittest_raises',
+    (
+        'marked_act '   # Marked with "# act"
+        'pytest_raises '  # Wrapped in "pytest.raises" context manager.
+        'result_assignment '  # Simple "result = "
+        'unittest_raises '  # Wrapped in unittest's "assertRaises" context manager.
+    ),
 )
 
 
