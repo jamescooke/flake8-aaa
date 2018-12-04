@@ -87,6 +87,13 @@ class LineMarkers(list):
             'AAA04 expected 1 blank line before Assert block, found {}',
         )
 
+    def get_first_block_lineno(self, block_type: LineType) -> int:
+        """
+        Finds first line of provided block type and returns that line number.
+        """
+        numbered_lines = list(enumerate(self))
+        return next(filter(lambda l: l[1] is block_type, numbered_lines))[0] + self.fn_offset
+
     def check_block_spacing(self, first_block_type: LineType, second_block_type: LineType, error_message: str) -> None:
         numbered_lines = list(enumerate(self))
         try:
