@@ -6,6 +6,8 @@ from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
 from .exceptions import ValidationError
 from .helpers import (
+    add_node_parents,
+    build_act_block_footprint,
     build_footprint,
     build_multinode_footprint,
     format_errors,
@@ -77,8 +79,9 @@ class Function:
             return
         # ACT
         self.act_block = self.load_act_block()
+        add_node_parents(self.node)
         self.line_markers.update(
-            build_footprint(self.act_block.node, self.first_line_no),
+            build_act_block_footprint(self.act_block.node, self.first_line_no, self.node),
             LineType.act_block,
         )
         # ARRANGE
@@ -147,8 +150,9 @@ class Function:
     def load_arrange_block(self) -> Optional[ArrangeBlock]:
         assert self.act_block
         arrange_block = ArrangeBlock()
+        act_block_lineno = self.line_markers.get_first_block_lineno(LineType.act_block)
         for node in self.node.body:
-            if node.lineno < self.act_block.node.lineno:
+            if node.lineno < act_block_lineno:
                 arrange_block.add_node(node)
 
         if arrange_block.nodes:
