@@ -19,7 +19,7 @@ def function_with_act_block(function):
     Returns:
         Function: With Act block loaded.
     """
-    function.act_block = function.load_act_block()
+    function.check_act()
     return function
 
 

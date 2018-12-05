@@ -66,6 +66,14 @@ class Function:
         out += format_errors(self._errors)
         return out
 
+    def check_act(self):
+        self.act_block = self.load_act_block()
+        add_node_parents(self.node)
+        self.line_markers.update(
+            build_act_block_footprint(self.act_block.node, self.first_line_no, self.node),
+            LineType.act_block,
+        )
+
     def check_all(self) -> None:
         """
         Run everything required for checking this function.
@@ -78,12 +86,7 @@ class Function:
         if function_is_noop(self.node):
             return
         # ACT
-        self.act_block = self.load_act_block()
-        add_node_parents(self.node)
-        self.line_markers.update(
-            build_act_block_footprint(self.act_block.node, self.first_line_no, self.node),
-            LineType.act_block,
-        )
+        self.check_act()
         # ARRANGE
         self.arrange_block = self.load_arrange_block()
         if self.arrange_block:
