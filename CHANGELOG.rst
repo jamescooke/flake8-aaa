@@ -22,6 +22,9 @@ Fixed
 
 * Spacing between Act and Assert analysis fixed. Now recognises comment blocks.
 
+* Act Blocks can now contain context managers that are not test suite exception
+  catchers like ``pytest.raises()``.
+
 0.5.0_ - 2018/11/01
 -------------------
 
