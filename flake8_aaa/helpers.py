@@ -142,6 +142,17 @@ def get_last_token(node: ast.AST) -> Token:
     return node.last_token  # type: ignore
 
 
+def add_node_parents(root: ast.AST) -> None:
+    """
+    Adds "parent" attribute to all child nodes of passed node.
+
+    Code taken from https://stackoverflow.com/a/43311383/1286705
+    """
+    for node in ast.walk(root):
+        for child in ast.iter_child_nodes(node):
+            child.parent = node  # type: ignore
+
+
 def build_footprint(node: ast.AST, first_line_no: int) -> Set[int]:
     """
     Generates a list of lines that the passed node covers, relative to the
@@ -153,6 +164,29 @@ def build_footprint(node: ast.AST, first_line_no: int) -> Set[int]:
             get_last_token(node).end[0] - first_line_no + 1,
         )
     )
+
+
+def build_act_block_footprint(node: ast.AST, first_line_no: int, test_func_node: ast.FunctionDef) -> Set[int]:
+    """
+    Generates a list of lines that the Act Node covers plus any context that it
+    is wrapped in to create an Act Block. Line numbers are returned relative to
+    the marked lines list - i.e. start of function is line 0.
+
+    Args:
+        node: Act Node.
+        first_line_no: First line number of the test.
+        test_func_node: The test's node.
+    """
+    last_line = get_last_token(node).end[0] - first_line_no + 1
+
+    # Walk up the parent nodes of the parent node to find test's definition.
+    first_act_block_node = node
+    while first_act_block_node.parent != test_func_node:  # type: ignore
+        # TODO check that parent is not a bad structure like for, if, while, etc
+        first_act_block_node = first_act_block_node.parent  # type: ignore
+
+    first_line = get_first_token(first_act_block_node).start[0] - first_line_no
+    return set(range(first_line, last_line))
 
 
 def build_multinode_footprint(nodes: List[ast.AST], first_line_no: int) -> Set[int]:

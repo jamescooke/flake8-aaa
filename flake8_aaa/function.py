@@ -6,6 +6,8 @@ from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
 from .exceptions import ValidationError
 from .helpers import (
+    add_node_parents,
+    build_act_block_footprint,
     build_footprint,
     build_multinode_footprint,
     format_errors,
@@ -64,6 +66,14 @@ class Function:
         out += format_errors(self._errors)
         return out
 
+    def check_act(self):
+        self.act_block = self.load_act_block()
+        add_node_parents(self.node)
+        self.line_markers.update(
+            build_act_block_footprint(self.act_block.node, self.first_line_no, self.node),
+            LineType.act_block,
+        )
+
     def check_all(self) -> None:
         """
         Run everything required for checking this function.
@@ -76,11 +86,7 @@ class Function:
         if function_is_noop(self.node):
             return
         # ACT
-        self.act_block = self.load_act_block()
-        self.line_markers.update(
-            build_footprint(self.act_block.node, self.first_line_no),
-            LineType.act_block,
-        )
+        self.check_act()
         # ARRANGE
         self.arrange_block = self.load_arrange_block()
         if self.arrange_block:
@@ -147,10 +153,10 @@ class Function:
     def load_arrange_block(self) -> Optional[ArrangeBlock]:
         assert self.act_block
         arrange_block = ArrangeBlock()
+        act_block_lineno = self.line_markers.get_first_block_lineno(LineType.act_block)
         for node in self.node.body:
-            if node == self.act_block.node:
-                break
-            arrange_block.add_node(node)
+            if node.lineno < act_block_lineno:
+                arrange_block.add_node(node)
 
         if arrange_block.nodes:
             return arrange_block

@@ -18,6 +18,32 @@ def test_noop(function):
 
 
 @pytest.mark.parametrize(
+    'code_str', [
+        '''
+def test(api_client, url):
+    data = {
+        'user_id': 0,
+        'project_permission': 'admin',
+    }
+
+    with catch_signal(user_perms_changed) as callback:
+        result = api_client.put(url, data=data)
+
+    assert result.status_code == 400
+    assert callback.call_count == 0
+    ''',
+    ]
+)
+def test_context_manager(function):
+    result = function.check_all()
+
+    assert result is None
+
+
+# --- FAILURES ---
+
+
+@pytest.mark.parametrize(
     'code_str',
     [
         '''
