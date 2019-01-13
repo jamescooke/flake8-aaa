@@ -36,7 +36,7 @@ class Checker:
     def load(self) -> None:
         self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)
 
-    def all_funcs(self, skip_noqa: bool=False) -> typing.Generator[Function, None, None]:
+    def all_funcs(self, skip_noqa: bool = False) -> typing.Generator[Function, None, None]:
         return (Function(f, self.lines) for f in find_test_functions(self.tree, skip_noqa=skip_noqa))
 
     def run(self) -> typing.Generator[typing.Tuple[int, int, str, typing.Type], None, None]:

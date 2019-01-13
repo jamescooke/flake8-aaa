@@ -32,8 +32,8 @@ class TestFuncLister(ast.NodeVisitor):
     Matching function nodes are kept in ``_found_func`` attr.
     """
 
-    def __init__(self, skip_noqa: bool, *args, **kwargs):
-        super(TestFuncLister, self).__init__(*args, **kwargs)
+    def __init__(self, skip_noqa: bool):
+        super(TestFuncLister, self).__init__()
         self.skip_noqa = skip_noqa  # type: bool
         self._found_funcs = []  # type: List[ast.FunctionDef]
 
