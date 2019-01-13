@@ -1,4 +1,4 @@
-def test():
+def test():  # noqa
     x = 1  # noqa
     result = x + 1
 
