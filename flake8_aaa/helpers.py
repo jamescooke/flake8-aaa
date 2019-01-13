@@ -32,23 +32,30 @@ class TestFuncLister(ast.NodeVisitor):
     Matching function nodes are kept in ``_found_func`` attr.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, skip_noqa: bool, *args, **kwargs):
         super(TestFuncLister, self).__init__(*args, **kwargs)
+        self.skip_noqa = skip_noqa  # type: bool
         self._found_funcs = []  # type: List[ast.FunctionDef]
 
     def visit_FunctionDef(self, node):  # pylint: disable=invalid-name
         if node.name.startswith('test'):
-            self._found_funcs.append(node)
+            if not self.skip_noqa or not node.first_token.line.strip().endswith('# noqa'):
+                self._found_funcs.append(node)
 
     def get_found_funcs(self) -> List[ast.FunctionDef]:
         return self._found_funcs
 
 
-def find_test_functions(tree: ast.AST) -> List[ast.FunctionDef]:
+def find_test_functions(tree: ast.AST, skip_noqa: bool = False) -> List[ast.FunctionDef]:
     """
     Collect functions that look like tests.
+
+    Args:
+        tree
+        skip_noqa: Flag used by command line debugger to skip functions that
+            are marked with "# noqa". Defaults to ``False``.
     """
-    function_finder = TestFuncLister()
+    function_finder = TestFuncLister(skip_noqa)
     function_finder.visit(tree)
     return function_finder.get_found_funcs()
 
