@@ -70,6 +70,22 @@ And once the error above is fixed, the return value returns to zero::
     $ echo "$?"
     0 
 
+noqa and command line
+.....................
+
+The ``# noqa`` comment marker works slightly differently when Flake8-AAA is
+called on the command line rather than invoked through ``flake8``. When called
+on the command line, to skip linting a test function, mark the function
+definition with ``# noqa`` on the same line as the ``def``.
+
+For example::
+
+    def test_to_be_ignored(  # noqa
+        arg_1,
+        arg_2,
+    ):
+        ...
+
 .. _line-markers:
 
 Line markers
