@@ -62,7 +62,7 @@ doc:
 cmd:
 	for i in $(good_examples); do \
 		echo "\n=== $$i ==="; \
-		python -m flake8_aaa "$$i"; \
+		python -m flake8_aaa "$$i" || break -1; \
 	done
 
 
