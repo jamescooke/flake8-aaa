@@ -1,6 +1,6 @@
 import os
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 basedir = os.path.dirname(__file__)
 
@@ -11,7 +11,7 @@ def readme():
 
 
 about = {}
-with open(os.path.join(basedir, 'flake8_aaa', '__about__.py')) as f:
+with open(os.path.join(basedir, 'src', 'flake8_aaa', '__about__.py')) as f:
     exec(f.read(), about)  # yapf: disable
 
 setup(
@@ -26,8 +26,8 @@ setup(
     url='https://github.com/jamescooke/flake8-aaa',
 
     # --- Python ---
-    packages=['flake8_aaa'],
-    py_modules=['flake8_aaa'],
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
     python_requires='>=3.5, <4',
     install_requires=[
         'asttokens >= 1.1.10',
