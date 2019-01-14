@@ -1,5 +1,7 @@
 lint_files=setup.py flake8_aaa tests
 rst_files=README.rst CHANGELOG.rst
+good_examples = $(wildcard examples/good/*.py examples/good/noqa/test_01.py examples/good/noqa/test_02.py)
+
 
 venv:
 	virtualenv venv --python=python3
@@ -55,6 +57,13 @@ fixlint:
 .PHONY: doc
 doc:
 	$(MAKE) -C docs html
+
+.PHONY: cmd
+cmd:
+	for i in $(good_examples); do \
+		echo "\n=== $$i ==="; \
+		python -m flake8_aaa "$$i" || break -1; \
+	done
 
 
 # --- Building / Publishing ---

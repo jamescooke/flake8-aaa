@@ -19,7 +19,8 @@ def do_command_line(infile: IO[str]) -> int:
     tree = ast.parse(''.join(lines))
     checker = Checker(tree, lines, infile.name)
     checker.load()
-    for func in checker.all_funcs():
+    errors = []  # type: list
+    for func in checker.all_funcs(skip_noqa=True):
         errors = func.get_errors()
         print(func, end='')
     return len(errors)
