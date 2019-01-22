@@ -1,13 +1,13 @@
 Rules and error codes
 =====================
 
-The rules applied by ``flake8-aaa`` are from the `Arrange Act Assert pattern
+The rules applied by Flake8-AAA are from the `Arrange Act Assert pattern
 for Python developers
 <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
 
 .. note::
 
-    The rules applied by ``flake8-aaa`` are only a subset of the rules and
+    The rules applied by Flake8-AAA are only a subset of the rules and
     guidelines of the Arrange Act Assert pattern itself. Please see `the
     published guidelines for the pattern
     <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
@@ -17,7 +17,7 @@ AAA01: no Act block found in test
 ---------------------------------
 
 An Act block is usually a line like ``result =`` or a check that an exception
-is raised. ``flake8-aaa`` could not find an Act block in the indicated test
+is raised. Flake8-AAA could not find an Act block in the indicated test
 function.
 
 Resolution
@@ -44,7 +44,7 @@ context managers are recognised as Act blocks.
 AAA02: multiple Act blocks found in test
 ----------------------------------------
 
-There must be one and only one Act block in every test but ``flake8-aaa`` found
+There must be one and only one Act block in every test but Flake8-AAA found
 more than one potential Act block. This error is usually triggered when a test
 contains more than one ``result =`` statement or more than one line marked ``#
 act``. Multiple Act blocks create ambiguity and raise this error code.
@@ -60,7 +60,7 @@ AAA03: expected 1 blank line before Act block, found none
 ---------------------------------------------------------
 
 For tests that have an Arrange block, there must be a blank line between the
-Arrange and Act blocks, but ``flake8-aaa`` could not find one.
+Arrange and Act blocks, but Flake8-AAA could not find one.
 
 This blank line creates separation between the arrangement and the action and
 makes the Act block easy to spot.
@@ -78,7 +78,7 @@ AAA04: expected 1 blank line before Assert block, found none
 ------------------------------------------------------------
 
 For tests that have an Assert block, there must be a blank line between the Act
-and Assert blocks, but ``flake8-aaa`` could not find one.
+and Assert blocks, but Flake8-AAA could not find one.
 
 This blank line creates separation between the action and the assertions and
 makes the Act block easy to spot.
