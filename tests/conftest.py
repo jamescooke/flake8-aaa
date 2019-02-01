@@ -19,6 +19,7 @@ def fake_options():
     options = FakeOptions()
     options.hang_closing = False
     options.max_line_length = MAX_LINE_LENGTH
+    options.max_doc_length = MAX_LINE_LENGTH
     options.verbose = False
     return options
 
