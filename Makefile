@@ -1,4 +1,4 @@
-lint_files=setup.py flake8_aaa tests
+lint_files=setup.py src/flake8_aaa tests
 rst_files=README.rst CHANGELOG.rst
 good_examples = $(wildcard examples/good/*.py examples/good/noqa/test_01.py examples/good/noqa/test_02.py)
 
@@ -26,7 +26,7 @@ lint:
 	@echo "=== mypy ==="
 	$(MAKE) mypy
 	@echo "=== pylint ==="
-	./run_pylint.sh flake8_aaa
+	./run_pylint.sh src/flake8_aaa
 	@echo "=== isort ==="
 	isort --quiet --recursive --diff $(lint_files) > isort.out
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
@@ -39,7 +39,7 @@ lint:
 
 .PHONY: mypy
 mypy:
-	mypy flake8_aaa tests --ignore-missing-imports
+	mypy src/flake8_aaa tests --ignore-missing-imports
 
 .PHONY: test
 test:
