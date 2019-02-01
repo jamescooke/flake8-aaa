@@ -14,6 +14,12 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Added
+-----
+
+* Bad examples folder. This is used for testing that files containing tests
+  that fail linting return the expected content when run with ``flake8```.
+
 Fixed
 -----
 
