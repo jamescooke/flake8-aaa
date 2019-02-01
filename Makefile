@@ -22,7 +22,7 @@ tox:
 .PHONY: lint
 lint:
 	@echo "=== flake8 ==="
-	flake8 $(lint_files) examples
+	flake8 $(lint_files) examples/good
 	@echo "=== mypy ==="
 	$(MAKE) mypy
 	@echo "=== pylint ==="
