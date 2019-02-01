@@ -12,7 +12,7 @@ Given a new version called ``x.y.z``:
   ``bump-vx.y.z``.
 
 * Update ``__version__`` in `__about__.py
-  <https://github.com/jamescooke/flake8-aaa/blob/master/flake8_aaa/__about__.py>`_
+  <https://github.com/jamescooke/flake8-aaa/blob/master/src/flake8_aaa/__about__.py>`_
   with the new version number ``'x.y.z'``.
 
 * Update `CHANGELOG <https://github.com/jamescooke/flake8-aaa/blob/master/CHANGELOG.rst>`_.
