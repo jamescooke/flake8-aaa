@@ -31,6 +31,13 @@ Fixed
 * Act Blocks can now contain context managers that are not test suite exception
   catchers like ``pytest.raises()``.
 
+Changed
+-------
+
+* Location of package pushed down to ``/src`` directory as `recommended by
+  pytest
+  <https://docs.pytest.org/en/latest/goodpractices.html#choosing-a-test-layout-import-rules>`_.
+
 0.5.0_ - 2018/11/01
 -------------------
 
