@@ -95,4 +95,4 @@ on_master:
 
 .PHONY: tag
 tag: on_master
-	git tag -a $$(python -c 'from flake8_aaa.__about__ import __version__; print("v{}".format(__version__))')
+	git tag -a $$(python -c 'from src.flake8_aaa.__about__ import __version__; print("v{}".format(__version__))')
