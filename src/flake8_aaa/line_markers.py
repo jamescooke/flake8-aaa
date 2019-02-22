@@ -94,12 +94,7 @@ class LineMarkers(list):
         numbered_lines = list(enumerate(self))
         return next(filter(lambda l: l[1] is block_type, numbered_lines))[0] + self.fn_offset
 
-    def check_block_spacing(
-        self,
-        first_block_type: LineType,
-        second_block_type: LineType,
-        error_message: str,
-    ) -> None:
+    def check_block_spacing(self, first_block_type: LineType, second_block_type: LineType, error_message: str) -> None:
         """
         Checks there is a clear single line between ``first_block_type`` and
         ``second_block_type``.
