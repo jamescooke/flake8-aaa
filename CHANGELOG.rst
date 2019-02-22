@@ -14,6 +14,11 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Added
+-----
+
+* Support for Python 3.7.
+
 0.5.1_ - 2019/02/01
 -------------------
 
