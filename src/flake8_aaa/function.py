@@ -22,7 +22,10 @@ from .types import ActBlockType, LineType
 class Function:
     """
     Attributes:
-        act_block: Act block for the test. Defaults to ``None``.
+        act_node: Act Node for the test. This is the node of the AST that looks
+            like the action. Distinguish between this and the Act Block - the
+            Act Block can be larger than just the node, mainly because it could
+            be wrapped in context managers. Defaults to ``None``.
         arrange_block: Arrange block for this test. Defaults to ``None``.
         _errors: List of errors for this Function. Defaults to ``None`` when
             Function has not been checked. Empty list ``[]`` means that the
@@ -45,7 +48,7 @@ class Function:
         end = self.node.last_token.end[0]  # type: ignore
         self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
         self.arrange_block = None  # type: Optional[ArrangeBlock]
-        self.act_block = None  # type: Optional[ActBlock]
+        self.act_node = None  # type: Optional[ActBlock]
         self.assert_block = None  # type: Optional[AssertBlock]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
         self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
@@ -67,10 +70,10 @@ class Function:
         return out
 
     def check_act(self):
-        self.act_block = self.load_act_block()
+        self.act_node = self.load_act_block()
         add_node_parents(self.node)
         self.line_markers.update(
-            build_act_block_footprint(self.act_block.node, self.first_line_no, self.node),
+            build_act_block_footprint(self.act_node.node, self.first_line_no, self.node),
             LineType.act_block,
         )
 
@@ -151,7 +154,7 @@ class Function:
         return act_blocks[0]
 
     def load_arrange_block(self) -> Optional[ArrangeBlock]:
-        assert self.act_block
+        assert self.act_node
         arrange_block = ArrangeBlock()
         act_block_lineno = self.line_markers.get_first_block_lineno(LineType.act_block)
         for node in self.node.body:
@@ -164,10 +167,10 @@ class Function:
         return None
 
     def load_assert_block(self) -> Optional[AssertBlock]:
-        assert self.act_block
+        assert self.act_node
         assert_block = AssertBlock()
         for node in self.node.body:
-            if node.lineno > self.act_block.node.lineno:
+            if node.lineno > self.act_node.node.lineno:
                 assert_block.add_node(node)
 
         if assert_block.nodes:

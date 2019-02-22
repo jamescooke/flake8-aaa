@@ -11,14 +11,14 @@ class ActBlock:
     """
     Attributes:
         node
-        block_type (ActBlockType)
+        block_type
     """
 
     def __init__(self, node: ast.AST, block_type: ActBlockType) -> None:
         """
         Args:
             node
-            block_type (ActBlockType)
+            block_type
         """
         self.node = node  # type: ast.AST
         self.block_type = block_type  # type: ActBlockType
