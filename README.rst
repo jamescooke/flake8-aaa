@@ -29,6 +29,18 @@ A linter for Python tests.
 * Tests are linted against the `Arrange Act Assert pattern
   <http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
 
+  TL;DR following the AAA pattern means tests look like this::
+
+      def test():
+          """
+          __docstring__
+          """
+          # ARRANGE: set up of the system under test (SUT)
+
+          # ACT: perform a single action on the SUT
+
+          # ASSERT: check that the SUT changed as expected
+
 * Provides a Flake8 interface to automatically lint test files as part of your
   Flake8 run.
 
@@ -50,9 +62,9 @@ that Flake8-AAA was installed correctly by asking ``flake8`` for its version
 signature::
 
     $ flake8 --version
-    3.6.0 (aaa: 0.4.0, mccabe: 0.6.1, pycodestyle: 2.4.0, pyflakes: 2.0.0) CPython 3.6.7 on Linux
+    3.7.6 (aaa: 0.5.1, mccabe: 0.6.1, pycodestyle: 2.5.0, pyflakes: 2.1.0) CPython 3.5.2 on Linux
 
-The ``(aaa: 0.4.0, ...`` part of that output tells you ``flake8`` found this
+The ``(aaa: 0.5.1, ...`` part of that output tells you ``flake8`` found this
 plugin. Now you can run ``flake8`` as usual against your project and Flake8-AAA
 will lint your tests via its plugin::
 

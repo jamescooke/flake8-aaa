@@ -24,6 +24,16 @@ def test_comment_before_assert():
     assert result is None
 
 
+def test_none():
+    line_markers = LineMarkers(2, 0)
+    line_markers[0] = LineType.func_def
+    line_markers[1] = LineType.act_block  # do_thing()
+
+    result = line_markers.check_act_assert_spacing()
+
+    assert result is None
+
+
 # --- FAILURES ---
 
 

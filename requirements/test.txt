@@ -15,7 +15,7 @@ chardet==3.0.4            # via requests
 docutils==0.14            # via restructuredtext-lint, sphinx
 entrypoints==0.3
 filelock==3.0.10          # via tox
-flake8==3.7.4
+flake8==3.7.6
 idna==2.8                 # via requests
 imagesize==1.1.0          # via sphinx
 isort==4.3.4
@@ -23,32 +23,32 @@ jinja2==2.10              # via sphinx
 lazy-object-proxy==1.3.1  # via astroid
 markupsafe==1.1.0         # via jinja2
 mccabe==0.6.1
-more-itertools==5.0.0     # via pytest
+more-itertools==6.0.0     # via pytest
 mypy-extensions==0.4.1    # via mypy
-mypy==0.660
+mypy==0.670
 packaging==19.0           # via sphinx
 pathlib2==2.3.3           # via pytest
 pluggy==0.8.1             # via pytest, tox
-py==1.7.0                 # via pytest, tox
+py==1.8.0                 # via pytest, tox
 pycodestyle==2.5.0
 pyflakes==2.1.0
 pygments==2.3.1
 pylint==2.2.2
 pyparsing==2.3.1          # via packaging
 pytest-flake8dir==1.3.0
-pytest==4.2.0
+pytest==4.3.0
 pytz==2018.9              # via babel
 requests==2.21.0          # via sphinx
 restructuredtext-lint==1.2.2
 six==1.12.0
 snowballstemmer==1.2.1    # via sphinx
-sphinx-rtd-theme==0.4.2
-sphinx==1.8.3
+sphinx-rtd-theme==0.4.3
+sphinx==1.8.4
 sphinxcontrib-websupport==1.1.0  # via sphinx
 toml==0.10.0              # via tox
 tox==3.7.0
-typed-ast==1.2.0          # via astroid, mypy
+typed-ast==1.3.1          # via astroid, mypy
 urllib3==1.24.1           # via requests
-virtualenv==16.3.0        # via tox
+virtualenv==16.4.0        # via tox
 wrapt==1.11.1             # via astroid
-yapf==0.25.0
+yapf==0.26.0
