@@ -6,7 +6,7 @@
 #
 asttokens==1.1.13
 entrypoints==0.3          # via flake8
-flake8==3.7.4
+flake8==3.7.6
 mccabe==0.6.1             # via flake8
 pycodestyle==2.5.0        # via flake8
 pyflakes==2.1.0           # via flake8
