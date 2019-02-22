@@ -1,7 +1,7 @@
 import ast
 from typing import List, Optional, Tuple
 
-from .act_block import ActBlock
+from .act_node import ActNode
 from .arrange_block import ArrangeBlock
 from .assert_block import AssertBlock
 from .exceptions import ValidationError
@@ -48,7 +48,7 @@ class Function:
         end = self.node.last_token.end[0]  # type: ignore
         self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
         self.arrange_block = None  # type: Optional[ArrangeBlock]
-        self.act_node = None  # type: Optional[ActBlock]
+        self.act_node = None  # type: Optional[ActNode]
         self.assert_block = None  # type: Optional[AssertBlock]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
         self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
@@ -70,7 +70,7 @@ class Function:
         return out
 
     def check_act(self):
-        self.act_node = self.load_act_block()
+        self.act_node = self.load_act_node()
         add_node_parents(self.node)
         self.line_markers.update(
             build_act_block_footprint(self.act_node.node, self.first_line_no, self.node),
@@ -129,29 +129,28 @@ class Function:
             self._errors = [error.to_flake8(Function)]
         return self._errors
 
-    def load_act_block(self) -> ActBlock:
+    def load_act_node(self) -> ActNode:
         """
         Raises:
             ValidationError: AAA01 when no act block is found and AAA02 when
                 multiple act blocks are found.
         """
-        act_blocks = ActBlock.build_body(self.node.body)
+        act_nodes = ActNode.build_body(self.node.body)
 
-        if not act_blocks:
+        if not act_nodes:
             raise ValidationError(self.first_line_no, self.node.col_offset, 'AAA01 no Act block found in test')
 
-        # Allow `pytest.raises` and `self.assertRaises()` in assert blocks - if
-        # any of the additional act blocks are `pytest.raises` blocks, then
-        # raise
-        for a_b in act_blocks[1:]:
-            if a_b.block_type in [ActBlockType.marked_act, ActBlockType.result_assignment]:
+        # Allow `pytest.raises` and `self.assertRaises()` in assert nodes - if
+        # any of the additional nodes are `pytest.raises`, then raise
+        for a_n in act_nodes[1:]:
+            if a_n.block_type in [ActBlockType.marked_act, ActBlockType.result_assignment]:
                 raise ValidationError(
                     self.first_line_no,
                     self.node.col_offset,
                     'AAA02 multiple Act blocks found in test',
                 )
 
-        return act_blocks[0]
+        return act_nodes[0]
 
     def load_arrange_block(self) -> Optional[ArrangeBlock]:
         assert self.act_node

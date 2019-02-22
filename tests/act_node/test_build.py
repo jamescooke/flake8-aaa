@@ -1,6 +1,6 @@
 import pytest
 
-from flake8_aaa.act_block import ActBlock
+from flake8_aaa.act_node import ActNode
 from flake8_aaa.types import ActBlockType
 
 # TODO act blocks need testing with 'result =' indented
@@ -12,16 +12,16 @@ from flake8_aaa.types import ActBlockType
         """
 def test_not_actions(first_node_with_tokens):
     with pytest.raises(NotActionBlock):
-        ActBlock.build(first_node_with_tokens)
+        ActNode.build(first_node_with_tokens)
 """
     ]
 )
 def test_pytest_raises_block(first_node_with_tokens):
-    result = ActBlock.build(first_node_with_tokens.body[0])
+    result = ActNode.build(first_node_with_tokens.body[0])
 
     assert isinstance(result, list)
     assert len(result) == 1
-    assert isinstance(result[0], ActBlock)
+    assert isinstance(result[0], ActNode)
     assert result[0].node == first_node_with_tokens.body[0]
     assert result[0].block_type == ActBlockType.pytest_raises
 
@@ -36,11 +36,11 @@ def test_not_actions(self):
     ]
 )
 def test_unittest_raises_block(first_node_with_tokens):
-    result = ActBlock.build(first_node_with_tokens.body[0])
+    result = ActNode.build(first_node_with_tokens.body[0])
 
     assert isinstance(result, list)
     assert len(result) == 1
-    assert isinstance(result[0], ActBlock)
+    assert isinstance(result[0], ActNode)
     assert result[0].node == first_node_with_tokens.body[0]
     assert result[0].block_type == ActBlockType.unittest_raises
 
@@ -53,11 +53,11 @@ def test_unittest_raises_block(first_node_with_tokens):
     ]
 )
 def test(expected_type, first_node_with_tokens):
-    result = ActBlock.build(first_node_with_tokens)
+    result = ActNode.build(first_node_with_tokens)
 
     assert isinstance(result, list)
     assert len(result) == 1
-    assert isinstance(result[0], ActBlock)
+    assert isinstance(result[0], ActNode)
     assert result[0].node == first_node_with_tokens
     assert result[0].block_type == expected_type
 
@@ -68,11 +68,11 @@ def test(expected_type, first_node_with_tokens):
     ]
 )
 def test_nested(first_node_with_tokens):
-    result = ActBlock.build(first_node_with_tokens)
+    result = ActNode.build(first_node_with_tokens)
 
     assert isinstance(result, list)
     assert len(result) == 1
-    assert isinstance(result[0], ActBlock)
+    assert isinstance(result[0], ActNode)
     assert result[0].block_type == ActBlockType.result_assignment
     assert result[0].node == first_node_with_tokens.body[0]
 
@@ -88,6 +88,6 @@ def test_nested(first_node_with_tokens):
     ]
 )
 def test_not_actions(first_node_with_tokens):
-    result = ActBlock.build(first_node_with_tokens)
+    result = ActNode.build(first_node_with_tokens)
 
     assert result == []

@@ -4,10 +4,10 @@ from typing import List, Type, TypeVar
 from .helpers import node_is_pytest_raises, node_is_result_assignment, node_is_unittest_raises
 from .types import ActBlockType
 
-AB = TypeVar('AB', bound='ActBlock')  # Place holder for ActBlock instances
+AB = TypeVar('AB', bound='ActNode')  # Place holder for ActBlock instances
 
 
-class ActBlock:
+class ActNode:
     """
     Attributes:
         node
@@ -29,9 +29,9 @@ class ActBlock:
         Note:
             Return type is probably ``-> List[AB]``, but can't get it to pass.
         """
-        act_blocks = []  # type: List[ActBlock]
+        act_blocks = []  # type: List[ActNode]
         for child_node in body:
-            act_blocks += ActBlock.build(child_node)
+            act_blocks += ActNode.build(child_node)
         return act_blocks
 
     @classmethod
