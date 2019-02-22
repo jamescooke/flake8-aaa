@@ -70,6 +70,9 @@ class Function:
         return out
 
     def check_act(self):
+        """
+        Look for an Act Node, keep it in ``act_node`` attr if found.
+        """
         self.act_node = self.load_act_node()
         add_node_parents(self.node)
         self.line_markers.update(

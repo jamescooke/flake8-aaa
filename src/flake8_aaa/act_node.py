@@ -4,7 +4,7 @@ from typing import List, Type, TypeVar
 from .helpers import node_is_pytest_raises, node_is_result_assignment, node_is_unittest_raises
 from .types import ActBlockType
 
-AB = TypeVar('AB', bound='ActNode')  # Place holder for ActBlock instances
+AN = TypeVar('AN', bound='ActNode')  # Place holder for ActBlock instances
 
 
 class ActNode:
@@ -24,18 +24,25 @@ class ActNode:
         self.block_type = block_type  # type: ActBlockType
 
     @classmethod
-    def build_body(cls: Type[AB], body: List[ast.stmt]) -> List:
+    def build_body(cls: Type[AN], body: List[ast.stmt]) -> List:
         """
         Note:
-            Return type is probably ``-> List[AB]``, but can't get it to pass.
+            Return type is probably ``-> List[AN]``, but can't get it to pass.
         """
-        act_blocks = []  # type: List[ActNode]
+        act_nodes = []  # type: List[ActNode]
         for child_node in body:
-            act_blocks += ActNode.build(child_node)
-        return act_blocks
+            act_nodes += ActNode.build(child_node)
+        return act_nodes
 
     @classmethod
-    def build(cls: Type[AB], node: ast.AST) -> List[AB]:
+    def build(cls: Type[AN], node: ast.AST) -> List[AN]:
+        """
+        Starting at this ``node``, check if it's an act node. If it's a context
+        manager, recurse into child nodes.
+
+        Returns:
+            List of all act nodes found.
+        """
         if node_is_result_assignment(node):
             return [cls(node, ActBlockType.result_assignment)]
         if node_is_pytest_raises(node):
@@ -48,7 +55,7 @@ class ActNode:
         if token.line.strip().endswith('# act'):
             return [cls(node, ActBlockType.marked_act)]
 
-        # Recurse if it's a context manager
+        # Recurse (downwards) if it's a context manager
         if isinstance(node, ast.With):
             return cls.build_body(node.body)
 

@@ -4,11 +4,11 @@ from flake8_aaa.function import Function
 
 
 @pytest.fixture
-def function(first_node_with_tokens, lines):
+def function(first_node_with_tokens, lines) -> Function:
     """
     Returns:
-        Function: Loaded with ``first_node_with_tokens`` node, lines of test
-        are passed to Function.
+        Loaded with ``first_node_with_tokens`` node, lines of test are passed
+        to Function.
     """
     return Function(first_node_with_tokens, lines)
 
