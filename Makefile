@@ -41,10 +41,6 @@ lint:
 mypy:
 	mypy src/flake8_aaa tests --ignore-missing-imports
 
-.PHONY: test
-test:
-	pytest tests
-
 
 .PHONY: fixlint
 fixlint:
