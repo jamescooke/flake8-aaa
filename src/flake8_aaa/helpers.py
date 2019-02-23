@@ -194,10 +194,3 @@ def build_act_block_footprint(node: ast.AST, first_line_no: int, test_func_node:
 
     first_line = get_first_token(first_act_block_node).start[0] - first_line_no
     return set(range(first_line, last_line))
-
-
-def build_multinode_footprint(nodes: List[ast.AST], first_line_no: int) -> Set[int]:
-    out = set()  # type: Set[int]
-    for node in nodes:
-        out = out.union(build_footprint(node, first_line_no))
-    return out
