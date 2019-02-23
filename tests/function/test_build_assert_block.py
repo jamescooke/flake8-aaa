@@ -16,7 +16,7 @@ def test_none(function_with_act_block):
 
     assert result == 0
     assert isinstance(function_with_act_block.assert_block, Block)
-    assert len(function_with_act_block.assert_block.nodes) == 0
+    assert function_with_act_block.assert_block.nodes == ()
     assert function_with_act_block.assert_block.line_type == LineType.assert_block
     assert LineType.assert_block not in function_with_act_block.line_markers
 

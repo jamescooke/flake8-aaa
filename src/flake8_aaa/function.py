@@ -2,14 +2,12 @@ import ast
 from typing import List, Optional, Tuple
 
 from .act_node import ActNode
-from .arrange_block import ArrangeBlock
 from .block import Block
 from .exceptions import ValidationError
 from .helpers import (
     add_node_parents,
     build_act_block_footprint,
     build_footprint,
-    build_multinode_footprint,
     format_errors,
     function_is_noop,
     get_first_token,
@@ -47,7 +45,7 @@ class Function:
         # Ignore type because last_token is added by asttokens
         end = self.node.last_token.end[0]  # type: ignore
         self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
-        self.arrange_block = None  # type: Optional[ArrangeBlock]
+        self.arrange_block = None  # type: Optional[Block]
         self.act_node = None  # type: Optional[ActNode]
         self.assert_block = None  # type: Optional[Block]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
@@ -94,12 +92,7 @@ class Function:
         # ACT
         self.check_act()
         # ARRANGE
-        self.arrange_block = self.load_arrange_block()
-        if self.arrange_block:
-            self.line_markers.update(
-                build_multinode_footprint(self.arrange_block.nodes, self.first_line_no),
-                LineType.arrange_block,
-            )
+        self.build_arrange_block()
         # ASSERT
         self.build_assert_block()
         # SPACING
@@ -150,18 +143,24 @@ class Function:
 
         return act_nodes[0]
 
-    def load_arrange_block(self) -> Optional[ArrangeBlock]:
-        assert self.act_node
-        arrange_block = ArrangeBlock()
+    def build_arrange_block(self) -> int:
+        """
+        Arrange block is all nodes that are before the Act block that are not
+        docstrings or pass.
+
+        Returns:
+            Number of nodes found.
+        """
         act_block_lineno = self.line_markers.get_first_block_lineno(LineType.act_block)
-        for node in self.node.body:
-            if node.lineno < act_block_lineno:
-                arrange_block.add_node(node)
-
-        if arrange_block.nodes:
-            return arrange_block
-
-        return None
+        self.arrange_block = Block(
+            [node for node in self.node.body if node.lineno < act_block_lineno],
+            LineType.arrange_block,
+        )
+        self.line_markers.update(
+            self.arrange_block.build_footprint(self.first_line_no),
+            LineType.arrange_block,
+        )
+        return len(self.arrange_block.nodes)
 
     def build_assert_block(self) -> int:
         """
@@ -181,6 +180,7 @@ class Function:
 
             Does the ``print('hi')`` get correctly grabbed by the Act Block?
         """
+        assert self.act_node
         self.assert_block = Block(
             [node for node in self.node.body if node.lineno > self.act_node.node.lineno],
             LineType.assert_block,
