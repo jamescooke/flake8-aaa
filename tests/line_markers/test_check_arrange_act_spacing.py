@@ -11,13 +11,13 @@ def test_comment_before_act():
     """
     line_markers = LineMarkers(8, 5)
     line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.arrange_block  # x = 1
-    line_markers[2] = LineType.arrange_block  # y = 2
+    line_markers[1] = LineType.arrange  # x = 1
+    line_markers[2] = LineType.arrange  # y = 2
     line_markers[3] = LineType.blank_line
     line_markers[4] = LineType.unprocessed  # Sum x and y
-    line_markers[5] = LineType.act_block  # result = x + y
+    line_markers[5] = LineType.act  # result = x + y
     line_markers[6] = LineType.blank_line
-    line_markers[7] = LineType.assert_block  # assert result == 2
+    line_markers[7] = LineType._assert  # assert result == 2
 
     result = line_markers.check_arrange_act_spacing()
 
@@ -33,9 +33,9 @@ def test_no_arrange():
     line_markers[1] = LineType.unprocessed  # Some docstring
     line_markers[2] = LineType.unprocessed  # Some docstring
     line_markers[3] = LineType.unprocessed  # Some docstring
-    line_markers[4] = LineType.act_block  # result = 2 + 0
+    line_markers[4] = LineType.act  # result = 2 + 0
     line_markers[5] = LineType.blank_line
-    line_markers[6] = LineType.assert_block  # assert result == 2
+    line_markers[6] = LineType._assert  # assert result == 2
 
     result = line_markers.check_arrange_act_spacing()
 
@@ -51,11 +51,11 @@ def test_no_gap():
     """
     line_markers = LineMarkers(6, 5)
     line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.arrange_block  # x = 1
+    line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.unprocessed  # Sum do stuff
-    line_markers[3] = LineType.act_block  # result = x + 3
+    line_markers[3] = LineType.act  # result = x + 3
     line_markers[4] = LineType.blank_line
-    line_markers[5] = LineType.assert_block  # assert result == 4
+    line_markers[5] = LineType._assert  # assert result == 4
 
     with pytest.raises(ValidationError) as excinfo:
         line_markers.check_arrange_act_spacing()
@@ -71,13 +71,13 @@ def test_too_big_gap():
     """
     line_markers = LineMarkers(8, 5)
     line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.arrange_block  # x = 1
+    line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.blank_line
     line_markers[3] = LineType.blank_line
     line_markers[4] = LineType.unprocessed  # Sum do stuff
-    line_markers[5] = LineType.act_block  # result = x + 3
+    line_markers[5] = LineType.act  # result = x + 3
     line_markers[6] = LineType.blank_line
-    line_markers[7] = LineType.assert_block  # assert result == 4
+    line_markers[7] = LineType._assert  # assert result == 4
 
     with pytest.raises(ValidationError) as excinfo:
         line_markers.check_arrange_act_spacing()

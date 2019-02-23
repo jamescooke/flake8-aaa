@@ -21,4 +21,4 @@ def test(first_node_with_tokens):
     result = Block.build_act(with_pytest_node, first_node_with_tokens)
 
     assert result.nodes == (with_mock_node, )
-    assert result.line_type == LineType.act_block
+    assert result.line_type == LineType.act

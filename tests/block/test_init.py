@@ -5,10 +5,10 @@ from flake8_aaa.types import LineType
 
 
 def test_empty():
-    result = Block([], LineType.act_block)
+    result = Block([], LineType.act)
 
     assert result.nodes == ()
-    assert result.line_type == LineType.act_block
+    assert result.line_type == LineType.act
 
 
 @pytest.mark.parametrize(
@@ -28,6 +28,6 @@ def test():
     ]
 )
 def test_some(first_node_with_tokens):
-    result = Block(first_node_with_tokens.body, LineType.assert_block)
+    result = Block(first_node_with_tokens.body, LineType._assert)
 
     assert len(result.nodes) == 5

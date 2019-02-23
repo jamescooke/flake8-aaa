@@ -71,8 +71,8 @@ class LineMarkers(list):
         * When too many spaces found, point error at 2nd blank line
         """
         self.check_block_spacing(
-            LineType.arrange_block,
-            LineType.act_block,
+            LineType.arrange,
+            LineType.act,
             'AAA03 expected 1 blank line before Act block, found {}',
         )
 
@@ -82,8 +82,8 @@ class LineMarkers(list):
         * When too many spaces found, point error at 2nd blank line
         """
         self.check_block_spacing(
-            LineType.act_block,
-            LineType.assert_block,
+            LineType.act,
+            LineType._assert,
             'AAA04 expected 1 blank line before Assert block, found {}',
         )
 
