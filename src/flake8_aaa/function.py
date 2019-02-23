@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple
 
 from .act_node import ActNode
 from .arrange_block import ArrangeBlock
-from .assert_block import AssertBlock
+from .block import Block
 from .exceptions import ValidationError
 from .helpers import (
     add_node_parents,
@@ -49,7 +49,7 @@ class Function:
         self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
         self.arrange_block = None  # type: Optional[ArrangeBlock]
         self.act_node = None  # type: Optional[ActNode]
-        self.assert_block = None  # type: Optional[AssertBlock]
+        self.assert_block = None  # type: Optional[Block]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
         self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
 
@@ -101,12 +101,7 @@ class Function:
                 LineType.arrange_block,
             )
         # ASSERT
-        self.assert_block = self.load_assert_block()
-        if self.assert_block:
-            self.line_markers.update(
-                build_multinode_footprint(self.assert_block.nodes, self.first_line_no),
-                LineType.assert_block,
-            )
+        self.build_assert_block()
         # SPACING
         self.mark_bl()
         self.line_markers.check_arrange_act_spacing()
@@ -168,17 +163,33 @@ class Function:
 
         return None
 
-    def load_assert_block(self) -> Optional[AssertBlock]:
-        assert self.act_node
-        assert_block = AssertBlock()
-        for node in self.node.body:
-            if node.lineno > self.act_node.node.lineno:
-                assert_block.add_node(node)
+    def build_assert_block(self) -> int:
+        """
+        Assert block is all nodes that are after the Act node. Internal
+        ``assert_block`` attr is set with the created ``Block``.
 
-        if assert_block.nodes:
-            return assert_block
+        Returns:
+            Number of nodes found.
 
-        return None
+        Note:
+            TODO: This case needs testing::
+
+                with mock.patch(thing):
+                    with pytest.raises(ValueError):
+                        do_thing()
+                    print('hi')
+
+            Does the ``print('hi')`` get correctly grabbed by the Act Block?
+        """
+        self.assert_block = Block(
+            [node for node in self.node.body if node.lineno > self.act_node.node.lineno],
+            LineType.assert_block,
+        )
+        self.line_markers.update(
+            self.assert_block.build_footprint(self.first_line_no),
+            LineType.assert_block,
+        )
+        return len(self.assert_block.nodes)
 
     def get_line_relative_to_node(self, target_node: ast.AST, offset: int) -> str:
         """
