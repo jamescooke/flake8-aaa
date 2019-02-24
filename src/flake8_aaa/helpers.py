@@ -189,7 +189,6 @@ def build_act_block_footprint(node: ast.AST, first_line_no: int, test_func_node:
     # Walk up the parent nodes of the parent node to find test's definition.
     first_act_block_node = node
     while first_act_block_node.parent != test_func_node:  # type: ignore
-        # TODO check that parent is not a bad structure like for, if, while, etc
         first_act_block_node = first_act_block_node.parent  # type: ignore
 
     first_line = get_first_token(first_act_block_node).start[0] - first_line_no
