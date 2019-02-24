@@ -14,7 +14,7 @@ def test():
 def test_none(function_with_act_block):
     result = function_with_act_block.build_assert_block()
 
-    assert result == 0
+    assert result is None
     assert isinstance(function_with_act_block.assert_block, Block)
     assert function_with_act_block.assert_block.nodes == ()
     assert function_with_act_block.assert_block.line_type == LineType.assert_block
@@ -43,7 +43,7 @@ def test_raise(toy_instance):
 def test(function_with_act_block):
     result = function_with_act_block.build_assert_block()
 
-    assert result == 2
+    assert result is None
     assert isinstance(function_with_act_block.assert_block, Block)
     assert len(function_with_act_block.assert_block.nodes) == 2
     assert function_with_act_block.line_markers[-2:] == [LineType.assert_block] * 2

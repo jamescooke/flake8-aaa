@@ -194,3 +194,10 @@ def build_act_block_footprint(node: ast.AST, first_line_no: int, test_func_node:
 
     first_line = get_first_token(first_act_block_node).start[0] - first_line_no
     return set(range(first_line, last_line))
+
+
+def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast.AST]:
+    """
+    Finds all nodes that are after the ``min_line_number``
+    """
+    return [node for node in nodes if node.lineno > min_line_number]

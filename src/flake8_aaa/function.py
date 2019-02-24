@@ -6,6 +6,7 @@ from .block import Block
 from .exceptions import ValidationError
 from .helpers import (
     add_node_parents,
+    filter_assert_nodes,
     build_act_block_footprint,
     build_footprint,
     format_errors,
@@ -165,13 +166,10 @@ class Function:
         )
         return len(self.arrange_block.nodes)
 
-    def build_assert_block(self) -> int:
+    def build_assert_block(self) -> None:
         """
         Assert block is all nodes that are after the Act node. Internal
         ``assert_block`` attr is set with the created ``Block``.
-
-        Returns:
-            Number of nodes found.
 
         Note:
             TODO: This case needs testing::
@@ -184,15 +182,13 @@ class Function:
             Does the ``print('hi')`` get correctly grabbed by the Act Block?
         """
         assert self.act_node
-        self.assert_block = Block(
-            [node for node in self.node.body if node.lineno > self.act_node.node.lineno],
-            LineType.assert_block,
-        )
-        self.line_markers.update(
-            self.assert_block.build_footprint(self.first_line_no),
-            LineType.assert_block,
-        )
-        return len(self.assert_block.nodes)
+        block_nodes = filter_assert_nodes(self.node.body, self.act_node.node.lineno)
+        self.assert_block = self.build_block(block_nodes, LineType.assert_block)
+
+    def build_block(self, nodes: List[ast.AST], line_type: LineType) -> Block:
+        block = Block(nodes, LineType.assert_block)
+        self.line_markers.update(block.build_footprint(self.first_line_no), line_type)
+        return block
 
     def get_line_relative_to_node(self, target_node: ast.AST, offset: int) -> str:
         """
