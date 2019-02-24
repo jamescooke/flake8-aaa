@@ -153,7 +153,10 @@ class Function:
         """
         act_block_lineno = self.line_markers.get_first_block_lineno(LineType.act_block)
         self.arrange_block = Block(
-            [node for node in self.node.body if node.lineno < act_block_lineno],
+            [
+                node for node in self.node.body if node.lineno < act_block_lineno and not isinstance(node, ast.Pass)
+                and not (isinstance(node, ast.Expr) and isinstance(node.value, ast.Str))
+            ],
             LineType.arrange_block,
         )
         self.line_markers.update(
