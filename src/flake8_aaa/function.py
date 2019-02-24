@@ -6,7 +6,6 @@ from .block import Block
 from .exceptions import ValidationError
 from .helpers import (
     add_node_parents,
-    filter_assert_nodes,
     build_act_block_footprint,
     build_footprint,
     format_errors,
@@ -95,8 +94,14 @@ class Function:
         # ARRANGE
         self.build_arrange_block()
         # ASSERT
-        self.build_assert_block()
+        assert self.act_node
+        self.assert_block = Block.build_assert(self.node.body, self.act_node.node.lineno)
         # SPACING
+        for block in ['assert_block']:
+            self.line_markers.update(
+                getattr(self, block).build_footprint(self.first_line_no),
+                getattr(self, block).line_type,
+            )
         self.mark_bl()
         self.line_markers.check_arrange_act_spacing()
         self.line_markers.check_act_assert_spacing()
@@ -165,30 +170,6 @@ class Function:
             LineType.arrange_block,
         )
         return len(self.arrange_block.nodes)
-
-    def build_assert_block(self) -> None:
-        """
-        Assert block is all nodes that are after the Act node. Internal
-        ``assert_block`` attr is set with the created ``Block``.
-
-        Note:
-            TODO: This case needs testing::
-
-                with mock.patch(thing):
-                    with pytest.raises(ValueError):
-                        do_thing()
-                    print('hi')
-
-            Does the ``print('hi')`` get correctly grabbed by the Act Block?
-        """
-        assert self.act_node
-        block_nodes = filter_assert_nodes(self.node.body, self.act_node.node.lineno)
-        self.assert_block = self.build_block(block_nodes, LineType.assert_block)
-
-    def build_block(self, nodes: List[ast.AST], line_type: LineType) -> Block:
-        block = Block(nodes, LineType.assert_block)
-        self.line_markers.update(block.build_footprint(self.first_line_no), line_type)
-        return block
 
     def get_line_relative_to_node(self, target_node: ast.AST, offset: int) -> str:
         """

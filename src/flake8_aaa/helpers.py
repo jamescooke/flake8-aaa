@@ -1,6 +1,6 @@
 import ast
 import os
-from typing import List, Optional, Set, Tuple
+from typing import Iterable, List, Optional, Set, Tuple
 
 from asttokens.util import Token
 
@@ -196,7 +196,7 @@ def build_act_block_footprint(node: ast.AST, first_line_no: int, test_func_node:
     return set(range(first_line, last_line))
 
 
-def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast.AST]:
+def filter_assert_nodes(nodes: Iterable[ast.AST], min_line_number: int) -> List[ast.AST]:
     """
     Finds all nodes that are after the ``min_line_number``
     """

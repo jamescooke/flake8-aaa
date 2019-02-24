@@ -1,8 +1,10 @@
 import ast
-from typing import Iterable, Set
+from typing import Iterable, Set, Type, TypeVar
 
-from .helpers import build_footprint
+from .helpers import build_footprint, filter_assert_nodes
 from .types import LineType
+
+_Block = TypeVar('_Block', bound='Block')
 
 
 class Block:
@@ -21,6 +23,24 @@ class Block:
     def __init__(self, nodes: Iterable[ast.AST], lt: LineType) -> None:
         self.nodes = tuple(nodes)
         self.line_type = lt
+
+    @classmethod
+    def build_assert(cls: Type[_Block], nodes: Iterable[ast.AST], min_line_number: int) -> _Block:
+        """
+        Assert block is all nodes that are after the Act node. Internal
+        ``assert_block`` attr is set with the created ``Block``.
+
+        Note:
+            TODO: This case needs testing::
+
+                with mock.patch(thing):
+                    with pytest.raises(ValueError):
+                        do_thing()
+                    print('hi')
+
+            Does the ``print('hi')`` get correctly grabbed by the Act Block?
+        """
+        return cls(filter_assert_nodes(nodes, min_line_number), LineType.assert_block)
 
     def build_footprint(self, first_line_no: int) -> Set[int]:
         """
