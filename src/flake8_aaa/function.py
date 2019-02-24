@@ -92,15 +92,16 @@ class Function:
         # ACT
         self.check_act()
         # ARRANGE
-        self.build_arrange_block()
+        act_block_lineno = self.line_markers.get_first_block_lineno(LineType.act_block)
+        self.arrange_block = Block.build_arrange(self.node.body, act_block_lineno)
         # ASSERT
         assert self.act_node
         self.assert_block = Block.build_assert(self.node.body, self.act_node.node.lineno)
         # SPACING
-        for block in ['assert_block']:
+        for block in ['arrange', 'assert']:
             self.line_markers.update(
-                getattr(self, block).build_footprint(self.first_line_no),
-                getattr(self, block).line_type,
+                getattr(self, '{}_block'.format(block)).build_footprint(self.first_line_no),
+                getattr(self, '{}_block'.format(block)).line_type,
             )
         self.mark_bl()
         self.line_markers.check_arrange_act_spacing()
@@ -148,28 +149,6 @@ class Function:
                 )
 
         return act_nodes[0]
-
-    def build_arrange_block(self) -> int:
-        """
-        Arrange block is all nodes that are before the Act block that are not
-        docstrings or pass.
-
-        Returns:
-            Number of nodes found.
-        """
-        act_block_lineno = self.line_markers.get_first_block_lineno(LineType.act_block)
-        self.arrange_block = Block(
-            [
-                node for node in self.node.body if node.lineno < act_block_lineno and not isinstance(node, ast.Pass)
-                and not (isinstance(node, ast.Expr) and isinstance(node.value, ast.Str))
-            ],
-            LineType.arrange_block,
-        )
-        self.line_markers.update(
-            self.arrange_block.build_footprint(self.first_line_no),
-            LineType.arrange_block,
-        )
-        return len(self.arrange_block.nodes)
 
     def get_line_relative_to_node(self, target_node: ast.AST, offset: int) -> str:
         """

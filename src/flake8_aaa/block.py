@@ -1,7 +1,7 @@
 import ast
-from typing import Iterable, Set, Type, TypeVar
+from typing import Iterable, List, Set, Type, TypeVar
 
-from .helpers import build_footprint, filter_assert_nodes
+from .helpers import build_footprint, filter_arrange_nodes, filter_assert_nodes
 from .types import LineType
 
 _Block = TypeVar('_Block', bound='Block')
@@ -25,12 +25,23 @@ class Block:
         self.line_type = lt
 
     @classmethod
-    def build_assert(cls: Type[_Block], nodes: Iterable[ast.AST], min_line_number: int) -> _Block:
+    def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], max_line_number: int) -> _Block:
         """
-        Assert block is all nodes that are after the Act node. Internal
-        ``assert_block`` attr is set with the created ``Block``.
+        Arrange block is all non-pass and non-docstring nodes before the Act
+        block start.
+        """
+        return cls(filter_arrange_nodes(nodes, max_line_number), LineType.arrange_block)
+
+    @classmethod
+    def build_assert(cls: Type[_Block], nodes: List[ast.stmt], min_line_number: int) -> _Block:
+        """
+        Assert block is all nodes that are after the Act node.
 
         Note:
+            The filtering is *still* running off the line number of the Act
+            node, when instead it should be using the last line of the Act
+            block.
+
             TODO: This case needs testing::
 
                 with mock.patch(thing):

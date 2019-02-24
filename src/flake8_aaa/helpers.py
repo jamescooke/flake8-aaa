@@ -1,6 +1,6 @@
 import ast
 import os
-from typing import Iterable, List, Optional, Set, Tuple
+from typing import List, Optional, Set, Tuple
 
 from asttokens.util import Token
 
@@ -196,7 +196,18 @@ def build_act_block_footprint(node: ast.AST, first_line_no: int, test_func_node:
     return set(range(first_line, last_line))
 
 
-def filter_assert_nodes(nodes: Iterable[ast.AST], min_line_number: int) -> List[ast.AST]:
+def filter_arrange_nodes(nodes: List[ast.stmt], max_line_number: int) -> List[ast.stmt]:
+    """
+    Finds all nodes that are before the ``max_line_number`` and are not
+    docstrings or ``pass``.
+    """
+    return [
+        node for node in nodes if node.lineno < max_line_number and not isinstance(node, ast.Pass)
+        and not (isinstance(node, ast.Expr) and isinstance(node.value, ast.Str))
+    ]
+
+
+def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast.stmt]:
     """
     Finds all nodes that are after the ``min_line_number``
     """
