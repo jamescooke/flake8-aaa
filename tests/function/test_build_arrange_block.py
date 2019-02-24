@@ -42,7 +42,8 @@ def test_simple(function_with_act_block):
 
 
 @pytest.mark.parametrize(
-    'code_str', ['''
+    'code_str', [
+        '''
 def test():
     """
     Simple test
@@ -53,7 +54,8 @@ def test():
     result = x + y
 
     assert result == 2
-''']
+'''
+    ]
 )
 def test_filtered(function_with_act_block):
     result = function_with_act_block.build_arrange_block()

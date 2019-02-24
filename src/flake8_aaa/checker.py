@@ -1,5 +1,5 @@
-from typing import Generator, Tuple, Type, List
 from ast import AST
+from typing import Generator, List, Tuple, Type
 
 import asttokens
 
