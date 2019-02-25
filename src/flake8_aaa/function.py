@@ -25,6 +25,7 @@ class Function:
             Act Block can be larger than just the node, mainly because it could
             be wrapped in context managers. Defaults to ``None``.
         arrange_block: Arrange block for this test. Defaults to ``None``.
+        assert_block: Assert block. Defaults to ``None``.
         _errors: List of errors for this Function. Defaults to ``None`` when
             Function has not been checked. Empty list ``[]`` means that the
             Function has been checked and is free of errors.
@@ -100,7 +101,7 @@ class Function:
         # SPACING
         for block in ['arrange', 'assert']:
             self.line_markers.update(
-                getattr(self, '{}_block'.format(block)).build_footprint(self.first_line_no),
+                getattr(self, '{}_block'.format(block)).get_span(self.first_line_no),
                 getattr(self, '{}_block'.format(block)).line_type,
             )
         self.mark_bl()
@@ -182,9 +183,8 @@ class Function:
             # Fn has no args, so end of function is the fn def itself...
             end_token = get_first_token(self.node)
         last_line = end_token.end[0] - self.first_line_no
-        lines = range(first_line, last_line + 1)
-        self.line_markers.update(lines, LineType.func_def)
-        return len(lines)
+        self.line_markers.update((first_line, last_line), LineType.func_def)
+        return last_line - first_line + 1
 
     def mark_bl(self) -> int:
         """
