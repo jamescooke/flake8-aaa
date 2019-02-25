@@ -1,7 +1,7 @@
 import ast
-from typing import Iterable, List, Set, Type, TypeVar
+from typing import Iterable, List, Set, Tuple, Type, TypeVar
 
-from .helpers import build_footprint, filter_arrange_nodes, filter_assert_nodes
+from .helpers import build_footprint, filter_arrange_nodes, filter_assert_nodes, get_first_token, get_last_token
 from .types import LineType
 
 _Block = TypeVar('_Block', bound='Block')
@@ -52,6 +52,13 @@ class Block:
             Does the ``print('hi')`` get correctly grabbed by the Act Block?
         """
         return cls(filter_assert_nodes(nodes, min_line_number), LineType.assert_block)
+
+    def get_span(self, first_line_no: int) -> Tuple[int, int]:
+        assert self.nodes
+        return (
+            get_first_token(self.nodes[0]).start[0] - first_line_no,
+            get_last_token(self.nodes[-1]).start[0] - first_line_no,
+        )
 
     def build_footprint(self, first_line_no: int) -> Set[int]:
         """
