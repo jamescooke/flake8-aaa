@@ -25,6 +25,14 @@ class Block:
         self.line_type = lt
 
     @classmethod
+    def build_act(cls: Type[_Block], node: ast.stmt) -> _Block:
+        """
+        Act block is a single node - either the act node itself, or the node
+        that wraps the act node.
+        """
+        return cls([node], LineType.act_block)
+
+    @classmethod
     def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], max_line_number: int) -> _Block:
         """
         Arrange block is all non-pass and non-docstring nodes before the Act
