@@ -1,7 +1,7 @@
 import ast
-from typing import Iterable, List, Set, Tuple, Type, TypeVar
+from typing import Iterable, List, Tuple, Type, TypeVar
 
-from .helpers import build_footprint, filter_arrange_nodes, filter_assert_nodes, get_first_token, get_last_token
+from .helpers import filter_arrange_nodes, filter_assert_nodes, get_first_token, get_last_token
 from .types import LineType
 
 _Block = TypeVar('_Block', bound='Block')
@@ -59,15 +59,3 @@ class Block:
             get_first_token(self.nodes[0]).start[0] - first_line_no,
             get_last_token(self.nodes[-1]).start[0] - first_line_no,
         )
-
-    def build_footprint(self, first_line_no: int) -> Set[int]:
-        """
-        Args:
-            first_line_no: First line number of the function that contains this
-                code block, so that the returned line numbers are all relative
-                to the function definition which is at line 0.
-        """
-        out = set()  # type: Set[int]
-        for node in self.nodes:
-            out = out.union(build_footprint(node, first_line_no))
-        return out

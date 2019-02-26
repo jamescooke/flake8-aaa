@@ -74,10 +74,8 @@ class Function:
         """
         self.act_node = self.load_act_node()
         add_node_parents(self.node)
-        self.line_markers.update(
-            build_act_block_footprint(self.act_node.node, self.first_line_no, self.node),
-            LineType.act_block,
-        )
+        footprint = build_act_block_footprint(self.act_node.node, self.first_line_no, self.node)
+        self.line_markers.update((min(footprint), max(footprint)), LineType.act_block)
 
     def check_all(self) -> None:
         """
