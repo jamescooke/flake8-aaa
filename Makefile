@@ -16,7 +16,7 @@ dev: venv venv/bin/pip-sync
 
 .PHONY: tox
 tox:
-	tox
+	tox -s true
 
 
 .PHONY: lint
