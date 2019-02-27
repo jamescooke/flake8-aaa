@@ -19,6 +19,14 @@ Added
 
 * Support for Python 3.7.
 
+Changed
+-------
+
+* Act node now distinguished from Act block in code and docs. Generic ``Block``
+  class now handles all blocks.
+
+* Python warnings now reported in test runs.
+
 0.5.1_ - 2019/02/01
 -------------------
 
