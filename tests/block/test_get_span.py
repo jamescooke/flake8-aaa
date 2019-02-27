@@ -1,6 +1,7 @@
 import pytest
 
 from flake8_aaa.block import Block
+from flake8_aaa.exceptions import EmptyBlock
 from flake8_aaa.types import LineType
 
 
@@ -10,7 +11,7 @@ def test_none():
     """
     block = Block([], LineType.act_block)
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(EmptyBlock):
         block.get_span(13)
 
 

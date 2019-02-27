@@ -3,7 +3,7 @@ from typing import List, Optional, Tuple
 
 from .act_node import ActNode
 from .block import Block
-from .exceptions import ValidationError
+from .exceptions import EmptyBlock, ValidationError
 from .helpers import build_footprint, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
 from .types import ActBlockType, LineType
@@ -83,10 +83,12 @@ class Function:
         self.assert_block = Block.build_assert(self.node.body, act_block_last_line_no)
         # SPACING
         for block in ['arrange', 'act', 'assert']:
-            self.line_markers.update(
-                getattr(self, '{}_block'.format(block)).get_span(self.first_line_no),
-                getattr(self, '{}_block'.format(block)).line_type,
-            )
+            self_block = getattr(self, '{}_block'.format(block))
+            try:
+                span = self_block.get_span(self.first_line_no)
+            except EmptyBlock:
+                continue
+            self.line_markers.update(span, self_block.line_type)
         self.mark_bl()
         self.line_markers.check_arrange_act_spacing()
         self.line_markers.check_act_assert_spacing()
