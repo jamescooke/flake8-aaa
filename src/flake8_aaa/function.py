@@ -4,15 +4,7 @@ from typing import List, Optional, Tuple
 from .act_node import ActNode
 from .block import Block
 from .exceptions import ValidationError
-from .helpers import (
-    add_node_parents,
-    build_act_block_footprint,
-    build_footprint,
-    format_errors,
-    function_is_noop,
-    get_first_token,
-    get_last_token,
-)
+from .helpers import build_footprint, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
 from .types import ActBlockType, LineType
 
@@ -48,6 +40,7 @@ class Function:
         self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
         self.arrange_block = None  # type: Optional[Block]
         self.act_node = None  # type: Optional[ActNode]
+        self.act_block = None  # type: Optional[Block]
         self.assert_block = None  # type: Optional[Block]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
         self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
@@ -68,15 +61,6 @@ class Function:
         out += format_errors(self._errors)
         return out
 
-    def check_act(self):
-        """
-        Look for an Act Node, keep it in ``act_node`` attr if found.
-        """
-        self.act_node = self.load_act_node()
-        add_node_parents(self.node)
-        footprint = build_act_block_footprint(self.act_node.node, self.first_line_no, self.node)
-        self.line_markers.update((min(footprint), max(footprint)), LineType.act_block)
-
     def check_all(self) -> None:
         """
         Run everything required for checking this function.
@@ -89,15 +73,16 @@ class Function:
         if function_is_noop(self.node):
             return
         # ACT
-        self.check_act()
+        self.act_node = self.load_act_node()
+        self.act_block = Block.build_act(self.act_node.node, self.node)
+        act_block_first_line_no, act_block_last_line_no = self.act_block.get_span(0)
         # ARRANGE
-        act_block_lineno = self.line_markers.get_first_block_lineno(LineType.act_block)
-        self.arrange_block = Block.build_arrange(self.node.body, act_block_lineno)
+        self.arrange_block = Block.build_arrange(self.node.body, act_block_first_line_no)
         # ASSERT
         assert self.act_node
-        self.assert_block = Block.build_assert(self.node.body, self.act_node.node.lineno)
+        self.assert_block = Block.build_assert(self.node.body, act_block_last_line_no)
         # SPACING
-        for block in ['arrange', 'assert']:
+        for block in ['arrange', 'act', 'assert']:
             self.line_markers.update(
                 getattr(self, '{}_block'.format(block)).get_span(self.first_line_no),
                 getattr(self, '{}_block'.format(block)).line_type,

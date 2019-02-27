@@ -14,13 +14,13 @@ class ActNode:
         block_type
     """
 
-    def __init__(self, node: ast.AST, block_type: ActBlockType) -> None:
+    def __init__(self, node: ast.stmt, block_type: ActBlockType) -> None:
         """
         Args:
             node
             block_type
         """
-        self.node = node  # type: ast.AST
+        self.node = node  # type: ast.stmt
         self.block_type = block_type  # type: ActBlockType
 
     @classmethod
@@ -35,7 +35,7 @@ class ActNode:
         return act_nodes
 
     @classmethod
-    def build(cls: Type[AN], node: ast.AST) -> List[AN]:
+    def build(cls: Type[AN], node: ast.stmt) -> List[AN]:
         """
         Starting at this ``node``, check if it's an act node. If it's a context
         manager, recurse into child nodes.
