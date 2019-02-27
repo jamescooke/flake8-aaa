@@ -27,6 +27,8 @@ Changed
 
 * Python warnings now reported in test runs.
 
+* Command line wrapper fixed to manually close files opened by ``argparse``.
+
 0.5.1_ - 2019/02/01
 -------------------
 
