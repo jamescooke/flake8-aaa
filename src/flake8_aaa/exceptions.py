@@ -5,6 +5,12 @@ class Flake8AAAException(Exception):
     pass
 
 
+class EmptyBlock(Flake8AAAException):
+    """
+    Block has no nodes.
+    """
+
+
 class ValidationError(Flake8AAAException):
     """
     Attributes:

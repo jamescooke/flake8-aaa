@@ -1,8 +1,8 @@
 import pytest
 
-from flake8_aaa.act_block import ActBlock
+from flake8_aaa.act_node import ActNode
 from flake8_aaa.exceptions import ValidationError
-from flake8_aaa.types import ActBlockType
+from flake8_aaa.types import ActNodeType
 
 
 @pytest.mark.parametrize('code_str', ['''
@@ -12,10 +12,10 @@ def test():
     assert result == 1
 '''])
 def test_assignment(function):
-    result = function.load_act_block()
+    result = function.load_act_node()
 
-    assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlockType.result_assignment
+    assert isinstance(result, ActNode)
+    assert result.block_type == ActNodeType.result_assignment
     assert result.node.first_token.line == '    result = 1\n'
 
 
@@ -26,10 +26,10 @@ def test():
     assert x == 4
 '''])
 def test_act_marker(function):
-    result = function.load_act_block()
+    result = function.load_act_node()
 
-    assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlockType.marked_act
+    assert isinstance(result, ActNode)
+    assert result.block_type == ActNodeType.marked_act
     assert result.node.first_token.line == '    x = y + 1  # act\n'
 
 
@@ -60,10 +60,10 @@ def test(self):
     ids=['pytest raises in Assert', 'unittest raises in Assert'],
 )
 def test_raises_in_assert(function):
-    result = function.load_act_block()
+    result = function.load_act_node()
 
-    assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlockType.result_assignment
+    assert isinstance(result, ActNode)
+    assert result.block_type == ActNodeType.result_assignment
     assert result.node.first_token.line == '    result = existing_user.delete()\n'
 
 
@@ -82,10 +82,10 @@ def test(existing_user):
     ids=['act in context manager'],
 )
 def test_in_cm(function):
-    result = function.load_act_block()
+    result = function.load_act_node()
 
-    assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlockType.result_assignment
+    assert isinstance(result, ActNode)
+    assert result.block_type == ActNodeType.result_assignment
     assert result.node.first_token.line == '        result = existing_user.delete()\n'
 
 
@@ -102,10 +102,10 @@ def test_no_recreate(existing_user):
     ids=['pytest raises in context manager'],
 )
 def test_raises_in_cm(function):
-    result = function.load_act_block()
+    result = function.load_act_node()
 
-    assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlockType.pytest_raises
+    assert isinstance(result, ActNode)
+    assert result.block_type == ActNodeType.pytest_raises
     assert result.node.first_token.line == '        with pytest.raises(ValidationError):\n'
 
 
@@ -123,10 +123,10 @@ def test_creation(stub_user):
     ids=['marked act block in context manager'],
 )
 def test_marked_in_cm(function):
-    result = function.load_act_block()
+    result = function.load_act_node()
 
-    assert isinstance(result, ActBlock)
-    assert result.block_type == ActBlockType.marked_act
+    assert isinstance(result, ActNode)
+    assert result.block_type == ActNodeType.marked_act
     assert result.node.first_token.line == '        stub_user.create()  # act\n'
 
 
@@ -139,7 +139,7 @@ def test():
 '''])
 def test_no_block(function):
     with pytest.raises(ValidationError) as excinfo:
-        function.load_act_block()
+        function.load_act_node()
 
     assert excinfo.value.line_number == 2
     assert excinfo.value.offset == 0
@@ -178,7 +178,7 @@ def test_read(self):
 )
 def test_multiple_acts(function):
     with pytest.raises(ValidationError) as excinfo:
-        function.load_act_block()
+        function.load_act_node()
 
     assert excinfo.value.line_number == 2
     assert excinfo.value.offset == 0

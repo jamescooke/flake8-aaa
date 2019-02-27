@@ -1,29 +1,23 @@
 import ast
 from typing import List, Optional, Tuple
 
-from .act_block import ActBlock
-from .arrange_block import ArrangeBlock
-from .assert_block import AssertBlock
-from .exceptions import ValidationError
-from .helpers import (
-    add_node_parents,
-    build_act_block_footprint,
-    build_footprint,
-    build_multinode_footprint,
-    format_errors,
-    function_is_noop,
-    get_first_token,
-    get_last_token,
-)
+from .act_node import ActNode
+from .block import Block
+from .exceptions import EmptyBlock, ValidationError
+from .helpers import build_footprint, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
-from .types import ActBlockType, LineType
+from .types import ActNodeType, LineType
 
 
 class Function:
     """
     Attributes:
-        act_block: Act block for the test. Defaults to ``None``.
+        act_node: Act Node for the test. This is the node of the AST that looks
+            like the action. Distinguish between this and the Act Block - the
+            Act Block can be larger than just the node, mainly because it could
+            be wrapped in context managers. Defaults to ``None``.
         arrange_block: Arrange block for this test. Defaults to ``None``.
+        assert_block: Assert block. Defaults to ``None``.
         _errors: List of errors for this Function. Defaults to ``None`` when
             Function has not been checked. Empty list ``[]`` means that the
             Function has been checked and is free of errors.
@@ -44,9 +38,10 @@ class Function:
         # Ignore type because last_token is added by asttokens
         end = self.node.last_token.end[0]  # type: ignore
         self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
-        self.arrange_block = None  # type: Optional[ArrangeBlock]
-        self.act_block = None  # type: Optional[ActBlock]
-        self.assert_block = None  # type: Optional[AssertBlock]
+        self.arrange_block = None  # type: Optional[Block]
+        self.act_node = None  # type: Optional[ActNode]
+        self.act_block = None  # type: Optional[Block]
+        self.assert_block = None  # type: Optional[Block]
         self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
         self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
 
@@ -66,14 +61,6 @@ class Function:
         out += format_errors(self._errors)
         return out
 
-    def check_act(self):
-        self.act_block = self.load_act_block()
-        add_node_parents(self.node)
-        self.line_markers.update(
-            build_act_block_footprint(self.act_block.node, self.first_line_no, self.node),
-            LineType.act_block,
-        )
-
     def check_all(self) -> None:
         """
         Run everything required for checking this function.
@@ -86,22 +73,22 @@ class Function:
         if function_is_noop(self.node):
             return
         # ACT
-        self.check_act()
+        self.act_node = self.load_act_node()
+        self.act_block = Block.build_act(self.act_node.node, self.node)
+        act_block_first_line_no, act_block_last_line_no = self.act_block.get_span(0)
         # ARRANGE
-        self.arrange_block = self.load_arrange_block()
-        if self.arrange_block:
-            self.line_markers.update(
-                build_multinode_footprint(self.arrange_block.nodes, self.first_line_no),
-                LineType.arrange_block,
-            )
+        self.arrange_block = Block.build_arrange(self.node.body, act_block_first_line_no)
         # ASSERT
-        self.assert_block = self.load_assert_block()
-        if self.assert_block:
-            self.line_markers.update(
-                build_multinode_footprint(self.assert_block.nodes, self.first_line_no),
-                LineType.assert_block,
-            )
+        assert self.act_node
+        self.assert_block = Block.build_assert(self.node.body, act_block_last_line_no)
         # SPACING
+        for block in ['arrange', 'act', 'assert']:
+            self_block = getattr(self, '{}_block'.format(block))
+            try:
+                span = self_block.get_span(self.first_line_no)
+            except EmptyBlock:
+                continue
+            self.line_markers.update(span, self_block.line_type)
         self.mark_bl()
         self.line_markers.check_arrange_act_spacing()
         self.line_markers.check_act_assert_spacing()
@@ -126,54 +113,28 @@ class Function:
             self._errors = [error.to_flake8(Function)]
         return self._errors
 
-    def load_act_block(self) -> ActBlock:
+    def load_act_node(self) -> ActNode:
         """
         Raises:
             ValidationError: AAA01 when no act block is found and AAA02 when
                 multiple act blocks are found.
         """
-        act_blocks = ActBlock.build_body(self.node.body)
+        act_nodes = ActNode.build_body(self.node.body)
 
-        if not act_blocks:
+        if not act_nodes:
             raise ValidationError(self.first_line_no, self.node.col_offset, 'AAA01 no Act block found in test')
 
-        # Allow `pytest.raises` and `self.assertRaises()` in assert blocks - if
-        # any of the additional act blocks are `pytest.raises` blocks, then
-        # raise
-        for a_b in act_blocks[1:]:
-            if a_b.block_type in [ActBlockType.marked_act, ActBlockType.result_assignment]:
+        # Allow `pytest.raises` and `self.assertRaises()` in assert nodes - if
+        # any of the additional nodes are `pytest.raises`, then raise
+        for a_n in act_nodes[1:]:
+            if a_n.block_type in [ActNodeType.marked_act, ActNodeType.result_assignment]:
                 raise ValidationError(
                     self.first_line_no,
                     self.node.col_offset,
                     'AAA02 multiple Act blocks found in test',
                 )
 
-        return act_blocks[0]
-
-    def load_arrange_block(self) -> Optional[ArrangeBlock]:
-        assert self.act_block
-        arrange_block = ArrangeBlock()
-        act_block_lineno = self.line_markers.get_first_block_lineno(LineType.act_block)
-        for node in self.node.body:
-            if node.lineno < act_block_lineno:
-                arrange_block.add_node(node)
-
-        if arrange_block.nodes:
-            return arrange_block
-
-        return None
-
-    def load_assert_block(self) -> Optional[AssertBlock]:
-        assert self.act_block
-        assert_block = AssertBlock()
-        for node in self.node.body:
-            if node.lineno > self.act_block.node.lineno:
-                assert_block.add_node(node)
-
-        if assert_block.nodes:
-            return assert_block
-
-        return None
+        return act_nodes[0]
 
     def get_line_relative_to_node(self, target_node: ast.AST, offset: int) -> str:
         """
@@ -207,9 +168,8 @@ class Function:
             # Fn has no args, so end of function is the fn def itself...
             end_token = get_first_token(self.node)
         last_line = end_token.end[0] - self.first_line_no
-        lines = range(first_line, last_line + 1)
-        self.line_markers.update(lines, LineType.func_def)
-        return len(lines)
+        self.line_markers.update((first_line, last_line), LineType.func_def)
+        return last_line - first_line + 1
 
     def mark_bl(self) -> int:
         """

@@ -1,4 +1,4 @@
-from typing import Any, Iterable, Set, Union, overload
+from typing import Any, Iterable, Tuple, overload
 
 from .exceptions import ValidationError
 from .types import LineType
@@ -44,13 +44,12 @@ class LineMarkers(list):
             ))
         return super().__setitem__(key, value)
 
-    def update(self, footprint: Union[range, Set[int]], line_type: LineType) -> None:
+    def update(self, span: Tuple[int, int], line_type: LineType) -> None:
         """
-        Updates line types for a block's footprint.
+        Updates line types for a block's span.
 
         Args:
-            footprint: This is a range or set of 0 indexed positions in the
-                function that will be updated.
+            span: First and last relative line number of a Block.
             line_type: The type of line to update to.
 
         Raises:
@@ -59,7 +58,8 @@ class LineMarkers(list):
                 but it indicates to the user that something went wrong with
                 processing the function.
         """
-        for i in footprint:
+        first_block_line, last_block_line = span
+        for i in range(first_block_line, last_block_line + 1):
             try:
                 self.__setitem__(i, line_type)
             except ValueError as error:
@@ -86,13 +86,6 @@ class LineMarkers(list):
             LineType.assert_block,
             'AAA04 expected 1 blank line before Assert block, found {}',
         )
-
-    def get_first_block_lineno(self, block_type: LineType) -> int:
-        """
-        Finds first line of provided block type and returns that line number.
-        """
-        numbered_lines = list(enumerate(self))
-        return next(filter(lambda l: l[1] is block_type, numbered_lines))[0] + self.fn_offset
 
     def check_block_spacing(self, first_block_type: LineType, second_block_type: LineType, error_message: str) -> None:
         """
