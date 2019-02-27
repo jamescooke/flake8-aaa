@@ -115,7 +115,6 @@ class LineMarkers(list):
             bl for bl in numbered_lines[first_block_lineno + 1:second_block_lineno] if bl[1] is LineType.blank_line
         ]
         if not blank_lines:
-            # TODO get a real offset for the line
             # Point at line above second block
             raise ValidationError(self.fn_offset + second_block_lineno - 1, 0, error_message.format('none'))
         if len(blank_lines) > 1:

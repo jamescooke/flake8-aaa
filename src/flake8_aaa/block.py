@@ -55,15 +55,6 @@ class Block:
             The filtering is *still* running off the line number of the Act
             node, when instead it should be using the last line of the Act
             block.
-
-            TODO: This case needs testing::
-
-                with mock.patch(thing):
-                    with pytest.raises(ValueError):
-                        do_thing()
-                    print('hi')
-
-            Does the ``print('hi')`` get correctly grabbed by the Act Block?
         """
         return cls(filter_assert_nodes(nodes, min_line_number), LineType.assert_block)
 

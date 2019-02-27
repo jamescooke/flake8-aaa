@@ -13,7 +13,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description='flake8-aaa command line debug')
     parser.add_argument('infile', type=argparse.FileType('r'), help='File to be linted')
     args = parser.parse_args()
-    return do_command_line(args.infile)
+    result = do_command_line(args.infile)
+    args.infile.close()
+    return result
 
 
 if __name__ == '__main__':
