@@ -1,7 +1,7 @@
 import ast
 from typing import Iterable, List, Tuple, Type, TypeVar
 
-from .helpers import filter_arrange_nodes, filter_assert_nodes, get_first_token, get_last_token
+from .helpers import add_node_parents, filter_arrange_nodes, filter_assert_nodes, get_first_token, get_last_token
 from .types import LineType
 
 _Block = TypeVar('_Block', bound='Block')
@@ -25,12 +25,17 @@ class Block:
         self.line_type = lt
 
     @classmethod
-    def build_act(cls: Type[_Block], node: ast.stmt) -> _Block:
+    def build_act(cls: Type[_Block], node: ast.stmt, test_func_node: ast.FunctionDef) -> _Block:
         """
         Act block is a single node - either the act node itself, or the node
         that wraps the act node.
         """
-        return cls([node], LineType.act_block)
+        add_node_parents(test_func_node)
+        # Walk up the parent nodes of the parent node to find test's definition.
+        act_block_node = node
+        while act_block_node.parent != test_func_node:  # type: ignore
+            act_block_node = act_block_node.parent  # type: ignore
+        return cls([act_block_node], LineType.act_block)
 
     @classmethod
     def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], max_line_number: int) -> _Block:

@@ -1,7 +1,6 @@
 import pytest
 
-from flake8_aaa.block import Block
-from flake8_aaa.types import LineType
+from flake8_aaa.helpers import add_node_parents
 
 
 @pytest.mark.parametrize(
@@ -18,7 +17,8 @@ def test(first_node_with_tokens):
     with_mock_node = first_node_with_tokens.body[0]
     with_pytest_node = with_mock_node.body[0]
 
-    result = Block.build_act(with_pytest_node, first_node_with_tokens)
+    result = add_node_parents(first_node_with_tokens)
 
-    assert result.nodes == (with_mock_node, )
-    assert result.line_type == LineType.act_block
+    assert result is None
+    assert with_pytest_node.parent == with_mock_node
+    assert with_mock_node.parent == first_node_with_tokens
