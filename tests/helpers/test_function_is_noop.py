@@ -7,8 +7,14 @@ from flake8_aaa.helpers import function_is_noop
 
 @pytest.mark.parametrize(
     'code_str', [
-        'def test():\n    pass',
-        'def test_docstring():\n    """This test will work great"""',
+        '''
+def test():
+    pass
+''',
+        '''
+def test_docstring():
+    """This test will work great"""
+''',
     ]
 )
 def test(code_str):
@@ -20,7 +26,11 @@ def test(code_str):
 
 
 @pytest.mark.parametrize('code_str', [
-    'def test_tomorrow():\n    # TODO write this test\n    result = 1',
+    '''
+def test_tomorrow():
+    # FIX write this test
+    result = 1
+''',
 ])
 def test_not_noop(code_str):
     node = ast.parse(code_str).body[0]
