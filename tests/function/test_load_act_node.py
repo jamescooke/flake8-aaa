@@ -2,7 +2,7 @@ import pytest
 
 from flake8_aaa.act_node import ActNode
 from flake8_aaa.exceptions import ValidationError
-from flake8_aaa.types import ActBlockType
+from flake8_aaa.types import ActNodeType
 
 
 @pytest.mark.parametrize('code_str', ['''
@@ -15,7 +15,7 @@ def test_assignment(function):
     result = function.load_act_node()
 
     assert isinstance(result, ActNode)
-    assert result.block_type == ActBlockType.result_assignment
+    assert result.block_type == ActNodeType.result_assignment
     assert result.node.first_token.line == '    result = 1\n'
 
 
@@ -29,7 +29,7 @@ def test_act_marker(function):
     result = function.load_act_node()
 
     assert isinstance(result, ActNode)
-    assert result.block_type == ActBlockType.marked_act
+    assert result.block_type == ActNodeType.marked_act
     assert result.node.first_token.line == '    x = y + 1  # act\n'
 
 
@@ -63,7 +63,7 @@ def test_raises_in_assert(function):
     result = function.load_act_node()
 
     assert isinstance(result, ActNode)
-    assert result.block_type == ActBlockType.result_assignment
+    assert result.block_type == ActNodeType.result_assignment
     assert result.node.first_token.line == '    result = existing_user.delete()\n'
 
 
@@ -85,7 +85,7 @@ def test_in_cm(function):
     result = function.load_act_node()
 
     assert isinstance(result, ActNode)
-    assert result.block_type == ActBlockType.result_assignment
+    assert result.block_type == ActNodeType.result_assignment
     assert result.node.first_token.line == '        result = existing_user.delete()\n'
 
 
@@ -105,7 +105,7 @@ def test_raises_in_cm(function):
     result = function.load_act_node()
 
     assert isinstance(result, ActNode)
-    assert result.block_type == ActBlockType.pytest_raises
+    assert result.block_type == ActNodeType.pytest_raises
     assert result.node.first_token.line == '        with pytest.raises(ValidationError):\n'
 
 
@@ -126,7 +126,7 @@ def test_marked_in_cm(function):
     result = function.load_act_node()
 
     assert isinstance(result, ActNode)
-    assert result.block_type == ActBlockType.marked_act
+    assert result.block_type == ActNodeType.marked_act
     assert result.node.first_token.line == '        stub_user.create()  # act\n'
 
 

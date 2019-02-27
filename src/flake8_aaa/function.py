@@ -6,7 +6,7 @@ from .block import Block
 from .exceptions import EmptyBlock, ValidationError
 from .helpers import build_footprint, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
-from .types import ActBlockType, LineType
+from .types import ActNodeType, LineType
 
 
 class Function:
@@ -127,7 +127,7 @@ class Function:
         # Allow `pytest.raises` and `self.assertRaises()` in assert nodes - if
         # any of the additional nodes are `pytest.raises`, then raise
         for a_n in act_nodes[1:]:
-            if a_n.block_type in [ActBlockType.marked_act, ActBlockType.result_assignment]:
+            if a_n.block_type in [ActNodeType.marked_act, ActNodeType.result_assignment]:
                 raise ValidationError(
                     self.first_line_no,
                     self.node.col_offset,
