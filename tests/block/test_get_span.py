@@ -9,7 +9,7 @@ def test_none():
     """
     Block must have nodes
     """
-    block = Block([], LineType.act_block)
+    block = Block([], LineType.act)
 
     with pytest.raises(EmptyBlock):
         block.get_span(13)
@@ -39,7 +39,7 @@ def test():  # Line 5
     ]
 )
 def test(first_node_with_tokens):
-    block = Block(first_node_with_tokens.body, LineType.assert_block)
+    block = Block(first_node_with_tokens.body, LineType._assert)
 
     result = block.get_span(5)
 

@@ -5,9 +5,9 @@ from flake8_aaa.types import LineType
 
 @pytest.mark.parametrize(
     'name, stringy', [
-        ('act_block', 'ACT'),
-        ('arrange_block', 'ARR'),
-        ('assert_block', 'ASS'),
+        ('act', 'ACT'),
+        ('arrange', 'ARR'),
+        ('_assert', 'ASS'),
         ('func_def', 'DEF'),
         ('unprocessed', '???'),
     ]

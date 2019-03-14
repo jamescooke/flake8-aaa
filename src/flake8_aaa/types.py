@@ -14,11 +14,11 @@ ActNodeType = Enum(  # pylint: disable=invalid-name
 @unique
 class LineType(Enum):
     # Act
-    act_block = 'ACT'
+    act = 'ACT'
     # Arrange
-    arrange_block = 'ARR'
+    arrange = 'ARR'
     # Assert
-    assert_block = 'ASS'
+    _assert = 'ASS'
     # Blank line
     blank_line = 'BL '
     # Function definition

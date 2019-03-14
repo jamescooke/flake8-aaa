@@ -15,7 +15,7 @@ def test_none(first_node_with_tokens):
 
     assert isinstance(result, Block)
     assert result.nodes == ()
-    assert result.line_type == LineType.arrange_block
+    assert result.line_type == LineType.arrange
 
 
 @pytest.mark.parametrize(

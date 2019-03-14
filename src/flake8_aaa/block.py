@@ -36,7 +36,7 @@ class Block:
         act_block_node = node
         while act_block_node.parent != test_func_node:  # type: ignore
             act_block_node = act_block_node.parent  # type: ignore
-        return cls([act_block_node], LineType.act_block)
+        return cls([act_block_node], LineType.act)
 
     @classmethod
     def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], max_line_number: int) -> _Block:
@@ -44,7 +44,7 @@ class Block:
         Arrange block is all non-pass and non-docstring nodes before the Act
         block start.
         """
-        return cls(filter_arrange_nodes(nodes, max_line_number), LineType.arrange_block)
+        return cls(filter_arrange_nodes(nodes, max_line_number), LineType.arrange)
 
     @classmethod
     def build_assert(cls: Type[_Block], nodes: List[ast.stmt], min_line_number: int) -> _Block:
@@ -56,7 +56,7 @@ class Block:
             node, when instead it should be using the last line of the Act
             block.
         """
-        return cls(filter_assert_nodes(nodes, min_line_number), LineType.assert_block)
+        return cls(filter_assert_nodes(nodes, min_line_number), LineType._assert)
 
     def get_span(self, first_line_no: int) -> Tuple[int, int]:
         """

@@ -24,7 +24,7 @@ def test_reassign():
     line_markers[0] = LineType.func_def
 
     with pytest.raises(ValueError) as excinfo:
-        line_markers[0] = LineType.act_block
+        line_markers[0] = LineType.act
 
     assert str(excinfo.value) == 'collision when marking this line as ACT, was already DEF'
 
@@ -49,4 +49,4 @@ def test_not_slice():
     line_markers = LineMarkers(2, 1)
 
     with pytest.raises(NotImplementedError):
-        line_markers[:] = LineType.act_block
+        line_markers[:] = LineType.act

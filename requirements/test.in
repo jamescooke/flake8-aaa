@@ -7,7 +7,6 @@ mypy
 pygments
 pylint
 pytest
-pytest-flake8dir
 restructuredtext-lint
 six
 sphinx-rtd-theme
