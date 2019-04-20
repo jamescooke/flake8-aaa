@@ -1,6 +1,8 @@
+from collections import Generator
+
 import pytest
 
-from flake8_aaa.exceptions import ValidationError
+from flake8_aaa.checker import Checker
 
 
 @pytest.mark.parametrize(
@@ -12,9 +14,10 @@ from flake8_aaa.exceptions import ValidationError
     ids=['pass', 'docstring'],
 )
 def test_noop(function):
-    result = function.check_all()
+    result = function.check_all(Checker)
 
-    assert result is None
+    assert isinstance(result, Generator)
+    assert list(result) == []
 
 
 @pytest.mark.parametrize(
@@ -35,9 +38,10 @@ def test(api_client, url):
     ]
 )
 def test_context_manager(function):
-    result = function.check_all()
+    result = function.check_all(Checker)
 
-    assert result is None
+    assert isinstance(result, Generator)
+    assert list(result) == []
 
 
 # --- FAILURES ---
@@ -64,12 +68,15 @@ def test_push(queue):
     ids=['no line before result= act', 'no line before marked act'],
 )
 def test_missing_space_before_act(function):
-    with pytest.raises(ValidationError) as excinfo:
-        function.check_all()
+    result = function.check_all(Checker)
 
-    assert excinfo.value.line_number == 3
-    assert excinfo.value.offset == 0
-    assert excinfo.value.text == 'AAA03 expected 1 blank line before Act block, found none'
+    assert isinstance(result, Generator)
+    errors = list(result)
+    assert len(errors) == 1
+    assert errors[0].line_number == 3
+    assert errors[0].offset == 0
+    assert errors[0].text == 'AAA03 expected 1 blank line before Act block, found none'
+    assert errors[0].checker_cls is Checker
 
 
 @pytest.mark.parametrize(
@@ -93,9 +100,33 @@ def test_push(queue):
     ids=['no line before assert', 'no line before assert with marked act'],
 )
 def test_missing_space_before_assert(function):
-    with pytest.raises(ValidationError) as excinfo:
-        function.check_all()
+    result = function.check_all(Checker)
 
-    assert excinfo.value.line_number == 5
-    assert excinfo.value.offset == 0
-    assert excinfo.value.text == 'AAA04 expected 1 blank line before Assert block, found none'
+    assert isinstance(result, Generator)
+    errors = list(result)
+    assert len(errors) == 1
+    assert errors[0].line_number == 5
+    assert errors[0].offset == 0
+    assert errors[0].text == 'AAA04 expected 1 blank line before Assert block, found none'
+    assert errors[0].checker_cls is Checker
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
+def test(file_resource):
+    file_resource.connect()
+    result = file_resource.retrieve()
+    assert result.success is True
+''',
+    ]
+)
+def test_multi(function):
+    """
+    No space before or after act - two errors are returned
+    """
+    result = function.check_all(Checker)
+
+    assert isinstance(result, Generator)
+    errors = list(result)
+    assert len(errors) == 2

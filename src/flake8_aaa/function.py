@@ -1,5 +1,5 @@
 import ast
-from typing import List, Optional, Tuple
+from typing import Generator, List, Optional, Tuple
 
 from .act_node import ActNode
 from .block import Block
@@ -61,19 +61,21 @@ class Function:
         out += format_errors(self._errors)
         return out
 
-    def check_all(self) -> None:
+    def check_all(self, checker_cls: type) -> Generator[Tuple[int, int, str, type], None, None]:
         """
-        Run everything required for checking this function.
-
-        Raises:
-            ValidationError: When an error is found.
+        Run everything required for checking this function, keeps errors found
+        in `_errors` attr.
         """
         # Function def
         self.mark_def()
         if function_is_noop(self.node):
             return
         # ACT
-        self.act_node = self.load_act_node()
+        try:
+            self.act_node = self.load_act_node()
+        except ValidationError as error:
+            yield error.to_flake8(checker_cls)
+            return
         self.act_block = Block.build_act(self.act_node.node, self.node)
         act_block_first_line_no, act_block_last_line_no = self.act_block.get_span(0)
         # ARRANGE
@@ -90,8 +92,14 @@ class Function:
                 continue
             self.line_markers.update(span, self_block.line_type)
         self.mark_bl()
-        self.line_markers.check_arrange_act_spacing()
-        self.line_markers.check_act_assert_spacing()
+        try:
+            self.line_markers.check_arrange_act_spacing()
+        except ValidationError as error:
+            yield error.to_flake8(checker_cls)
+        try:
+            self.line_markers.check_act_assert_spacing()
+        except ValidationError as error:
+            yield error.to_flake8(checker_cls)
 
     def get_errors(self) -> List[Tuple[int, int, str, type]]:
         """
@@ -105,7 +113,7 @@ class Function:
         """
         self._errors = []
         try:
-            self.check_all()
+            self.check_all(Function)
         except ValidationError as error:
             # Warning: Flake8 wants to know the class that raised the error,
             # this should really be changed to Checker if this function gets
