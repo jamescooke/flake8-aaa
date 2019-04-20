@@ -1,6 +1,6 @@
 import ast
 import os
-from typing import List, Optional, Set, Tuple
+from typing import List, Set
 
 from asttokens.util import Token
 
@@ -116,19 +116,22 @@ def function_is_noop(function_node: ast.FunctionDef) -> bool:
     return all(node_is_noop(n) for n in function_node.body)
 
 
-def format_errors(errors: Optional[List[Tuple[int, int, str, type]]]) -> str:
+def format_errors(num_errors: int) -> str:
     """
     Formats a Function's errors for command line use.
 
-    Note:
-        Only works with a single error per Function.
+    >>> format_errors(0)
+    '    0 | ERRORS\\n'
+    >>> format_errors(1)
+    '    1 | ERROR\\n'
+    >>> format_errors(2)
+    '    2 | ERRORS\\n'
+    >>> format_errors(913)
+    '  913 | ERRORS\\n'
     """
-    if errors is None:
-        return '    0 | ERRORS (yet)\n'
-    if errors:
-        assert len(errors) == 1
+    if num_errors == 1:
         return '    1 | ERROR\n'
-    return '    0 | ERRORS\n'
+    return ' {:>4} | ERRORS\n'.format(num_errors)
 
 
 def get_first_token(node: ast.AST) -> Token:
