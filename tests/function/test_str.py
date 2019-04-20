@@ -134,14 +134,12 @@ def test_multi_spaces(function):
 '''.lstrip()
 
 
-@pytest.mark.parametrize(
-    'code_str', ['''
+@pytest.mark.parametrize('code_str', ['''
 def test():
     x = 1
     result = x * 5
     assert result == 5
-''']
-)
+'''])
 def test_multi_errors(function):
     errors = list(function.check_all(None))
 

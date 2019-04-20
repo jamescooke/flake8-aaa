@@ -119,15 +119,6 @@ def function_is_noop(function_node: ast.FunctionDef) -> bool:
 def format_errors(num_errors: int) -> str:
     """
     Formats a Function's errors for command line use.
-
-    >>> format_errors(0)
-    '    0 | ERRORS\\n'
-    >>> format_errors(1)
-    '    1 | ERROR\\n'
-    >>> format_errors(2)
-    '    2 | ERRORS\\n'
-    >>> format_errors(913)
-    '  913 | ERRORS\\n'
     """
     if num_errors == 1:
         return '    1 | ERROR\n'
