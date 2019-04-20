@@ -1,9 +1,9 @@
 import ast
-from typing import List, Optional, Tuple
+from typing import Generator, List, Optional
 
 from .act_node import ActNode
 from .block import Block
-from .exceptions import EmptyBlock, ValidationError
+from .exceptions import EmptyBlock, Flake8Error, ValidationError
 from .helpers import build_footprint, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
@@ -42,10 +42,9 @@ class Function:
         self.act_node = None  # type: Optional[ActNode]
         self.act_block = None  # type: Optional[Block]
         self.assert_block = None  # type: Optional[Block]
-        self._errors = None  # type: Optional[List[Tuple[int, int, str, type]]]
         self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
 
-    def __str__(self) -> str:
+    def __str__(self, errors: Optional[List[Flake8Error]] = None) -> str:
         out = '------+------------------------------------------------------------------------\n'
         for i, line in enumerate(self.lines):
             out += '{line_no:>2} {block}|{line}'.format(
@@ -53,27 +52,30 @@ class Function:
                 block=str(self.line_markers[i]),
                 line=line,
             )
-            if self._errors:
-                for error in self._errors:
+            if errors:
+                for error in errors:
                     if error[0] == i + self.first_line_no:
                         out += '       {}^ {}\n'.format(error[1] * ' ', error[2])
         out += '------+------------------------------------------------------------------------\n'
-        out += format_errors(self._errors)
+        if errors is not None:
+            out += format_errors(len(errors))
         return out
 
-    def check_all(self) -> None:
+    def check_all(self, checker_cls: type) -> Generator[Flake8Error, None, None]:
         """
-        Run everything required for checking this function.
-
-        Raises:
-            ValidationError: When an error is found.
+        Run everything required for checking this function, keeps errors found
+        in `_errors` attr.
         """
         # Function def
         self.mark_def()
         if function_is_noop(self.node):
             return
         # ACT
-        self.act_node = self.load_act_node()
+        try:
+            self.act_node = self.load_act_node()
+        except ValidationError as error:
+            yield error.to_flake8(checker_cls)
+            return
         self.act_block = Block.build_act(self.act_node.node, self.node)
         act_block_first_line_no, act_block_last_line_no = self.act_block.get_span(0)
         # ARRANGE
@@ -90,28 +92,14 @@ class Function:
                 continue
             self.line_markers.update(span, self_block.line_type)
         self.mark_bl()
-        self.line_markers.check_arrange_act_spacing()
-        self.line_markers.check_act_assert_spacing()
-
-    def get_errors(self) -> List[Tuple[int, int, str, type]]:
-        """
-        Currently, any function can only have a single error - exceptions are
-        used to pass that single error up the chain with a ValidationError.
-        This wrapper flattens that exception into a list so that the API can be
-        used more easily with the command line wrappers.
-
-        Returns:
-            List of errors found for this function.
-        """
-        self._errors = []
         try:
-            self.check_all()
+            self.line_markers.check_arrange_act_spacing()
         except ValidationError as error:
-            # Warning: Flake8 wants to know the class that raised the error,
-            # this should really be changed to Checker if this function gets
-            # used for ``Checker.run()``.
-            self._errors = [error.to_flake8(Function)]
-        return self._errors
+            yield error.to_flake8(checker_cls)
+        try:
+            self.line_markers.check_act_assert_spacing()
+        except ValidationError as error:
+            yield error.to_flake8(checker_cls)
 
     def load_act_node(self) -> ActNode:
         """

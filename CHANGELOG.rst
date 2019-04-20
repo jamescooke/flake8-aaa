@@ -14,6 +14,12 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Changed
+-------
+
+* Adjusted error handling so that multiple errors can be returned. `#76
+  <https://github.com/jamescooke/flake8-aaa/issues/76>`_.
+
 0.5.2_ - 2019/02/27
 -------------------
 

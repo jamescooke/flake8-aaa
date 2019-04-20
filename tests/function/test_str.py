@@ -14,7 +14,7 @@ def test(file_resource):
 )
 def test_unprocessed(function):
     """
-    No parsing has happened, lines are marked with ???
+    No parsing has happened, no errors are passed in, lines are marked with ???
     """
     result = str(function)
 
@@ -26,7 +26,6 @@ def test_unprocessed(function):
  5 ???|
  6 ???|    assert result.success is True
 ------+------------------------------------------------------------------------
-    0 | ERRORS (yet)
 '''.lstrip()
 
 
@@ -49,7 +48,7 @@ def test(file_resource):
 )
 def test_marked(function):
     """
-    Function has marked itself, but not processed errors
+    Function has marked itself, but no errors passed
     """
     function.mark_def()
     function.mark_bl()
@@ -70,7 +69,6 @@ def test_marked(function):
 11 BL |
 12 ???|    assert result.success is True
 ------+------------------------------------------------------------------------
-    0 | ERRORS (yet)
 '''.lstrip()
 
 
@@ -86,9 +84,9 @@ def test(file_resource):
     ]
 )
 def test_processed(function):
-    function.get_errors()
+    errors = list(function.check_all(None))
 
-    result = str(function)
+    result = function.__str__(errors)
 
     assert result == '''
 ------+------------------------------------------------------------------------
@@ -116,9 +114,9 @@ def test():
 ''']
 )
 def test_multi_spaces(function):
-    function.get_errors()
+    errors = list(function.check_all(None))
 
-    result = str(function)
+    result = function.__str__(errors)
 
     assert result == '''
 ------+------------------------------------------------------------------------
@@ -133,4 +131,28 @@ def test_multi_spaces(function):
  9 ASS|    assert result == 2
 ------+------------------------------------------------------------------------
     1 | ERROR
+'''.lstrip()
+
+
+@pytest.mark.parametrize('code_str', ['''
+def test():
+    x = 1
+    result = x * 5
+    assert result == 5
+'''])
+def test_multi_errors(function):
+    errors = list(function.check_all(None))
+
+    result = function.__str__(errors)
+
+    assert result == '''
+------+------------------------------------------------------------------------
+ 2 DEF|def test():
+ 3 ARR|    x = 1
+       ^ AAA03 expected 1 blank line before Act block, found none
+ 4 ACT|    result = x * 5
+       ^ AAA04 expected 1 blank line before Assert block, found none
+ 5 ASS|    assert result == 5
+------+------------------------------------------------------------------------
+    2 | ERRORS
 '''.lstrip()

@@ -21,6 +21,6 @@ def do_command_line(infile: IO[str]) -> int:
     checker.load()
     errors = []  # type: list
     for func in checker.all_funcs(skip_noqa=True):
-        errors = func.get_errors()
-        print(func, end='')
+        errors = list(func.check_all(type(do_command_line)))
+        print(func.__str__(errors), end='')
     return len(errors)
