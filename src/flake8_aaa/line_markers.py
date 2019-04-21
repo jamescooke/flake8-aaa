@@ -1,4 +1,4 @@
-from typing import Any, Iterable, Tuple, overload
+import typing
 
 from .exceptions import ValidationError
 from .types import LineType
@@ -14,12 +14,12 @@ class LineMarkers(list):
         super().__init__([LineType.unprocessed] * size)
         self.fn_offset = fn_offset  # type: int
 
-    @overload  # noqa: F811
-    def __setitem__(self, key: int, value: Any) -> None:
+    @typing.overload  # noqa: F811
+    def __setitem__(self, key: int, value: typing.Any) -> None:
         pass
 
-    @overload  # noqa: F811
-    def __setitem__(self, s: slice, o: Iterable) -> None:  # pylint: disable=function-redefined
+    @typing.overload  # noqa: F811
+    def __setitem__(self, s: slice, o: typing.Iterable) -> None:  # pylint: disable=function-redefined
         pass
 
     def __setitem__(self, key, value):  # noqa: F811 | pylint: disable=function-redefined
@@ -44,7 +44,7 @@ class LineMarkers(list):
             ))
         return super().__setitem__(key, value)
 
-    def update(self, span: Tuple[int, int], line_type: LineType) -> None:
+    def update(self, span: typing.Tuple[int, int], line_type: LineType) -> None:
         """
         Updates line types for a block's span.
 
@@ -65,6 +65,7 @@ class LineMarkers(list):
             except ValueError as error:
                 raise ValidationError(i + self.fn_offset, 1, 'AAA99 {}'.format(error))
 
+    # def check_arrange_act_spacing(self, checker_cls: type) -> typing.Generator[Flake8Error, None, None]:
     def check_arrange_act_spacing(self) -> None:
         """
         * When no spaces found, point error at line above act block

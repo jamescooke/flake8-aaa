@@ -63,19 +63,21 @@ class Function:
 
     def check_all(self, checker_cls: type) -> Generator[Flake8Error, None, None]:
         """
-        Run everything required for checking this function, keeps errors found
-        in `_errors` attr.
+        Run everything required for checking this function.
+
+        Returns:
+            A generator of errors.
+
+        Raises:
+            ValidationError: A non-recoverable linting error is found.
         """
         # Function def
         self.mark_def()
         if function_is_noop(self.node):
             return
         # ACT
-        try:
-            self.act_node = self.load_act_node()
-        except ValidationError as error:
-            yield error.to_flake8(checker_cls)
-            return
+        # Load act block and kick out when none is found
+        self.act_node = self.load_act_node()
         self.act_block = Block.build_act(self.act_node.node, self.node)
         act_block_first_line_no, act_block_last_line_no = self.act_block.get_span(0)
         # ARRANGE
@@ -90,6 +92,7 @@ class Function:
                 span = self_block.get_span(self.first_line_no)
             except EmptyBlock:
                 continue
+            # TODO fix this - can raise validation error and stop processing
             self.line_markers.update(span, self_block.line_type)
         self.mark_bl()
         try:
