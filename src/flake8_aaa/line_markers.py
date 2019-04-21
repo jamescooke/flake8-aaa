@@ -1,6 +1,6 @@
 import typing
 
-from .exceptions import ValidationError
+from .exceptions import AAAError, ValidationError
 from .types import LineType
 
 
@@ -65,30 +65,34 @@ class LineMarkers(list):
             except ValueError as error:
                 raise ValidationError(i + self.fn_offset, 1, 'AAA99 {}'.format(error))
 
-    # def check_arrange_act_spacing(self, checker_cls: type) -> typing.Generator[Flake8Error, None, None]:
-    def check_arrange_act_spacing(self) -> None:
+    def check_arrange_act_spacing(self) -> typing.Generator[AAAError, None, None]:
         """
         * When no spaces found, point error at line above act block
         * When too many spaces found, point error at 2nd blank line
         """
-        self.check_block_spacing(
+        yield from self.check_block_spacing(
             LineType.arrange,
             LineType.act,
             'AAA03 expected 1 blank line before Act block, found {}',
         )
 
-    def check_act_assert_spacing(self) -> None:
+    def check_act_assert_spacing(self) -> typing.Generator[AAAError, None, None]:
         """
         * When no spaces found, point error at line above assert block
         * When too many spaces found, point error at 2nd blank line
         """
-        self.check_block_spacing(
+        yield from self.check_block_spacing(
             LineType.act,
             LineType._assert,
             'AAA04 expected 1 blank line before Assert block, found {}',
         )
 
-    def check_block_spacing(self, first_block_type: LineType, second_block_type: LineType, error_message: str) -> None:
+    def check_block_spacing(
+        self,
+        first_block_type: LineType,
+        second_block_type: LineType,
+        error_message: str,
+    ) -> typing.Generator[AAAError, None, None]:
         """
         Checks there is a clear single line between ``first_block_type`` and
         ``second_block_type``.
@@ -115,9 +119,20 @@ class LineMarkers(list):
         blank_lines = [
             bl for bl in numbered_lines[first_block_lineno + 1:second_block_lineno] if bl[1] is LineType.blank_line
         ]
+
         if not blank_lines:
             # Point at line above second block
-            raise ValidationError(self.fn_offset + second_block_lineno - 1, 0, error_message.format('none'))
+            yield AAAError(
+                line_number=self.fn_offset + second_block_lineno - 1,
+                offset=0,
+                text=error_message.format('none'),
+            )
+            return
+
         if len(blank_lines) > 1:
             # Too many blank lines - point at the first extra one, the 2nd
-            raise ValidationError(self.fn_offset + blank_lines[1][0], 0, error_message.format(len(blank_lines)))
+            yield AAAError(
+                line_number=self.fn_offset + blank_lines[1][0],
+                offset=0,
+                text=error_message.format(len(blank_lines)),
+            )

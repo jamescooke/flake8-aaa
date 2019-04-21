@@ -3,7 +3,7 @@ from typing import Generator, List, Optional
 
 from .act_node import ActNode
 from .block import Block
-from .exceptions import EmptyBlock, Flake8Error, ValidationError
+from .exceptions import AAAError, EmptyBlock, ValidationError
 from .helpers import build_footprint, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
@@ -44,7 +44,7 @@ class Function:
         self.assert_block = None  # type: Optional[Block]
         self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
 
-    def __str__(self, errors: Optional[List[Flake8Error]] = None) -> str:
+    def __str__(self, errors: Optional[List[AAAError]] = None) -> str:
         out = '------+------------------------------------------------------------------------\n'
         for i, line in enumerate(self.lines):
             out += '{line_no:>2} {block}|{line}'.format(
@@ -61,7 +61,7 @@ class Function:
             out += format_errors(len(errors))
         return out
 
-    def check_all(self, checker_cls: type) -> Generator[Flake8Error, None, None]:
+    def check_all(self) -> Generator[AAAError, None, None]:
         """
         Run everything required for checking this function.
 
@@ -92,17 +92,10 @@ class Function:
                 span = self_block.get_span(self.first_line_no)
             except EmptyBlock:
                 continue
-            # TODO fix this - can raise validation error and stop processing
             self.line_markers.update(span, self_block.line_type)
         self.mark_bl()
-        try:
-            self.line_markers.check_arrange_act_spacing()
-        except ValidationError as error:
-            yield error.to_flake8(checker_cls)
-        try:
-            self.line_markers.check_act_assert_spacing()
-        except ValidationError as error:
-            yield error.to_flake8(checker_cls)
+        yield from self.line_markers.check_arrange_act_spacing()
+        yield from self.line_markers.check_act_assert_spacing()
 
     def load_act_node(self) -> ActNode:
         """

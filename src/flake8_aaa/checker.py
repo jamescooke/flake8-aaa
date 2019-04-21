@@ -48,6 +48,7 @@ class Checker:
             self.load()
             for func in self.all_funcs():
                 try:
-                    yield from func.check_all()
+                    for error in func.check_all():
+                        yield (error.line_number, error.offset, error.text, Checker)
                 except ValidationError as error:
                     yield error.to_flake8(Checker)
