@@ -4,6 +4,7 @@ from typing import Generator, List, Tuple
 import asttokens
 
 from .__about__ import __short_name__, __version__
+from .exceptions import ValidationError
 from .function import Function
 from .helpers import find_test_functions, is_test_file
 
@@ -46,4 +47,8 @@ class Checker:
         if is_test_file(self.filename):
             self.load()
             for func in self.all_funcs():
-                yield from func.check_all(type(self))
+                try:
+                    for error in func.check_all():
+                        yield (error.line_number, error.offset, error.text, Checker)
+                except ValidationError as error:
+                    yield error.to_flake8(Checker)

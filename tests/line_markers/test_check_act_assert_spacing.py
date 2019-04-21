@@ -1,6 +1,6 @@
-import pytest
+from collections import Generator
 
-from flake8_aaa.exceptions import ValidationError
+from flake8_aaa.exceptions import AAAError
 from flake8_aaa.line_markers import LineMarkers
 from flake8_aaa.types import LineType
 
@@ -21,7 +21,8 @@ def test_comment_before_assert():
 
     result = line_markers.check_act_assert_spacing()
 
-    assert result is None
+    assert isinstance(result, Generator)
+    assert list(result) == []
 
 
 def test_none():
@@ -31,7 +32,8 @@ def test_none():
 
     result = line_markers.check_act_assert_spacing()
 
-    assert result is None
+    assert isinstance(result, Generator)
+    assert list(result) == []
 
 
 # --- FAILURES ---
@@ -49,12 +51,17 @@ def test_no_gap():
     line_markers[4] = LineType.unprocessed  # Sum do stuff
     line_markers[5] = LineType._assert  # assert result == 4
 
-    with pytest.raises(ValidationError) as excinfo:
-        line_markers.check_act_assert_spacing()
+    result = line_markers.check_act_assert_spacing()
 
-    assert excinfo.value.line_number == 9
-    assert excinfo.value.offset == 0
-    assert excinfo.value.text == 'AAA04 expected 1 blank line before Assert block, found none'
+    assert isinstance(result, Generator)
+    errors = list(result)
+    assert len(errors) == 1
+    assert isinstance(errors[0], AAAError)
+    assert errors[0] == AAAError(
+        line_number=9,
+        offset=0,
+        text='AAA04 expected 1 blank line before Assert block, found none',
+    )
 
 
 def test_too_big_gap():
@@ -71,9 +78,14 @@ def test_too_big_gap():
     line_markers[6] = LineType.blank_line
     line_markers[7] = LineType._assert  # assert result == 4
 
-    with pytest.raises(ValidationError) as excinfo:
-        line_markers.check_act_assert_spacing()
+    result = line_markers.check_act_assert_spacing()
 
-    assert excinfo.value.line_number == 11
-    assert excinfo.value.offset == 0
-    assert excinfo.value.text == 'AAA04 expected 1 blank line before Assert block, found 2'
+    assert isinstance(result, Generator)
+    errors = list(result)
+    assert len(errors) == 1
+    assert isinstance(errors[0], AAAError)
+    assert errors[0] == AAAError(
+        line_number=11,
+        offset=0,
+        text='AAA04 expected 1 blank line before Assert block, found 2',
+    )

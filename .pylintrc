@@ -136,6 +136,7 @@ disable=print-statement,
         comprehension-escape,
         # Ignore missing docstrings until this is merged: https://github.com/PyCQA/pylint/issues/1164
         missing-docstring,
+        bad-continuation,
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

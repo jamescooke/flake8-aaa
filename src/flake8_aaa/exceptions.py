@@ -9,6 +9,12 @@ Flake8Error = typing.NamedTuple(
     ]
 )
 
+AAAError = typing.NamedTuple('AAAError', [
+    ('line_number', int),
+    ('offset', int),
+    ('text', str),
+])
+
 
 class Flake8AAAException(Exception):
     pass
@@ -44,4 +50,11 @@ class ValidationError(Flake8AAAException):
             offset=self.offset,
             text=self.text,
             checker_cls=checker_cls,
+        )
+
+    def to_aaa(self) -> AAAError:
+        return AAAError(
+            line_number=self.line_number,
+            offset=self.offset,
+            text=self.text,
         )

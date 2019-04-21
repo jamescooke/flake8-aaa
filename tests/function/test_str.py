@@ -84,7 +84,7 @@ def test(file_resource):
     ]
 )
 def test_processed(function):
-    errors = list(function.check_all(None))
+    errors = list(function.check_all())
 
     result = function.__str__(errors)
 
@@ -114,7 +114,7 @@ def test():
 ''']
 )
 def test_multi_spaces(function):
-    errors = list(function.check_all(None))
+    errors = list(function.check_all())
 
     result = function.__str__(errors)
 
@@ -141,7 +141,7 @@ def test():
     assert result == 5
 '''])
 def test_multi_errors(function):
-    errors = list(function.check_all(None))
+    errors = list(function.check_all())
 
     result = function.__str__(errors)
 
