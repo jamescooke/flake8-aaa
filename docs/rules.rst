@@ -90,6 +90,18 @@ Resolution
 
 Add a blank line before the Assert block.
 
+AAA05: blank line in block
+--------------------------
+
+The only blank lines in the test must be around the Act block making it easy to
+spot. Flake8-AAA found additional blank lines which break up the block's
+layout.
+
+Resolution
+..........
+
+Remove the blank line.
+
 AAA99: collision when marking this line as NEW_CODE, was already OLD_CODE
 -------------------------------------------------------------------------
 
