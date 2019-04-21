@@ -13,6 +13,14 @@ for Python developers
     <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
     and read these rules in the context of the definition there.
 
+.. note::
+
+    Flake8-AAA works best with the following Flake8 rules enabled:
+
+    * ``E303`` "too many blank lines"
+    * ``E702`` "Multiple statements on one line"
+
+
 AAA01: no Act block found in test
 ---------------------------------
 
