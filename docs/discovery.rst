@@ -40,6 +40,26 @@ Check for no-op
 
 Skip test if it is considered "no-op" (``pass``, docstring, etc).
 
+Mark blank lines
+................
+
+Mark all lines in the test that have no characters and are not part of a
+string. For example, the following snipped contains only one blank line (line 3
+- in the middle of the list), the second at line 9 is part of a string and
+therefore not counted::
+
+    assert result == [
+        1,
+
+        2,
+    ]
+    # Check on output
+    assert str(result) == """[
+    1,
+
+    2,
+    ]"""
+
 Find Act node
 .............
 
