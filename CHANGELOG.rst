@@ -14,6 +14,12 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Added
+-----
+
+* New rule ``AAA05`` "blank line in block". `#66
+  <https://github.com/jamescooke/flake8-aaa/issues/66>`_.
+
 Changed
 -------
 
