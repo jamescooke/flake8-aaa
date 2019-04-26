@@ -25,7 +25,8 @@ class LineMarkers(list):
     def __setitem__(self, key, value):  # noqa: F811 | pylint: disable=function-redefined
         """
         Extended version of setitem to assert that item being replaced is
-        always an unprocessed line.
+        always an unprocessed line. If the item being replaced is blank line,
+        then do nothing.
 
         Raises:
             NotImplementedError: When a slice is passed for ``key``.
@@ -37,6 +38,8 @@ class LineMarkers(list):
         if not isinstance(value, LineType):
             raise ValueError('"{}" for line {} is not LineType'.format(value, key))
         current_type = self.__getitem__(key)
+        if current_type is LineType.blank_line:
+            return
         if current_type is not LineType.unprocessed:
             raise ValueError('collision when marking this line as {}, was already {}'.format(
                 value,

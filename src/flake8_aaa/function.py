@@ -74,8 +74,8 @@ class Function:
         # Function def
         if function_is_noop(self.node):
             return
-        self.mark_def()
         self.mark_bl()
+        self.mark_def()
         # ACT
         # Load act block and kick out when none is found
         self.act_node = self.load_act_node()
@@ -96,6 +96,7 @@ class Function:
             self.line_markers.update(span, self_block.line_type)
         yield from self.line_markers.check_arrange_act_spacing()
         yield from self.line_markers.check_act_assert_spacing()
+        yield from self.line_markers.check_blank_lines()
 
     def load_act_node(self) -> ActNode:
         """
