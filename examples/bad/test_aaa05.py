@@ -36,9 +36,15 @@ def test_assert():
     assert result.copy() == []
 
 
-def test_all():
+def test_all(
+    fixture_a,
+
+    fixture_b,
+):
     """
     Blank lines everywhere
+
+    But the ones in the docstring don't count
     """
     x = 1
 
