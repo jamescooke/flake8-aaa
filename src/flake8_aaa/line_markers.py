@@ -141,10 +141,11 @@ class LineMarkers(list):
             )
 
     def check_blank_lines(self) -> typing.Generator[AAAError, None, None]:
+        checked_blocks = (LineType.func_def, LineType.arrange, LineType.act, LineType._assert)
         for num, line_type in list(enumerate(self)):
             if (
                 line_type is LineType.blank_line
-                and self[num - 1] in [LineType.arrange, LineType.act, LineType._assert]
+                and self[num - 1] in checked_blocks
                 and self[num - 1] == self[num + 1]
             ):
                 yield AAAError(

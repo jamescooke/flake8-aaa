@@ -44,3 +44,24 @@ def test_arrange():
             text='AAA05 blank line in block',
         ),
     ]
+
+
+def test_func_def():
+    """
+    Function definition has some funky call args separated by a blank line
+    """
+    line_markers = LineMarkers(3, 7)
+    line_markers[0] = LineType.func_def
+    line_markers[1] = LineType.blank_line
+    line_markers[2] = LineType.func_def
+
+    result = line_markers.check_blank_lines()
+
+    assert isinstance(result, typing.Generator)
+    assert list(result) == [
+        AAAError(
+            line_number=8,
+            offset=0,
+            text='AAA05 blank line in block',
+        ),
+    ]
