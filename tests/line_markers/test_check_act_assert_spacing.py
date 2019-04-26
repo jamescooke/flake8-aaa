@@ -54,14 +54,13 @@ def test_no_gap():
     result = line_markers.check_act_assert_spacing()
 
     assert isinstance(result, Generator)
-    errors = list(result)
-    assert len(errors) == 1
-    assert isinstance(errors[0], AAAError)
-    assert errors[0] == AAAError(
-        line_number=9,
-        offset=0,
-        text='AAA04 expected 1 blank line before Assert block, found none',
-    )
+    assert list(result) == [
+        AAAError(
+            line_number=9,
+            offset=0,
+            text='AAA04 expected 1 blank line before Assert block, found none',
+        ),
+    ]
 
 
 def test_too_big_gap():
@@ -81,11 +80,10 @@ def test_too_big_gap():
     result = line_markers.check_act_assert_spacing()
 
     assert isinstance(result, Generator)
-    errors = list(result)
-    assert len(errors) == 1
-    assert isinstance(errors[0], AAAError)
-    assert errors[0] == AAAError(
-        line_number=11,
-        offset=0,
-        text='AAA04 expected 1 blank line before Assert block, found 2',
-    )
+    assert list(result) == [
+        AAAError(
+            line_number=11,
+            offset=0,
+            text='AAA04 expected 1 blank line before Assert block, found 2',
+        ),
+    ]

@@ -136,3 +136,16 @@ class LineMarkers(list):
                 offset=0,
                 text=error_message.format(len(blank_lines)),
             )
+
+    def check_blank_lines(self) -> typing.Generator[AAAError, None, None]:
+        for num, line_type in list(enumerate(self)):
+            if (
+                line_type is LineType.blank_line
+                and self[num - 1] in [LineType.arrange, LineType.act, LineType._assert]
+                and self[num - 1] == self[num + 1]
+            ):
+                yield AAAError(
+                    line_number=self.fn_offset + num,
+                    offset=0,
+                    text='AAA05 blank line in block',
+                )
