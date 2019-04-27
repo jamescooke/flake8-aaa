@@ -4,7 +4,7 @@ from typing import Generator, List, Optional
 from .act_node import ActNode
 from .block import Block
 from .exceptions import AAAError, EmptyBlock, ValidationError
-from .helpers import build_footprint, format_errors, function_is_noop, get_first_token, get_last_token
+from .helpers import find_stringy_lines, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
 
@@ -72,9 +72,10 @@ class Function:
             ValidationError: A non-recoverable linting error is found.
         """
         # Function def
-        self.mark_def()
         if function_is_noop(self.node):
             return
+        self.mark_bl()
+        self.mark_def()
         # ACT
         # Load act block and kick out when none is found
         self.act_node = self.load_act_node()
@@ -93,9 +94,9 @@ class Function:
             except EmptyBlock:
                 continue
             self.line_markers.update(span, self_block.line_type)
-        self.mark_bl()
         yield from self.line_markers.check_arrange_act_spacing()
         yield from self.line_markers.check_act_assert_spacing()
+        yield from self.line_markers.check_blank_lines()
 
     def load_act_node(self) -> ActNode:
         """
@@ -157,27 +158,17 @@ class Function:
 
     def mark_bl(self) -> int:
         """
-        Mark unprocessed lines that have no content and no nodes covering them
-        as blank line BL.
+        Mark unprocessed lines that have no content and no string nodes
+        covering them as blank line BL.
 
         Returns:
-            Number of blank lines found with no parent node.
+            Number of blank lines found with no stringy parent node.
         """
         counter = 0
-        for i, line_marker in enumerate(self.line_markers):
-            if line_marker is not LineType.unprocessed or self.lines[i].strip() != '':
-                continue
-            covered = False
-            for node in self.node.body:
-                # Check if this line is covered by any nodes in the function
-                # and if so, then set the covered flag and bail out
-                if i in build_footprint(node, self.first_line_no):
-                    covered = True
-                    break
-            if covered:
-                continue
-
-            counter += 1
-            self.line_markers[i] = LineType.blank_line
+        stringy_lines = find_stringy_lines(self.node, self.first_line_no)
+        for relative_line_number, line in enumerate(self.lines):
+            if relative_line_number not in stringy_lines and line.strip() == '':
+                counter += 1
+                self.line_markers[relative_line_number] = LineType.blank_line
 
         return counter

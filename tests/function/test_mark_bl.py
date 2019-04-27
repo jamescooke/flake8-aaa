@@ -6,7 +6,19 @@ from flake8_aaa.types import LineType
 @pytest.mark.parametrize(
     'code_str', [
         '''
-def test():
+@pytest.mark.parametrize('messages', [
+
+    """hi
+
+    the end""",
+
+])
+def test(
+    messages,
+    x,
+
+    y,
+):
     """
     Do some testing.
 
@@ -26,14 +38,34 @@ def test():
     ]
 )
 def test(function):
-    function.line_markers[0] == LineType.func_def
-
     result = function.mark_bl()
 
-    assert result == 2
-    assert function.line_markers == 12 * [
+    assert result == 6
+    assert function.line_markers == [
+        LineType.unprocessed,  # @pytest.mark.parametrize('messages', [
+        LineType.blank_line,
+        LineType.unprocessed,  # """hi
+        LineType.unprocessed,  # <<< This is a blank line in a string
+        LineType.unprocessed,  # the end""",
+        LineType.blank_line,
+        LineType.unprocessed,  # ])
+        LineType.unprocessed,  # def test(
+        LineType.unprocessed,  # messages,
+        LineType.unprocessed,  # x,
+        LineType.blank_line,
+        LineType.unprocessed,  # y,
+        LineType.unprocessed,  # ):
+        LineType.unprocessed,  # """
+        LineType.unprocessed,  # Do some testing.
         LineType.unprocessed,
-    ] + [
+        LineType.unprocessed,  # Note:
+        LineType.unprocessed,  # This does not pass AAA :D
+        LineType.unprocessed,  # """
+        LineType.unprocessed,  # nums = (
+        LineType.unprocessed,  # 1,
+        LineType.blank_line,
+        LineType.unprocessed,  # 2,
+        LineType.unprocessed,  # )
         LineType.blank_line,
         LineType.unprocessed,  # result = ...
         LineType.blank_line,

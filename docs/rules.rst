@@ -13,6 +13,14 @@ for Python developers
     <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
     and read these rules in the context of the definition there.
 
+.. note::
+
+    Flake8-AAA works best with the following Flake8 rules enabled:
+
+    * ``E303`` "too many blank lines"
+    * ``E702`` "Multiple statements on one line"
+
+
 AAA01: no Act block found in test
 ---------------------------------
 
@@ -89,6 +97,18 @@ Resolution
 ..........
 
 Add a blank line before the Assert block.
+
+AAA05: blank line in block
+--------------------------
+
+The only blank lines in the test must be around the Act block making it easy to
+spot. Flake8-AAA found additional blank lines which break up the block's
+layout.
+
+Resolution
+..........
+
+Remove the blank line.
 
 AAA99: collision when marking this line as NEW_CODE, was already OLD_CODE
 -------------------------------------------------------------------------

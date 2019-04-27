@@ -1,5 +1,12 @@
-examples/bad/test_aaa04.py:4:1: AAA04 expected 1 blank line before Assert block, found none
-examples/bad/test_aaa03.py:2:1: AAA03 expected 1 blank line before Act block, found none
 examples/bad/test_aaa01.py:8:1: AAA01 no Act block found in test
 examples/bad/test_aaa03_04.py:2:1: AAA03 expected 1 blank line before Act block, found none
 examples/bad/test_aaa03_04.py:3:1: AAA04 expected 1 blank line before Assert block, found none
+examples/bad/test_aaa03.py:2:1: AAA03 expected 1 blank line before Act block, found none
+examples/bad/test_aaa04.py:4:1: AAA04 expected 1 blank line before Assert block, found none
+examples/bad/test_aaa05.py:24:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:35:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:41:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:50:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:54:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:58:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:9:1: AAA05 blank line in block
