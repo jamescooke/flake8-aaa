@@ -14,28 +14,35 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+0.6.0_ - 2019/04/28
+-------------------
+
 Added
------
+.....
 
 * New rule ``AAA05`` "blank line in block". `#66
   <https://github.com/jamescooke/flake8-aaa/issues/66>`_.
 
 Changed
--------
+.......
 
 * Adjusted error handling so that multiple errors can be returned. `#76
   <https://github.com/jamescooke/flake8-aaa/issues/76>`_.
+
+* Blank line analysis changed drastically. Now runs first as part of the test
+  function analysis and finds all blank lines that are not part of a string
+  literal.
 
 0.5.2_ - 2019/02/27
 -------------------
 
 Added
------
+.....
 
 * Support for Python 3.7.
 
 Changed
--------
+.......
 
 * Act node now distinguished from Act block in code and docs. Generic ``Block``
   class now handles all blocks.
@@ -48,13 +55,13 @@ Changed
 -------------------
 
 Added
------
+.....
 
 * Bad examples folder. This is used for testing that files containing tests
   that fail linting return the expected content when run with ``flake8```.
 
 Fixed
------
+.....
 
 * Spacing between Arrange and Act analysis fixed. Now recognises comment
   blocks.
@@ -65,7 +72,7 @@ Fixed
   catchers like ``pytest.raises()``.
 
 Changed
--------
+.......
 
 * Location of package pushed down to ``/src`` directory as `recommended by
   pytest
@@ -75,7 +82,7 @@ Changed
 -------------------
 
 Added
------
+.....
 
 * Python 3.5 now supported.
 
@@ -86,7 +93,7 @@ Added
   ``AAA99`` rule for node to line mapping collisions.
 
 Removed
--------
+.......
 
 * Python 2.7 support removed.
 
@@ -97,12 +104,12 @@ Removed
 -------------------
 
 Added
------
+.....
 
 * Support for unittest tests.
 
 Changed
--------
+.......
 
 * Improved loading of Act blocks so that they can be found within context
   managers.
@@ -111,7 +118,7 @@ Changed
 -------------------
 
 Added
------
+.....
 
 * New rule ``AAA03`` "expected 1 blank line before Act block, found none"
 
@@ -137,7 +144,8 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.5.2...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.6.0...HEAD
+.. _0.6.0: https://github.com/jamescooke/flake8-aaa/compare/v0.5.2...v0.6.0
 .. _0.5.2: https://github.com/jamescooke/flake8-aaa/compare/v0.5.1...v0.5.2
 .. _0.5.1: https://github.com/jamescooke/flake8-aaa/compare/v0.5.0...v0.5.1
 .. _0.5.0: https://github.com/jamescooke/flake8-aaa/compare/v0.4.0...v0.5.0
