@@ -2,7 +2,7 @@ import ast
 import typing
 
 from .checker import Checker
-from .exceptions import AAAError, ValidationError
+from .exceptions import ValidationError
 
 
 def do_command_line(infile: typing.IO[str]) -> int:
