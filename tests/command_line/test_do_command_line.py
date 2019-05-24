@@ -19,6 +19,9 @@ def example_file(tmpdir):
     f.write("""
 def test():
     do_stuff()
+
+def test_other():
+    do_other_stuff()
 """)
     f.name = 'example_file.py'
     return f
@@ -36,7 +39,7 @@ def test_example_file_has_functions(example_file):
 
     result = find_test_functions(tree)
 
-    assert len(result) == 1
+    assert len(result) == 2
 
 
 # --- TESTS ---
@@ -45,7 +48,7 @@ def test_example_file_has_functions(example_file):
 def test(example_file, capsys):
     result = do_command_line(example_file)
 
-    assert result == 1
+    assert result == 2
     assert capsys.readouterr().out == '''
 ------+------------------------------------------------------------------------
  2 DEF|def test():
@@ -53,4 +56,12 @@ def test(example_file, capsys):
  3 ???|    do_stuff()
 ------+------------------------------------------------------------------------
     1 | ERROR
+------+------------------------------------------------------------------------
+ 5 DEF|def test_other():
+       ^ AAA01 no Act block found in test
+ 6 ???|    do_other_stuff()
+------+------------------------------------------------------------------------
+    1 | ERROR
+======+========================================================================
+        FAILED with 2 ERRORS
 '''.lstrip()

@@ -20,11 +20,20 @@ def do_command_line(infile: typing.IO[str]) -> int:
     tree = ast.parse(''.join(lines))
     checker = Checker(tree, lines, infile.name)
     checker.load()
-    errors = []  # type: typing.List[AAAError]
+    num_errors = 0
+
     for func in checker.all_funcs(skip_noqa=True):
         try:
             errors = list(func.check_all())
         except ValidationError as error:
             errors = [error.to_aaa()]
         print(func.__str__(errors), end='')
-    return len(errors)
+        num_errors += len(errors)
+
+    print('======+========================================================================')
+    if num_errors:
+        print('        FAILED with {} ERROR{}'.format(num_errors, 'S' if num_errors > 1 else ''))
+    else:
+        print('        PASSED!')
+
+    return num_errors
