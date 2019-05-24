@@ -32,6 +32,13 @@ Given a new version called ``x.y.z``:
 
 * Now is a good time to build and check the documentation locally.
 
+  - Ensure that command line output examples are up to date. They can be
+    updated using the output of the ``cmd`` and ``cmdbad`` ``tox``
+    environments.
+
+  - Check the Flake8 signature output in the README. This can be updated using
+    the output of ``tox``.
+
 * When branch ``bump-vx.y.z`` is green, then merge it to ``master``.
 
 * Update master locally and ensure that you remain on master for the rest of
