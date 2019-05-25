@@ -1,6 +1,7 @@
 lint_files=setup.py src/flake8_aaa tests
 rst_files=README.rst CHANGELOG.rst
 good_examples = $(wildcard examples/good/*.py examples/good/noqa/test_01.py examples/good/noqa/test_02.py)
+bad_examples = $(wildcard examples/bad/*.py)
 
 
 venv:
@@ -59,6 +60,17 @@ cmd:
 	for i in $(good_examples); do \
 		echo "\n=== $$i ==="; \
 		python -m flake8_aaa "$$i" || break -1; \
+	done
+
+# NOTE: Checks that all bad example files give at least 1 error and all return
+# an error code greater than 0. The `echo;` is used to wipe the error code from
+# the last test, or the for loop fails.
+.PHONY: cmdbad
+cmdbad:
+	for i in $(bad_examples); do \
+		echo "\n=== $$i ==="; \
+		python -m flake8_aaa "$$i" && break -1; \
+		echo; \
 	done
 
 

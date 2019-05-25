@@ -14,6 +14,25 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Added
+.....
+
+* Output the total number of errors found in a file from the command line
+  interface, along with a big "PASSED!" or "FAILED"
+
+* New test run ``cmdbad`` asserts that all bad example files return at least
+  one error and a non-zero error code when run through the command line.
+
+Fixed
+.....
+
+* Command line was not returning total number of errors in the file. Instead it
+  was returning the number of errors in the last function. This meant that
+  false positives were given for files that contained errors, but where the
+  last test in the file contained none - in this case a ``0`` return value was
+  given. `#90 <https://github.com/jamescooke/flake8-aaa/issues/90>`_
+
+
 0.6.0_ - 2019/04/28
 -------------------
 

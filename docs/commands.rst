@@ -40,23 +40,25 @@ Where ``[test_file]`` is the path to a file to be checked.
 The return value of the execution is the number of errors found in the file,
 for example::
 
-    $ python -m flake8_aaa ../some_test.py
+    $ python -m flake8_aaa test_example.py
     ------+------------------------------------------------------------------------
      1 DEF|def test():
      2 ARR|    x = 1
      3 ARR|    y = 1
+           ^ AAA03 expected 1 blank line before Act block, found none
      4 ACT|    result = x + y
-               ^ AAA03 expected 1 blank line before Act block, found none
      5 BL |
      6 ASS|    assert result == 2
     ------+------------------------------------------------------------------------
         1 | ERROR
+    ======+========================================================================
+            FAILED with 1 ERROR
     $ echo "$?"
     1
 
 And once the error above is fixed, the return value returns to zero::
 
-    $ python -m flake8_aaa ../some_test.py
+    $ python -m flake8_aaa test_example.py
     ------+------------------------------------------------------------------------
      1 DEF|def test():
      2 ARR|    x = 1
@@ -67,6 +69,8 @@ And once the error above is fixed, the return value returns to zero::
      7 ASS|    assert result == 2
     ------+------------------------------------------------------------------------
         0 | ERRORS
+    ======+========================================================================
+            PASSED!
     $ echo "$?"
     0 
 
