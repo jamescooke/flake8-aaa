@@ -57,6 +57,11 @@ lintexamples:
 	@echo "=== black ==="
 	black --check --diff --verbose examples/good/black
 
+.PHONY: fixlintexamples
+fixlintexamples:
+	@echo "=== black ==="
+	black examples/good/black
+
 
 .PHONY: doc
 doc:

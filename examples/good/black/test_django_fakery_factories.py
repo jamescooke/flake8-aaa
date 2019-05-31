@@ -9,7 +9,6 @@ from ..models import Item
 
 
 class TestItemFactory(TestCase):
-
     def test_default(self):
         """
         Django Fakery: Plant.Item: RED (creates invalid items)
@@ -19,7 +18,7 @@ class TestItemFactory(TestCase):
         self.assertEqual(Item.objects.count(), 1)
         with self.assertRaises(ValidationError) as cm:
             result.full_clean()
-        self.assertIn('has at most 1 character', str(cm.exception))
+        self.assertIn("has at most 1 character", str(cm.exception))
 
 
 class TestUserFactory(TestCase):
@@ -43,6 +42,6 @@ class TestUserFactory(TestCase):
                     UserFactory()
 
         self.assertEqual(self.user_model.objects.count(), expected_num_created - 1)
-        self.assertIn('unique', str(cm.exception).lower())
+        self.assertIn("unique", str(cm.exception).lower())
         for u in self.user_model.objects.all():
             u.full_clean()
