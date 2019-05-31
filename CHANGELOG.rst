@@ -14,6 +14,11 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Added
+.....
+
+* Add tests for compatibility with Black to the test suite. `#90
+  <https://github.com/jamescooke/flake8-aaa/issues/90>`_
 
 0.6.1_ - 2019/05/26
 -------------------
