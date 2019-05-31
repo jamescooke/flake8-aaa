@@ -36,8 +36,8 @@ Given a new version called ``x.y.z``:
     updated using the output of the ``cmd`` and ``cmdbad`` ``tox``
     environments.
 
-  - Check the Flake8 signature output in the README. This can be updated using
-    the output of ``tox``.
+  - Update the Flake8 signature output in the README by running
+    ``./update_sig.sh``.
 
 * When branch ``bump-vx.y.z`` is green, then merge it to ``master``.
 
@@ -49,7 +49,7 @@ Given a new version called ``x.y.z``:
   broken before building)
 
 * After successful push, check the `TestPyPI page
-  <https://test.pypi.org/project/pysyncgateway/>`_.
+  <https://test.pypi.org/project/flake8-aaa/>`_.
 
 * Then tag the repo with ``make tag``. Add a short message about what the key
   change is.
@@ -59,7 +59,7 @@ Given a new version called ``x.y.z``:
 * Build and push to PyPI with ``make pypi``.
 
 * After successful push, check the `PyPI page
-  <https://pypi.org/project/pysyncgateway/>`_.
+  <https://pypi.org/project/flake8-aaa/>`_.
 
 Post release checks
 -------------------

@@ -82,11 +82,11 @@ clean:
 	find . -name '*.pyc' -delete
 
 .PHONY: sdist
-sdist: clean tox
+sdist: tox
 	python setup.py sdist
 
 .PHONY: bdist_wheel
-bdist_wheel: clean tox
+bdist_wheel: tox
 	python setup.py bdist_wheel
 
 .PHONY: testpypi
@@ -94,7 +94,7 @@ testpypi: clean sdist bdist_wheel
 	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 .PHONY: pypi
-pypi: clean sdist bdist_wheel
+pypi: sdist bdist_wheel
 	twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 
 .PHONY: on_master
