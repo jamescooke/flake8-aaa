@@ -23,7 +23,7 @@ tox:
 .PHONY: lint
 lint:
 	@echo "=== flake8 ==="
-	flake8 $(lint_files) examples/good
+	flake8 $(lint_files)
 	@echo "=== mypy ==="
 	$(MAKE) mypy
 	@echo "=== pylint ==="
@@ -49,6 +49,18 @@ fixlint:
 	isort --quiet --recursive $(lint_files)
 	@echo "=== fixing yapf ==="
 	yapf --recursive --in-place $(lint_files)
+
+.PHONY: lintexamples
+lintexamples:
+	@echo "=== flake8 ==="
+	flake8 examples
+	@echo "=== black ==="
+	black --check --diff --verbose examples/good/black
+
+.PHONY: fixlintexamples
+fixlintexamples:
+	@echo "=== black ==="
+	black examples/good/black
 
 
 .PHONY: doc
