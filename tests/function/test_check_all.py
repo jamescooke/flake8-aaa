@@ -1,4 +1,4 @@
-from collections import Generator
+from collections.abc import Generator
 
 import pytest
 
