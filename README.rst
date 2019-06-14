@@ -35,11 +35,14 @@ A linter for Python tests.
           """
           __docstring__
           """
-          # ARRANGE: set up of the system under test (SUT)
+          <ARRANGE block> # set up of the system under test (SUT)
 
-          # ACT: perform a single action on the SUT
+          <ACT block> # perform a single action on the SUT
 
-          # ASSERT: check that the SUT changed as expected
+          <ASSERT block> # check that the SUT changed as expected
+
+
+  You might want to take a look `at the examples <https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_.
 
 * Provides a Flake8 interface to automatically lint test files as part of your
   Flake8 run.
