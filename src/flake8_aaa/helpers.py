@@ -133,6 +133,7 @@ def get_first_token(node: ast.AST) -> Token:
     required to get mypy to pass at this time, is encapsulated in this helper
     function.
     """
+    raise IndexError(node)
     return node.first_token  # type: ignore
 
 
