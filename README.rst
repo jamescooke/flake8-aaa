@@ -41,7 +41,8 @@ A linter for Python tests.
 
           <ASSERT block> # check that the SUT changed as expected
 
-   You might want to take a look `at the examples <https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_.
+
+  You might want to take a look `at the examples <https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_.
 
 * Provides a Flake8 interface to automatically lint test files as part of your
   Flake8 run.
