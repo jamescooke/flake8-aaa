@@ -7,6 +7,7 @@ Welcome to Flake8-AAA's documentation
     :maxdepth: 2
     :caption: Contents
 
+    compatibility
     discovery
     rules
     commands

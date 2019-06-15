@@ -20,6 +20,10 @@ Added
 * Add tests for compatibility with Black to the test suite. `#90
   <https://github.com/jamescooke/flake8-aaa/issues/90>`_
 
+* New compatibility list shows what Flake8-AAA works with now and plans to
+  support in the future. `#97
+  <https://github.com/jamescooke/flake8-aaa/issues/97>`_
+
 0.6.1_ - 2019/05/26
 -------------------
 
