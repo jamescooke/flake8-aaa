@@ -54,7 +54,7 @@ Compatibility
 
 * Pytest and unittest styles of testing supported.
 
-* Compatible with code linted with Black and or yapf.
+* Compatible with Black formatted code.
 
 * Tested on latest three versions of Python: 3.5, 3.6 and 3.7.
 
@@ -63,6 +63,8 @@ Compatibility
   <https://flake8-aaa.readthedocs.io/en/v0.4.0/>`_, `tag
   <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.4.0>`_.
 
+See the "Compatibility list" on `ReadTheDocs
+<https://flake8-aaa.readthedocs.io/>`_ for full info.
 
 Installation
 ------------
