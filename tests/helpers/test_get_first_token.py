@@ -15,3 +15,23 @@ def test(first_node_with_tokens):
 
     assert isinstance(result, Token)
     assert result.string == 'def'
+
+
+@pytest.mark.parametrize(
+    'code_str, expected', [
+        ('''
+"hello world"
+''', '"hello world"'),
+        ('''
+f"hello world"
+''', 'f"hello world"'),
+        ('''
+r'hello world'
+''', 'r\'hello world\''),
+    ]
+)
+def test_strings(first_node_with_tokens, expected):
+    result = get_first_token(first_node_with_tokens)
+
+    assert isinstance(result, Token)
+    assert result.string == expected
