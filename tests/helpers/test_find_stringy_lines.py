@@ -48,6 +48,16 @@ message  # 15
     """  # 16
 ''', 2, set([0, 1, 2, 4, 5, 6, 7, 8, 13, 14, 15, 16])
         ),
+        (
+            '''
+def test_f_string_check(filename):  # 0
+    result = do(
+        f'/path/to/folder/{filename}',  # 2
+    )
+
+    assert result is True
+''', 2, set([2])
+        ),
     ]
 )
 def test(first_node_with_tokens, offset, expected_lines):
