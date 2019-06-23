@@ -242,6 +242,8 @@ good-names=i,
            j,
            k,
            ex,
+           # py35 remove this, see helpers
+           JoinedStrType,
            Run,
            _
 
