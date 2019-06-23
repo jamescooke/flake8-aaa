@@ -50,13 +50,15 @@ message  # 15
         ),
         (
             '''
-def test_f_string_check(filename):  # 0
+def test_f_string_check(version):  # 0
     result = do(
-        f'/path/to/folder/{filename}',  # 2
+        f"""/path/to/folder/
+
+        {version}/thing.py""",  # 4
     )
 
     assert result is True
-''', 2, set([2])
+''', 2, set([2, 3, 4])
         ),
     ]
 )
@@ -66,6 +68,8 @@ def test(first_node_with_tokens, offset, expected_lines):
     * Offset is the line number of the start of the function, this can be the
         first line of any part of it including the decorator.
     * Expected lines is the set of stringy lines expected.
+
+    TODO extract the last test because it's a work around and only for py36
     """
     result = find_stringy_lines(first_node_with_tokens, offset)
 
