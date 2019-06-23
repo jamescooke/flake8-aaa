@@ -34,3 +34,29 @@ def test(first_node_with_tokens, first_line_no, expected_lines):
     result = build_footprint(first_test_node, first_line_no)
 
     assert result == expected_lines
+
+
+@pytest.mark.parametrize(
+    'code_str, first_line_no, expected_lines', [
+        (
+            '''
+def test_f_string_check(version):  # 0
+    result = do(
+        f"""/path/to/folder/
+
+        {version}/thing.py""",  # 4
+    )
+''', 2, set([2, 3, 4])
+        ),
+    ]
+)
+def test_f_string(first_node_with_tokens, first_line_no, expected_lines):
+    """
+    f-strings do work - it appears it's the Str nodes inside the JoinedStr that
+    are not tokenised.
+    """
+    f_string_node = first_node_with_tokens.body[0].value.args[0]
+
+    result = build_footprint(f_string_node, first_line_no)
+
+    assert result == expected_lines
