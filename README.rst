@@ -24,7 +24,10 @@ Flake8-AAA
 
 A linter for Python tests.
 
-* Pytest and unittest styles supported.
+* A Flake8 interface to automatically lint test files as part of your Flake8
+  run.
+
+* A command line interface for custom (non-Flake8) usage and debugging.
 
 * Tests are linted against the `Arrange Act Assert pattern
   <http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
@@ -35,17 +38,33 @@ A linter for Python tests.
           """
           __docstring__
           """
-          # ARRANGE: set up of the system under test (SUT)
+          <ARRANGE block> # set up of the system under test (SUT)
 
-          # ACT: perform a single action on the SUT
+          <ACT block> # perform a single action on the SUT
 
-          # ASSERT: check that the SUT changed as expected
+          <ASSERT block> # check that the SUT changed as expected
 
-* Provides a Flake8 interface to automatically lint test files as part of your
-  Flake8 run.
 
-* Provides a command line interface for custom (non-Flake8) usage and
-  debugging.
+  You might want to take a look `at the examples
+  <https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_.
+
+
+Compatibility
+-------------
+
+* Pytest and unittest styles of testing supported.
+
+* Compatible with Black formatted code.
+
+* Tested on latest three versions of Python: 3.5, 3.6 and 3.7.
+
+* Python 2 supported up to ``v0.4.0``:
+  `pypi <https://pypi.org/project/flake8-aaa/0.4.0/>`_, `docs
+  <https://flake8-aaa.readthedocs.io/en/v0.4.0/>`_, `tag
+  <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.4.0>`_.
+
+See the "Compatibility list" on `ReadTheDocs
+<https://flake8-aaa.readthedocs.io/>`_ for full info.
 
 Installation
 ------------
@@ -53,6 +72,7 @@ Installation
 Install with ``pip``::
 
     $ pip install flake8-aaa
+
 
 Integration with Flake8
 -----------------------
@@ -64,9 +84,9 @@ signature::
     $ flake8 --version
     3.7.7 (aaa: 0.6.1, mccabe: 0.6.1, pycodestyle: 2.5.0, pyflakes: 2.1.1) CPython 3.6.7 on Linux
 
-The ``aaa: 0.6.0`` part of that output tells you ``flake8`` found this
-plugin. Now you can run ``flake8`` as usual against your project and Flake8-AAA
-will lint your tests via its plugin::
+The ``aaa: 0.6.1`` part of that output tells you Flake8 found this plugin. Now
+you can run ``flake8`` as usual against your project and Flake8-AAA will lint
+your tests via its plugin::
 
     $ flake8
 
@@ -83,10 +103,3 @@ Resources
 * `Licensed on MIT <https://github.com/jamescooke/flake8-aaa/blob/master/LICENSE>`_
 
 * `Changelog <https://github.com/jamescooke/flake8-aaa/blob/master/CHANGELOG.rst>`_
-
-Tested on Pythons 3.5, 3.6 and 3.7.
-
-Python 2 supported up to ``v0.4.0``:
-`pypi <https://pypi.org/project/flake8-aaa/0.4.0/>`_,
-`docs <https://flake8-aaa.readthedocs.io/en/v0.4.0/>`_,
-`tag <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.4.0>`_.

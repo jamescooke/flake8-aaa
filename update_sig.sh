@@ -7,8 +7,10 @@ grep -E "CPython" README.rst
 
 echo "Running tox to generate new line..."
 NEWLINE=$(tox -e py36-install | grep -E "CPython")
+VERSION=$(echo "$NEWLINE" | grep -Eo "aaa: [^,]*")
 
 echo "Updating file..."
 sed -i "s/.* CPython .* Linux/    $NEWLINE/" README.rst
+sed -i "s/\`\`aaa: .*\`\`/\`\`$VERSION\`\`/" README.rst
 
 git diff -- README.rst
