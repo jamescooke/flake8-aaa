@@ -4,6 +4,10 @@ from asttokens.util import Token
 from flake8_aaa.helpers import build_footprint, find_stringy_lines, get_first_token
 
 
+# *** NOTE ***
+# This is a temporary test hidden away from py35, please do not edit - change
+# the main files in `/tests` dir instead.
+
 @pytest.mark.parametrize('code_str, expected', [
     ('''
 f"hello world"
@@ -31,10 +35,6 @@ def test_f_string_check(version):  # 0
     ]
 )
 def test_f_string(first_node_with_tokens, first_line_no, expected_lines):
-    """
-    f-strings do work - it appears it's the Str nodes inside the JoinedStr that
-    are not tokenised.
-    """
     f_string_node = first_node_with_tokens.body[0].value.args[0]
 
     result = build_footprint(f_string_node, first_line_no)
@@ -59,14 +59,6 @@ def test_f_string_check(version):  # 0
     ]
 )
 def test(first_node_with_tokens, offset, expected_lines):
-    """
-    * First node with tokens is the function
-    * Offset is the line number of the start of the function, this can be the
-        first line of any part of it including the decorator.
-    * Expected lines is the set of stringy lines expected.
-
-    TODO extract the last test because it's a work around and only for py36
-    """
     result = find_stringy_lines(first_node_with_tokens, offset)
 
     assert result == expected_lines
