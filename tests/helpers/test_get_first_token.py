@@ -23,9 +23,6 @@ def test(first_node_with_tokens):
 "hello world"
 ''', '"hello world"'),
         ('''
-f"hello world"
-''', 'f"hello world"'),
-        ('''
 r'hello world'
 ''', 'r\'hello world\''),
     ]
