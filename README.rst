@@ -82,9 +82,9 @@ that Flake8-AAA was installed correctly by asking ``flake8`` for its version
 signature::
 
     $ flake8 --version
-    3.7.7 (aaa: 0.6.1, mccabe: 0.6.1, pycodestyle: 2.5.0, pyflakes: 2.1.1) CPython 3.6.7 on Linux
+    3.7.7 (aaa: 0.6.2, mccabe: 0.6.1, pycodestyle: 2.5.0, pyflakes: 2.1.1) CPython 3.6.7 on Linux
 
-The ``aaa: 0.6.1`` part of that output tells you Flake8 found this plugin. Now
+The ``aaa: 0.6.2`` part of that output tells you Flake8 found this plugin. Now
 you can run ``flake8`` as usual against your project and Flake8-AAA will lint
 your tests via its plugin::
 
