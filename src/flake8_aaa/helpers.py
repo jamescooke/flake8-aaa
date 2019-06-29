@@ -185,13 +185,29 @@ def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast
     return [node for node in nodes if node.lineno > min_line_number]
 
 
+# py35 sees this as a const, pylint complains that it's not UPPER_CASE :(
+JoinedStrType = getattr(ast, 'JoinedStr', None)
+
+
 def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:
     """
     Finds all lines that contain a string in a tree, usually a function. These
     lines will be ignored when searching for blank lines.
+
+    Since py36, JoinedStr can contain Str nodes and FormattedValue nodes - the
+    inner nodes are not tokenised, so cause build_footprint() to raise
+    AttributeErrors when it attempts to inspect the tokens on these nodes.
+
+    See https://greentreesnakes.readthedocs.io/en/latest/nodes.html#JoinedStr
     """
     str_footprints = set()
     for node in ast.walk(tree):
-        if isinstance(node, ast.Str):
-            str_footprints.update(build_footprint(node, first_line_no))
+        if isinstance(node, ast.Str) or (JoinedStrType is not None and isinstance(node, JoinedStrType)):
+            try:
+                str_footprints.update(build_footprint(node, first_line_no))
+            except AttributeError:
+                # TODO this is a hacky work around. Should be replaced with a
+                # string walking NodeVisitor class, ideally once py38 is out
+                # and py35 support is ended.
+                pass
     return str_footprints

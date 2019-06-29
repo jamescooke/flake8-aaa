@@ -24,6 +24,17 @@ Added
   support in the future. `#97
   <https://github.com/jamescooke/flake8-aaa/issues/97>`_
 
+Fixed
+.....
+
+* F-string processing was crashing Flake8-AAA with all versions of Python. This
+  has been fixed with a workaround. `#101
+  <https://github.com/jamescooke/flake8-aaa/issues/101>`_
+
+  This will be "fully fixed" in the first minor version after support for
+  Python 3.5 is dropped. `#110
+  <https://github.com/jamescooke/flake8-aaa/issues/110>`_
+
 0.6.1_ - 2019/05/26
 -------------------
 
