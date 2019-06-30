@@ -56,7 +56,7 @@ def test_no_gap():
     assert isinstance(result, Generator)
     assert list(result) == [
         AAAError(
-            line_number=9,
+            line_number=10,
             offset=0,
             text='AAA04 expected 1 blank line before Assert block, found none',
         ),
@@ -82,7 +82,7 @@ def test_too_big_gap():
     assert isinstance(result, Generator)
     assert list(result) == [
         AAAError(
-            line_number=11,
+            line_number=12,
             offset=0,
             text='AAA04 expected 1 blank line before Assert block, found 2',
         ),

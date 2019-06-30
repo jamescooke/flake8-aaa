@@ -123,22 +123,14 @@ class LineMarkers(list):
             bl for bl in numbered_lines[first_block_lineno + 1:second_block_lineno] if bl[1] is LineType.blank_line
         ]
 
-        if not blank_lines:
-            # Point at line above second block
+        if not blank_lines or len(blank_lines) != 1:
+            # Point at first line of second block
             yield AAAError(
-                line_number=self.fn_offset + second_block_lineno - 1,
+                line_number=self.fn_offset + second_block_lineno,
                 offset=0,
-                text=error_message.format('none'),
+                text=error_message.format('none' if not blank_lines else len(blank_lines)),
             )
             return
-
-        if len(blank_lines) > 1:
-            # Too many blank lines - point at the first extra one, the 2nd
-            yield AAAError(
-                line_number=self.fn_offset + blank_lines[1][0],
-                offset=0,
-                text=error_message.format(len(blank_lines)),
-            )
 
     def check_blank_lines(self) -> typing.Generator[AAAError, None, None]:
         checked_blocks = (LineType.func_def, LineType.arrange, LineType.act, LineType._assert)

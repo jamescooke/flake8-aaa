@@ -74,7 +74,7 @@ def test_missing_space_before_act(function):
     errors = list(result)
     assert len(errors) == 1
     assert isinstance(errors[0], AAAError)
-    assert errors[0].line_number == 3
+    assert errors[0].line_number == 4
     assert errors[0].offset == 0
     assert errors[0].text == 'AAA03 expected 1 blank line before Act block, found none'
 
@@ -105,7 +105,7 @@ def test_missing_space_before_assert(function):
     assert isinstance(result, Generator)
     errors = list(result)
     assert len(errors) == 1
-    assert errors[0].line_number == 5
+    assert errors[0].line_number == 6
     assert errors[0].offset == 0
     assert errors[0].text == 'AAA04 expected 1 blank line before Assert block, found none'
 
