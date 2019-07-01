@@ -9,7 +9,7 @@ def test_comment_before_act():
     """
     Comment before Act passes
     """
-    line_markers = LineMarkers(8, 5)
+    line_markers = LineMarkers(8 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.arrange  # y = 2
@@ -29,7 +29,7 @@ def test_no_arrange():
     """
     Tests without arrangement pass
     """
-    line_markers = LineMarkers(7, 5)
+    line_markers = LineMarkers(7 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.unprocessed  # Some docstring
     line_markers[2] = LineType.unprocessed  # Some docstring
@@ -51,7 +51,7 @@ def test_no_gap():
     """
     No gap raises - error points at act block
     """
-    line_markers = LineMarkers(6, 5)
+    line_markers = LineMarkers(6 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.unprocessed  # Sum do stuff
@@ -75,7 +75,7 @@ def test_too_big_gap():
     """
     Multiple BL raises. Act block is pointed to.
     """
-    line_markers = LineMarkers(8, 5)
+    line_markers = LineMarkers(8 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.blank_line

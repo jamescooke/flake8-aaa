@@ -10,8 +10,9 @@ class LineMarkers(list):
     line.
     """
 
-    def __init__(self, size: int, fn_offset: int) -> None:
-        super().__init__([LineType.unprocessed] * size)
+    def __init__(self, lines: typing.List[str], fn_offset: int) -> None:
+        super().__init__([LineType.unprocessed] * len(lines))
+        self.lines = lines  # type: typing.List[str]
         self.fn_offset = fn_offset  # type: int
 
     @typing.overload  # noqa: F811

@@ -9,7 +9,7 @@ def test_comment_before_assert():
     """
     Comment before Assert passes
     """
-    line_markers = LineMarkers(8, 5)
+    line_markers = LineMarkers(8 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.arrange  # y = 2
@@ -26,7 +26,7 @@ def test_comment_before_assert():
 
 
 def test_none():
-    line_markers = LineMarkers(2, 0)
+    line_markers = LineMarkers(2 * [''], 0)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.act  # do_thing()
 
@@ -43,7 +43,7 @@ def test_no_gap():
     """
     No gap raises - error points at act block because no spaces
     """
-    line_markers = LineMarkers(6, 5)
+    line_markers = LineMarkers(6 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.blank_line
@@ -67,7 +67,7 @@ def test_too_big_gap():
     """
     Multiple BL raises. First extra line is pointed to
     """
-    line_markers = LineMarkers(8, 5)
+    line_markers = LineMarkers(8 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.blank_line

@@ -42,7 +42,7 @@ class Function:
         self.act_node = None  # type: Optional[ActNode]
         self.act_block = None  # type: Optional[Block]
         self.assert_block = None  # type: Optional[Block]
-        self.line_markers = LineMarkers(len(self.lines), self.first_line_no)  # type: LineMarkers
+        self.line_markers = LineMarkers(self.lines, self.first_line_no)  # type: LineMarkers
 
     def __str__(self, errors: Optional[List[AAAError]] = None) -> str:
         out = '------+------------------------------------------------------------------------\n'

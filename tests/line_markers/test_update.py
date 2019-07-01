@@ -6,7 +6,7 @@ from flake8_aaa.types import LineType
 
 
 def test():
-    line_markers = LineMarkers(6, 1)
+    line_markers = LineMarkers(6 * [''], 1)
     line_markers[2] = LineType.blank_line
 
     result = line_markers.update((1, 3), LineType.act)
@@ -34,7 +34,7 @@ def test_collision():
         LineType.unprocessed,
     ]
     """
-    line_markers = LineMarkers(4, 10)
+    line_markers = LineMarkers(4 * [''], 10)
     line_markers[0] = LineType.func_def
     line_markers[2] = LineType.blank_line
 
