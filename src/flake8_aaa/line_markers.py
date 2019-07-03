@@ -1,6 +1,7 @@
 import typing
 
 from .exceptions import AAAError, ValidationError
+from .helpers import first_non_blank_char
 from .types import LineType
 
 
@@ -126,9 +127,8 @@ class LineMarkers(list):
 
         if not blank_lines or len(blank_lines) != 1:
             # Point at first line of second block
-            yield AAAError(
-                line_number=self.fn_offset + second_block_lineno,
-                offset=0,
+            yield self.build_error(
+                line_index=second_block_lineno,
                 text=error_message.format('none' if not blank_lines else len(blank_lines)),
             )
             return
@@ -139,8 +139,18 @@ class LineMarkers(list):
             if (
                 line_type is LineType.blank_line and self[num - 1] in checked_blocks and self[num - 1] == self[num + 1]
             ):
-                yield AAAError(
-                    line_number=self.fn_offset + num,
-                    offset=0,
+                yield self.build_error(
+                    line_index=num,
                     text='AAA05 blank line in block',
                 )
+
+    def build_error(self, line_index: int, text: str) -> AAAError:
+        """
+        Calculate the offset of the error based on the first non-blank
+        character of the line.
+        """
+        return AAAError(
+            line_number=self.fn_offset + line_index,
+            offset=first_non_blank_char(self.lines[line_index]),
+            text=text,
+        )
