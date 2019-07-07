@@ -6,7 +6,7 @@ from flake8_aaa.types import LineType
 
 
 def test_ok():
-    line_markers = LineMarkers(6, 7)
+    line_markers = LineMarkers(6 * [''], 7)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange
     line_markers[2] = LineType.blank_line
@@ -24,7 +24,7 @@ def test_ok():
 
 
 def test_arrange():
-    line_markers = LineMarkers(8, 7)
+    line_markers = LineMarkers(8 * [''], 7)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange
     line_markers[2] = LineType.blank_line
@@ -50,7 +50,7 @@ def test_func_def():
     """
     Function definition has some funky call args separated by a blank line
     """
-    line_markers = LineMarkers(3, 7)
+    line_markers = LineMarkers(3 * [''], 7)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.blank_line
     line_markers[2] = LineType.func_def

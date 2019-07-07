@@ -26,6 +26,25 @@ def is_test_file(filename: str) -> bool:
     return os.path.basename(filename).startswith('test_')
 
 
+def first_non_blank_char(line: str) -> int:
+    """
+    Examples:
+        1.  Empty string has no non-blank chars.
+        >>> first_non_blank_char('')
+        0
+
+        2.  First char after whitespace or tabs works.
+        >>> first_non_blank_char('    return')
+        4
+        >>> first_non_blank_char('        return')
+        8
+    """
+    for pos, char in enumerate(line):
+        if not char.isspace():
+            return pos
+    return 0
+
+
 class TestFuncLister(ast.NodeVisitor):
     """
     Helper to walk the ast Tree and find functions that looks like tests.

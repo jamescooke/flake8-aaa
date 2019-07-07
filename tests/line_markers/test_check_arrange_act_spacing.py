@@ -9,7 +9,7 @@ def test_comment_before_act():
     """
     Comment before Act passes
     """
-    line_markers = LineMarkers(8, 5)
+    line_markers = LineMarkers(8 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.arrange  # y = 2
@@ -29,7 +29,7 @@ def test_no_arrange():
     """
     Tests without arrangement pass
     """
-    line_markers = LineMarkers(7, 5)
+    line_markers = LineMarkers(7 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.unprocessed  # Some docstring
     line_markers[2] = LineType.unprocessed  # Some docstring
@@ -49,9 +49,9 @@ def test_no_arrange():
 
 def test_no_gap():
     """
-    No gap raises - error points at act block because no spaces
+    No gap raises - error points at act block
     """
-    line_markers = LineMarkers(6, 5)
+    line_markers = LineMarkers(6 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.unprocessed  # Sum do stuff
@@ -62,20 +62,20 @@ def test_no_gap():
     result = line_markers.check_arrange_act_spacing()
 
     assert isinstance(result, Generator)
-    assert list(result) == [
-        AAAError(
-            line_number=7,
-            offset=0,
-            text='AAA03 expected 1 blank line before Act block, found none',
-        ),
-    ]
+    result_list = list(result)
+    assert len(result_list) == 1
+    assert result_list[0] == AAAError(
+        line_number=8,
+        offset=0,
+        text='AAA03 expected 1 blank line before Act block, found none',
+    )
 
 
 def test_too_big_gap():
     """
-    Multiple BL raises. First extra line is pointed to
+    Multiple BL raises. Act block is pointed to.
     """
-    line_markers = LineMarkers(8, 5)
+    line_markers = LineMarkers(8 * [''], 5)
     line_markers[0] = LineType.func_def
     line_markers[1] = LineType.arrange  # x = 1
     line_markers[2] = LineType.blank_line
@@ -88,10 +88,10 @@ def test_too_big_gap():
     result = line_markers.check_arrange_act_spacing()
 
     assert isinstance(result, Generator)
-    assert list(result) == [
-        AAAError(
-            line_number=8,
-            offset=0,
-            text='AAA03 expected 1 blank line before Act block, found 2',
-        ),
-    ]
+    result_list = list(result)
+    assert len(result_list) == 1
+    assert result_list[0] == AAAError(
+        line_number=10,
+        offset=0,
+        text='AAA03 expected 1 blank line before Act block, found 2',
+    )
