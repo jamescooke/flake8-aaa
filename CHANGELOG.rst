@@ -14,6 +14,16 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Changed
+.......
+
+* AAA03 and AAA04 (checks for a single blank line before and after Act block)
+  line numbers have been moved down. `Part of #79
+  <https://github.com/jamescooke/flake8-aaa/issues/79#issuecomment-495814091>`_.
+
+* AAA03 and AAA04 errors now return a real offset. `#79
+  <https://github.com/jamescooke/flake8-aaa/issues/79>`_.
+
 0.6.2_ - 2019/06/29
 -------------------
 
