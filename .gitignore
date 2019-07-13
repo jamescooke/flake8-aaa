@@ -39,8 +39,11 @@ venv2/
 # Sphinx documentation
 docs/_build/
 
-# isort
-/isort.out
-
 # mypy
 .mypy_cache/
+
+# --- CUSTOM ---
+
+# temp outputs for isort and flake8
+/isort.out
+/flake8.out

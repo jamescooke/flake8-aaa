@@ -53,7 +53,8 @@ fixlint:
 .PHONY: lintexamples
 lintexamples:
 	@echo "=== flake8 ==="
-	flake8 examples
+	flake8 examples | sort > flake8.out
+	diff examples/bad/flake8_expected.out flake8.out
 	@echo "=== black ==="
 	black --check --diff --verbose examples/good/black
 
