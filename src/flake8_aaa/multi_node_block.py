@@ -6,6 +6,7 @@ from .types import LineType
 
 
 class MultiNodeBlock(metaclass=ABCMeta):
+
     @property
     @abstractmethod
     def line_type(self) -> LineType:
