@@ -14,6 +14,12 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Added
+.....
+
+* Improved documentation on use of ``# noqa`` comments. `#102
+  <https://github.com/jamescooke/flake8-aaa/issues/102>`_.
+
 Changed
 .......
 

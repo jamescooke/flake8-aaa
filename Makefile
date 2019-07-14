@@ -1,6 +1,6 @@
 lint_files=setup.py src/flake8_aaa tests
 rst_files=README.rst CHANGELOG.rst
-good_examples = $(wildcard examples/good/*.py examples/good/noqa/test_01.py examples/good/noqa/test_02.py)
+good_examples = $(wildcard examples/good/*.py examples/good/noqa/test_cmd.py examples/good/black/noqa/test_cmd.py)
 bad_examples = $(wildcard examples/bad/*.py)
 
 
@@ -53,7 +53,8 @@ fixlint:
 .PHONY: lintexamples
 lintexamples:
 	@echo "=== flake8 ==="
-	flake8 examples
+	flake8 examples | sort > flake8.out
+	diff examples/bad/flake8_expected.out flake8.out
 	@echo "=== black ==="
 	black --check --diff --verbose examples/good/black
 

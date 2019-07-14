@@ -1,0 +1,2 @@
+examples/bad/test_noqa_flake8.py:11:17: E225 missing whitespace around operator
+examples/bad/test_noqa_flake8.py:5:10: E201 whitespace after '('

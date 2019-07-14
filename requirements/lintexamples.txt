@@ -9,7 +9,7 @@ attrs==19.1.0             # via black
 black==19.3b0
 click==7.0                # via black
 entrypoints==0.3          # via flake8
-flake8==3.7.7
+flake8==3.7.8
 mccabe==0.6.1             # via flake8
 pycodestyle==2.5.0        # via flake8
 pyflakes==2.1.1           # via flake8

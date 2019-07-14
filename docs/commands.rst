@@ -15,8 +15,22 @@ necessary when there is no assignment possible.
 Disabling Flake8-AAA selectively
 ................................
 
-When Flake8-AAA finds the ``# noqa`` comment at the end of the line that
-defines a test function, it will ignore it.
+When invoked via Flake8, Flake8 will filter any errors raised when lines are
+marked with the ``# noqa`` syntax. You can turn off all errors from Flake8-AAA
+by marking a line with ``# noqa: AAA`` and other Flake8 errors will still be
+returned.
+
+If you just want to ignore a particular error, then you can use the more
+specific code and indicate the exact error to be ignored. For example, to
+ignore the check for a space before the Act block, we can mark the Act block
+with ``# noqa: AAA03``::
+
+    def test():
+        x = 1
+        result = x + 1  # noqa: AAA03
+
+        assert result == 2
+
 
 .. _command-line:
 
