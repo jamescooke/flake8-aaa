@@ -1,4 +1,4 @@
--r test.txt
+-c test.txt
 
 pip-tools
 twine
