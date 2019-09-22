@@ -1,3 +1,4 @@
+-c base.txt
 -c test.txt
 
 pip-tools
