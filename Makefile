@@ -13,7 +13,7 @@ venv/bin/pip-sync: venv
 
 .PHONY: dev
 dev: venv venv/bin/pip-sync
-	venv/bin/pip-sync requirements/dev.txt
+	venv/bin/pip-sync requirements/base.txt requirements/test.txt requirements/dev.txt
 
 .PHONY: tox
 tox:
