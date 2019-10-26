@@ -5,7 +5,7 @@
 #    pip-compile --output-file=lintexamples.txt lintexamples.in
 #
 appdirs==1.4.3            # via black
-attrs==19.1.0             # via black
+attrs==19.3.0             # via black
 black==19.3b0
 click==7.0                # via black
 entrypoints==0.3          # via flake8

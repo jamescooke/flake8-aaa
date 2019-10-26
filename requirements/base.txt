@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=base.txt base.in
 #
-asttokens==1.1.14
+asttokens==2.0.1
 entrypoints==0.3          # via flake8
 flake8==3.7.8
 mccabe==0.6.1             # via flake8
