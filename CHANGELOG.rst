@@ -14,6 +14,19 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Added
+.....
+
+* Expanded test suite to run Python 3.8 and added Python 3.8 meta tags. `#119
+  <https://github.com/jamescooke/flake8-aaa/pull/119>`_
+
+Fixed
+.....
+
+* Bug occurring when running Python 3.8 and linting test functions that are
+  decorated has been fixed. `#119
+  <https://github.com/jamescooke/flake8-aaa/pull/119>`_
+
 0.7.0_ - 2019/07/14
 -------------------
 
