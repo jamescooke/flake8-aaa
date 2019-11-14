@@ -47,8 +47,8 @@ def test(value):
 ''',
     ]
 )
-def test_with_decorators(function):
-    result = function
+def test_with_decorators(first_node_with_tokens, lines):
+    result = Function(first_node_with_tokens, lines)
 
     assert result.first_line_no == 4
     assert get_first_token(result.node).line == "@pytest.mark.skip(reason='maths is too hard :D')\n"
