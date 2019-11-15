@@ -4,6 +4,9 @@ from flake8_aaa import Checker
 
 
 def test(tmpdir):
+    """
+    Checker is able to parse provided file at load time
+    """
     target_file = tmpdir.join('test.py')
     target_file.write('assert 1 + 2 == 3\n')
     tree = ast.parse(target_file.read())

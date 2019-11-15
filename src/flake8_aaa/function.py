@@ -34,9 +34,8 @@ class Function:
             file_lines: Lines of file under test.
         """
         self.node = node  # type: ast.FunctionDef
-        self.first_line_no = self.node.lineno  # type: int
-        # Ignore type because last_token is added by asttokens
-        end = self.node.last_token.end[0]  # type: ignore
+        self.first_line_no = get_first_token(self.node).start[0]  # type: int
+        end = get_last_token(self.node).end[0]  # type: int
         self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
         self.arrange_block = None  # type: Optional[Block]
         self.act_node = None  # type: Optional[ActNode]
