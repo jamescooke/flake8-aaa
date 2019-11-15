@@ -22,73 +22,81 @@
 Flake8-AAA
 ==========
 
-A linter for Python tests.
+    A linter for Python tests.
 
-* A Flake8 interface to automatically lint test files as part of your Flake8
-  run.
+Flake8-AAA enforces simple formatting of your test suite making it more
+consistent and easier to grok, especially across teams.
 
-* A command line interface for custom (non-Flake8) usage and debugging.
+Installation and usage
+----------------------
 
-* Tests are linted against the `Arrange Act Assert pattern
-  <http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
+Flake8-AAA is a Flake8 plugin.
 
-  TL;DR following the AAA pattern means tests look like this::
+Install ``flake8-aaa`` with ``pip``, which will also install ``flake8``::
 
-      def test():
-          """
-          __docstring__
-          """
-          <ARRANGE block> # set up of the system under test (SUT)
+    $ pip install flake8-aaa
 
-          <ACT block> # perform a single action on the SUT
+Invoke Flake8 on your test suite, in this case in the ``tests`` directory::
 
-          <ASSERT block> # check that the SUT changed as expected
+    $ flake8 tests
 
+Errors returned by Flake8-AAA have the AAA code, for example::
 
-  You might want to take a look `at the examples
-  <https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_.
+    tests/block/test_init.py:14:1: AAA02 multiple Act blocks found in test
+
+Arrange Act Assert
+------------------
+
+Tests are linted against the `Arrange Act Assert pattern
+<http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
+
+TL;DR following the AAA pattern means tests are laid out like this::
+
+    def test():
+        """
+        __docstring__
+        """
+        <ARRANGE block> # set up of the system under test (SUT)
+ 
+        <ACT block> # perform a single action on the SUT
+ 
+        <ASSERT block> # check that the SUT changed as expected
+
+For example::
+
+    def test(tmpdir):
+        """
+        Checker is able to parse provided file at load time
+        """
+        target_file = tmpdir.join('test.py')
+        target_file.write('assert 1 + 2 == 3\n')
+        tree = ast.parse(target_file.read())
+        checker = Checker(tree, ['assert 1 + 2 == 3\n'], target_file.strpath)
+
+        result = checker.load()
+
+        assert result is None
+        assert len(checker.tree.body) == 1
+        assert type(checker.tree.body[0]) == ast.Assert
+        assert len(checker.ast_tokens.tokens) == 8
+
+More examples are in our `test suite's "good" files
+<https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_.
 
 
 Compatibility
 -------------
 
-* Pytest and unittest styles of testing supported.
+* Pytest and unittest supported.
 
-* Compatible with Black formatted code.
+* Compatible with Black and yapf formatted code.
 
-* Tested on latest three versions of Python: 3.5, 3.6 and 3.7.
+* Current release works with the latest versions of Python 3 (3.5, 3.6, 3.7 and
+  3.8). Older releases have support for older Pythons.
 
-* Python 2 supported up to ``v0.4.0``:
-  `pypi <https://pypi.org/project/flake8-aaa/0.4.0/>`_, `docs
-  <https://flake8-aaa.readthedocs.io/en/v0.4.0/>`_, `tag
-  <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.4.0>`_.
-
-See the "Compatibility list" on `ReadTheDocs
-<https://flake8-aaa.readthedocs.io/>`_ for full info.
-
-Installation
-------------
-
-Install with ``pip``::
-
-    $ pip install flake8-aaa
-
-
-Integration with Flake8
------------------------
-
-Given that you already have Flake8 installed in the same environment, check
-that Flake8-AAA was installed correctly by asking ``flake8`` for its version
-signature::
-
-    $ flake8 --version
-    3.7.8 (aaa: 0.7.0, mccabe: 0.6.1, pycodestyle: 2.5.0, pyflakes: 2.1.1) CPython 3.6.7 on Linux
-
-The ``aaa: 0.7.0`` part of that output tells you Flake8 found this plugin. Now
-you can run ``flake8`` as usual against your project and Flake8-AAA will lint
-your tests via its plugin::
-
-    $ flake8
+See the `Compatibility list
+<https://flake8-aaa.readthedocs.io/en/stable/compatibility.html>`_ for more
+info.
 
 
 Resources
