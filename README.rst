@@ -50,7 +50,9 @@ Arrange Act Assert
 Tests are linted against the `Arrange Act Assert pattern
 <http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
 
-TL;DR following the AAA pattern means tests are laid out like this::
+TL;DR following the AAA pattern means tests are laid out like this:
+
+.. code-block:: python
 
     def test():
         """
@@ -62,7 +64,9 @@ TL;DR following the AAA pattern means tests are laid out like this::
  
         <ASSERT block> # check that the SUT changed as expected
 
-For example::
+For example:
+
+.. code-block:: python
 
     def test(tmpdir):
         """
