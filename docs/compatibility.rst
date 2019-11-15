@@ -10,8 +10,20 @@ Python
 
 Works with Python 3.
 
-We fully test against the latest three versions of Python 3 - currently that's
-3.5, 3.6 and 3.7.
+We fully test against the latest four versions of Python 3 - currently that's
+3.5, 3.6, 3.7 and 3.8.
+
+Support for Python 3.5 is deprecated and will end in December 2019.
+
+Python 2
+........
+
+Python 2 is supported up to ``v0.4.0``
+
+  * `PyPI <https://pypi.org/project/flake8-aaa/0.4.0/>`_
+  * `Documentation <https://flake8-aaa.readthedocs.io/en/v0.4.0/>`_
+  * `Github v0.4.0 tag
+    <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.4.0>`_
 
 Flake8
 ------
@@ -22,7 +34,13 @@ We use the newer plugin system implemented in Flake8 v3. This dependency is not
 specified in ``setup.py`` because users may only want to use the command line
 interface.
 
-If you intend to integrate with Flake8 you should ``pip install "flake8>3"``.
+Check that Flake8-AAA was installed correctly by asking ``flake8`` for its
+version signature::
+
+    $ flake8 --version
+    3.7.8 (aaa: 0.7.0, mccabe: 0.6.1, pycodestyle: 2.5.0, pyflakes: 2.1.1) CPython 3.6.7 on Linux
+
+The ``aaa: 0.7.0`` part of that output tells you Flake8 found this plugin.
 
 Black
 -----
