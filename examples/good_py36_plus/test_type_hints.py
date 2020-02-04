@@ -6,6 +6,9 @@ def add_one(x: int) -> int:
 
 
 def test_add_one() -> None:
+    """
+    Addition of type hint in act block does not prevent act block being found
+    """
     # Arrange.
     data: int = 0
 
