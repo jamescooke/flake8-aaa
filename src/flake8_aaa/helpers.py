@@ -88,10 +88,11 @@ def node_is_result_assignment(node: ast.AST) -> bool:
         bool: ``node`` corresponds to the code ``result =``, assignment to the
         ``result `` variable.
     """
-    return (
-        isinstance(node, ast.Assign) and len(node.targets) == 1 and isinstance(node.targets[0], ast.Name)
-        and node.targets[0].id == "result"
-    ) or (isinstance(node, ast.AnnAssign) and node.target.id == "result")
+    if isinstance(node, ast.Assign):
+        return len(node.targets) == 1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id == "result"
+    if isinstance(node, ast.AnnAssign):
+        return node.target.id == "result"  # type: ignore
+    return False
 
 
 def node_is_pytest_raises(node: ast.AST) -> bool:
