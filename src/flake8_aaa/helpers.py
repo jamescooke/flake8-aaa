@@ -93,11 +93,11 @@ def node_is_result_assignment(node: ast.AST) -> bool:
 
     # py35 has no Annotated Assignment, so work around it...
     try:
-        AnnAssign = getattr(ast, 'AnnAssign')
+        ann_assign_cls = getattr(ast, 'AnnAssign')
     except AttributeError:
         return False
 
-    if isinstance(node, AnnAssign):
+    if isinstance(node, ann_assign_cls):
         return node.target.id == "result"  # type: ignore
     return False
 
