@@ -14,6 +14,12 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Fixed
+.....
+
+* NEEDS CONFIRMATION: Bug preventing type annotated assignment Act blocks from being found `#123
+  <https://github.com/jamescooke/flake8-aaa/pull/123>`_
+
 0.7.1_ - 2019/11/16
 -------------------
 
