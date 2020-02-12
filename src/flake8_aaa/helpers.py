@@ -93,7 +93,7 @@ def node_is_result_assignment(node: ast.AST) -> bool:
 
     # py35 has no Annotated Assignment, so work around it...
     try:
-        AnnAssign = ast.AnnAssign
+        AnnAssign = getattr(ast, 'AnnAssign')
     except AttributeError:
         return False
 
