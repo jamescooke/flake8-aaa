@@ -90,7 +90,14 @@ def node_is_result_assignment(node: ast.AST) -> bool:
     """
     if isinstance(node, ast.Assign):
         return len(node.targets) == 1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id == "result"
-    if isinstance(node, ast.AnnAssign):
+
+    # py35 has no Annotated Assignment, so work around it...
+    try:
+        AnnAssign = ast.AnnAssign
+    except AttributeError:
+        return False
+
+    if isinstance(node, AnnAssign):
         return node.target.id == "result"  # type: ignore
     return False
 
