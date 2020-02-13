@@ -87,14 +87,19 @@ def node_is_result_assignment(node: ast.AST) -> bool:
     Returns:
         bool: ``node`` corresponds to the code ``result =``, assignment to the
         ``result `` variable.
-
-    Note:
-        Performs a very weak test that the line starts with 'result =' rather
-        than testing the tokens.
     """
-    # `.first_token` is added by asttokens
-    token = node.first_token  # type: ignore
-    return token.line.strip().startswith('result =')
+    if isinstance(node, ast.Assign):
+        return len(node.targets) == 1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id == "result"
+
+    # py35 has no Annotated Assignment, so work around it...
+    try:
+        ann_assign_cls = getattr(ast, 'AnnAssign')
+    except AttributeError:
+        return False
+
+    if isinstance(node, ann_assign_cls):
+        return node.target.id == "result"  # type: ignore
+    return False
 
 
 def node_is_pytest_raises(node: ast.AST) -> bool:
