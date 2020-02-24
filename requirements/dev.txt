@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=dev.txt dev.in
 #
-bleach==3.1.0             # via readme-renderer
+bleach==3.1.1             # via readme-renderer
 certifi==2019.9.11        # via requests
 chardet==3.0.4            # via requests
 click==7.0                # via pip-tools
@@ -23,4 +23,4 @@ urllib3==1.25.7           # via requests
 webencodings==0.5.1       # via bleach
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==41.6.0        # via twine
+# setuptools
