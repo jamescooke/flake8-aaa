@@ -28,8 +28,6 @@ Given a new version called ``x.y.z``:
     ``.. _x.y.z: https:/[...]/compare/va.b.c...vx.y.z``, where ``va.b.c`` is
     the previous release.
 
-* Run ``update_sig.sh`` to update the Flake8 signature output in the README.
-
 * Commit changes and push ``bump-vx.y.z`` branch for testing.
 
 * Now is a good time to build and check the documentation locally.
