@@ -91,14 +91,9 @@ def node_is_result_assignment(node: ast.AST) -> bool:
     if isinstance(node, ast.Assign):
         return len(node.targets) == 1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id == "result"
 
-    # py35 has no Annotated Assignment, so work around it...
-    try:
-        ann_assign_cls = getattr(ast, 'AnnAssign')
-    except AttributeError:
-        return False
-
-    if isinstance(node, ann_assign_cls):
+    if isinstance(node, ast.AnnAssign):
         return node.target.id == "result"  # type: ignore
+
     return False
 
 
@@ -209,10 +204,6 @@ def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast
     return [node for node in nodes if node.lineno > min_line_number]
 
 
-# py35 sees this as a const
-JoinedStrType = getattr(ast, 'JoinedStr', None)
-
-
 def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:
     """
     Finds all lines that contain a string in a tree, usually a function. These
@@ -226,7 +217,7 @@ def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:
     """
     str_footprints = set()
     for node in ast.walk(tree):
-        if isinstance(node, ast.Str) or (JoinedStrType is not None and isinstance(node, JoinedStrType)):
+        if isinstance(node, ast.Str) or isinstance(node, ast.JoinedStr):
             try:
                 str_footprints.update(build_footprint(node, first_line_no))
             except AttributeError:
