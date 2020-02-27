@@ -5,57 +5,57 @@
 #    pip-compile --output-file=test.txt test.in
 #
 alabaster==0.7.12         # via sphinx
-astroid==2.3.3            # via pylint
-atomicwrites==1.3.0       # via pytest
+appdirs==1.4.3            # via virtualenv
 attrs==19.3.0             # via pytest
-babel==2.7.0              # via sphinx
-certifi==2019.9.11        # via requests
+babel==2.8.0              # via sphinx
+certifi==2019.11.28       # via requests
 chardet==3.0.4            # via requests
-docutils==0.15.2          # via restructuredtext-lint, sphinx
-entrypoints==0.3          # via flake8
-filelock==3.0.12          # via tox
-flake8==3.7.9
-idna==2.8                 # via requests
-imagesize==1.1.0          # via sphinx
-isort==4.3.21
-jinja2==2.10.3            # via sphinx
-lazy-object-proxy==1.4.3  # via astroid
+distlib==0.3.0            # via virtualenv
+docutils==0.16            # via restructuredtext-lint, sphinx
+entrypoints==0.3          # via -c base.txt, flake8
+filelock==3.0.12          # via tox, virtualenv
+flake8==3.7.9             # via -c base.txt, -r test.in
+idna==2.9                 # via requests
+imagesize==1.2.0          # via sphinx
+importlib-metadata==1.5.0  # via pluggy, pytest, tox, virtualenv
+importlib-resources==1.0.2  # via virtualenv
+isort==4.3.21             # via -r test.in
+jinja2==2.11.1            # via sphinx
 markupsafe==1.1.1         # via jinja2
-mccabe==0.6.1             # via flake8, pylint
-more-itertools==7.2.0     # via pytest
+mccabe==0.6.1             # via -c base.txt, flake8
+more-itertools==8.2.0     # via pytest
 mypy-extensions==0.4.3    # via mypy
-mypy==0.740
-packaging==19.2           # via pytest, sphinx, tox
-pluggy==0.13.0            # via pytest, tox
-py==1.8.0                 # via pytest, tox
-pycodestyle==2.5.0        # via flake8
-pyflakes==2.1.1           # via flake8
-pygments==2.4.2
-pylint==2.4.3
-pyparsing==2.4.5          # via packaging
-pytest==5.2.2
+mypy==0.761               # via -r test.in
+packaging==20.1           # via pytest, sphinx, tox
+pluggy==0.13.1            # via pytest, tox
+py==1.8.1                 # via pytest, tox
+pycodestyle==2.5.0        # via -c base.txt, flake8
+pyflakes==2.1.1           # via -c base.txt, flake8
+pygments==2.5.2           # via -r test.in, sphinx
+pyparsing==2.4.6          # via packaging
+pytest==5.3.5             # via -r test.in
 pytz==2019.3              # via babel
-requests==2.22.0          # via sphinx
-restructuredtext-lint==1.3.0
-six==1.13.0
+requests==2.23.0          # via sphinx
+restructuredtext-lint==1.3.0  # via -r test.in
+six==1.14.0               # via -c base.txt, -r test.in, packaging, tox, virtualenv
 snowballstemmer==2.0.0    # via sphinx
-sphinx-rtd-theme==0.4.3
-sphinx==2.2.1
+sphinx-rtd-theme==0.4.3   # via -r test.in
+sphinx==2.4.3             # via -r test.in, sphinx-rtd-theme
 sphinxcontrib-applehelp==1.0.1  # via sphinx
 sphinxcontrib-devhelp==1.0.1  # via sphinx
-sphinxcontrib-htmlhelp==1.0.2  # via sphinx
+sphinxcontrib-htmlhelp==1.0.3  # via sphinx
 sphinxcontrib-jsmath==1.0.1  # via sphinx
 sphinxcontrib-qthelp==1.0.2  # via sphinx
 sphinxcontrib-serializinghtml==1.1.3  # via sphinx
 toml==0.10.0              # via tox
-tox==3.14.0
-typed-ast==1.4.0          # via mypy
+tox==3.14.5               # via -r test.in
+typed-ast==1.4.1          # via mypy
 typing-extensions==3.7.4.1  # via mypy
-urllib3==1.25.7           # via requests
-virtualenv==16.7.7        # via tox
-wcwidth==0.1.7            # via pytest
-wrapt==1.11.2             # via astroid
-yapf==0.28.0
+urllib3==1.25.8           # via requests
+virtualenv==20.0.7        # via tox
+wcwidth==0.1.8            # via pytest
+yapf==0.29.0              # via -r test.in
+zipp==3.0.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==41.6.0        # via sphinx
+# setuptools
