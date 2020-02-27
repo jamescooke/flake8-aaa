@@ -48,6 +48,18 @@ message  # 15
     """  # 16
 ''', 2, set([0, 1, 2, 4, 5, 6, 7, 8, 13, 14, 15, 16])
         ),
+        (
+            '''
+def test_f_string_check(version):  # 0
+    result = do(
+        f"""/path/to/folder/
+
+        {version}/thing.py""",  # 4
+    )
+
+    assert result is True
+''', 2, set([2, 3, 4])
+        ),
     ]
 )
 def test(first_node_with_tokens, offset, expected_lines):
