@@ -47,6 +47,8 @@ def test_unittest_raises_block(first_node_with_tokens):
         ('result = do_thing()', ActNodeType.result_assignment),
         ('with pytest.raises(Exception):\n    do_thing()', ActNodeType.pytest_raises),
         ('data[new_key] = value  # act', ActNodeType.marked_act),
+        ('result: Thing = do_thing()', ActNodeType.result_assignment),
+        ('result: List[int] = do_thing()', ActNodeType.result_assignment),
     ]
 )
 def test(expected_type, first_node_with_tokens):

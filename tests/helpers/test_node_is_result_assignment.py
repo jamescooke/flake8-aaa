@@ -13,6 +13,9 @@ from flake8_aaa.helpers import node_is_result_assignment
         ('result[0] = 0', False),
         ('result += 1', False),
         ('result -= 1', False),
+        ('result: int = 1', True),
+        ('result: List[int] = [1]', True),
+        ('xresult: int = 1', False),
     ],
 )
 def test_no(first_node_with_tokens, expected_result):

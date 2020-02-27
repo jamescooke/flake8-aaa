@@ -25,6 +25,9 @@ def test(first_node_with_tokens):
         ('''
 r'hello world'
 ''', 'r\'hello world\''),
+        ('''
+f"hello world"
+''', 'f"hello world"'),
     ]
 )
 def test_strings(first_node_with_tokens, expected):
