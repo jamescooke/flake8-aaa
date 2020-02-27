@@ -20,6 +20,10 @@ Changed
 * Install requires ASTTokens version 2 or greater, was previously
   ``>= 1.1.10``.
 
+* Special test examples that only ran on Python 3.6 and greater, now merged
+  into main test suite. `#128
+  <https://github.com/jamescooke/flake8-aaa/pull/128>`_
+
 Removed
 .......
 
