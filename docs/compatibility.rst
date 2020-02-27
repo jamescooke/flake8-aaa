@@ -10,10 +10,18 @@ Python
 
 Works with Python 3.
 
-We fully test against the latest four versions of Python 3 - currently that's
-3.5, 3.6, 3.7 and 3.8.
+We fully test against the latest versions of Python 3 - currently that's 3.6,
+3.7 and 3.8.
 
-Support for Python 3.5 is deprecated and will end in December 2019.
+Python 3.5
+..........
+
+Python 3.5 is supported up to ``v0.7.2``
+
+  * `PyPI <https://pypi.org/project/flake8-aaa/0.7.2/>`_
+  * `Documentation <https://flake8-aaa.readthedocs.io/en/v0.7.2/>`_
+  * `Github v0.4.0 tag
+    <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.7.2>`_
 
 Python 2
 ........
