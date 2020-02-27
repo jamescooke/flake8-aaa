@@ -26,8 +26,6 @@ lint:
 	flake8 $(lint_files)
 	@echo "=== mypy ==="
 	$(MAKE) mypy
-	@echo "=== pylint ==="
-	./run_pylint.sh src/flake8_aaa
 	@echo "=== isort ==="
 	isort --quiet --recursive --diff $(lint_files) > isort.out
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi

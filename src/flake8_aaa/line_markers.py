@@ -21,10 +21,10 @@ class LineMarkers(list):
         pass
 
     @typing.overload  # noqa: F811
-    def __setitem__(self, s: slice, o: typing.Iterable) -> None:  # pylint: disable=function-redefined
+    def __setitem__(self, s: slice, o: typing.Iterable) -> None:
         pass
 
-    def __setitem__(self, key, value):  # noqa: F811 | pylint: disable=function-redefined
+    def __setitem__(self, key, value):  # noqa: F811
         """
         Extended version of setitem to assert that item being replaced is
         always an unprocessed line. If the item being replaced is blank line,

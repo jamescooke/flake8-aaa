@@ -1,9 +1,9 @@
 from enum import Enum, unique
 
-ActNodeType = Enum(  # pylint: disable=invalid-name
+ActNodeType = Enum(
     'ActNodeType',
     (
-        'marked_act '   # Marked with "# act"
+        'marked_act '  # Marked with "# act"
         'pytest_raises '  # Wrapped in "pytest.raises" context manager.
         'result_assignment '  # Simple "result = "
         'unittest_raises '  # Wrapped in unittest's "assertRaises" context manager.
