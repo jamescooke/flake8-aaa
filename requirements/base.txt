@@ -4,10 +4,10 @@
 #
 #    pip-compile --output-file=base.txt base.in
 #
-asttokens==2.0.2
+asttokens==2.0.3          # via -r base.in
 entrypoints==0.3          # via flake8
-flake8==3.7.9
+flake8==3.7.9             # via -r base.in
 mccabe==0.6.1             # via flake8
 pycodestyle==2.5.0        # via flake8
 pyflakes==2.1.1           # via flake8
-six==1.13.0               # via asttokens
+six==1.14.0               # via asttokens

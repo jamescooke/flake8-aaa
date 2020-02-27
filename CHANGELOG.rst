@@ -14,6 +14,20 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Changed
+.......
+
+* Install requires ASTTokens version 2 or greater, was previously
+  ``>= 1.1.10``.
+
+Removed
+.......
+
+* Support for Python 3.5. `#110
+  <https://github.com/jamescooke/flake8-aaa/issues/110>`_
+
+* Pylint removed from linting checks.
+
 0.7.2_ - 2020/02/24
 -------------------
 

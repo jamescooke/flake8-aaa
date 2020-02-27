@@ -28,9 +28,9 @@ setup(
     # --- Python ---
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    python_requires='>=3.5, <4',
+    python_requires='>=3.6, <4',
     install_requires=[
-        'asttokens >= 1.1.10',
+        'asttokens >= 2',
     ],
     entry_points={
         'flake8.extension': [
@@ -44,7 +44,6 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',

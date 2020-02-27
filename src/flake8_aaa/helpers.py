@@ -56,7 +56,7 @@ class TestFuncLister(ast.NodeVisitor):
         self.skip_noqa = skip_noqa  # type: bool
         self._found_funcs = []  # type: List[ast.FunctionDef]
 
-    def visit_FunctionDef(self, node):  # pylint: disable=invalid-name
+    def visit_FunctionDef(self, node):
         if node.name.startswith('test'):
             if not self.skip_noqa or not node.first_token.line.strip().endswith('# noqa'):
                 self._found_funcs.append(node)
@@ -209,7 +209,7 @@ def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast
     return [node for node in nodes if node.lineno > min_line_number]
 
 
-# py35 sees this as a const, pylint complains that it's not UPPER_CASE :(
+# py35 sees this as a const
 JoinedStrType = getattr(ast, 'JoinedStr', None)
 
 

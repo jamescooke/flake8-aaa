@@ -95,7 +95,9 @@ Compatibility
 
 * Compatible with Black and yapf formatted code.
 
-* Current release works with the latest versions of Python 3 (3.5, 3.6, 3.7 and
+* Compatible with type-annotated code, checked with mypy.
+
+* Current release works with the latest versions of Python 3 (3.6, 3.7 and
   3.8). Older releases have support for older Pythons.
 
 See the `Compatibility list
