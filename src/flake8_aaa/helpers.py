@@ -53,8 +53,8 @@ class TestFuncLister(ast.NodeVisitor):
 
     def __init__(self, skip_noqa: bool):
         super(TestFuncLister, self).__init__()
-        self.skip_noqa = skip_noqa  # type: bool
-        self._found_funcs = []  # type: List[ast.FunctionDef]
+        self.skip_noqa = skip_noqa
+        self._found_funcs: List[ast.FunctionDef] = []
 
     def visit_FunctionDef(self, node):
         if node.name.startswith('test'):
@@ -106,9 +106,7 @@ def node_is_pytest_raises(node: ast.AST) -> bool:
         bool: ``node`` corresponds to a With node where the context manager is
         ``pytest.raises``.
     """
-    # `.first_token` is added by asttokens
-    token = node.first_token  # type: ignore
-    return isinstance(node, ast.With) and token.line.strip().startswith('with pytest.raises')
+    return isinstance(node, ast.With) and get_first_token(node).line.strip().startswith('with pytest.raises')
 
 
 def node_is_unittest_raises(node: ast.AST) -> bool:
@@ -116,9 +114,7 @@ def node_is_unittest_raises(node: ast.AST) -> bool:
     ``node`` corresponds to a With node where the context manager is unittest's
     ``self.assertRaises``.
     """
-    # `.first_token` is added by asttokens
-    token = node.first_token  # type: ignore
-    return isinstance(node, ast.With) and token.line.strip().startswith('with self.assertRaises')
+    return isinstance(node, ast.With) and get_first_token(node).line.strip().startswith('with self.assertRaises')
 
 
 def node_is_noop(node: ast.AST) -> bool:
