@@ -204,25 +204,37 @@ def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast
     return [node for node in nodes if node.lineno > min_line_number]
 
 
+class StringyLineVisitor(ast.NodeVisitor):
+    """
+    Find lines that look like strings. For each found, calculate its footprint.
+    """
+
+    def __init__(self, first_line_no: int):
+        super().__init__()
+        self.first_line_no: int = first_line_no
+        self.footprints: Set[int] = set()
+
+    def visit_Str(self, node) -> None:
+        self.add_footprint(node)
+
+    def visit_JoinedStr(self, node) -> None:
+        self.add_footprint(node)
+
+    def add_footprint(self, node) -> None:
+        self.footprints.update(build_footprint(node, self.first_line_no))
+
+
 def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:
     """
     Finds all lines that contain a string in a tree, usually a function. These
     lines will be ignored when searching for blank lines.
 
-    Since py36, JoinedStr can contain Str nodes and FormattedValue nodes - the
-    inner nodes are not tokenised, so cause build_footprint() to raise
-    AttributeErrors when it attempts to inspect the tokens on these nodes.
+    JoinedStr can contain Str nodes and FormattedValue nodes - the inner nodes
+    are not tokenised, so cause build_footprint() to raise AttributeErrors when
+    it attempts to inspect the tokens on these nodes.
 
     See https://greentreesnakes.readthedocs.io/en/latest/nodes.html#JoinedStr
     """
-    str_footprints = set()
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Str) or isinstance(node, ast.JoinedStr):
-            try:
-                str_footprints.update(build_footprint(node, first_line_no))
-            except AttributeError:
-                # TODO this is a hacky work around. Should be replaced with a
-                # string walking NodeVisitor class, ideally once py38 is out
-                # and py35 support is ended.
-                pass
-    return str_footprints
+    str_visitor = StringyLineVisitor(first_line_no)
+    str_visitor.visit(tree)
+    return str_visitor.footprints
