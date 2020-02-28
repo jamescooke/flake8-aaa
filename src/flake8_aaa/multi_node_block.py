@@ -13,7 +13,7 @@ class MultiNodeBlock(metaclass=ABCMeta):
         pass
 
     def __init__(self) -> None:
-        self.nodes = []  # type: List[ast.AST]
+        self.nodes: List[ast.AST] = []
 
     @abstractmethod
     def add_node(self, node: ast.AST) -> bool:

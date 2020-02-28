@@ -13,18 +13,18 @@ class LineMarkers(list):
 
     def __init__(self, lines: typing.List[str], fn_offset: int) -> None:
         super().__init__([LineType.unprocessed] * len(lines))
-        self.lines = lines  # type: typing.List[str]
-        self.fn_offset = fn_offset  # type: int
+        self.lines = lines
+        self.fn_offset = fn_offset
 
-    @typing.overload  # noqa: F811
+    @typing.overload
     def __setitem__(self, key: int, value: typing.Any) -> None:
         pass
 
-    @typing.overload  # noqa: F811
+    @typing.overload
     def __setitem__(self, s: slice, o: typing.Iterable) -> None:
         pass
 
-    def __setitem__(self, key, value):  # noqa: F811
+    def __setitem__(self, key, value):
         """
         Extended version of setitem to assert that item being replaced is
         always an unprocessed line. If the item being replaced is blank line,

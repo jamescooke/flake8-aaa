@@ -1,7 +1,7 @@
 import ast
 from typing import List, Type, TypeVar
 
-from .helpers import node_is_pytest_raises, node_is_result_assignment, node_is_unittest_raises
+from .helpers import get_first_token, node_is_pytest_raises, node_is_result_assignment, node_is_unittest_raises
 from .types import ActNodeType
 
 AN = TypeVar('AN', bound='ActNode')  # Place holder for ActNode instances
@@ -20,8 +20,8 @@ class ActNode:
             node
             block_type
         """
-        self.node = node  # type: ast.stmt
-        self.block_type = block_type  # type: ActNodeType
+        self.node = node
+        self.block_type = block_type
 
     @classmethod
     def build_body(cls: Type[AN], body: List[ast.stmt]) -> List:
@@ -29,7 +29,7 @@ class ActNode:
         Note:
             Return type is probably ``-> List[AN]``, but can't get it to pass.
         """
-        act_nodes = []  # type: List[ActNode]
+        act_nodes: List[ActNode] = []
         for child_node in body:
             act_nodes += ActNode.build(child_node)
         return act_nodes
@@ -50,9 +50,8 @@ class ActNode:
         if node_is_unittest_raises(node):
             return [cls(node, ActNodeType.unittest_raises)]
 
-        token = node.first_token  # type: ignore
         # Check if line marked with '# act'
-        if token.line.strip().endswith('# act'):
+        if get_first_token(node).line.strip().endswith('# act'):
             return [cls(node, ActNodeType.marked_act)]
 
         # Recurse (downwards) if it's a context manager
