@@ -14,6 +14,13 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/>`_.
 
+Changed
+.......
+
+* Line that are covered by strings (like docstrings) are found with a
+  ``NodeVisitor``. Previously this was an iterator on the tree. `#132
+  <https://github.com/jamescooke/flake8-aaa/pull/132>`_.
+
 0.8.0_ - 2020/02/27
 -------------------
 

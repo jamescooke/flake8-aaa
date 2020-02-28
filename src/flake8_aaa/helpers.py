@@ -53,8 +53,8 @@ class TestFuncLister(ast.NodeVisitor):
 
     def __init__(self, skip_noqa: bool):
         super(TestFuncLister, self).__init__()
-        self.skip_noqa = skip_noqa  # type: bool
-        self._found_funcs = []  # type: List[ast.FunctionDef]
+        self.skip_noqa = skip_noqa
+        self._found_funcs: List[ast.FunctionDef] = []
 
     def visit_FunctionDef(self, node):
         if node.name.startswith('test'):
@@ -106,9 +106,7 @@ def node_is_pytest_raises(node: ast.AST) -> bool:
         bool: ``node`` corresponds to a With node where the context manager is
         ``pytest.raises``.
     """
-    # `.first_token` is added by asttokens
-    token = node.first_token  # type: ignore
-    return isinstance(node, ast.With) and token.line.strip().startswith('with pytest.raises')
+    return isinstance(node, ast.With) and get_first_token(node).line.strip().startswith('with pytest.raises')
 
 
 def node_is_unittest_raises(node: ast.AST) -> bool:
@@ -116,9 +114,7 @@ def node_is_unittest_raises(node: ast.AST) -> bool:
     ``node`` corresponds to a With node where the context manager is unittest's
     ``self.assertRaises``.
     """
-    # `.first_token` is added by asttokens
-    token = node.first_token  # type: ignore
-    return isinstance(node, ast.With) and token.line.strip().startswith('with self.assertRaises')
+    return isinstance(node, ast.With) and get_first_token(node).line.strip().startswith('with self.assertRaises')
 
 
 def node_is_noop(node: ast.AST) -> bool:
@@ -204,25 +200,37 @@ def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast
     return [node for node in nodes if node.lineno > min_line_number]
 
 
+class StringyLineVisitor(ast.NodeVisitor):
+    """
+    Find lines that look like strings. For each found, calculate its footprint.
+    """
+
+    def __init__(self, first_line_no: int):
+        super().__init__()
+        self.first_line_no: int = first_line_no
+        self.footprints: Set[int] = set()
+
+    def visit_Str(self, node) -> None:
+        self.add_footprint(node)
+
+    def visit_JoinedStr(self, node) -> None:
+        self.add_footprint(node)
+
+    def add_footprint(self, node) -> None:
+        self.footprints.update(build_footprint(node, self.first_line_no))
+
+
 def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:
     """
     Finds all lines that contain a string in a tree, usually a function. These
     lines will be ignored when searching for blank lines.
 
-    Since py36, JoinedStr can contain Str nodes and FormattedValue nodes - the
-    inner nodes are not tokenised, so cause build_footprint() to raise
-    AttributeErrors when it attempts to inspect the tokens on these nodes.
+    JoinedStr can contain Str nodes and FormattedValue nodes - the inner nodes
+    are not tokenised, so cause build_footprint() to raise AttributeErrors when
+    it attempts to inspect the tokens on these nodes.
 
     See https://greentreesnakes.readthedocs.io/en/latest/nodes.html#JoinedStr
     """
-    str_footprints = set()
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Str) or isinstance(node, ast.JoinedStr):
-            try:
-                str_footprints.update(build_footprint(node, first_line_no))
-            except AttributeError:
-                # TODO this is a hacky work around. Should be replaced with a
-                # string walking NodeVisitor class, ideally once py38 is out
-                # and py35 support is ended.
-                pass
-    return str_footprints
+    str_visitor = StringyLineVisitor(first_line_no)
+    str_visitor.visit(tree)
+    return str_visitor.footprints

@@ -33,15 +33,15 @@ class Function:
             node
             file_lines: Lines of file under test.
         """
-        self.node = node  # type: ast.FunctionDef
-        self.first_line_no = get_first_token(self.node).start[0]  # type: int
-        end = get_last_token(self.node).end[0]  # type: int
-        self.lines = file_lines[self.first_line_no - 1:end]  # type: List[str]
-        self.arrange_block = None  # type: Optional[Block]
-        self.act_node = None  # type: Optional[ActNode]
-        self.act_block = None  # type: Optional[Block]
-        self.assert_block = None  # type: Optional[Block]
-        self.line_markers = LineMarkers(self.lines, self.first_line_no)  # type: LineMarkers
+        self.node = node
+        self.first_line_no: int = get_first_token(self.node).start[0]
+        end: int = get_last_token(self.node).end[0]
+        self.lines: List[str] = file_lines[self.first_line_no - 1:end]
+        self.arrange_block: Optional[Block] = None
+        self.act_node: Optional[ActNode] = None
+        self.act_block: Optional[Block] = None
+        self.assert_block: Optional[Block] = None
+        self.line_markers = LineMarkers(self.lines, self.first_line_no)
 
     def __str__(self, errors: Optional[List[AAAError]] = None) -> str:
         out = '------+------------------------------------------------------------------------\n'
