@@ -12,7 +12,7 @@ Unreleased_
 -----------
 
 See also `latest documentation
-<https://flake8-aaa.readthedocs.io/en/latest/>`_.
+<https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
 Changed
 .......
