@@ -18,23 +18,25 @@ new_version=$1
 # --- Get current version ---
 
 current_version="$(grep -Eo '^__version__.*$' src/flake8_aaa/__about__.py | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')"
+today=$(date "+%Y/%m/%d")
 
 # TODO check that new version > current version
 
 echo "Current version = '$current_version'"
 echo "    New version = '$new_version'"
+echo "          Today = '$today'"
 
 # === Update __about__ ===
 
 sed --in-place "s/__version__ = '$current_version'$/__version__ = '$new_version'/" src/flake8_aaa/__about__.py
 
-echo "__about__.py updated."
+echo "*** /src/flake8_aaa/__about__.py updated."
 
 # === Update CHANGELOG ===
 
-# Add new version subtitle after link to latest docs
+# Add new version subtitle after link to latest docs, released today
 
-sed --in-place "/#__unreleased_marker__/ a\ \n${new_version}_ - 2020/02/27\n-------------------" CHANGELOG.rst
+sed --in-place "/#__unreleased_marker__/ a\ \n${new_version}_ - ${today}\n-------------------" CHANGELOG.rst
 
 # This leaves a single whitespace on the line above the new subtitle, so remove that
 
@@ -47,3 +49,8 @@ sed --in-place "s/^\.\. _Unreleased: .*$/.. _Unreleased: https:\/\/github.com\/j
 # Add link for new release after unreleased link:
 
 sed --in-place "/^\.\. _Unreleased: .*$/a .. _${new_version}: https://github.com/jamescooke/flake8-aaa/compare/v${current_version}...v${new_version}" CHANGELOG.rst
+
+echo "*** /CHANGELOG.rst updated."
+echo
+
+git diff
