@@ -1,8 +1,11 @@
 import ast
 import os
+import re
 from typing import List, Set
 
 from asttokens.util import Token
+
+test_file_pattern = re.compile(r'test(_.*|s)?\.py$')
 
 
 def is_test_file(filename: str) -> bool:
@@ -10,7 +13,7 @@ def is_test_file(filename: str) -> bool:
     Check that path to file being checked passed by flake8 looks like a pytest
     test file.
     """
-    return os.path.basename(filename).startswith('test_')
+    return bool(test_file_pattern.match(os.path.basename(filename)))
 
 
 def first_non_blank_char(line: str) -> int:
