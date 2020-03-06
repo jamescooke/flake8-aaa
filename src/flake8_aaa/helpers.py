@@ -9,36 +9,11 @@ def is_test_file(filename: str) -> bool:
     """
     Check that path to file being checked passed by flake8 looks like a pytest
     test file.
-
-    Examples:
-        1.  Non-test files give False.
-        >>> is_test_file('./test.py')
-        False
-        >>> is_test_file('./helper.py')
-        False
-        >>> is_test_file('tests/conftest.py')
-        False
-
-        2.  Finds files that start with 'test_' to be test files.
-        >>> is_test_file('./test_helpers.py')
-        True
     """
     return os.path.basename(filename).startswith('test_')
 
 
 def first_non_blank_char(line: str) -> int:
-    """
-    Examples:
-        1.  Empty string has no non-blank chars.
-        >>> first_non_blank_char('')
-        0
-
-        2.  First char after whitespace or tabs works.
-        >>> first_non_blank_char('    return')
-        4
-        >>> first_non_blank_char('        return')
-        8
-    """
     for pos, char in enumerate(line):
         if not char.isspace():
             return pos
