@@ -14,6 +14,13 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Changed
+.......
+
+* Simply named files are now checked. For example ``test.py`` and ``tests.py``
+  are now checked but were skipped before. `#124
+  <https://github.com/jamescooke/flake8-aaa/issues/124>`_.
+
 Removed
 .......
 

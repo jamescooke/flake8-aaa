@@ -13,3 +13,5 @@ examples/bad/test_aaa05.py:9:1: AAA05 blank line in block
 examples/bad/test_example.py:4:5: AAA03 expected 1 blank line before Act block, found none
 examples/bad/test_noqa_flake8.py:11:17: E225 missing whitespace around operator
 examples/bad/test_noqa_flake8.py:5:10: E201 whitespace after '('
+examples/bad/test.py:4:1: AAA01 no Act block found in test
+examples/bad/tests.py:4:1: AAA01 no Act block found in test
