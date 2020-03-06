@@ -1,4 +1,4 @@
-from collections import Generator
+from collections.abc import Generator
 
 from flake8_aaa.exceptions import AAAError
 from flake8_aaa.line_markers import LineMarkers

@@ -14,6 +14,13 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Removed
+.......
+
+* Doctesting of internal helpers functions - not worth managing a whole tox
+  environment for when only two functions are being tested, and it's easier to
+  write the cases in pytest anyway. Tests moved to pytest.
+
 0.8.1_ - 2020/03/01
 -------------------
 
