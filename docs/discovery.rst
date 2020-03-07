@@ -6,8 +6,10 @@ modules - anything that does not look like a test module is skipped.
 
 The following rules are applied by Flake8-AAA when discovering tests:
 
-* The module's filename must start with "test\_" and have been collected for
+* The module's  and have been collected for
   linting by Flake8.
+
+* The module's filename must be "test.py", "tests.py" or start with "test\_".
 
 * Every function in the module that has a name that starts with "test" is
   checked.
@@ -18,7 +20,12 @@ The following rules are applied by Flake8-AAA when discovering tests:
   skipped.
 
 These rules are aimed to mirror pytest's default collection strategy as closely
-as possible.
+as possible, but also to mirror popular testing tutorials such as Django's
+`Writing your first Django app
+<https://docs.djangoproject.com/en/3.0/intro/tutorial05/#create-a-test-to-expose-the-bug>`_
+which states:
+
+    Put the following in the ``tests.py`` file in the polls application
 
 If you find that Flake8-AAA is giving false positives (you have checks that
 you expected to fail, but they did not), then you should check that the plugin

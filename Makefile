@@ -11,21 +11,25 @@ venv:
 venv/bin/pip-sync: venv
 	venv/bin/pip install pip-tools
 
+# Local dev: Install requirements
 .PHONY: dev
 dev: venv venv/bin/pip-sync
 	venv/bin/pip-sync requirements/base.txt requirements/test.txt requirements/dev.txt
 
+# Local dev: Run all tests for available Python versions
 .PHONY: tox
 tox:
-	tox -s true
+	tox --skip-missing-interpreters true
 
+# --- Tox recipes ---
 
+# Tox: -e "py3{6,7,8}-lint"
 .PHONY: lint
 lint:
 	@echo "=== flake8 ==="
 	flake8 $(lint_files)
 	@echo "=== mypy ==="
-	$(MAKE) mypy
+	mypy src/flake8_aaa tests --ignore-missing-imports
 	@echo "=== isort ==="
 	isort --quiet --recursive --diff $(lint_files) > isort.out
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
@@ -36,10 +40,6 @@ lint:
 	@echo "=== setup.py ==="
 	python setup.py check --metadata --strict
 
-.PHONY: mypy
-mypy:
-	mypy src/flake8_aaa tests --ignore-missing-imports
-
 
 .PHONY: fixlint
 fixlint:
@@ -48,6 +48,7 @@ fixlint:
 	@echo "=== fixing yapf ==="
 	yapf --recursive --in-place $(lint_files)
 
+# Tox: -e "py3{6,7,8}-lintexamples"
 .PHONY: lintexamples
 lintexamples:
 	@echo "=== flake8 ==="
@@ -61,11 +62,12 @@ fixlintexamples:
 	@echo "=== black ==="
 	black examples/good/black
 
-
+# Tox: -e "py36-doc"
 .PHONY: doc
 doc:
 	$(MAKE) -C docs html
 
+# Tox: -e "py3{6,7,8}-cmd"
 .PHONY: cmd
 cmd:
 	for i in $(good_examples); do \
@@ -73,6 +75,7 @@ cmd:
 		python -m flake8_aaa "$$i" || break -1; \
 	done
 
+# Tox: -e "py3{6,7,8}-cmdbad"
 # NOTE: Checks that all bad example files give at least 1 error and all return
 # an error code greater than 0. The `echo;` is used to wipe the error code from
 # the last test, or the for loop fails.
@@ -85,7 +88,7 @@ cmdbad:
 	done
 
 
-# --- Building / Publishing ---
+# --- Local dev: Building / Publishing ---
 
 .PHONY: clean
 clean:
