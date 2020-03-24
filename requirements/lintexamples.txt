@@ -7,7 +7,7 @@
 appdirs==1.4.3            # via black
 attrs==19.3.0             # via black
 black==19.10b0            # via -r lintexamples.in
-click==7.0                # via black
+click==7.1.1              # via black
 entrypoints==0.3          # via flake8
 flake8==3.7.9             # via -r lintexamples.in
 mccabe==0.6.1             # via flake8
