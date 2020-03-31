@@ -12,6 +12,7 @@ click==7.1.1              # via pip-tools
 cryptography==2.8         # via secretstorage
 docutils==0.16            # via -c test.txt, readme-renderer
 idna==2.9                 # via -c test.txt, requests
+importlib-metadata==1.6.0  # via -c test.txt, keyring, twine
 jeepney==0.4.3            # via keyring, secretstorage
 keyring==21.2.0           # via twine
 pip-tools==4.5.1          # via -r dev.in
@@ -23,10 +24,11 @@ requests-toolbelt==0.9.1  # via twine
 requests==2.23.0          # via -c test.txt, requests-toolbelt, twine
 secretstorage==3.1.2      # via keyring
 six==1.14.0               # via -c base.txt, -c test.txt, bleach, cryptography, pip-tools, readme-renderer
-tqdm==4.43.0              # via twine
+tqdm==4.44.1              # via twine
 twine==3.1.1              # via -r dev.in
 urllib3==1.25.8           # via -c test.txt, requests
 webencodings==0.5.1       # via bleach
+zipp==3.1.0               # via -c test.txt, importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
