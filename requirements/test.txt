@@ -17,7 +17,7 @@ filelock==3.0.12          # via tox, virtualenv
 flake8==3.7.9             # via -c base.txt, -r test.in
 idna==2.9                 # via requests
 imagesize==1.2.0          # via sphinx
-importlib-metadata==1.5.0  # via importlib-resources, pluggy, pytest, tox, virtualenv
+importlib-metadata==1.6.0  # via importlib-resources, pluggy, pytest, tox, virtualenv
 importlib-resources==1.4.0  # via virtualenv
 isort==4.3.21             # via -r test.in
 jinja2==2.11.1            # via sphinx
@@ -48,11 +48,11 @@ sphinxcontrib-jsmath==1.0.1  # via sphinx
 sphinxcontrib-qthelp==1.0.3  # via sphinx
 sphinxcontrib-serializinghtml==1.1.4  # via sphinx
 toml==0.10.0              # via tox
-tox==3.14.5               # via -r test.in
+tox==3.14.6               # via -r test.in
 typed-ast==1.4.1          # via mypy
 typing-extensions==3.7.4.1  # via mypy
 urllib3==1.25.8           # via requests
-virtualenv==20.0.13       # via tox
+virtualenv==20.0.15       # via tox
 wcwidth==0.1.9            # via pytest
 yapf==0.29.0              # via -r test.in
 zipp==3.1.0               # via importlib-metadata, importlib-resources
