@@ -1,5 +1,5 @@
-.. image:: https://img.shields.io/travis/jamescooke/flake8-aaa/master.svg
-    :target: https://travis-ci.org/jamescooke/flake8-aaa/branches
+.. image:: https://img.shields.io/travis/com/jamescooke/flake8-aaa/master.svg
+    :target: https://travis-ci.com/jamescooke/flake8-aaa/branches
     :alt: Travis build
 
 .. image:: https://img.shields.io/readthedocs/flake8-aaa.svg
