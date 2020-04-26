@@ -23,8 +23,7 @@ Flake8-AAA
 
 ..
 
-    A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert
-    pattern.
+A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert pattern.
 
 ----------
 
@@ -34,9 +33,90 @@ Flake8-AAA
 🧐 About
 -------
 
+What is the Arrange-Act-Assert pattern?
+.......................................
 
-Flake8-AAA enforces simple formatting of your test suite making it more
-consistent and easier to grok, especially across teams.
+The "Arrange-Act-Assert" pattern (also known as "AAA" and "3A") was observed
+and named by Bill Wake in 2001. The pattern focuses each test on a single
+object's behaviour.
+
+As the name suggests each test is broken down into three distinct parts:
+
+* **Arrange:** Set up the object to be tested.
+
+* **Act**: Carry out an action on the object.
+
+* **Assert**: Check that the object changed as expected, make claims about
+  results and collaborating objects.
+
+This all sounds very abstract, so here's a simple example - an AAA formatted
+test taken from one of our `"good" examples
+<https://github.com/jamescooke/flake8-aaa/blob/master/examples/good/test_example.py>`_,
+simply testing the behaviour of the add ``+`` operator.
+
+.. code-block:: python
+
+   def test():
+      x = 1
+      y = 1
+
+      result = x + y
+
+      assert result == 2
+
+As you can see, the Act block starts with ``result =`` and is separated from
+the Arrange and Assert blocks by blank lines. The test only contains one
+operation using ``+`` - no further behaviour of add are checked in this test.
+
+The main benefit of using the AAA pattern consistently in a test suite is it
+makes it easier to find the behaviour being tested in each test. The Act block
+is clearly distinguished in every test, so it's easy to see the action each
+test is focused on.
+
+Further reading:
+
+* `Arrange Act Assert pattern for Python developers
+  <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
+  includes more information about the pattern and each part of a test.
+
+* This project's `"good" example files
+  <https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_
+  contain more test examples which we use in our test suite.
+
+What is Flake8?
+...............
+
+Flake8 is a command line utility for enforcing style consistency across Python
+projects. It wraps multiple style checking tools and also runs third-party
+checks provided by plugins, of which Flake8-AAA is one.
+
+Further reading:
+
+* `Flake8's documentation <https://flake8.pycqa.org/en/latest/>`_ 
+
+* `Awesome Flake8 Extensions
+  <https://github.com/DmytroLitvinov/awesome-flake8-extensions/>`_ - a list of
+  Flake8 plugins.
+
+What does Flake8-AAA do?
+........................
+
+Flake8-AAA extends Flake8 to check your Python tests match the AAA pattern.
+
+It does this by adding the following new checks to Flake8:
+
+* Every test has a single clear Act block.
+
+* Every Act block is distinguished from the code around it with a blank line
+  above and below.
+
+* Arrange and Assert blocks do not contain additional blank lines.
+
+Adding these simple formatting checks help you write simple, consistently
+formatted tests. They are most helpful if you call Flake8 regularly, for
+example when you save a file or before you run a test suite.
+
+In the future, Flake8-AAA will check that no test has become too complicated.
 
 Installation and usage
 ----------------------
@@ -75,28 +155,7 @@ TL;DR following the AAA pattern means tests are laid out like this:
  
         <ASSERT block> # check that the SUT changed as expected
 
-For example:
 
-.. code-block:: python
-
-    def test(tmpdir):
-        """
-        Checker is able to parse provided file at load time
-        """
-        target_file = tmpdir.join('test.py')
-        target_file.write('assert 1 + 2 == 3\n')
-        tree = ast.parse(target_file.read())
-        checker = Checker(tree, ['assert 1 + 2 == 3\n'], target_file.strpath)
-
-        result = checker.load()
-
-        assert result is None
-        assert len(checker.tree.body) == 1
-        assert type(checker.tree.body[0]) == ast.Assert
-        assert len(checker.ast_tokens.tokens) == 8
-
-More examples are in our `test suite's "good" files
-<https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_.
 
 
 Compatibility
