@@ -1,3 +1,6 @@
+Flake8-AAA
+==========
+
 .. image:: https://img.shields.io/travis/com/jamescooke/flake8-aaa/master.svg
     :target: https://travis-ci.com/jamescooke/flake8-aaa/branches
     :alt: Travis build
@@ -18,11 +21,19 @@
     :alt: flake8-aaa is licensed under the MIT License
     :target: https://github.com/jamescooke/flake8-aaa/blob/master/LICENSE
 
+..
 
-Flake8-AAA
-==========
+    A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert
+    pattern.
 
-    A linter for Python tests.
+----------
+
+📝 Table of Contents
+-------------------
+
+🧐 About
+-------
+
 
 Flake8-AAA enforces simple formatting of your test suite making it more
 consistent and easier to grok, especially across teams.
