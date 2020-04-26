@@ -112,9 +112,10 @@ It does this by adding the following new checks to Flake8:
 
 * Arrange and Assert blocks do not contain additional blank lines.
 
-Adding these simple formatting checks help you write simple, consistently
-formatted tests. They are most helpful if you call Flake8 regularly, for
-example when you save a file or before you run a test suite.
+Checking your code with these simple formatting rules helps you write simple,
+consistently formatted tests that match the AAA pattern. They are most helpful
+if you call Flake8 regularly, for example when you save a file or before you
+run a test suite.
 
 In the future, Flake8-AAA will check that no test has become too complicated.
 
@@ -134,28 +135,6 @@ Invoke Flake8 on your test suite, in this case in the ``tests`` directory::
 Errors returned by Flake8-AAA have the AAA code, for example::
 
     tests/block/test_init.py:14:1: AAA02 multiple Act blocks found in test
-
-Arrange Act Assert
-------------------
-
-Tests are linted against the `Arrange Act Assert pattern
-<http://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_.
-
-TL;DR following the AAA pattern means tests are laid out like this:
-
-.. code-block:: python
-
-    def test():
-        """
-        __docstring__
-        """
-        <ARRANGE block> # set up of the system under test (SUT)
- 
-        <ACT block> # perform a single action on the SUT
- 
-        <ASSERT block> # check that the SUT changed as expected
-
-
 
 
 Compatibility
