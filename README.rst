@@ -30,7 +30,8 @@ A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert pattern.
 📝 Table of Contents
 -------------------
 
-* About
+* `About`_
+* `🧐 About`_
 
 🧐 About
 -------
@@ -51,8 +52,8 @@ As the name suggests each test is broken down into three distinct parts:
 * **Assert**: Check the object changed as expected, make claims about results
   and collaborating objects.
 
-This all sounds very abstract, so here's a simple example. It is a simple test
-on the behaviour of add ``+`` on two integers:
+This all sounds very abstract, so here's a simple example that follows the
+pattern - a simple test on the behaviour of add ``+``:
 
 .. code-block:: python
 
@@ -75,11 +76,11 @@ Further reading:
 
 * `Arrange Act Assert pattern for Python developers
   <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
-  - includes more information about the pattern and each part of a test.
+  - information about the pattern and each part of a test.
 
 * `Our "good" example files
   <https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_ -
-  these contain more test examples which we use in our test suite.
+  test examples used in the Flake8-AAA test suite.
 
 What is Flake8?
 ...............
@@ -93,15 +94,15 @@ Further reading:
 * `Flake8's documentation <https://flake8.pycqa.org/en/latest/>`_ 
 
 * `Awesome Flake8 Extensions
-  <https://github.com/DmytroLitvinov/awesome-flake8-extensions/>`_ - a list of
-  Flake8 plugins.
+  <https://github.com/DmytroLitvinov/awesome-flake8-extensions/>`_ - a curated
+  list of Flake8 plugins.
 
 What does Flake8-AAA do?
 ........................
 
 Flake8-AAA extends Flake8 to check your Python tests match the AAA pattern.
 
-It does this by adding the following new checks to Flake8:
+It does this by adding the following checks to Flake8:
 
 * Every test has a single clear Act block.
 
@@ -110,12 +111,25 @@ It does this by adding the following new checks to Flake8:
 
 * Arrange and Assert blocks do not contain additional blank lines.
 
+In the future, Flake8-AAA will check that no test has become too complicated.
+
 Checking your code with these simple formatting rules helps you write simple,
 consistently formatted tests that match the AAA pattern. They are most helpful
 if you call Flake8 regularly, for example when you save a file or before you
 run a test suite.
 
-In the future, Flake8-AAA will check that no test has become too complicated.
+Flake8-AAA also provides a command line interface. Although this is primarily
+for debugging, it can be used to check files if you don't want to install
+Flake8.
+
+Further reading:
+
+* `Rules and error codes documentation
+  <https://flake8-aaa.readthedocs.io/en/stable/rules.html>`_.
+
+* `Command line documentation
+  <https://flake8-aaa.readthedocs.io/en/stable/commands.html#command-line>`_.
+
 
 Installation and usage
 ----------------------
