@@ -30,6 +30,8 @@ A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert pattern.
 📝 Table of Contents
 -------------------
 
+* About
+
 🧐 About
 -------
 
@@ -46,13 +48,11 @@ As the name suggests each test is broken down into three distinct parts:
 
 * **Act**: Carry out an action on the object.
 
-* **Assert**: Check that the object changed as expected, make claims about
-  results and collaborating objects.
+* **Assert**: Check the object changed as expected, make claims about results
+  and collaborating objects.
 
-This all sounds very abstract, so here's a simple example - an AAA formatted
-test taken from one of our `"good" examples
-<https://github.com/jamescooke/flake8-aaa/blob/master/examples/good/test_example.py>`_,
-simply testing the behaviour of the add ``+`` operator.
+This all sounds very abstract, so here's a simple example. It is a simple test
+on the behaviour of add ``+`` on two integers:
 
 .. code-block:: python
 
@@ -65,23 +65,21 @@ simply testing the behaviour of the add ``+`` operator.
       assert result == 2
 
 As you can see, the Act block starts with ``result =`` and is separated from
-the Arrange and Assert blocks by blank lines. The test only contains one
-operation using ``+`` - no further behaviour of add are checked in this test.
+the Arrange and Assert blocks by blank lines. The test is focused - it only
+contains one add operation and no further additions occur.
 
-The main benefit of using the AAA pattern consistently in a test suite is it
-makes it easier to find the behaviour being tested in each test. The Act block
-is clearly distinguished in every test, so it's easy to see the action each
-test is focused on.
+Using AAA consistently makes it easier to find the Action in a test. It's
+therefore always easy to see the object behaviour each test is focused on.
 
 Further reading:
 
 * `Arrange Act Assert pattern for Python developers
   <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
-  includes more information about the pattern and each part of a test.
+  - includes more information about the pattern and each part of a test.
 
-* This project's `"good" example files
-  <https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_
-  contain more test examples which we use in our test suite.
+* `Our "good" example files
+  <https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_ -
+  these contain more test examples which we use in our test suite.
 
 What is Flake8?
 ...............
