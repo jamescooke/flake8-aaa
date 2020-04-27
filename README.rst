@@ -30,8 +30,9 @@ A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert pattern.
 📝 Table of Contents
 -------------------
 
-* `About`_
 * `🧐 About`_
+* `🏁 Getting Started`_
+* `🎈 Usage`_
 
 🧐 About
 -------
@@ -130,15 +131,53 @@ Further reading:
 * `Command line documentation
   <https://flake8-aaa.readthedocs.io/en/stable/commands.html#command-line>`_.
 
+🏁 Getting Started
+-----------------
 
-Installation and usage
-----------------------
+Prerequisites
+.............
 
-Flake8-AAA is a Flake8 plugin.
+Install Flake8 with `pip <https://pip.pypa.io/en/stable/installing/>`_, if you
+don't have it already:
 
-Install ``flake8-aaa`` with ``pip``, which will also install ``flake8``::
+.. code-block:: shell
+
+    $ pip install flake8
+
+Installation
+............
+
+Install ``flake8-aaa``:
+
+.. code-block:: shell
 
     $ pip install flake8-aaa
+
+You can confirm that Flake8 recognises the plugin by checking its version
+string:
+
+.. code-block:: shell
+
+    $ flake8 --version
+    3.7.9 (aaa: 0.9.0, mccabe: 0.6.1, pycodestyle: 2.5.0, pyflakes: 2.1.1) ...
+
+The ``aaa: 0.9.0`` part tells you that Flake8-AAA was installed successfully
+and its checks will be used by Flake8.
+
+Further reading:
+
+* `Flake8 installation instructions
+  <https://flake8.pycqa.org/en/latest/index.html#installation-guide>`_.
+
+First run
+.........
+
+TODO add good and bad example.
+
+🎈 Usage
+.......
+
+Flake8-AAA is used in the same scenario as Flake8 - that usually means 
 
 Invoke Flake8 on your test suite, in this case in the ``tests`` directory::
 
@@ -148,23 +187,32 @@ Errors returned by Flake8-AAA have the AAA code, for example::
 
     tests/block/test_init.py:14:1: AAA02 multiple Act blocks found in test
 
+.. code-block:: shell
+
+    $ flake8 --select AAA tests
+
+Further reading:
+
+* `Using Flake8 <https://flake8.pycqa.org/en/latest/user/index.html>`_.
 
 Compatibility
 -------------
 
-* Pytest and unittest supported.
+Flake8-AAA works with:
 
-* Compatible with Black and yapf formatted code.
+* Pytest and unittest test suites.
 
-* Compatible with type-annotated code, checked with mypy.
+* Black and yapf formatted code.
 
-* Current release works with the latest versions of Python 3 (3.6, 3.7 and
-  3.8). Older releases have support for older Pythons.
+* Mypy and type-annotated code.
 
-See the `Compatibility list
-<https://flake8-aaa.readthedocs.io/en/stable/compatibility.html>`_ for more
-info.
+* Latest versions of Python 3 (3.6, 3.7 and 3.8).
 
+Further reading:
+
+* `Full compatibility list
+  <https://flake8-aaa.readthedocs.io/en/stable/compatibility.html>`_ - includes
+  information on support for older versions of Python.
 
 Resources
 ---------
