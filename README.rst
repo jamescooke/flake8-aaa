@@ -28,7 +28,7 @@ A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert pattern.
 ----------
 
 📝 Table of Contents
--------------------
+--------------------
 
 * `About <#about>`_
 * `Getting Started <#getting-started>`_
@@ -37,7 +37,7 @@ A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert pattern.
 * `Resources <#resources>`_
 
 🧐 About
--------
+--------
 
 What is the Arrange-Act-Assert pattern?
 .......................................
@@ -126,7 +126,7 @@ Further reading:
   <https://flake8-aaa.readthedocs.io/en/stable/rules.html>`_.
 
 🏁 Getting Started
------------------
+------------------
 
 Prerequisites
 .............
@@ -184,7 +184,7 @@ Now let's see a failure from Flake8-AAA. We can use a bad example:
    test.py:4:1: AAA01 no Act block found in test
 
 🎈 Usage
--------
+--------
 
 Via Flake8
 ..........
@@ -224,7 +224,7 @@ Further reading:
   <https://flake8-aaa.readthedocs.io/en/stable/commands.html#command-line>`_.
 
 ⛏️ Compatibility
----------------
+----------------
 
 Flake8-AAA works with:
 
@@ -243,7 +243,7 @@ Further reading:
   information on support for older versions of Python.
 
 📕 Resources
------------
+------------
 
 * `Documentation on ReadTheDocs <https://flake8-aaa.readthedocs.io/>`_
 
