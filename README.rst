@@ -30,9 +30,11 @@ A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert pattern.
 📝 Table of Contents
 -------------------
 
-* `🧐 About`_
-* `🏁 Getting Started`_
-* `🎈 Usage`_
+* `About <#about>`_
+* `Getting Started <#getting-started>`_
+* `Usage <#usage>`_
+* `Compatibility <#compatibility>`_
+* `Resources <#resources>`_
 
 🧐 About
 -------
@@ -40,21 +42,19 @@ A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert pattern.
 What is the Arrange-Act-Assert pattern?
 .......................................
 
-The "Arrange-Act-Assert" pattern (also known as "AAA" and "3A") was observed
-and named by Bill Wake in 2001. The pattern focuses each test on a single
-object's behaviour.
+"Arrange-Act-Assert" is a testing pattern that focuses each test on a single
+object's behaviour. It's also known as "AAA" and "3A".
 
-As the name suggests each test is broken down into three distinct parts:
+As the name suggests each test is broken down into three distinct parts
+separated by blank lines:
 
 * **Arrange:** Set up the object to be tested.
 
 * **Act**: Carry out an action on the object.
 
-* **Assert**: Check the object changed as expected, make claims about results
-  and collaborating objects.
+* **Assert**: Check the expected results have occurred.
 
-This all sounds very abstract, so here's a simple example that follows the
-pattern - a simple test on the behaviour of add ``+``:
+For example, a simple test on the behaviour of add ``+``:
 
 .. code-block:: python
 
@@ -112,24 +112,18 @@ It does this by adding the following checks to Flake8:
 
 * Arrange and Assert blocks do not contain additional blank lines.
 
-In the future, Flake8-AAA will check that no test has become too complicated.
+In the future, Flake8-AAA will check that no test has become too complicated
+and that Arrange blocks do not contain assertions.
 
 Checking your code with these simple formatting rules helps you write simple,
 consistently formatted tests that match the AAA pattern. They are most helpful
 if you call Flake8 regularly, for example when you save a file or before you
 run a test suite.
 
-Flake8-AAA also provides a command line interface. Although this is primarily
-for debugging, it can be used to check files if you don't want to install
-Flake8.
-
 Further reading:
 
 * `Rules and error codes documentation
   <https://flake8-aaa.readthedocs.io/en/stable/rules.html>`_.
-
-* `Command line documentation
-  <https://flake8-aaa.readthedocs.io/en/stable/commands.html#command-line>`_.
 
 🏁 Getting Started
 -----------------
@@ -172,20 +166,42 @@ Further reading:
 First run
 .........
 
-TODO add good and bad example.
+Let's check the good example from above. We expect Flake8 to return no errors:
+
+.. code-block:: shell
+
+   $ curl https://raw.githubusercontent.com/jamescooke/flake8-aaa/master/examples/good/test_example.py > test_example.py
+   $ flake8 test_example.py
+
+Silence - just what we wanted.
+
+Now let's see a failure from Flake8-AAA. We can use a bad example:
+
+.. code-block:: shell
+
+   $ curl https://raw.githubusercontent.com/jamescooke/flake8-aaa/master/examples/bad/test.py > test.py
+   $ flake8 test.py
+   test.py:4:1: AAA01 no Act block found in test
 
 🎈 Usage
-.......
+-------
 
-Flake8-AAA is used in the same scenario as Flake8 - that usually means 
+Via Flake8
+..........
 
-Invoke Flake8 on your test suite, in this case in the ``tests`` directory::
+Since Flake8-AAA is primarily a Flake8 plugin, the majority of its usage is
+dependent on how you use Flake8. If you're not already using Flake8 then you
+might consider:
 
-    $ flake8 tests
+* Adding a hook to your code editor to run Flake8 when you save a file.
 
-Errors returned by Flake8-AAA have the AAA code, for example::
+* Adding a pre-commit hook to your source code manager to run Flake8 before you
+  commit.
 
-    tests/block/test_init.py:14:1: AAA02 multiple Act blocks found in test
+* Running Flake8 before you execute your test suite - locally or in CI.
+
+If you just want Flake8-AAA error messages from Flake8 you can filter them
+with:
 
 .. code-block:: shell
 
@@ -195,8 +211,20 @@ Further reading:
 
 * `Using Flake8 <https://flake8.pycqa.org/en/latest/user/index.html>`_.
 
-Compatibility
--------------
+Via command line
+................
+
+Flake8-AAA also provides a command line interface. Although this is primarily
+for debugging, it can be used to check files if you don't want to install
+Flake8.
+
+Further reading:
+
+* `Command line documentation
+  <https://flake8-aaa.readthedocs.io/en/stable/commands.html#command-line>`_.
+
+⛏️ Compatibility
+---------------
 
 Flake8-AAA works with:
 
@@ -214,8 +242,8 @@ Further reading:
   <https://flake8-aaa.readthedocs.io/en/stable/compatibility.html>`_ - includes
   information on support for older versions of Python.
 
-Resources
----------
+📕 Resources
+-----------
 
 * `Documentation on ReadTheDocs <https://flake8-aaa.readthedocs.io/>`_
 
