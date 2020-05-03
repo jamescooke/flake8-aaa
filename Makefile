@@ -92,7 +92,7 @@ cmdbad:
 
 .PHONY: clean
 clean:
-	rm -rf dist build .tox .pytest_cache flake8_aaa.egg-info
+	rm -rf dist build .tox .pytest_cache src/flake8_aaa.egg-info
 	find . -name '*.pyc' -delete
 
 .PHONY: sdist
