@@ -58,7 +58,7 @@ class Block:
             EmptyBlock: when block has no nodes
         """
         if not self.nodes:
-            raise EmptyBlock('span requested from {} block with no nodes'.format(self.line_type))
+            raise EmptyBlock(f'span requested from {self.line_type} block with no nodes')
         return (
             get_first_token(self.nodes[0]).start[0] - first_line_no,
             get_last_token(self.nodes[-1]).start[0] - first_line_no,

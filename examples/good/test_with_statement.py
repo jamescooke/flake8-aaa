@@ -29,6 +29,17 @@ def test_simple(hello_world_path):
     assert result == 'Hello World!\n'
 
 
+def test_whole(hello_world_path):
+    """
+    `with` statement wraps whole of test
+    """
+    with open(hello_world_path) as f:
+
+        result = f.read()
+
+        assert result == 'Hello World!\n'
+
+
 def test_extra_arrange(hello_world_path):
     """
     Any extra arrangement goes in the `with` block.

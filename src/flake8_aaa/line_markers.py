@@ -43,10 +43,7 @@ class LineMarkers(list):
         if current_type is LineType.blank_line:
             return
         if current_type is not LineType.unprocessed:
-            raise ValueError('collision when marking this line as {}, was already {}'.format(
-                value,
-                current_type,
-            ))
+            raise ValueError(f'collision when marking this line (key={key}) as {value}, was already {current_type}')
         return super().__setitem__(key, value)
 
     def update(self, span: typing.Tuple[int, int], line_type: LineType) -> None:
