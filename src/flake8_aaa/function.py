@@ -78,7 +78,7 @@ class Function:
         # ACT
         # Load act block and kick out when none is found
         self.act_node = self.load_act_node()
-        self.act_block = Block.build_act(self.act_node.node, self.node)
+        self.act_block = Block.build_act(self.act_node.node)
         act_block_first_line_no, act_block_last_line_no = self.act_block.get_span(0)
         # ARRANGE
         self.arrange_block = Block.build_arrange(self.node.body, act_block_first_line_no)
