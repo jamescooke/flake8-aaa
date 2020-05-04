@@ -12,8 +12,9 @@ from .types import ActNodeType, LineType
 class Function:
     """
     Attributes:
+        act_block: Block wrapper around the single Act node.
         act_node: Act Node for the test. This is the node of the AST that looks
-            like the action. Distinguish between this and the Act Block - the
+            like the Action. Distinguish between this and the Act Block - the
             Act Block can be larger than just the node, mainly because it could
             be wrapped in context managers. Defaults to ``None``.
         arrange_block: Arrange block for this test. Defaults to ``None``.
@@ -21,10 +22,12 @@ class Function:
         _errors: List of errors for this Function. Defaults to ``None`` when
             Function has not been checked. Empty list ``[]`` means that the
             Function has been checked and is free of errors.
-        first_line_no
-        lines
+        first_line_no: Line number of the first token in the test. Used to hop
+            to and from relative line numberings.
+        lines: Slice of the file lines that make up this test function /
+            method.
         line_markers: Line-wise marking for this function.
-        node: AST for the test under lint.
+        node: AST for the test function / method.
     """
 
     def __init__(self, node: ast.FunctionDef, file_lines: List[str]):
@@ -62,7 +65,7 @@ class Function:
 
     def check_all(self) -> Generator[AAAError, None, None]:
         """
-        Run everything required for checking this function.
+        Run everything required for checking this test.
 
         Returns:
             A generator of errors.
@@ -75,27 +78,48 @@ class Function:
             return
         self.mark_bl()
         self.mark_def()
-        # ACT
-        # Load act block and kick out when none is found
-        self.act_node = self.load_act_node()
-        self.act_block = Block.build_act(self.act_node.node)
-        act_block_first_line_no, act_block_last_line_no = self.act_block.get_span(0)
+        self.mark_act()
+
         # ARRANGE
         self.arrange_block = Block.build_arrange(self.node.body, act_block_first_line_no)
         # ASSERT
         assert self.act_node
         self.assert_block = Block.build_assert(self.node.body, act_block_last_line_no)
         # SPACING
-        for block in ['arrange', 'act', 'assert']:
+        for block in ['arrange', 'assert']:
             self_block = getattr(self, '{}_block'.format(block))
             try:
                 span = self_block.get_span(self.first_line_no)
             except EmptyBlock:
                 continue
             self.line_markers.update(span, self_block.line_type)
+
         yield from self.line_markers.check_arrange_act_spacing()
         yield from self.line_markers.check_act_assert_spacing()
         yield from self.line_markers.check_blank_lines()
+
+    def mark_act(self) -> int:
+        """
+        Finds Act node, calculates its span and marks the associated lines in
+        ``line_markers``.
+
+        Returns:
+            Number of lines covered by the Act block (used for debugging /
+            testing only).
+
+        Raises:
+            ValidationError: Muliple possible fatal errors:
+                * AAA01 when no act block is found.
+                * AAA02 when multiple act blocks are found.
+                * AAA99 when marking caused a collision.
+        """
+        # Load act block and kick out when none is found
+        self.act_node = self.load_act_node()
+        self.act_block = Block.build_act(self.act_node.node)
+        # Get relative line numbers of Act block footprint
+        span = self.act_block.get_span(self.first_line_no)
+        self.line_markers.update(span, LineType.act)
+        return span[1] - span[0] + 1
 
     def load_act_node(self) -> ActNode:
         """
