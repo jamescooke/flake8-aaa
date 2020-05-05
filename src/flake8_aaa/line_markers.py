@@ -31,9 +31,9 @@ class LineMarkers(list):
         then do nothing.
 
         Raises:
-            NotImplementedError: When a slice is passed for ``key``.
-            ValueError: When item being replaced is not unprocessed, or passed
-                ``value`` is not a LineType.
+            NotImplementedError: a slice is passed for ``key``.
+            ValidationError: AAA99 marking caused a collision.
+            ValueError: passed ``value`` is not a LineType.
         """
         if isinstance(key, slice):
             raise NotImplementedError('LineMarkers disallow slicing')
@@ -43,9 +43,15 @@ class LineMarkers(list):
         if current_type is LineType.blank_line:
             return
         if current_type is not LineType.unprocessed:
-            raise ValueError(f'collision when marking this line (offset={key}) as {value}, was already {current_type}')
+            line_num = key + self.fn_offset
+            raise ValidationError(
+                line_num,
+                1,
+                f'AAA99 collision when marking line {line_num} (key={key}) as {value}, was already {current_type}',
+            )
         return super().__setitem__(key, value)
 
+    # TODO remove me
     def update(self, span: typing.Tuple[int, int], line_type: LineType) -> None:
         """
         Updates line types for a block's span.
@@ -62,10 +68,7 @@ class LineMarkers(list):
         """
         first_block_line, last_block_line = span
         for i in range(first_block_line, last_block_line + 1):
-            try:
-                self.__setitem__(i, line_type)
-            except ValueError as error:
-                raise ValidationError(i + self.fn_offset, 1, 'AAA99 {}'.format(error))
+            self.__setitem__(i, line_type)
 
     def check_arrange_act_spacing(self) -> typing.Generator[AAAError, None, None]:
         """

@@ -1,5 +1,6 @@
 import pytest
 
+from flake8_aaa.exceptions import ValidationError
 from flake8_aaa.line_markers import LineMarkers
 from flake8_aaa.types import LineType
 
@@ -20,13 +21,18 @@ def test():
 
 
 def test_reassign():
-    line_markers = LineMarkers(2 * [''], 1)
+    """
+    First line of test is reassigned. (key=0)
+    """
+    line_markers = LineMarkers(2 * [''], 7)
     line_markers[0] = LineType.func_def
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValidationError) as excinfo:
         line_markers[0] = LineType.act
 
-    assert str(excinfo.value) == 'collision when marking this line (offset=0) as ACT, was already DEF'
+    assert excinfo.value.line_number == 7
+    assert excinfo.value.offset == 1
+    assert excinfo.value.text == 'AAA99 collision when marking line 7 (key=0) as ACT, was already DEF'
 
 
 def test_out_of_range():
