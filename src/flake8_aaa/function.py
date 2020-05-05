@@ -3,8 +3,15 @@ from typing import Generator, List, Optional
 
 from .act_node import ActNode
 from .block import Block
-from .exceptions import AAAError, EmptyBlock, ValidationError
-from .helpers import find_stringy_lines, format_errors, function_is_noop, get_first_token, get_last_token
+from .exceptions import AAAError, ValidationError
+from .helpers import (
+    filter_arrange_nodes,
+    find_stringy_lines,
+    format_errors,
+    function_is_noop,
+    get_first_token,
+    get_last_token,
+)
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
 
@@ -76,23 +83,12 @@ class Function:
         # Function def
         if function_is_noop(self.node):
             return
+
         self.mark_bl()
         self.mark_def()
         self.mark_act()
-
-        # ARRANGE
-        self.arrange_block = Block.build_arrange(self.node.body, act_block_first_line_no)
-        # ASSERT
-        assert self.act_node
-        self.assert_block = Block.build_assert(self.node.body, act_block_last_line_no)
-        # SPACING
-        for block in ['arrange', 'assert']:
-            self_block = getattr(self, '{}_block'.format(block))
-            try:
-                span = self_block.get_span(self.first_line_no)
-            except EmptyBlock:
-                continue
-            self.line_markers.update(span, self_block.line_type)
+        self.mark_arrange()
+        self.mark_assert()
 
         yield from self.line_markers.check_arrange_act_spacing()
         yield from self.line_markers.check_act_assert_spacing()
@@ -109,9 +105,9 @@ class Function:
 
         Raises:
             ValidationError: Muliple possible fatal errors:
-                * AAA01 when no act block is found.
-                * AAA02 when multiple act blocks are found.
-                * AAA99 when marking caused a collision.
+                * AAA01 no act block is found.
+                * AAA02 multiple act blocks are found.
+                * AAA99 marking caused a collision.
         """
         # Load act block and kick out when none is found
         self.act_node = self.load_act_node()
@@ -120,6 +116,42 @@ class Function:
         span = self.act_block.get_span(self.first_line_no)
         self.line_markers.update(span, LineType.act)
         return span[1] - span[0] + 1
+
+    def mark_arrange(self) -> int:
+        """
+        Mark all lines of code *before* the Act block as Arrange in
+        ``line_markers``. Location of Act block is sniffed from
+        ``line_markers``.
+
+        Returns:
+            Number of lines covered by the Arrange block (used for debugging /
+            testing only).
+
+        Raises:
+            ValidationError: Marking caused a collision.
+            ValueError: No Act block has been marked.
+        """
+        count = 0
+        act_block_first_line_number = self.line_markers.index(LineType.act) + self.first_line_no
+        for node in filter_arrange_nodes(self.node.body, act_block_first_line_number):
+            node_key = get_first_token(node).start[0] - self.first_line_no
+            self.line_markers[node_key] = LineType.arrange
+            count += 1
+        return count
+
+    def mark_assert(self) -> int:
+        """
+        Mark all lines of code *after* the Act block as Assert in
+        ``line_markers``.
+
+        Returns:
+            Number of lines covered by the Assert block (used for debugging /
+            testing only).
+
+        Raises:
+            ValidationError: AAA99 marking caused a collision.
+        """
+        return 0
 
     def load_act_node(self) -> ActNode:
         """
