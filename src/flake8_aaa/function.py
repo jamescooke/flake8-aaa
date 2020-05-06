@@ -4,14 +4,7 @@ from typing import Generator, List, Optional
 from .act_node import ActNode
 from .block import Block
 from .exceptions import AAAError, ValidationError
-from .helpers import (
-    filter_arrange_nodes,
-    find_stringy_lines,
-    format_errors,
-    function_is_noop,
-    get_first_token,
-    get_last_token,
-)
+from .helpers import find_stringy_lines, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
 
@@ -105,14 +98,16 @@ class Function:
 
         Raises:
             ValidationError: Muliple possible fatal errors:
-                * AAA01 no act block is found.
-                * AAA02 multiple act blocks are found.
+                * AAA01 no act block found.
+                * AAA02 multiple act blocks found.
                 * AAA99 marking caused a collision.
         """
         # Load act block and kick out when none is found
         self.act_node = self.load_act_node()
         self.act_block = Block.build_act(self.act_node.node)
         # Get relative line numbers of Act block footprint
+        # TODO store first and last line numbers in Block - use them instead of
+        # asking for span.
         span = self.act_block.get_span(self.first_line_no)
         self.line_markers.update(span, LineType.act)
         return span[1] - span[0] + 1
@@ -131,13 +126,20 @@ class Function:
             ValidationError: Marking caused a collision.
             ValueError: No Act block has been marked.
         """
-        count = 0
-        act_block_first_line_number = self.line_markers.index(LineType.act) + self.first_line_no
-        for node in filter_arrange_nodes(self.node.body, act_block_first_line_number):
-            node_key = get_first_token(node).start[0] - self.first_line_no
-            self.line_markers[node_key] = LineType.arrange
-            count += 1
-        return count
+        # TODO get this from self.act_block
+        act_block_first_offset = self.line_markers.index(LineType.act)
+        act_block_first_line_number = act_block_first_offset + self.first_line_no
+        arrange_block = Block.build_arrange(self.node.body, act_block_first_line_number)
+
+        # First and lass offsets of Arrange block
+        first_offset, last_offset = arrange_block.get_span(self.first_line_no)
+
+        # Prevent overhanging arrangement, for example in context manager. Stop
+        # at line before Act block first line offset.
+        return self.line_markers.update(
+            (first_offset, min(last_offset, act_block_first_offset - 1)),
+            LineType.arrange,
+        )
 
     def mark_assert(self) -> int:
         """
@@ -156,8 +158,9 @@ class Function:
     def load_act_node(self) -> ActNode:
         """
         Raises:
-            ValidationError: AAA01 when no act block is found and AAA02 when
-                multiple act blocks are found.
+            ValidationError:
+                * AAA01 no act block found.
+                * AAA02 multiple act blocks found.
         """
         act_nodes = ActNode.build_body(self.node.body)
 
