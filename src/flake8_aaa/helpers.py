@@ -160,13 +160,17 @@ def build_footprint(node: ast.AST, first_line_no: int) -> Set[int]:
     )
 
 
-def filter_arrange_nodes(nodes: List[ast.stmt], max_line_number: int) -> List[ast.stmt]:
+def filter_arrange_nodes(nodes: List[ast.stmt], act_block_first_line_number: int) -> List[ast.stmt]:
     """
-    Finds all nodes that are before the ``max_line_number`` and are not
-    docstrings or ``pass``.
+    Args:
+        act_block_first_line_number: Real line number of Act block first line.
+
+    Returns:
+        All nodes are not docstrings or ``pass`` that start before the Act
+        block's first line.
     """
     return [
-        node for node in nodes if node.lineno < max_line_number and not isinstance(node, ast.Pass)
+        node for node in nodes if node.lineno < act_block_first_line_number and not isinstance(node, ast.Pass)
         and not (isinstance(node, ast.Expr) and isinstance(node.value, ast.Str))
     ]
 
