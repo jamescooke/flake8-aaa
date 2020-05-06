@@ -12,6 +12,11 @@ class Block:
     """
     An Arrange, Act or Assert block of code as parsed from the test function.
 
+    Note:
+        This may just become the Act Block *AND* since the Act Block is just a
+        single node, this might not even be required. The get_span() method
+        could be extracted to be a helper function.
+
     Args:
         nodes: Nodes that make up this block.
         line_type: Type of line that this blocks writes into the line markers
@@ -33,12 +38,16 @@ class Block:
         return cls([node], LineType.act)
 
     @classmethod
-    def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], max_line_number: int) -> _Block:
+    def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], act_block_first_line: int) -> _Block:
         """
         Arrange block is all non-pass and non-docstring nodes before the Act
         block start.
+
+        Args:
+            nodes: Body of test function / method.
+            act_block_first_line
         """
-        return cls(filter_arrange_nodes(nodes, max_line_number), LineType.arrange)
+        return cls(filter_arrange_nodes(nodes, act_block_first_line), LineType.arrange)
 
     @classmethod
     def build_assert(cls: Type[_Block], nodes: List[ast.stmt], min_line_number: int) -> _Block:
@@ -54,6 +63,18 @@ class Block:
 
     def get_span(self, first_line_no: int) -> Tuple[int, int]:
         """
+        Args:
+            first_line_no: First line number of Block. Used to calculate
+                relative line numbers.
+
+        Returns:
+            First and last line covered by this block, counted relative to the
+            start of the Function.
+
+        Note:
+            Special calculations need to be done when the last node of a block
+            (usually the Arrange) are a `with` statement.
+
         Raises:
             EmptyBlock: when block has no nodes
         """
