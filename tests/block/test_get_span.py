@@ -39,8 +39,34 @@ def test():  # Line 5
     ]
 )
 def test(first_node_with_tokens):
+    """
+    For a block that contains the whole body of the test, the span is returned
+    as offset values:
+        1 - first line (line number 6) of test after def
+        13 - last line of test (line number 18).
+    """
     block = Block(first_node_with_tokens.body, LineType._assert)
 
     result = block.get_span(5)
 
     assert result == (1, 13)
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
+long_string = """
+
+"""
+    ''',
+    ]
+)
+def test_context_arrange(first_node_with_tokens):
+    """
+    Long string spans are counted.
+    """
+    block = Block([first_node_with_tokens], LineType.act)
+
+    result = block.get_span(1)
+
+    assert result == (1, 3)

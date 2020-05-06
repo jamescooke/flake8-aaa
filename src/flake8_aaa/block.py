@@ -71,16 +71,14 @@ class Block:
             First and last line covered by this block, counted relative to the
             start of the Function.
 
-        Note:
-            Special calculations need to be done when the last node of a block
-            (usually the Arrange) are a `with` statement.
-
         Raises:
             EmptyBlock: when block has no nodes
         """
         if not self.nodes:
             raise EmptyBlock(f'span requested from {self.line_type} block with no nodes')
+        # start and end are (<line number>, <indent>) pairs, so just the line
+        # numbers are picked out.
         return (
             get_first_token(self.nodes[0]).start[0] - first_line_no,
-            get_last_token(self.nodes[-1]).start[0] - first_line_no,
+            get_last_token(self.nodes[-1]).end[0] - first_line_no,
         )
