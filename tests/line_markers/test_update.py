@@ -11,7 +11,7 @@ def test():
 
     result = line_markers.update((1, 3), LineType.act)
 
-    assert result is None
+    assert result == 2
     assert line_markers == [
         LineType.unprocessed,
         LineType.act,

@@ -24,11 +24,14 @@ class LineMarkers(list):
     def __setitem__(self, s: slice, o: typing.Iterable) -> None:
         pass
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, value) -> bool:
         """
         Extended version of setitem to assert that item being replaced is
         always an unprocessed line. If the item being replaced is blank line,
         then do nothing.
+
+        Returns:
+            An unprocessed line was replaced with a new line type.
 
         Raises:
             NotImplementedError: a slice is passed for ``key``.
@@ -41,7 +44,7 @@ class LineMarkers(list):
             raise ValueError('"{}" for line {} is not LineType'.format(value, key))
         current_type = self.__getitem__(key)
         if current_type is LineType.blank_line:
-            return
+            return False
         if current_type is not LineType.unprocessed:
             line_num = key + self.fn_offset
             raise ValidationError(
@@ -49,16 +52,19 @@ class LineMarkers(list):
                 1,
                 f'AAA99 collision when marking line {line_num} (key={key}) as {value}, was already {current_type}',
             )
-        return super().__setitem__(key, value)
+        super().__setitem__(key, value)
+        return True
 
-    # TODO remove me
-    def update(self, span: typing.Tuple[int, int], line_type: LineType) -> None:
+    def update(self, span: typing.Tuple[int, int], line_type: LineType) -> int:
         """
         Updates line types for a block's span.
 
         Args:
-            span: First and last relative line number of a Block.
+            span: First and last line offset (relative line number) of a Block.
             line_type: The type of line to update to.
+
+        Returns:
+            Number of lines updated.
 
         Raises:
             ValidationError: A special error on collision. This prevents Flake8
@@ -66,9 +72,14 @@ class LineMarkers(list):
                 but it indicates to the user that something went wrong with
                 processing the function.
         """
+        count = 0
         first_block_line, last_block_line = span
+
         for i in range(first_block_line, last_block_line + 1):
-            self.__setitem__(i, line_type)
+            if self.__setitem__(i, line_type):
+                count += 1
+
+        return count
 
     def check_arrange_act_spacing(self) -> typing.Generator[AAAError, None, None]:
         """

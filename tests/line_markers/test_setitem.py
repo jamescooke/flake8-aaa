@@ -10,7 +10,7 @@ def test():
 
     result = line_markers.__setitem__(0, LineType.func_def)
 
-    assert result is None
+    assert result is True
     assert line_markers == [
         LineType.func_def,
         LineType.unprocessed,
