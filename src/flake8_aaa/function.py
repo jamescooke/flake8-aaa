@@ -153,7 +153,19 @@ class Function:
         Raises:
             ValidationError: AAA99 marking caused a collision.
         """
-        return 0
+        count = 0
+        # TODO get this from self.act_block
+        act_block_last_offset = len(self.line_markers) - 1 - self.line_markers[::-1].index(LineType.act)
+
+        # Starting from the line after the last line of Act block, to the end
+        # of the test, mark everything that's unprocessed as an Assert block
+        # item.
+        for offset in range(act_block_last_offset + 1, len(self.line_markers)):
+            if self.line_markers[offset] == LineType.unprocessed:
+                count += 1
+                self.line_markers[offset] = LineType._assert
+
+        return count
 
     def load_act_node(self) -> ActNode:
         """

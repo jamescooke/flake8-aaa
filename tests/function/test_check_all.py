@@ -28,8 +28,8 @@ def test(api_client, url):
         'user_id': 0,
         'project_permission': 'admin',
     }
-
     with catch_signal(user_perms_changed) as callback:
+
         result = api_client.put(url, data=data)
 
     assert result.status_code == 400
@@ -38,10 +38,9 @@ def test(api_client, url):
     ]
 )
 def test_context_manager(function):
-    result = function.check_all()
+    result = list(function.check_all())
 
-    assert isinstance(result, Generator)
-    assert list(result) == []
+    assert result == []
 
 
 # --- FAILURES ---
