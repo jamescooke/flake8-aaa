@@ -12,5 +12,4 @@ def test_lines(lines):
         '\n',
         'def test():\n',
         '    pass\n',
-        '\n',
     ]
