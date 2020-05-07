@@ -7,12 +7,12 @@ from flake8_aaa.types import LineType
 
 def test_ok():
     line_markers = LineMarkers(6 * [''], 7)
-    line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.arrange
-    line_markers[2] = LineType.blank_line
-    line_markers[3] = LineType.act
-    line_markers[4] = LineType.blank_line
-    line_markers[5] = LineType._assert
+    line_markers.types[0] = LineType.func_def
+    line_markers.types[1] = LineType.arrange
+    line_markers.types[2] = LineType.blank_line
+    line_markers.types[3] = LineType.act
+    line_markers.types[4] = LineType.blank_line
+    line_markers.types[5] = LineType._assert
 
     result = line_markers.check_blank_lines()
 
@@ -25,14 +25,14 @@ def test_ok():
 
 def test_arrange():
     line_markers = LineMarkers(8 * [''], 7)
-    line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.arrange
-    line_markers[2] = LineType.blank_line
-    line_markers[3] = LineType.arrange
-    line_markers[4] = LineType.blank_line
-    line_markers[5] = LineType.act
-    line_markers[6] = LineType.blank_line
-    line_markers[7] = LineType._assert
+    line_markers.types[0] = LineType.func_def
+    line_markers.types[1] = LineType.arrange
+    line_markers.types[2] = LineType.blank_line
+    line_markers.types[3] = LineType.arrange
+    line_markers.types[4] = LineType.blank_line
+    line_markers.types[5] = LineType.act
+    line_markers.types[6] = LineType.blank_line
+    line_markers.types[7] = LineType._assert
 
     result = line_markers.check_blank_lines()
 
@@ -51,9 +51,9 @@ def test_func_def():
     Function definition has some funky call args separated by a blank line
     """
     line_markers = LineMarkers(3 * [''], 7)
-    line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.blank_line
-    line_markers[2] = LineType.func_def
+    line_markers.types[0] = LineType.func_def
+    line_markers.types[1] = LineType.blank_line
+    line_markers.types[2] = LineType.func_def
 
     result = line_markers.check_blank_lines()
 

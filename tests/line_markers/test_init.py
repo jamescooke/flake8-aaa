@@ -5,7 +5,7 @@ from flake8_aaa.types import LineType
 def test():
     result = LineMarkers(5 * [''], 7)
 
-    assert result == [
+    assert result.types == [
         LineType.unprocessed,
         LineType.unprocessed,
         LineType.unprocessed,
