@@ -34,7 +34,7 @@ def test_simple(function_marked_bl_def_act):
     result = function_marked_bl_def_act.mark_arrange()
 
     assert result == 1
-    assert function_marked_bl_def_act.line_markers == [
+    assert function_marked_bl_def_act.line_markers.types == [
         LineType.func_def,
         LineType.arrange,
         LineType.blank_line,
@@ -65,7 +65,7 @@ def test_extra(function_marked_bl_def_act):
     result = function_marked_bl_def_act.mark_arrange()
 
     assert result == 2
-    assert function_marked_bl_def_act.line_markers == [
+    assert function_marked_bl_def_act.line_markers.types == [
         LineType.func_def,
         LineType.arrange,
         LineType.arrange,
@@ -98,12 +98,33 @@ def test_bl_in_str(function_marked_bl_def_act):
     result = function_marked_bl_def_act.mark_arrange()
 
     assert result == 3
-    assert function_marked_bl_def_act.line_markers == [
+    assert function_marked_bl_def_act.line_markers.types == [
         LineType.func_def,
         LineType.arrange,
         LineType.arrange,
         LineType.arrange,
         LineType.blank_line,
+        LineType.act,
+        LineType.blank_line,
+        LineType.unprocessed,
+    ]
+
+
+@pytest.mark.parametrize('code_str', ['''
+def test_addition():
+    result = 1 + 3
+
+    assert result == 4
+'''])
+def test_no_arrange(function_marked_bl_def_act):
+    """
+    Function without arrange block does not cause failure
+    """
+    result = function_marked_bl_def_act.mark_arrange()
+
+    assert result == 0
+    assert function_marked_bl_def_act.line_markers.types == [
+        LineType.func_def,
         LineType.act,
         LineType.blank_line,
         LineType.unprocessed,

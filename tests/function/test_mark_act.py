@@ -25,7 +25,7 @@ def test_simple(function):
     result = function.mark_act()
 
     assert result == 1
-    assert function.line_markers == [
+    assert function.line_markers.types == [
         LineType.func_def,
         LineType.unprocessed,
         LineType.blank_line,
@@ -58,7 +58,7 @@ def test_raises_block(function):
     result = function.mark_act()
 
     assert result == 2
-    assert function.line_markers == [
+    assert function.line_markers.types == [
         LineType.func_def,
         LineType.unprocessed,
         LineType.blank_line,

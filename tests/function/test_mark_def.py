@@ -15,7 +15,7 @@ def test(function):
     result = function.mark_def()
 
     assert result == 1
-    assert function.line_markers == [
+    assert function.line_markers.types == [
         LineType.func_def,
         LineType.unprocessed,
         LineType.unprocessed,
@@ -43,7 +43,7 @@ def test_decorated(function):
     result = function.mark_def()
 
     assert result == 7
-    assert function.line_markers == [
+    assert function.line_markers.types == [
         LineType.func_def,  # @pytest.mark.skip(...)
         LineType.func_def,  # @pytest.mark.param...
         LineType.func_def,  # 1,
@@ -75,7 +75,7 @@ def test_multi(function):
     result = function.mark_def()
 
     assert result == 4
-    assert function.line_markers == [
+    assert function.line_markers.types == [
         LineType.func_def,
         LineType.func_def,
         LineType.func_def,

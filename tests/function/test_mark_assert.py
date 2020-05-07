@@ -35,7 +35,7 @@ def test_simple(function_marked_bl_def_act_arr):
     result = function_marked_bl_def_act_arr.mark_assert()
 
     assert result == 1
-    assert function_marked_bl_def_act_arr.line_markers == [
+    assert function_marked_bl_def_act_arr.line_markers.types == [
         LineType.func_def,
         LineType.arrange,
         LineType.blank_line,

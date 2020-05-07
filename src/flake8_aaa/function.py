@@ -3,7 +3,7 @@ from typing import Generator, List, Optional
 
 from .act_node import ActNode
 from .block import Block
-from .exceptions import AAAError, ValidationError
+from .exceptions import AAAError, EmptyBlock, ValidationError
 from .helpers import find_stringy_lines, format_errors, function_is_noop, get_first_token, get_last_token
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
@@ -28,6 +28,11 @@ class Function:
             method.
         line_markers: Line-wise marking for this function.
         node: AST for the test function / method.
+
+    Note:
+        "line number" means the number of the line in the file (the usual
+        definition). "offset" means the number of the line in the test relative
+        to the test definition.
     """
 
     def __init__(self, node: ast.FunctionDef, file_lines: List[str]):
@@ -51,7 +56,7 @@ class Function:
         for i, line in enumerate(self.lines):
             out += '{line_no:>2} {block}|{line}'.format(
                 line_no=i + self.first_line_no,
-                block=str(self.line_markers[i]),
+                block=str(self.line_markers.types[i]),
                 line=line,
             )
             if errors:
@@ -108,9 +113,9 @@ class Function:
         # Get relative line numbers of Act block footprint
         # TODO store first and last line numbers in Block - use them instead of
         # asking for span.
-        span = self.act_block.get_span(self.first_line_no)
-        self.line_markers.update(span, LineType.act)
-        return span[1] - span[0] + 1
+        first_index, last_index = self.act_block.get_span(self.first_line_no)
+        self.line_markers.update(first_index, last_index, LineType.act)
+        return last_index - first_index + 1
 
     def mark_arrange(self) -> int:
         """
@@ -127,17 +132,22 @@ class Function:
             ValueError: No Act block has been marked.
         """
         # TODO get this from self.act_block
-        act_block_first_offset = self.line_markers.index(LineType.act)
-        act_block_first_line_number = act_block_first_offset + self.first_line_no
+        act_block_first_index = self.line_markers.types.index(LineType.act)
+        act_block_first_line_number = act_block_first_index + self.first_line_no
         arrange_block = Block.build_arrange(self.node.body, act_block_first_line_number)
 
-        # First and lass offsets of Arrange block
-        first_offset, last_offset = arrange_block.get_span(self.first_line_no)
+        # First and lass offsets of Arrange block - if block is empty, then
+        # work is done.
+        try:
+            first_index, last_index = arrange_block.get_span(self.first_line_no)
+        except EmptyBlock:
+            return 0
 
         # Prevent overhanging arrangement, for example in context manager. Stop
         # at line before Act block first line offset.
         return self.line_markers.update(
-            (first_offset, min(last_offset, act_block_first_offset - 1)),
+            first_index,
+            min(last_index, act_block_first_index - 1),
             LineType.arrange,
         )
 
@@ -155,15 +165,17 @@ class Function:
         """
         count = 0
         # TODO get this from self.act_block
-        act_block_last_offset = len(self.line_markers) - 1 - self.line_markers[::-1].index(LineType.act)
+        # TODO keep length of function around instead of counting lines
+        act_block_last_index = len(self.line_markers.types) - 1 - self.line_markers.types[::-1].index(LineType.act)
 
         # Starting from the line after the last line of Act block, to the end
         # of the test, mark everything that's unprocessed as an Assert block
         # item.
-        for offset in range(act_block_last_offset + 1, len(self.line_markers)):
-            if self.line_markers[offset] == LineType.unprocessed:
+        # TODO keep length of function around instead of counting lines
+        for offset in range(act_block_last_index + 1, len(self.line_markers.types)):
+            if self.line_markers.types[offset] == LineType.unprocessed:
                 count += 1
-                self.line_markers[offset] = LineType._assert
+                self.line_markers.types[offset] = LineType._assert
 
         return count
 
@@ -191,14 +203,6 @@ class Function:
 
         return act_nodes[0]
 
-    def get_line_relative_to_node(self, target_node: ast.AST, offset: int) -> str:
-        """
-        Raises:
-            IndexError: when ``offset`` takes the request out of bounds of this
-                Function's lines.
-        """
-        return self.lines[target_node.lineno - self.node.lineno + offset]
-
     def mark_def(self) -> int:
         """
         Marks up this Function's definition lines (including decorators) into
@@ -216,15 +220,15 @@ class Function:
             cover the whole function. In this case, just the def lines are
             wanted with any decorators.
         """
-        first_line = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
+        first_index = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
         try:
             end_token = get_last_token(self.node.args.args[-1])
         except IndexError:
             # Fn has no args, so end of function is the fn def itself...
             end_token = get_first_token(self.node)
-        last_line = end_token.end[0] - self.first_line_no
-        self.line_markers.update((first_line, last_line), LineType.func_def)
-        return last_line - first_line + 1
+        last_index = end_token.end[0] - self.first_line_no
+        self.line_markers.update(first_index, last_index, LineType.func_def)
+        return last_index - first_index + 1
 
     def mark_bl(self) -> int:
         """
@@ -236,9 +240,9 @@ class Function:
         """
         counter = 0
         stringy_lines = find_stringy_lines(self.node, self.first_line_no)
-        for relative_line_number, line in enumerate(self.lines):
-            if relative_line_number not in stringy_lines and line.strip() == '':
+        for offset, line in enumerate(self.lines):
+            if offset not in stringy_lines and line.strip() == '':
                 counter += 1
-                self.line_markers[relative_line_number] = LineType.blank_line
+                self.line_markers.types[offset] = LineType.blank_line
 
         return counter
