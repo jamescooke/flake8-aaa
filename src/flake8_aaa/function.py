@@ -4,7 +4,14 @@ from typing import Generator, List, Optional
 from .act_node import ActNode
 from .block import Block
 from .exceptions import AAAError, EmptyBlock, ValidationError
-from .helpers import find_stringy_lines, format_errors, function_is_noop, get_first_token, get_last_token
+from .helpers import (
+    find_stringy_lines,
+    format_errors,
+    function_is_noop,
+    get_first_token,
+    get_last_token,
+    line_is_comment,
+)
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
 
@@ -169,11 +176,11 @@ class Function:
         act_block_last_index = len(self.line_markers.types) - 1 - self.line_markers.types[::-1].index(LineType.act)
 
         # Starting from the line after the last line of Act block, to the end
-        # of the test, mark everything that's unprocessed as an Assert block
-        # item.
+        # of the test, mark everything that's unprocessed, and not a comment,
+        # as an Assert block item.
         # TODO keep length of function around instead of counting lines
         for offset in range(act_block_last_index + 1, len(self.line_markers.types)):
-            if self.line_markers.types[offset] == LineType.unprocessed:
+            if self.line_markers.types[offset] == LineType.unprocessed and not line_is_comment(self.lines[offset]):
                 count += 1
                 self.line_markers.types[offset] = LineType._assert
 

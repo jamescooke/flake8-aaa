@@ -48,7 +48,10 @@ def test_simple(function_marked_bl_def_act_arr):
 # NOTE temporary tests to keep arrange blocks built the same with comments
 # until #148 is done
 
-@pytest.mark.parametrize('code_str', ['''
+
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
 def test_comment_after_act():
     x = 1
     y = 2
@@ -57,7 +60,9 @@ def test_comment_after_act():
     # Sum x and y
 
     assert result == 2
-'''])
+'''
+    ]
+)
 def test_comment_after_act(function_marked_bl_def_act_arr):
     """
     Act block with trailing comment, comment is not marked as Assert
@@ -71,13 +76,15 @@ def test_comment_after_act(function_marked_bl_def_act_arr):
         LineType.arrange,
         LineType.blank_line,
         LineType.act,
-        LineType.act,
+        LineType.unprocessed,
         LineType.blank_line,
         LineType._assert,
     ]
 
 
-@pytest.mark.parametrize('code_str', ['''
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
 def test_comment_before_assert():
     x = 1
     y = 2
@@ -86,14 +93,16 @@ def test_comment_before_assert():
 
     # Always 2
     assert result == 2
-'''])
+'''
+    ]
+)
 def test_comment_start_assert(function_marked_bl_def_act_arr):
     """
-    Comment at start of Assert is marked as part of that block
+    Comment at start of Assert remains unprocessed
     """
     result = function_marked_bl_def_act_arr.mark_assert()
 
-    assert result == 2
+    assert result == 1
     assert function_marked_bl_def_act_arr.line_markers.types == [
         LineType.func_def,
         LineType.arrange,
@@ -101,6 +110,6 @@ def test_comment_start_assert(function_marked_bl_def_act_arr):
         LineType.blank_line,
         LineType.act,
         LineType.blank_line,
-        LineType._assert,
+        LineType.unprocessed,
         LineType._assert,
     ]
