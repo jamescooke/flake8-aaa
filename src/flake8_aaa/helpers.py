@@ -1,6 +1,8 @@
 import ast
+import io
 import os
 import re
+import tokenize
 from typing import List, Set
 
 from asttokens.util import Token
@@ -216,3 +218,12 @@ def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:
     str_visitor = StringyLineVisitor(first_line_no)
     str_visitor.visit(tree)
     return str_visitor.footprints
+
+
+def line_is_comment(line: str) -> bool:
+    """
+    Helper for checking that a single line is a comment. Will be replaced by a
+    complete `find_comment_lines()` helper in #148.
+    """
+    first_token = next(tokenize.generate_tokens(io.StringIO(line).readline))
+    return first_token.type == tokenize.COMMENT
