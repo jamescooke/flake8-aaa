@@ -52,15 +52,13 @@ def test(first_node_with_tokens):
     assert result == (1, 13)
 
 
-@pytest.mark.parametrize(
-    'code_str', [
-        '''
+@pytest.mark.parametrize('code_str', [
+    '''
 long_string = """
 
 """
     ''',
-    ]
-)
+])
 def test_context_arrange(first_node_with_tokens):
     """
     Long string spans are counted.
