@@ -12,6 +12,8 @@ from flake8_aaa.helpers import line_is_comment
         ('assert result is True', False),
         ('', False),
         ('  """', False),
+        ('    assert result == \'\'\'', False),
+        ('\'\'\'.lstrip()', False),
     ]
 )
 def test(line, expected_result):

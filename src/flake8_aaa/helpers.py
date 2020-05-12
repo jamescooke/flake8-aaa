@@ -223,7 +223,12 @@ def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:
 def line_is_comment(line: str) -> bool:
     """
     Helper for checking that a single line is a comment. Will be replaced by a
-    complete `find_comment_lines()` helper in #148.
+    complete `find_comment_lines()` helper in #148. Could also use `tokens`
+    from Flake8.
     """
-    first_token = next(tokenize.generate_tokens(io.StringIO(line).readline))
+    try:
+        first_token = next(tokenize.generate_tokens(io.StringIO(line).readline))
+    except tokenize.TokenError:
+        # Assume that a token error happens because this is *not* a comment
+        return False
     return first_token.type == tokenize.COMMENT
