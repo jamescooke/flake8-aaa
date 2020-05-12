@@ -87,3 +87,15 @@ def test_pytest_assert_raises_on_with(hello_world_path):
             pass
 
     assert 'invalid mode' in str(excinfo.value)
+
+
+def test_with_in_assert(hello_world_path):
+    """
+    Using with statement in Assert block is valid
+    """
+    words = ['Hello', 'World!\n']
+
+    result = ' '.join(words)
+
+    with open(hello_world_path) as f:
+        assert result == f.read()
