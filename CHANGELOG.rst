@@ -14,6 +14,14 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Changed
+.......
+
+* README rewritten and expanded to be more friendly to readers that are not
+  aware of the AAA pattern. Template from `The Documentation Compendium
+  <https://github.com/kylelobo/The-Documentation-Compendium>`_.  `#141
+  <https://github.com/jamescooke/flake8-aaa/issues/141>`_.
+
 0.9.0_ - 2020/03/07
 -------------------
 
