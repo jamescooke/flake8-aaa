@@ -1,27 +1,23 @@
-Test discovery
-==============
+Test discovery and analysis
+===========================
 
-The Flake8-AAA plugin is triggered for files that look to it like test
-modules - anything that does not look like a test module is skipped.
+When running as a Flake8 plugin, Flake8-AAA filters the Python code passed to
+it by Flake8. It finds code that looks like test code and then checks that code
+matches the AAA pattern.
 
-The following rules are applied by Flake8-AAA when discovering tests:
+Filtering
+---------
 
-* The module's  and have been collected for
-  linting by Flake8.
+First, the filename is checked. It must either ``test.py``, ``tests.py`` or
+start with ``test_``. For those files that match, every function that has a
+name that starts with "test" is checked. This includes class methods.
 
-* The module's filename must be "test.py", "tests.py" or start with "test\_".
+Test functions and methods that contain only comments, docstrings or ``pass``
+are skipped.
 
-* Every function in the module that has a name that starts with "test" is
-  checked.
-
-* Test functions can be class methods.
-
-* Test functions that contain only comments, docstrings or ``pass`` are
-  skipped.
-
-These rules are aimed to mirror pytest's default collection strategy as closely
-as possible, but also to mirror popular testing tutorials such as Django's
-`Writing your first Django app
+The aim of this process is to mirror Pytest's default collection strategy as
+closely as possible. It also aims to work with popular testing tutorials such
+as Django's `Writing your first Django app
 <https://docs.djangoproject.com/en/3.0/intro/tutorial05/#create-a-test-to-expose-the-bug>`_
 which states:
 
@@ -34,7 +30,6 @@ did not ignore or skip those tests which you expected to fail.
 .. note::
 
     Flake8-AAA does not check doctests.
-
 
 Processing
 ----------
@@ -67,11 +62,10 @@ therefore not counted::
     2,
     ]"""
 
-Find Act node
-.............
+Find the Act block
+..................
 
-Search the test for the Act node which will indicate the existence of an Act
-block. There are four recognised types of Act node:
+There are four recognised types of Act block:
 
 ``marked_act``
     Action is marked with Marked with ``# act`` comment::
@@ -85,7 +79,7 @@ block. There are four recognised types of Act node:
             do_thing()
 
 ``result_assignment``
-    Simple ``result =`` action::
+    ``result =`` action::
 
         result = do_thing()
 
@@ -94,21 +88,6 @@ block. There are four recognised types of Act node:
 
         with self.assertRaises(ValueError):
             do_thing()
-
-Build Act block
-...............
-
-The Act node is used to build the Act block for the test. The Act block
-contains all parent nodes of the Act node up to the test function. For
-example::
-
-    def test():
-        with mock.patch('thing.thinger') as mock_thinger:   # < Act block first line
-            with mock.patch('other_thing.thinger'):
-                with pytest.raises(ValueError):             # < Act node
-                    do_thing()                              # < Act block last line
-
-        assert mock_thinger.call_count == 0
 
 Build Arrange and Assert blocks
 ...............................
