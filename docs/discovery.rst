@@ -3,7 +3,7 @@ Test discovery and analysis
 
 When running as a Flake8 plugin, Flake8-AAA filters the Python code passed to
 it by Flake8. It finds code that looks like test code and then checks that code
-matches the AAA pattern.
+matches the AAA pattern. When all checks pass, then no error is raised.
 
 Filtering
 ---------
@@ -89,6 +89,9 @@ There are four recognised types of Act block:
         with self.assertRaises(ValueError):
             do_thing()
 
+Flake8-AAA searches each test function for lines that look like Act blocks. It
+will raise an error when a function does not have exactly 1 Act block.
+
 Build Arrange and Assert blocks
 ...............................
 
@@ -101,5 +104,9 @@ line number after the end of the Act block.
 Line-wise analysis
 ..................
 
-Each block updates a list of line markers for the test and line-wise analysis
-occurs to ensure that there is one and only one blank line between each block.
+Finally a line-by-line analysis of the test function is carried out to ensure
+that:
+
+* No blocks contain extra blank lines.
+
+* There is a single blank line above and below the Act block.
