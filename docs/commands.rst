@@ -88,6 +88,14 @@ And once the error above is fixed, the return value returns to zero::
     $ echo "$?"
     0 
 
+Only one file can be passed to the command line at a time. So to test all files
+in a test suite, ``find`` should be used:
+
+.. code-block:: shell
+
+    $ find tests -name '*.py' | xargs -n 1 python -m flake8_aaa
+
+
 noqa and command line
 .....................
 

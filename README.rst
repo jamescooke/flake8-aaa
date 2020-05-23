@@ -131,8 +131,7 @@ Further reading:
 Prerequisites
 .............
 
-Install Flake8 with `pip <https://pip.pypa.io/en/stable/installing/>`_, if you
-don't have it already:
+Install Flake8 with `pip <https://pip.pypa.io/en/stable/installing/>`_:
 
 .. code-block:: shell
 
