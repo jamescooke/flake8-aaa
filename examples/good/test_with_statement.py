@@ -1,24 +1,9 @@
 import io
-import pathlib
 
 import pytest
 
-# Maybe crazy, but in an effort to get the good and bad examples to be
-# runnable, this is the first stab at writing "real" examples.
 
-
-@pytest.fixture
-def hello_world_path() -> str:
-    """
-    Location of hello_world.txt
-    """
-    return pathlib.Path(__file__).parent.parent / 'data' / 'hello_world.txt'
-
-
-# --- TESTS ---
-
-
-def test_simple(hello_world_path):
+def test_simple(hello_world_path) -> None:
     """
     `with` statement is part of arrange. Blank lines are maintained around Act.
     """
@@ -29,7 +14,7 @@ def test_simple(hello_world_path):
     assert result == 'Hello World!\n'
 
 
-def test_whole(hello_world_path):
+def test_whole(hello_world_path) -> None:
     """
     `with` statement wraps whole of test
     """
@@ -40,7 +25,7 @@ def test_whole(hello_world_path):
         assert result == 'Hello World!\n'
 
 
-def test_extra_arrange(hello_world_path):
+def test_extra_arrange(hello_world_path) -> None:
     """
     Any extra arrangement goes in the `with` block.
     """
@@ -52,7 +37,7 @@ def test_extra_arrange(hello_world_path):
     assert result == ''
 
 
-def test_assert_in_block(hello_world_path):
+def test_assert_in_block(hello_world_path) -> None:
     """
     Any assertion that needs the `with` block open, goes after Act and a BL.
     """
@@ -66,7 +51,7 @@ def test_assert_in_block(hello_world_path):
     assert result == ''
 
 
-def test_pytest_assert_raises_in_block(hello_world_path):
+def test_pytest_assert_raises_in_block(hello_world_path) -> None:
     """
     Checking on a raise in a with block works with Pytest.
     """
@@ -78,7 +63,7 @@ def test_pytest_assert_raises_in_block(hello_world_path):
         assert f.read() == 'Hello World!\n'
 
 
-def test_pytest_assert_raises_on_with(hello_world_path):
+def test_pytest_assert_raises_on_with(hello_world_path) -> None:
     """
     Checking on the raise from a with statement works with Pytest.
     """
@@ -89,7 +74,7 @@ def test_pytest_assert_raises_on_with(hello_world_path):
     assert 'invalid mode' in str(excinfo.value)
 
 
-def test_with_in_assert(hello_world_path):
+def test_with_in_assert(hello_world_path) -> None:
     """
     Using with statement in Assert block is valid
     """
