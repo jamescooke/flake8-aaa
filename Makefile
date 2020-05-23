@@ -30,8 +30,6 @@ lint:
 	flake8 $(lint_files)
 	@echo "=== mypy ==="
 	mypy src/flake8_aaa tests --ignore-missing-imports
-	mypy examples examples/good --ignore-missing-imports
-	mypy examples/bad --ignore-missing-imports
 	@echo "=== isort ==="
 	isort --quiet --recursive --diff $(lint_files) > isort.out
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
@@ -56,6 +54,9 @@ lintexamples:
 	@echo "=== flake8 ==="
 	flake8 examples | sort > flake8.out
 	diff examples/bad/flake8_expected.out flake8.out
+	@echo "=== mypy ==="
+	mypy examples examples/good --ignore-missing-imports
+	mypy examples/bad --ignore-missing-imports
 	@echo "=== black ==="
 	black --check --diff --verbose examples/good/black
 

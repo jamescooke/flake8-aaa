@@ -1,13 +1,12 @@
-from project.auth import user_perms_changed
-
-from .helpers import catch_signal
+# You know it"s black because it does the double quotes :D
 
 
-def test(api_client, url):
-    data = {"user_id": 0, "project_permission": "admin"}
-    with catch_signal(user_perms_changed) as callback:
+def test_simple(hello_world_path) -> None:
+    """
+    `with` statement is part of arrange. Blank lines are maintained around Act.
+    """
+    with open(hello_world_path) as f:
 
-        result = api_client.put(url, data=data)
+        result = f.read()
 
-    assert result.status_code == 400
-    assert callback.call_count == 0
+    assert result == "Hello World!\n"
