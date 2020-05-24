@@ -1,61 +1,69 @@
-import typing
+from typing import Generator, List
 
 from .exceptions import AAAError, ValidationError
 from .helpers import first_non_blank_char
 from .types import LineType
 
 
-class LineMarkers(list):
+class LineMarkers:
     """
     Marks each line of a test function with the ``LineType`` assigned to that
     line.
+
+    Attributes:
+        lines: Lines of code that make up test. Used to calculate offset in
+            raised error.
+        types: List of types for each line in test.
+        fn_offset: First line number of test so that line type indices can be
+            converted back to line numbers in exceptions.
     """
 
-    def __init__(self, lines: typing.List[str], fn_offset: int) -> None:
-        super().__init__([LineType.unprocessed] * len(lines))
+    def __init__(self, lines: List[str], fn_offset: int) -> None:
+        self.types = [LineType.unprocessed] * len(lines)
         self.lines = lines
         self.fn_offset = fn_offset
 
-    @typing.overload
-    def __setitem__(self, key: int, value: typing.Any) -> None:
-        pass
-
-    @typing.overload
-    def __setitem__(self, s: slice, o: typing.Iterable) -> None:
-        pass
-
-    def __setitem__(self, key, value):
+    def set(self, index: int, value: LineType) -> bool:
         """
         Extended version of setitem to assert that item being replaced is
         always an unprocessed line. If the item being replaced is blank line,
         then do nothing.
 
-        Raises:
-            NotImplementedError: When a slice is passed for ``key``.
-            ValueError: When item being replaced is not unprocessed, or passed
-                ``value`` is not a LineType.
-        """
-        if isinstance(key, slice):
-            raise NotImplementedError('LineMarkers disallow slicing')
-        if not isinstance(value, LineType):
-            raise ValueError('"{}" for line {} is not LineType'.format(value, key))
-        current_type = self.__getitem__(key)
-        if current_type is LineType.blank_line:
-            return
-        if current_type is not LineType.unprocessed:
-            raise ValueError('collision when marking this line as {}, was already {}'.format(
-                value,
-                current_type,
-            ))
-        return super().__setitem__(key, value)
+        Returns:
+            An unprocessed line was replaced with a new line type.
 
-    def update(self, span: typing.Tuple[int, int], line_type: LineType) -> None:
+        Raises:
+            ValidationError: AAA99 marking caused a collision.
+            ValueError: passed ``value`` is not a LineType.
         """
-        Updates line types for a block's span.
+        if not isinstance(value, LineType):
+            raise ValueError(f'"{value}" for line index {index} is not LineType')
+        current_type = self.types[index]
+        if current_type is LineType.blank_line:
+            return False
+        if current_type is not LineType.unprocessed:
+            line_num = index + self.fn_offset
+            raise ValidationError(
+                line_num,
+                1,
+                f'AAA99 collision when marking line {line_num} (index={index}) as {value}, was already {current_type}',
+            )
+        self.types[index] = value
+        return True
+
+    def update(self, a: int, b: int, line_type: LineType) -> int:
+        """
+        Updates line types from index ``a`` to index ``b`` inclusively. Indexes
+        are relative.
 
         Args:
-            span: First and last relative line number of a Block.
-            line_type: The type of line to update to.
+            a: First line index.
+            b: Last line index.
+            line_type: New type of line.
+
+        Returns:
+            Number of lines updated. This may not be equal to ``b - a + 1``
+                because lines that are blank are skipped.
 
         Raises:
             ValidationError: A special error on collision. This prevents Flake8
@@ -63,14 +71,15 @@ class LineMarkers(list):
                 but it indicates to the user that something went wrong with
                 processing the function.
         """
-        first_block_line, last_block_line = span
-        for i in range(first_block_line, last_block_line + 1):
-            try:
-                self.__setitem__(i, line_type)
-            except ValueError as error:
-                raise ValidationError(i + self.fn_offset, 1, 'AAA99 {}'.format(error))
+        count = 0
 
-    def check_arrange_act_spacing(self) -> typing.Generator[AAAError, None, None]:
+        for i in range(a, b + 1):
+            if self.set(i, line_type):
+                count += 1
+
+        return count
+
+    def check_arrange_act_spacing(self) -> Generator[AAAError, None, None]:
         """
         * When no spaces found, point error at line above act block
         * When too many spaces found, point error at 2nd blank line
@@ -81,7 +90,7 @@ class LineMarkers(list):
             'AAA03 expected 1 blank line before Act block, found {}',
         )
 
-    def check_act_assert_spacing(self) -> typing.Generator[AAAError, None, None]:
+    def check_act_assert_spacing(self) -> Generator[AAAError, None, None]:
         """
         * When no spaces found, point error at line above assert block
         * When too many spaces found, point error at 2nd blank line
@@ -97,7 +106,7 @@ class LineMarkers(list):
         first_block_type: LineType,
         second_block_type: LineType,
         error_message: str,
-    ) -> typing.Generator[AAAError, None, None]:
+    ) -> Generator[AAAError, None, None]:
         """
         Checks there is a clear single line between ``first_block_type`` and
         ``second_block_type``.
@@ -106,7 +115,7 @@ class LineMarkers(list):
             Is tested via ``check_arrange_act_spacing()`` and
             ``check_act_assert_spacing()``.
         """
-        numbered_lines = list(enumerate(self))
+        numbered_lines = list(enumerate(self.types))
         first_block_lines = filter(lambda l: l[1] is first_block_type, numbered_lines)
         try:
             first_block_lineno = list(first_block_lines)[-1][0]
@@ -133,11 +142,12 @@ class LineMarkers(list):
             )
             return
 
-    def check_blank_lines(self) -> typing.Generator[AAAError, None, None]:
+    def check_blank_lines(self) -> Generator[AAAError, None, None]:
         checked_blocks = (LineType.func_def, LineType.arrange, LineType.act, LineType._assert)
-        for num, line_type in list(enumerate(self)):
+        for num, line_type in list(enumerate(self.types)):
             if (
-                line_type is LineType.blank_line and self[num - 1] in checked_blocks and self[num - 1] == self[num + 1]
+                line_type is LineType.blank_line and self.types[num - 1] in checked_blocks
+                and self.types[num - 1] == self.types[num + 1]
             ):
                 yield self.build_error(
                     line_index=num,

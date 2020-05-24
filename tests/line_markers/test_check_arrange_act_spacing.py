@@ -10,14 +10,14 @@ def test_comment_before_act():
     Comment before Act passes
     """
     line_markers = LineMarkers(8 * [''], 5)
-    line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.arrange  # x = 1
-    line_markers[2] = LineType.arrange  # y = 2
-    line_markers[3] = LineType.blank_line
-    line_markers[4] = LineType.unprocessed  # Sum x and y
-    line_markers[5] = LineType.act  # result = x + y
-    line_markers[6] = LineType.blank_line
-    line_markers[7] = LineType._assert  # assert result == 2
+    line_markers.types[0] = LineType.func_def
+    line_markers.types[1] = LineType.arrange  # x = 1
+    line_markers.types[2] = LineType.arrange  # y = 2
+    line_markers.types[3] = LineType.blank_line
+    line_markers.types[4] = LineType.unprocessed  # Sum x and y
+    line_markers.types[5] = LineType.act  # result = x + y
+    line_markers.types[6] = LineType.blank_line
+    line_markers.types[7] = LineType._assert  # assert result == 2
 
     result = line_markers.check_arrange_act_spacing()
 
@@ -30,13 +30,13 @@ def test_no_arrange():
     Tests without arrangement pass
     """
     line_markers = LineMarkers(7 * [''], 5)
-    line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.unprocessed  # Some docstring
-    line_markers[2] = LineType.unprocessed  # Some docstring
-    line_markers[3] = LineType.unprocessed  # Some docstring
-    line_markers[4] = LineType.act  # result = 2 + 0
-    line_markers[5] = LineType.blank_line
-    line_markers[6] = LineType._assert  # assert result == 2
+    line_markers.types[0] = LineType.func_def
+    line_markers.types[1] = LineType.unprocessed  # Some docstring
+    line_markers.types[2] = LineType.unprocessed  # Some docstring
+    line_markers.types[3] = LineType.unprocessed  # Some docstring
+    line_markers.types[4] = LineType.act  # result = 2 + 0
+    line_markers.types[5] = LineType.blank_line
+    line_markers.types[6] = LineType._assert  # assert result == 2
 
     result = line_markers.check_arrange_act_spacing()
 
@@ -52,12 +52,12 @@ def test_no_gap():
     No gap raises - error points at act block
     """
     line_markers = LineMarkers(6 * [''], 5)
-    line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.arrange  # x = 1
-    line_markers[2] = LineType.unprocessed  # Sum do stuff
-    line_markers[3] = LineType.act  # result = x + 3
-    line_markers[4] = LineType.blank_line
-    line_markers[5] = LineType._assert  # assert result == 4
+    line_markers.types[0] = LineType.func_def
+    line_markers.types[1] = LineType.arrange  # x = 1
+    line_markers.types[2] = LineType.unprocessed  # Sum do stuff
+    line_markers.types[3] = LineType.act  # result = x + 3
+    line_markers.types[4] = LineType.blank_line
+    line_markers.types[5] = LineType._assert  # assert result == 4
 
     result = line_markers.check_arrange_act_spacing()
 
@@ -76,14 +76,14 @@ def test_too_big_gap():
     Multiple BL raises. Act block is pointed to.
     """
     line_markers = LineMarkers(8 * [''], 5)
-    line_markers[0] = LineType.func_def
-    line_markers[1] = LineType.arrange  # x = 1
-    line_markers[2] = LineType.blank_line
-    line_markers[3] = LineType.blank_line
-    line_markers[4] = LineType.unprocessed  # Sum do stuff
-    line_markers[5] = LineType.act  # result = x + 3
-    line_markers[6] = LineType.blank_line
-    line_markers[7] = LineType._assert  # assert result == 4
+    line_markers.types[0] = LineType.func_def
+    line_markers.types[1] = LineType.arrange  # x = 1
+    line_markers.types[2] = LineType.blank_line
+    line_markers.types[3] = LineType.blank_line
+    line_markers.types[4] = LineType.unprocessed  # Sum do stuff
+    line_markers.types[5] = LineType.act  # result = x + 3
+    line_markers.types[6] = LineType.blank_line
+    line_markers.types[7] = LineType._assert  # assert result == 4
 
     result = line_markers.check_arrange_act_spacing()
 

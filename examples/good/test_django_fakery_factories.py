@@ -4,8 +4,8 @@ from django.db import transaction
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
-from ..django_fakery_factories import ItemFactory, UserFactory
-from ..models import Item
+from .django_fakery_factories import ItemFactory, UserFactory
+from .models import Item
 
 
 class TestItemFactory(TestCase):

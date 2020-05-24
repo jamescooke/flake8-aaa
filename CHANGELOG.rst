@@ -14,6 +14,12 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Added
+.....
+
+* Test examples are intended to be real but simple examples. All examples added
+  or updated are now executed with pytest and no imports and must be green.
+
 Changed
 .......
 
@@ -21,6 +27,15 @@ Changed
   aware of the AAA pattern. Template from `The Documentation Compendium
   <https://github.com/kylelobo/The-Documentation-Compendium>`_.  `#141
   <https://github.com/jamescooke/flake8-aaa/issues/141>`_.
+
+* Behaviour of context managers in tests has been changed. Going forwards only
+  with statements that are used to catch exceptions are considered actions, for
+  example, ``with pytest.raises(...):``. Otherwise, the with statement is
+  arrangement or assertion and must be separated from the Act block by a blank
+  line as usual. `#146 <https://github.com/jamescooke/flake8-aaa/issues/146>`_.
+
+  Implementing this feature meant changing the line-by-line analysis that
+  happens on test function bodies.
 
 0.9.0_ - 2020/03/07
 -------------------
