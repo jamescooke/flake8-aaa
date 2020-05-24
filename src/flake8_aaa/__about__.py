@@ -5,5 +5,5 @@ __version__ = '0.10.0'
 __author__ = 'James Cooke'
 __copyright__ = '2018 - 2020, {}'.format(__author__)
 
-__description__ = 'A linter for Python tests'
+__description__ = 'A Flake8 plugin that checks Python tests follow the Arrange-Act-Assert pattern'
 __email__ = 'github@jamescooke.info'
