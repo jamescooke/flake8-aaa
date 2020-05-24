@@ -12,6 +12,8 @@ entrypoints==0.3          # via flake8
 flake8==3.7.9             # via -r examples.in
 mccabe==0.6.1             # via flake8
 more-itertools==8.2.0     # via pytest
+mypy-extensions==0.4.3    # via mypy
+mypy==0.770               # via -r examples.in
 packaging==20.3           # via pytest
 pathspec==0.7.0           # via black
 pluggy==0.13.1            # via pytest
@@ -23,5 +25,6 @@ pytest==5.4.1             # via -r examples.in
 regex==2020.2.20          # via black
 six==1.14.0               # via packaging
 toml==0.10.0              # via black
-typed-ast==1.4.1          # via black
+typed-ast==1.4.1          # via black, mypy
+typing-extensions==3.7.4.2  # via mypy
 wcwidth==0.1.9            # via pytest
