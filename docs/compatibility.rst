@@ -47,9 +47,9 @@ Check that Flake8-AAA was installed correctly by asking ``flake8`` for its
 version signature::
 
     $ flake8 --version
-    3.7.8 (aaa: 0.7.0, mccabe: 0.6.1, pycodestyle: 2.5.0, pyflakes: 2.1.1) CPython 3.6.7 on Linux
+    3.8.2 (aaa: 0.10.0, mccabe: 0.6.1, pycodestyle: 2.6.0, pyflakes: 2.2.0) CPython 3.6.10 on Linux
 
-The ``aaa: 0.7.0`` part of that output tells you Flake8 found this plugin.
+The ``aaa: 0.10.0`` part of that output tells you Flake8 found this plugin.
 
 Yapf
 ----
