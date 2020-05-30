@@ -1,4 +1,5 @@
 import ast
+from typing import List
 
 import asttokens
 import pytest
@@ -69,11 +70,12 @@ def first_node_with_tokens(code_str):
 
 
 @pytest.fixture
-def lines(code_str):
+def lines(code_str) -> List[str]:
     """
-    Given ``code_str`` chop it into lines as flake8 would pass to a plugin.
+    Given ``code_str`` chop it into lines as Flake8 would pass to a plugin -
+    each line includes its newline terminator.
 
     Returns:
-        list (str)
+        list
     """
-    return ['{}\n'.format(line) for line in code_str.split('\n')]
+    return code_str.splitlines(True)

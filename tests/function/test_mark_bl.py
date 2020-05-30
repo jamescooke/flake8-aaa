@@ -41,7 +41,7 @@ def test(function):
     result = function.mark_bl()
 
     assert result == 6
-    assert function.line_markers == [
+    assert function.line_markers.types == [
         LineType.unprocessed,  # @pytest.mark.parametrize('messages', [
         LineType.blank_line,
         LineType.unprocessed,  # """hi
@@ -88,7 +88,7 @@ def test():
 def test_double_space(function):
     result = function.mark_bl()
 
-    assert function.line_markers == [
+    assert function.line_markers.types == [
         LineType.unprocessed,  # def test()
         LineType.unprocessed,  # x = 1
         LineType.unprocessed,  # y = 1

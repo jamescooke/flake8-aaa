@@ -1,6 +1,8 @@
 import ast
+import io
 import os
 import re
+import tokenize
 from typing import List, Set
 
 from asttokens.util import Token
@@ -160,13 +162,17 @@ def build_footprint(node: ast.AST, first_line_no: int) -> Set[int]:
     )
 
 
-def filter_arrange_nodes(nodes: List[ast.stmt], max_line_number: int) -> List[ast.stmt]:
+def filter_arrange_nodes(nodes: List[ast.stmt], act_block_first_line_number: int) -> List[ast.stmt]:
     """
-    Finds all nodes that are before the ``max_line_number`` and are not
-    docstrings or ``pass``.
+    Args:
+        act_block_first_line_number: Real line number of Act block first line.
+
+    Returns:
+        All nodes are not docstrings or ``pass`` that start before the Act
+        block's first line.
     """
     return [
-        node for node in nodes if node.lineno < max_line_number and not isinstance(node, ast.Pass)
+        node for node in nodes if node.lineno < act_block_first_line_number and not isinstance(node, ast.Pass)
         and not (isinstance(node, ast.Expr) and isinstance(node.value, ast.Str))
     ]
 
@@ -212,3 +218,17 @@ def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:
     str_visitor = StringyLineVisitor(first_line_no)
     str_visitor.visit(tree)
     return str_visitor.footprints
+
+
+def line_is_comment(line: str) -> bool:
+    """
+    Helper for checking that a single line is a comment. Will be replaced by a
+    complete `find_comment_lines()` helper in #148. Could also use `tokens`
+    from Flake8.
+    """
+    try:
+        first_token = next(tokenize.generate_tokens(io.StringIO(line).readline))
+    except tokenize.TokenError:
+        # Assume that a token error happens because this is *not* a comment
+        return False
+    return first_token.type == tokenize.COMMENT

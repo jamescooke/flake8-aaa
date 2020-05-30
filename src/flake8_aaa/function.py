@@ -4,7 +4,14 @@ from typing import Generator, List, Optional
 from .act_node import ActNode
 from .block import Block
 from .exceptions import AAAError, EmptyBlock, ValidationError
-from .helpers import find_stringy_lines, format_errors, function_is_noop, get_first_token, get_last_token
+from .helpers import (
+    find_stringy_lines,
+    format_errors,
+    function_is_noop,
+    get_first_token,
+    get_last_token,
+    line_is_comment,
+)
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
 
@@ -12,8 +19,9 @@ from .types import ActNodeType, LineType
 class Function:
     """
     Attributes:
+        act_block: Block wrapper around the single Act node.
         act_node: Act Node for the test. This is the node of the AST that looks
-            like the action. Distinguish between this and the Act Block - the
+            like the Action. Distinguish between this and the Act Block - the
             Act Block can be larger than just the node, mainly because it could
             be wrapped in context managers. Defaults to ``None``.
         arrange_block: Arrange block for this test. Defaults to ``None``.
@@ -21,10 +29,17 @@ class Function:
         _errors: List of errors for this Function. Defaults to ``None`` when
             Function has not been checked. Empty list ``[]`` means that the
             Function has been checked and is free of errors.
-        first_line_no
-        lines
+        first_line_no: Line number of the first token in the test. Used to hop
+            to and from relative line numberings.
+        lines: Slice of the file lines that make up this test function /
+            method.
         line_markers: Line-wise marking for this function.
-        node: AST for the test under lint.
+        node: AST for the test function / method.
+
+    Note:
+        "line number" means the number of the line in the file (the usual
+        definition). "offset" means the number of the line in the test relative
+        to the test definition.
     """
 
     def __init__(self, node: ast.FunctionDef, file_lines: List[str]):
@@ -48,7 +63,7 @@ class Function:
         for i, line in enumerate(self.lines):
             out += '{line_no:>2} {block}|{line}'.format(
                 line_no=i + self.first_line_no,
-                block=str(self.line_markers[i]),
+                block=str(self.line_markers.types[i]),
                 line=line,
             )
             if errors:
@@ -62,7 +77,7 @@ class Function:
 
     def check_all(self) -> Generator[AAAError, None, None]:
         """
-        Run everything required for checking this function.
+        Run everything required for checking this test.
 
         Returns:
             A generator of errors.
@@ -73,35 +88,110 @@ class Function:
         # Function def
         if function_is_noop(self.node):
             return
+
         self.mark_bl()
         self.mark_def()
-        # ACT
-        # Load act block and kick out when none is found
-        self.act_node = self.load_act_node()
-        self.act_block = Block.build_act(self.act_node.node, self.node)
-        act_block_first_line_no, act_block_last_line_no = self.act_block.get_span(0)
-        # ARRANGE
-        self.arrange_block = Block.build_arrange(self.node.body, act_block_first_line_no)
-        # ASSERT
-        assert self.act_node
-        self.assert_block = Block.build_assert(self.node.body, act_block_last_line_no)
-        # SPACING
-        for block in ['arrange', 'act', 'assert']:
-            self_block = getattr(self, '{}_block'.format(block))
-            try:
-                span = self_block.get_span(self.first_line_no)
-            except EmptyBlock:
-                continue
-            self.line_markers.update(span, self_block.line_type)
+        self.mark_act()
+        self.mark_arrange()
+        self.mark_assert()
+
         yield from self.line_markers.check_arrange_act_spacing()
         yield from self.line_markers.check_act_assert_spacing()
         yield from self.line_markers.check_blank_lines()
 
+    def mark_act(self) -> int:
+        """
+        Finds Act node, calculates its span and marks the associated lines in
+        ``line_markers``.
+
+        Returns:
+            Number of lines covered by the Act block (used for debugging /
+            testing only).
+
+        Raises:
+            ValidationError: Muliple possible fatal errors:
+                * AAA01 no act block found.
+                * AAA02 multiple act blocks found.
+                * AAA99 marking caused a collision.
+        """
+        # Load act block and kick out when none is found
+        self.act_node = self.load_act_node()
+        self.act_block = Block.build_act(self.act_node.node)
+        # Get relative line numbers of Act block footprint
+        # TODO store first and last line numbers in Block - use them instead of
+        # asking for span.
+        first_index, last_index = self.act_block.get_span(self.first_line_no)
+        self.line_markers.update(first_index, last_index, LineType.act)
+        return last_index - first_index + 1
+
+    def mark_arrange(self) -> int:
+        """
+        Mark all lines of code *before* the Act block as Arrange in
+        ``line_markers``. Location of Act block is sniffed from
+        ``line_markers``.
+
+        Returns:
+            Number of lines covered by the Arrange block (used for debugging /
+            testing only).
+
+        Raises:
+            ValidationError: Marking caused a collision.
+            ValueError: No Act block has been marked.
+        """
+        # TODO get this from self.act_block
+        act_block_first_index = self.line_markers.types.index(LineType.act)
+        act_block_first_line_number = act_block_first_index + self.first_line_no
+        arrange_block = Block.build_arrange(self.node.body, act_block_first_line_number)
+
+        # First and lass offsets of Arrange block - if block is empty, then
+        # work is done.
+        try:
+            first_index, last_index = arrange_block.get_span(self.first_line_no)
+        except EmptyBlock:
+            return 0
+
+        # Prevent overhanging arrangement, for example in context manager. Stop
+        # at line before Act block first line offset.
+        return self.line_markers.update(
+            first_index,
+            min(last_index, act_block_first_index - 1),
+            LineType.arrange,
+        )
+
+    def mark_assert(self) -> int:
+        """
+        Mark all lines of code *after* the Act block as Assert in
+        ``line_markers``.
+
+        Returns:
+            Number of lines covered by the Assert block (used for debugging /
+            testing only).
+
+        Raises:
+            ValidationError: AAA99 marking caused a collision.
+        """
+        count = 0
+        # TODO get this from self.act_block
+        # TODO keep length of function around instead of counting lines
+        act_block_last_index = len(self.line_markers.types) - 1 - self.line_markers.types[::-1].index(LineType.act)
+
+        # Starting from the line after the last line of Act block, to the end
+        # of the test, mark everything that's unprocessed, and not a comment,
+        # as an Assert block item.
+        # TODO keep length of function around instead of counting lines
+        for offset in range(act_block_last_index + 1, len(self.line_markers.types)):
+            if self.line_markers.types[offset] == LineType.unprocessed and not line_is_comment(self.lines[offset]):
+                count += 1
+                self.line_markers.types[offset] = LineType._assert
+
+        return count
+
     def load_act_node(self) -> ActNode:
         """
         Raises:
-            ValidationError: AAA01 when no act block is found and AAA02 when
-                multiple act blocks are found.
+            ValidationError:
+                * AAA01 no act block found.
+                * AAA02 multiple act blocks found.
         """
         act_nodes = ActNode.build_body(self.node.body)
 
@@ -120,14 +210,6 @@ class Function:
 
         return act_nodes[0]
 
-    def get_line_relative_to_node(self, target_node: ast.AST, offset: int) -> str:
-        """
-        Raises:
-            IndexError: when ``offset`` takes the request out of bounds of this
-                Function's lines.
-        """
-        return self.lines[target_node.lineno - self.node.lineno + offset]
-
     def mark_def(self) -> int:
         """
         Marks up this Function's definition lines (including decorators) into
@@ -145,15 +227,15 @@ class Function:
             cover the whole function. In this case, just the def lines are
             wanted with any decorators.
         """
-        first_line = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
+        first_index = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
         try:
             end_token = get_last_token(self.node.args.args[-1])
         except IndexError:
             # Fn has no args, so end of function is the fn def itself...
             end_token = get_first_token(self.node)
-        last_line = end_token.end[0] - self.first_line_no
-        self.line_markers.update((first_line, last_line), LineType.func_def)
-        return last_line - first_line + 1
+        last_index = end_token.end[0] - self.first_line_no
+        self.line_markers.update(first_index, last_index, LineType.func_def)
+        return last_index - first_index + 1
 
     def mark_bl(self) -> int:
         """
@@ -165,9 +247,9 @@ class Function:
         """
         counter = 0
         stringy_lines = find_stringy_lines(self.node, self.first_line_no)
-        for relative_line_number, line in enumerate(self.lines):
-            if relative_line_number not in stringy_lines and line.strip() == '':
+        for offset, line in enumerate(self.lines):
+            if offset not in stringy_lines and line.strip() == '':
                 counter += 1
-                self.line_markers[relative_line_number] = LineType.blank_line
+                self.line_markers.types[offset] = LineType.blank_line
 
         return counter

@@ -54,6 +54,9 @@ lintexamples:
 	@echo "=== flake8 ==="
 	flake8 examples | sort > flake8.out
 	diff examples/bad/flake8_expected.out flake8.out
+	@echo "=== mypy ==="
+	mypy examples examples/good --ignore-missing-imports
+	mypy examples/bad --ignore-missing-imports
 	@echo "=== black ==="
 	black --check --diff --verbose examples/good/black
 
@@ -92,7 +95,7 @@ cmdbad:
 
 .PHONY: clean
 clean:
-	rm -rf dist build .tox .pytest_cache flake8_aaa.egg-info
+	rm -rf dist build .tox .pytest_cache src/flake8_aaa.egg-info
 	find . -name '*.pyc' -delete
 
 .PHONY: sdist

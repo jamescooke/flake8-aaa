@@ -1,10 +1,11 @@
 Release checklist
 =================
 
-Items to be completed before and after each release.
+The following tasks need to be completed for each release of Flake8-AAA. They
+are mainly for the maintainer's use.
 
-Pre-release steps
------------------
+Versioning
+----------
 
 Given a new version called ``x.y.z``:
 
@@ -15,26 +16,41 @@ Given a new version called ``x.y.z``:
 
 * Commit changes and push ``bump-vx.y.z`` branch for testing.
 
-* Now is a good time to build and check the documentation locally.
+Documentation
+-------------
 
-  - Ensure that command line output examples are up to date. They can be
-    updated using the output of the ``cmd`` and ``cmdbad`` ``tox``
-    environments.
+Now is a good time to build and check the documentation locally:
+
+.. code-block:: shell
+
+    $ make doc
+    $ firefox docs/_build/html/index.html
+
+
+Ensure that command line output examples are up to date. They can be updated
+using the output of the ``cmd`` and ``cmdbad`` ``tox`` environments.
+
+Merge
+-----
 
 * When branch ``bump-vx.y.z`` is green, then merge it to ``master``.
 
 * Update master locally and ensure that you remain on master for the rest of
   the process.
 
-* Test that a build can be shipped to test PyPI with ``make testpypi``. (Every
-  build runs the full clean test suite locally to ensure that nothing has
-  broken before building)
+Test PyPI
+---------
+
+* Test that a build can be shipped to test PyPI with ``make testpypi``.
 
 * After successful push, check the `TestPyPI page
-  <https://test.pypi.org/project/flake8-aaa/>`_.
+  <https://test.pypi.org/project/flake8-aaa/>`_.  
 
-* Then tag the repo with ``make tag``. Add a short message about what the key
-  change is.
+Tag and push
+------------
+
+* Tag the repo with ``make tag``. Add a short message describing the key
+  feature of this release.
 
 * Make the new tag public with ``git push origin --tags``.
 

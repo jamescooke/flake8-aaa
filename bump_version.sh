@@ -36,7 +36,10 @@ echo "*** /src/flake8_aaa/__about__.py updated."
 
 # Add new version subtitle after link to latest docs, released today
 
-sed --in-place "/#__unreleased_marker__/ a\ \n${new_version}_ - ${today}\n-------------------" CHANGELOG.rst
+# underline=$(echo $new_version | sed 's/./-/g')
+title="${new_version}_ - ${today}"
+underline=${title//?/-}
+sed --in-place "/#__unreleased_marker__/ a\ \n${title}\n${underline}" CHANGELOG.rst
 
 # This leaves a single whitespace on the line above the new subtitle, so remove that
 

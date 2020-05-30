@@ -7,12 +7,12 @@ from flake8_aaa.types import LineType
 
 def test():
     line_markers = LineMarkers(6 * [''], 1)
-    line_markers[2] = LineType.blank_line
+    line_markers.types[2] = LineType.blank_line
 
-    result = line_markers.update((1, 3), LineType.act)
+    result = line_markers.update(1, 3, LineType.act)
 
-    assert result is None
-    assert line_markers == [
+    assert result == 2
+    assert line_markers.types == [
         LineType.unprocessed,
         LineType.act,
         LineType.blank_line,
@@ -35,11 +35,11 @@ def test_collision():
     ]
     """
     line_markers = LineMarkers(4 * [''], 10)
-    line_markers[0] = LineType.func_def
-    line_markers[2] = LineType.blank_line
+    line_markers.types[0] = LineType.func_def
+    line_markers.types[2] = LineType.blank_line
 
     with pytest.raises(ValidationError) as excinfo:
-        line_markers.update((0, 1), LineType.act)
+        line_markers.update(0, 1, LineType.act)
 
     assert excinfo.value.line_number == 10
     assert excinfo.value.offset == 1
