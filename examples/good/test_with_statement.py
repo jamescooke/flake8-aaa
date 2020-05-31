@@ -1,4 +1,5 @@
 import io
+from typing import Generator
 
 import pytest
 
@@ -84,3 +85,15 @@ def test_with_in_assert(hello_world_path) -> None:
 
     with open(hello_world_path) as f:
         assert result == f.read()
+
+
+def test_with_raises_in_assert() -> None:
+    """
+    A generator with no items will raise StopIteration
+    """
+    result = (x for x in [1])
+
+    assert isinstance(result, Generator)
+    assert next(result) == 1
+    with pytest.raises(StopIteration):
+        next(result)
