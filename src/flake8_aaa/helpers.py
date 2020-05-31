@@ -2,6 +2,7 @@ import ast
 import io
 import os
 import re
+import sys
 import tokenize
 from typing import List, Set
 
@@ -187,6 +188,11 @@ def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast
 class StringyLineVisitor(ast.NodeVisitor):
     """
     Find lines that look like strings. For each found, calculate its footprint.
+
+    Note:
+        Python 3.8.0 is starting to give warnings about `visit_Str` being
+        deprecated, but it's still required for 3.6. So some patching is used
+        to adjust this visitor for versions before 3.8.
     """
 
     def __init__(self, first_line_no: int):
@@ -194,14 +200,27 @@ class StringyLineVisitor(ast.NodeVisitor):
         self.first_line_no: int = first_line_no
         self.footprints: Set[int] = set()
 
-    def visit_Str(self, node) -> None:
-        self.add_footprint(node)
+    def visit_Constant(self, node) -> None:
+        """
+        Does not produce values until Python 3.8. See
+        https://greentreesnakes.readthedocs.io/en/latest/nodes.html#Constant
+        """
+        if isinstance(node.value, str):
+            self.add_footprint(node)
 
     def visit_JoinedStr(self, node) -> None:
         self.add_footprint(node)
 
     def add_footprint(self, node) -> None:
         self.footprints.update(build_footprint(node, self.first_line_no))
+
+
+if sys.version_info < (3, 8, 0):
+
+    def visit_Str(self, node) -> None:
+        self.add_footprint(node)
+
+    StringyLineVisitor.visit_Str = visit_Str  # type: ignore
 
 
 def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:

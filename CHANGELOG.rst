@@ -14,6 +14,13 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Changed
+.......
+
+* Stringy line analysis adjusted to use Constant visitor since Str visitor is
+  deprecated as of Python 3.8. `#145
+  <https://github.com/jamescooke/flake8-aaa/issues/145>`_.
+
 0.10.0_ - 2020/05/24
 --------------------
 
