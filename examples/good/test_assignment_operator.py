@@ -1,13 +1,10 @@
-# This is not a test, but an example of walrus used in a test file.
-def assert_list_len(a):
-    """
-    Check list length with message. Example from
-    https://docs.python.org/3/whatsnew/3.8.html#assignment-expressions
-    """
-    if (n := len(a)) > 10:
-            print(f"List is too long ({n} elements, expected <= 10)")
-
 def test():
-    result = Factory.create()
+    """
+    clear() removes all items from a list
+    """
+    shopping = ["apples", "bananas", "cabbages"]
 
-    assert (target := result.get())
+    result = shopping.clear()
+
+    assert result is None
+    assert (n := len(shopping)) == 0, f"Expected 0 items of shopping, got {n}"
