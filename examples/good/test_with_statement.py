@@ -1,5 +1,5 @@
 import io
-from typing import Generator
+from typing import Generator, List
 
 import pytest
 
@@ -91,9 +91,10 @@ def test_with_raises_in_assert() -> None:
     """
     A generator with no items will raise StopIteration
     """
-    result = (x for x in [1])
+    items: List[int] = []
+
+    result = (x for x in items)
 
     assert isinstance(result, Generator)
-    assert next(result) == 1
     with pytest.raises(StopIteration):
         next(result)
