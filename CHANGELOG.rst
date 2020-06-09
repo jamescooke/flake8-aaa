@@ -21,6 +21,13 @@ Added
   guarantee compatibility. `#120
   <https://github.com/jamescooke/flake8-aaa/issues/120>`_.
 
+Changed
+.......
+
+* Stringy line analysis adjusted to use Constant visitor since Str visitor is
+  deprecated as of Python 3.8. `#145
+  <https://github.com/jamescooke/flake8-aaa/issues/145>`_.
+
 0.10.0_ - 2020/05/24
 --------------------
 
