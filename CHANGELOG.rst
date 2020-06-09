@@ -14,6 +14,13 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Added
+.....
+
+* Add good example usage of the assignment expression in Python 3.8 to
+  guarantee compatibility. `#120
+  <https://github.com/jamescooke/flake8-aaa/issues/120>`_.
+
 0.10.0_ - 2020/05/24
 --------------------
 
@@ -21,7 +28,11 @@ Added
 .....
 
 * Test examples are intended to be real but simple examples. All examples added
-  or updated are now executed with pytest and no imports and must be green.
+  or updated from now on must:
+
+  - Go green when run with Pytest.
+
+  - Use only standard library imports.
 
 Changed
 .......
