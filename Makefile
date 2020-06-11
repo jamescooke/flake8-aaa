@@ -23,7 +23,6 @@ tox:
 
 # --- Tox recipes ---
 
-# Tox: -e "py3{6,7,8}-lint"
 .PHONY: lint
 lint:
 	@echo "=== flake8 ==="
@@ -48,11 +47,10 @@ fixlint:
 	@echo "=== fixing yapf ==="
 	yapf --recursive --in-place $(lint_files)
 
-# Tox: -e "py3{6,7,8}-lintexamples"
 .PHONY: lintexamples
 lintexamples:
 	@echo "=== flake8 ==="
-	flake8 examples | sort > flake8.out
+	flake8 examples/good examples/bad | sort > flake8.out
 	diff examples/bad/flake8_expected.out flake8.out
 	@echo "=== mypy ==="
 	mypy examples examples/good --ignore-missing-imports
@@ -60,17 +58,22 @@ lintexamples:
 	@echo "=== black ==="
 	black --check --diff --verbose examples/good/black
 
+.PHONY: lintexamplespy38
+lintexamplespy38:
+	@echo "=== flake8 ==="
+	flake8 examples/good_py38
+	@echo "=== mypy ==="
+	mypy examples/good_py38
+
 .PHONY: fixlintexamples
 fixlintexamples:
 	@echo "=== black ==="
 	black examples/good/black
 
-# Tox: -e "py36-doc"
 .PHONY: doc
 doc:
 	$(MAKE) -C docs html
 
-# Tox: -e "py3{6,7,8}-cmd"
 .PHONY: cmd
 cmd:
 	for i in $(good_examples); do \
@@ -78,7 +81,6 @@ cmd:
 		python -m flake8_aaa "$$i" || break -1; \
 	done
 
-# Tox: -e "py3{6,7,8}-cmdbad"
 # NOTE: Checks that all bad example files give at least 1 error and all return
 # an error code greater than 0. The `echo;` is used to wipe the error code from
 # the last test, or the for loop fails.
