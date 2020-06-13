@@ -91,6 +91,7 @@ class Function:
 
         self.mark_bl()
         self.mark_def()
+
         self.mark_act()
         self.mark_arrange()
         self.mark_assert()
@@ -98,6 +99,50 @@ class Function:
         yield from self.line_markers.check_arrange_act_spacing()
         yield from self.line_markers.check_act_assert_spacing()
         yield from self.line_markers.check_blank_lines()
+
+    def mark_bl(self) -> int:
+        """
+        Mark unprocessed lines that have no content and no string nodes
+        covering them as blank line BL.
+
+        Returns:
+            Number of blank lines found with no stringy parent node.
+        """
+        counter = 0
+        stringy_lines = find_stringy_lines(self.node, self.first_line_no)
+        for offset, line in enumerate(self.lines):
+            if offset not in stringy_lines and line.strip() == '':
+                counter += 1
+                self.line_markers.types[offset] = LineType.blank_line
+
+        return counter
+
+    def mark_def(self) -> int:
+        """
+        Marks up this Function's definition lines (including decorators) into
+        the ``line_markers`` attribute.
+
+        Returns:
+            Number of lines found for the definition.
+
+        Note:
+            Does not spot the closing ``):`` of a function when it occurs on
+            its own line.
+
+        Note:
+            Can not use ``helpers.build_footprint()`` because function nodes
+            cover the whole function. In this case, just the def lines are
+            wanted with any decorators.
+        """
+        first_index = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
+        try:
+            end_token = get_last_token(self.node.args.args[-1])
+        except IndexError:
+            # Fn has no args, so end of function is the fn def itself...
+            end_token = get_first_token(self.node)
+        last_index = end_token.end[0] - self.first_line_no
+        self.line_markers.update(first_index, last_index, LineType.func_def)
+        return last_index - first_index + 1
 
     def mark_act(self) -> int:
         """
@@ -209,47 +254,3 @@ class Function:
                 )
 
         return act_nodes[0]
-
-    def mark_def(self) -> int:
-        """
-        Marks up this Function's definition lines (including decorators) into
-        the ``line_markers`` attribute.
-
-        Returns:
-            Number of lines found for the definition.
-
-        Note:
-            Does not spot the closing ``):`` of a function when it occurs on
-            its own line.
-
-        Note:
-            Can not use ``helpers.build_footprint()`` because function nodes
-            cover the whole function. In this case, just the def lines are
-            wanted with any decorators.
-        """
-        first_index = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
-        try:
-            end_token = get_last_token(self.node.args.args[-1])
-        except IndexError:
-            # Fn has no args, so end of function is the fn def itself...
-            end_token = get_first_token(self.node)
-        last_index = end_token.end[0] - self.first_line_no
-        self.line_markers.update(first_index, last_index, LineType.func_def)
-        return last_index - first_index + 1
-
-    def mark_bl(self) -> int:
-        """
-        Mark unprocessed lines that have no content and no string nodes
-        covering them as blank line BL.
-
-        Returns:
-            Number of blank lines found with no stringy parent node.
-        """
-        counter = 0
-        stringy_lines = find_stringy_lines(self.node, self.first_line_no)
-        for offset, line in enumerate(self.lines):
-            if offset not in stringy_lines and line.strip() == '':
-                counter += 1
-                self.line_markers.types[offset] = LineType.blank_line
-
-        return counter
