@@ -90,6 +90,7 @@ class Function:
             return
 
         self.mark_bl()
+        self.mark_comments()
         self.mark_def()
 
         self.mark_act()
@@ -114,6 +115,21 @@ class Function:
             if offset not in stringy_lines and line.strip() == '':
                 counter += 1
                 self.line_markers.types[offset] = LineType.blank_line
+
+        return counter
+
+    def mark_comments(self) -> int:
+        """
+        Mark unprocessed lines that are just `#` comments as CMT.
+
+        Returns:
+            Number of comment lines found.
+        """
+        counter = 0
+        for offset, line in enumerate(self.lines):
+            if line_is_comment(line):
+                counter += 1
+                self.line_markers.types[offset] = LineType.comment
 
         return counter
 
