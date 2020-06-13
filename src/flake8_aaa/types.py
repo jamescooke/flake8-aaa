@@ -23,6 +23,8 @@ class LineType(Enum):
     blank_line = 'BL '
     # Function definition
     func_def = 'DEF'
+    # Comments
+    comment = 'CMT'
     # Not processed line
     unprocessed = 'QQQ'
 
