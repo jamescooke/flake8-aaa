@@ -64,3 +64,24 @@ def test_startassert() -> None:
 
     # Always 3
     assert result == 3
+
+
+# Comments are OK in strings
+
+
+def test_strings() -> None:
+    special_chars = """
+    #!$[]{}
+    """.strip()
+
+    result = len(special_chars)
+
+    assert result == 7
+
+
+def test_string_act():
+    result = """
+# Not a comment - it's a string
+"""
+
+    assert len(result) == 33
