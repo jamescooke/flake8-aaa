@@ -62,6 +62,19 @@ therefore not counted::
     2,
     ]"""
 
+Mark comments
+.............
+
+All lines that are ``#`` comment lines are marked.
+
+.. code-block:: python
+
+    # This line is considered a comment line
+
+    result = item.act()  # But not this line
+
+This process relies on analysing the tokens that make up the test.
+
 Find the Act block
 ..................
 
