@@ -21,18 +21,25 @@ class Checker:
     name = __short_name__
     version = __version__
 
-    def __init__(self, tree: AST, lines: List[str], filename: str, tokens):
+    def __init__(self, tree: AST, lines: List[str], filename: str):
         self.tree = tree
         self.lines = lines
         self.filename = filename
-        self.tokens = tokens
         self.ast_tokens: Optional[asttokens.ASTTokens] = None
 
     def load(self) -> None:
         self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)
 
     def all_funcs(self, skip_noqa: bool = False) -> Generator[Function, None, None]:
-        return (Function(f, self.lines) for f in find_test_functions(self.tree, skip_noqa=skip_noqa))
+        """
+        Note:
+            Checker is responsible for slicing the tokens passed to the
+            Function, BUT the function is reponsible for slicing the lines.
+            This is a bit strange - instead the lines should be sliced here and
+            passed in so that the Function only receives data about itself.
+        """
+        for f in find_test_functions(self.tree, skip_noqa=skip_noqa):
+            yield Function(f, self.lines, self.ast_tokens.get_tokens(f, include_extra=True))
 
     def run(self) -> Generator[Tuple[int, int, str, type], None, None]:
         """
