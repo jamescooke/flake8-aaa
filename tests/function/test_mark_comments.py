@@ -21,3 +21,29 @@ def test(function_bl):
         LineType.blank_line,
         LineType.unprocessed,
     ]
+
+
+@pytest.mark.parametrize('code_str', ['''
+def test():
+    message = """
+# Not a comment - it's a string
+"""
+
+    result = len(message)
+
+    assert result == 33
+    '''])
+def test_comments_in_strings(function_bl):
+    result = function_bl.mark_comments()
+
+    assert result == 0
+    assert function_bl.line_markers.types == [
+        LineType.unprocessed,
+        LineType.unprocessed,
+        LineType.unprocessed,
+        LineType.unprocessed,
+        LineType.blank_line,
+        LineType.unprocessed,
+        LineType.blank_line,
+        LineType.unprocessed,
+    ]
