@@ -21,10 +21,11 @@ class Checker:
     name = __short_name__
     version = __version__
 
-    def __init__(self, tree: AST, lines: List[str], filename: str):
+    def __init__(self, tree: AST, lines: List[str], filename: str, tokens):
         self.tree = tree
         self.lines = lines
         self.filename = filename
+        self.tokens = tokens
         self.ast_tokens: Optional[asttokens.ASTTokens] = None
 
     def load(self) -> None:

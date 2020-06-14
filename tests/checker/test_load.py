@@ -1,4 +1,5 @@
 import ast
+import tokenize
 
 from flake8_aaa import Checker
 
@@ -10,7 +11,8 @@ def test(tmpdir):
     target_file = tmpdir.join('test.py')
     target_file.write('assert 1 + 2 == 3\n')
     tree = ast.parse(target_file.read())
-    checker = Checker(tree, ['assert 1 + 2 == 3\n'], target_file.strpath)
+    tokens = tokenize.generate_tokens(target_file.readlines)
+    checker = Checker(tree, ['assert 1 + 2 == 3\n'], target_file.strpath, tokens)
 
     result = checker.load()
 
