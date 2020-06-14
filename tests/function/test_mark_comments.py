@@ -10,13 +10,11 @@ def test():
 
     assert result == 1
 '''])
-def test(function):
-    function.mark_bl()
-
-    result = function.mark_comments()
+def test(function_bl):
+    result = function_bl.mark_comments()
 
     assert result == 1
-    assert function.line_markers.types == [
+    assert function_bl.line_markers.types == [
         LineType.unprocessed,
         LineType.comment,
         LineType.unprocessed,

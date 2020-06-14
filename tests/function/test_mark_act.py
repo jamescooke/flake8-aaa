@@ -15,17 +15,14 @@ def test(hello_world_path):
 '''
     ]
 )
-def test_simple(function):
+def test_simple(function_bl_cmt_def):
     """
     `with` statement is part of arrange. Blank lines are maintained around Act.
     """
-    function.mark_bl()
-    function.mark_def()
-
-    result = function.mark_act()
+    result = function_bl_cmt_def.mark_act()
 
     assert result == 1
-    assert function.line_markers.types == [
+    assert function_bl_cmt_def.line_markers.types == [
         LineType.func_def,
         LineType.unprocessed,
         LineType.blank_line,
@@ -48,17 +45,14 @@ def test_pytest_assert_raises_in_block(hello_world_path):
 '''
     ]
 )
-def test_raises_block(function):
+def test_raises_block(function_bl_cmt_def):
     """
     Checking on a raise in a with block works with Pytest.
     """
-    function.mark_bl()
-    function.mark_def()
-
-    result = function.mark_act()
+    result = function_bl_cmt_def.mark_act()
 
     assert result == 2
-    assert function.line_markers.types == [
+    assert function_bl_cmt_def.line_markers.types == [
         LineType.func_def,
         LineType.unprocessed,
         LineType.blank_line,
