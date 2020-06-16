@@ -4,7 +4,7 @@ from typing import Generator, List, Optional, Tuple
 import asttokens
 
 from .__about__ import __short_name__, __version__
-from .exceptions import ValidationError
+from .exceptions import TokensNotLoaded, ValidationError
 from .function import Function
 from .helpers import find_test_functions, is_test_file
 
@@ -37,7 +37,13 @@ class Checker:
             Function, BUT the function is reponsible for slicing the lines.
             This is a bit strange - instead the lines should be sliced here and
             passed in so that the Function only receives data about itself.
+
+        Raises:
+            TokensNotLoaded: On fetching first value, when `load()` has not
+                been called to populate `ast_tokens`.
         """
+        if self.ast_tokens is None:
+            raise TokensNotLoaded("ast_tokens is `None`")
         for f in find_test_functions(self.tree, skip_noqa=skip_noqa):
             yield Function(f, self.lines, self.ast_tokens.get_tokens(f, include_extra=True))
 
