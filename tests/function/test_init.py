@@ -15,8 +15,8 @@ def test_other():
 
 # All done :D
 '''])
-def test(first_node_with_tokens, lines):
-    result = Function(first_node_with_tokens, lines)
+def test(first_node_with_tokens, lines, tokens):
+    result = Function(first_node_with_tokens, lines, tokens)
 
     assert result.node == first_node_with_tokens
     assert result.lines == [
@@ -47,8 +47,8 @@ def test(value):
 ''',
     ]
 )
-def test_with_decorators(first_node_with_tokens, lines):
-    result = Function(first_node_with_tokens, lines)
+def test_with_decorators(first_node_with_tokens, lines, tokens):
+    result = Function(first_node_with_tokens, lines, tokens)
 
     assert result.first_line_no == 4
     assert get_first_token(result.node).line == "@pytest.mark.skip(reason='maths is too hard :D')\n"

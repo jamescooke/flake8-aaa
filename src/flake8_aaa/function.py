@@ -1,4 +1,5 @@
 import ast
+import tokenize
 from typing import Generator, List, Optional
 
 from .act_node import ActNode
@@ -35,6 +36,7 @@ class Function:
             method.
         line_markers: Line-wise marking for this function.
         node: AST for the test function / method.
+        tokens: Slice of the file's tokens that make up this test function.
 
     Note:
         "line number" means the number of the line in the file (the usual
@@ -42,11 +44,12 @@ class Function:
         to the test definition.
     """
 
-    def __init__(self, node: ast.FunctionDef, file_lines: List[str]):
+    def __init__(self, node: ast.FunctionDef, file_lines: List[str], file_tokens: List[tokenize.TokenInfo]):
         """
         Args:
             node
             file_lines: Lines of file under test.
+            file_tokens: Tokens for file passed by Flake8.
         """
         self.node = node
         self.first_line_no: int = get_first_token(self.node).start[0]
