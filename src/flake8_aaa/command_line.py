@@ -1,5 +1,4 @@
 import ast
-import tokenize
 import typing
 
 from .checker import Checker
@@ -19,8 +18,7 @@ def do_command_line(infile: typing.IO[str]) -> int:
     """
     lines = infile.readlines()
     tree = ast.parse(''.join(lines))
-    tokens = list(tokenize.generate_tokens(infile.readline))
-    checker = Checker(tree, lines, infile.name, tokens)
+    checker = Checker(tree, lines, infile.name)
     checker.load()
     num_errors = 0
 
