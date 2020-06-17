@@ -5,14 +5,7 @@ from typing import Generator, List, Optional
 from .act_node import ActNode
 from .block import Block
 from .exceptions import AAAError, EmptyBlock, ValidationError
-from .helpers import (
-    find_stringy_lines,
-    format_errors,
-    function_is_noop,
-    get_first_token,
-    get_last_token,
-    line_is_comment,
-)
+from .helpers import format_errors, function_is_noop, get_first_token, get_last_token, line_is_comment
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
 
@@ -60,6 +53,7 @@ class Function:
         self.act_block: Optional[Block] = None
         self.assert_block: Optional[Block] = None
         self.line_markers = LineMarkers(self.lines, self.first_line_no)
+        self.tokens = file_tokens
 
     def __str__(self, errors: Optional[List[AAAError]] = None) -> str:
         out = '------+------------------------------------------------------------------------\n'
@@ -246,13 +240,16 @@ class Function:
         covering them as blank line BL.
 
         Returns:
-            Number of blank lines found with no stringy parent node.
+            Number of blank lines found.
         """
         counter = 0
-        stringy_lines = find_stringy_lines(self.node, self.first_line_no)
-        for offset, line in enumerate(self.lines):
-            if offset not in stringy_lines and line.strip() == '':
-                counter += 1
-                self.line_markers.types[offset] = LineType.blank_line
+        previous = None
+        for t in self.tokens:
+            if t.type == tokenize.NL:
+                assert previous is not None, "Unexpected NL token before any other tokens seen"
+                if previous.type == tokenize.NL or previous.type == tokenize.NEWLINE:
+                    self.line_markers.types[t.start[0] - self.first_line_no] = LineType.blank_line
+                    counter += 1
+            previous = t
 
         return counter

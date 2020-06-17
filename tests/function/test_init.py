@@ -27,6 +27,7 @@ def test(first_node_with_tokens, lines, tokens):
     assert result.line_markers.types == [LineType.unprocessed, LineType.unprocessed]
     assert result.line_markers.fn_offset == 3
     assert result.first_line_no == 3
+    assert result.tokens == tokens
 
 
 @pytest.mark.parametrize(
