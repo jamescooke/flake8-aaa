@@ -218,11 +218,6 @@ class Function:
         Note:
             Does not spot the closing ``):`` of a function when it occurs on
             its own line.
-
-        Note:
-            Can not use ``helpers.build_footprint()`` because function nodes
-            cover the whole function. In this case, just the def lines are
-            wanted with any decorators.
         """
         first_index = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
         try:

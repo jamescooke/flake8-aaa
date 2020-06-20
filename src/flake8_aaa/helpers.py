@@ -2,9 +2,8 @@ import ast
 import io
 import os
 import re
-import sys
 import tokenize
-from typing import List, Set
+from typing import List
 
 from asttokens.util import Token
 
@@ -139,30 +138,6 @@ def get_last_token(node: ast.AST) -> Token:
     return node.last_token  # type: ignore
 
 
-def add_node_parents(root: ast.AST) -> None:
-    """
-    Adds "parent" attribute to all child nodes of passed node.
-
-    Code taken from https://stackoverflow.com/a/43311383/1286705
-    """
-    for node in ast.walk(root):
-        for child in ast.iter_child_nodes(node):
-            child.parent = node  # type: ignore
-
-
-def build_footprint(node: ast.AST, first_line_no: int) -> Set[int]:
-    """
-    Generates a list of lines that the passed node covers, relative to the
-    marked lines list - i.e. start of function is line 0.
-    """
-    return set(
-        range(
-            get_first_token(node).start[0] - first_line_no,
-            get_last_token(node).end[0] - first_line_no + 1,
-        )
-    )
-
-
 def filter_arrange_nodes(nodes: List[ast.stmt], act_block_first_line_number: int) -> List[ast.stmt]:
     """
     Args:
@@ -178,73 +153,13 @@ def filter_arrange_nodes(nodes: List[ast.stmt], act_block_first_line_number: int
     ]
 
 
-def filter_assert_nodes(nodes: List[ast.stmt], min_line_number: int) -> List[ast.stmt]:
-    """
-    Finds all nodes that are after the ``min_line_number``
-    """
-    return [node for node in nodes if node.lineno > min_line_number]
-
-
-class StringyLineVisitor(ast.NodeVisitor):
-    """
-    Find lines that look like strings. For each found, calculate its footprint.
-
-    Note:
-        Python 3.8.0 is starting to give warnings about `visit_Str` being
-        deprecated, but it's still required for 3.6. So some patching is used
-        to adjust this visitor for versions before 3.8.
-    """
-
-    def __init__(self, first_line_no: int):
-        super().__init__()
-        self.first_line_no: int = first_line_no
-        self.footprints: Set[int] = set()
-
-    def visit_Constant(self, node) -> None:
-        """
-        Does not produce values until Python 3.8. See
-        https://greentreesnakes.readthedocs.io/en/latest/nodes.html#Constant
-        """
-        if isinstance(node.value, str):
-            self.add_footprint(node)
-
-    def visit_JoinedStr(self, node) -> None:
-        self.add_footprint(node)
-
-    def add_footprint(self, node) -> None:
-        self.footprints.update(build_footprint(node, self.first_line_no))
-
-
-if sys.version_info < (3, 8, 0):
-
-    def visit_Str(self, node) -> None:
-        self.add_footprint(node)
-
-    StringyLineVisitor.visit_Str = visit_Str  # type: ignore
-
-
-def find_stringy_lines(tree: ast.AST, first_line_no: int) -> Set[int]:
-    """
-    Finds all lines that contain a string in a tree, usually a function. These
-    lines will be ignored when searching for blank lines.
-
-    JoinedStr can contain Str nodes and FormattedValue nodes - the inner nodes
-    are not tokenised, so cause build_footprint() to raise AttributeErrors when
-    it attempts to inspect the tokens on these nodes.
-
-    See https://greentreesnakes.readthedocs.io/en/latest/nodes.html#JoinedStr
-    """
-    str_visitor = StringyLineVisitor(first_line_no)
-    str_visitor.visit(tree)
-    return str_visitor.footprints
-
-
 def line_is_comment(line: str) -> bool:
     """
     Helper for checking that a single line is a comment. Will be replaced by a
     complete `find_comment_lines()` helper in #148. Could also use `tokens`
     from Flake8.
     """
+    # TODO use existing tokens
     try:
         first_token = next(tokenize.generate_tokens(io.StringIO(line).readline))
     except tokenize.TokenError:
