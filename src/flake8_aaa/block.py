@@ -2,7 +2,7 @@ import ast
 from typing import Iterable, List, Tuple, Type, TypeVar
 
 from .exceptions import EmptyBlock
-from .helpers import filter_arrange_nodes, filter_assert_nodes, get_first_token, get_last_token
+from .helpers import filter_arrange_nodes, get_first_token, get_last_token
 from .types import LineType
 
 _Block = TypeVar('_Block', bound='Block')
@@ -14,8 +14,7 @@ class Block:
 
     Note:
         This may just become the Act Block *AND* since the Act Block is just a
-        single node, this might not even be required. The get_span() method
-        could be extracted to be a helper function.
+        single node, this might not even be required.
 
     Args:
         nodes: Nodes that make up this block.
@@ -48,18 +47,6 @@ class Block:
             act_block_first_line
         """
         return cls(filter_arrange_nodes(nodes, act_block_first_line), LineType.arrange)
-
-    @classmethod
-    def build_assert(cls: Type[_Block], nodes: List[ast.stmt], min_line_number: int) -> _Block:
-        """
-        Assert block is all nodes that are after the Act node.
-
-        Note:
-            The filtering is *still* running off the line number of the Act
-            node, when instead it should be using the last line of the Act
-            block.
-        """
-        return cls(filter_assert_nodes(nodes, min_line_number), LineType._assert)
 
     def get_span(self, first_line_no: int) -> Tuple[int, int]:
         """

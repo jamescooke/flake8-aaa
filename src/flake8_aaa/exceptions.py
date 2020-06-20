@@ -20,6 +20,13 @@ class Flake8AAAException(Exception):
     pass
 
 
+class TokensNotLoaded(Flake8AAAException):
+    """
+    `Checker.all_funcs()` was called before `ast_tokens` was populated. Usually
+    this is done by `Checker.load()`.
+    """
+
+
 class EmptyBlock(Flake8AAAException):
     """
     Block has no nodes.

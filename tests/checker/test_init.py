@@ -1,10 +1,22 @@
+import ast
+
+import pytest
+
 from flake8_aaa import Checker
 
 
-def test():
-    result = Checker(None, [], '__FILENAME__')
+@pytest.fixture
+def ast_example() -> ast.AST:
+    return ast.parse('pass')
 
-    assert result.tree is None
+
+# --- TESTS ---
+
+
+def test(ast_example) -> None:
+    result = Checker(ast_example, [], '__FILENAME__')
+
+    assert result.tree == ast_example
     assert result.lines == []
     assert result.filename == '__FILENAME__'
     assert result.ast_tokens is None
