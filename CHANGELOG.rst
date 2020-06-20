@@ -32,7 +32,7 @@ Changed
   <https://github.com/jamescooke/flake8-aaa/issues/145>`_.
 
 * Blank line analysis now carried out using tokens rather than tokenised AST.
-  `#157 <https://github.com/jamescooke/flake8-aaa/pull/157>~_.
+  `#157 <https://github.com/jamescooke/flake8-aaa/pull/157>`_.
 
 0.10.0_ - 2020/05/24
 --------------------
