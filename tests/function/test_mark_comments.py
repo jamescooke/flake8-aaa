@@ -23,7 +23,9 @@ def test(function_bl):
     ]
 
 
-@pytest.mark.parametrize('code_str', ['''
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
 def test():
     message = """
 # Not a comment - it's a string
@@ -32,7 +34,9 @@ def test():
     result = len(message)
 
     assert result == 33
-    '''])
+    '''
+    ]
+)
 def test_comments_in_strings(function_bl):
     result = function_bl.mark_comments()
 
