@@ -126,10 +126,14 @@ class Function:
             Number of comment lines found.
         """
         counter = 0
+        previous = None
         for t in self.tokens:
             if t.type == tokenize.COMMENT:
-                self.line_markers.types[t.start[0] - self.first_line_no] = LineType.comment
-                counter += 1
+                assert previous is not None, "Unexpected COMMENT token before any other tokens seen"
+                if previous.type == tokenize.NL or previous.type == tokenize.NEWLINE:
+                    self.line_markers.types[t.start[0] - self.first_line_no] = LineType.comment
+                    counter += 1
+            previous = t
 
         return counter
 

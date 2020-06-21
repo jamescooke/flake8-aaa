@@ -31,7 +31,7 @@ def test():
 # Not a comment - it's a string
 """
 
-    result = len(message)
+    result = len(message)  # noqa
 
     assert result == 33
     '''
