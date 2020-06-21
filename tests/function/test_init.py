@@ -15,8 +15,8 @@ def test_other():
 
 # All done :D
 '''])
-def test(first_node_with_tokens, lines):
-    result = Function(first_node_with_tokens, lines)
+def test(first_node_with_tokens, lines, tokens):
+    result = Function(first_node_with_tokens, lines, tokens)
 
     assert result.node == first_node_with_tokens
     assert result.lines == [
@@ -27,6 +27,7 @@ def test(first_node_with_tokens, lines):
     assert result.line_markers.types == [LineType.unprocessed, LineType.unprocessed]
     assert result.line_markers.fn_offset == 3
     assert result.first_line_no == 3
+    assert result.tokens == tokens
 
 
 @pytest.mark.parametrize(
@@ -47,8 +48,8 @@ def test(value):
 ''',
     ]
 )
-def test_with_decorators(first_node_with_tokens, lines):
-    result = Function(first_node_with_tokens, lines)
+def test_with_decorators(first_node_with_tokens, lines, tokens):
+    result = Function(first_node_with_tokens, lines, tokens)
 
     assert result.first_line_no == 4
     assert get_first_token(result.node).line == "@pytest.mark.skip(reason='maths is too hard :D')\n"

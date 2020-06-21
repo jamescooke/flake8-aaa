@@ -46,7 +46,9 @@ def test_example_file_has_functions(example_file):
 
 
 def test(example_file, capsys):
-    result = do_command_line(example_file)
+    with example_file.open() as f:
+
+        result = do_command_line(f)
 
     assert result == 2
     assert capsys.readouterr().out == '''

@@ -14,6 +14,9 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+0.10.1_ - 2020/06/20
+--------------------
+
 Added
 .....
 
@@ -21,12 +24,18 @@ Added
   guarantee compatibility. `#120
   <https://github.com/jamescooke/flake8-aaa/issues/120>`_.
 
+* Tokens now received from Flake8 to help with comment analysis. `#148
+  <https://github.com/jamescooke/flake8-aaa/issues/148>`_.
+
 Changed
 .......
 
 * Stringy line analysis adjusted to use Constant visitor since Str visitor is
   deprecated as of Python 3.8. `#145
   <https://github.com/jamescooke/flake8-aaa/issues/145>`_.
+
+* Blank line analysis now carried out using tokens rather than tokenised AST.
+  `#157 <https://github.com/jamescooke/flake8-aaa/pull/157>`_.
 
 0.10.0_ - 2020/05/24
 --------------------
@@ -326,7 +335,8 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.10.0...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.10.1...HEAD
+.. _0.10.1: https://github.com/jamescooke/flake8-aaa/compare/v0.10.0...v0.10.1
 .. _0.10.0: https://github.com/jamescooke/flake8-aaa/compare/v0.9.0...v0.10.0
 .. _0.9.0: https://github.com/jamescooke/flake8-aaa/compare/v0.8.1...v0.9.0
 .. _0.8.1: https://github.com/jamescooke/flake8-aaa/compare/v0.8.0...v0.8.1

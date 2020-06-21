@@ -31,16 +31,24 @@ def test(
         2,
     )
 
-    result = len(nums)
-
+    result = len(nums)\n    \n
+\t
     assert result == 2
 '''
     ]
 )
-def test(function):
+def test(function) -> None:
+    """
+    Note:
+        Funky use of `\n    \n` in the code above is to allow for whitespaces
+        in a blank line to ensure that Flake8-AAA picks them up, but prevents
+        Flake8 raising either of:
+            * W291 trailing whitespace
+            * W293 blank line contains whitespace
+    """
     result = function.mark_bl()
 
-    assert result == 6
+    assert result == 8
     assert function.line_markers.types == [
         LineType.unprocessed,  # @pytest.mark.parametrize('messages', [
         LineType.blank_line,
@@ -68,7 +76,9 @@ def test(function):
         LineType.unprocessed,  # )
         LineType.blank_line,
         LineType.unprocessed,  # result = ...
-        LineType.blank_line,
+        LineType.blank_line,  # <<< "    \n"
+        LineType.blank_line,  # <<< "\n"
+        LineType.blank_line,  # <<< "\t\n"
         LineType.unprocessed,  # assert ...
     ]
 
@@ -85,7 +95,7 @@ def test():
     assert result == 2
 ''']
 )
-def test_double_space(function):
+def test_double_space(function) -> None:
     result = function.mark_bl()
 
     assert function.line_markers.types == [

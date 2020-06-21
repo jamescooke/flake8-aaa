@@ -1,4 +1,5 @@
 import ast
+import tokenize
 from typing import List
 
 import asttokens
@@ -8,15 +9,14 @@ from flake8.processor import FileProcessor
 
 
 class FakeOptions:
-    pass
+    hang_closing: bool
+    max_line_length: int
+    max_doc_length: int
+    verbose: bool
 
 
 @pytest.fixture
-def fake_options():
-    """
-    Returns:
-        FakeOptions
-    """
+def fake_options() -> FakeOptions:
     options = FakeOptions()
     options.hang_closing = False
     options.max_line_length = MAX_LINE_LENGTH
@@ -26,15 +26,14 @@ def fake_options():
 
 
 @pytest.fixture
-def file_tokens(code_str, tmpdir, fake_options):
+def file_tokens(code_str: str, tmpdir, fake_options: FakeOptions) -> List[tokenize.TokenInfo]:
     """
     Args:
-        code_str (str): Code to be tokenized.
+        code_str: Code to be tokenized.
 
     Returns:
-        list: List contains instances of ``tokenize.TokenInfo`` on Python3.
-        This is to emulate the behaviour of ``FileProcessor`` which is using
-        ``tokenize.generate_tokens``.
+        Tokens for code to be checked. This emulates the behaviour of Flake8's
+        ``FileProcessor`` which is using ``tokenize.generate_tokens``.
     """
     code_file = tmpdir.join('code_file.py')
     code_file.write(code_str)
@@ -44,11 +43,8 @@ def file_tokens(code_str, tmpdir, fake_options):
 
 
 @pytest.fixture
-def first_token(file_tokens):
+def first_token(file_tokens: List[tokenize.TokenInfo]) -> tokenize.TokenInfo:
     """
-    Args:
-        file_tokens (list)
-
     Returns:
         First token of provided list.
     """
@@ -56,7 +52,17 @@ def first_token(file_tokens):
 
 
 @pytest.fixture
-def first_node_with_tokens(code_str):
+def tree(code_str: str) -> ast.Module:
+    return ast.parse(code_str)
+
+
+@pytest.fixture
+def asttok(code_str: str, tree: ast.Module) -> asttokens.ASTTokens:
+    return asttokens.ASTTokens(code_str, tree=tree)
+
+
+@pytest.fixture
+def first_node_with_tokens(code_str: str, tree: ast.Module, asttok: asttokens.ASTTokens):
     """
     Given ``code_str`` fixture, parse that string with ``ast.parse`` and then
     augment it with ``asttokens.ASTTokens``.
@@ -64,9 +70,15 @@ def first_node_with_tokens(code_str):
     Returns:
         ast.node: First node in parsed tree.
     """
-    tree = ast.parse(code_str)
-    asttokens.ASTTokens(code_str, tree=tree)
     return tree.body[0]
+
+
+@pytest.fixture
+def tokens(asttok, first_node_with_tokens) -> List[tokenize.TokenInfo]:
+    return asttok.get_tokens(
+        first_node_with_tokens,
+        include_extra=True,
+    )
 
 
 @pytest.fixture
