@@ -75,10 +75,10 @@ def first_node_with_tokens(code_str: str, tree: ast.Module, asttok: asttokens.AS
 
 @pytest.fixture
 def tokens(asttok, first_node_with_tokens) -> List[tokenize.TokenInfo]:
-    return asttok.get_tokens(
+    return list(asttok.get_tokens(
         first_node_with_tokens,
         include_extra=True,
-    )
+    ))
 
 
 @pytest.fixture

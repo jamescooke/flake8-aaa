@@ -126,10 +126,10 @@ class Function:
             Number of comment lines found.
         """
         counter = 0
-        for offset, line in enumerate(self.lines):
-            if line_is_comment(line):
+        for t in self.tokens:
+            if t.type == tokenize.COMMENT:
+                self.line_markers.types[t.start[0] - self.first_line_no] = LineType.comment
                 counter += 1
-                self.line_markers.types[offset] = LineType.comment
 
         return counter
 
