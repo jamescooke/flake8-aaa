@@ -1,4 +1,4 @@
-from typing import Generator, List
+from typing import Generator, List, Optional
 
 from .exceptions import AAAError, ValidationError
 from .helpers import first_non_blank_char
@@ -79,6 +79,28 @@ class LineMarkers:
 
         return count
 
+    def previous(self, num: int) -> Optional[LineType]:
+        """
+        Returns:
+            Previous line's type, relative to `num`. Returns `None` if we're at
+            the first line.
+        """
+        try:
+            return self.types[num - 1]
+        except IndexError:
+            return None
+
+    def next(self, num) -> Optional[LineType]:
+        """
+        Returns:
+            Next line's type, relative to `num`. Returns `None` if we're at the
+            last line.
+        """
+        try:
+            return self.types[num + 1]
+        except IndexError:
+            return None
+
     def check_arrange_act_spacing(self) -> Generator[AAAError, None, None]:
         """
         * When no spaces found, point error at line above act block
@@ -156,10 +178,10 @@ class LineMarkers:
 
     def check_comment_in_act(self) -> Generator[AAAError, None, None]:
         for num, line_type in enumerate(self.types):
-            if line_type is LineType.act:
-                if self.types[num - 1] == LineType.comment:
+            if line_type is LineType.comment:
+                if self.previous(num) == LineType.act or self.next(num) == LineType.act:
                     yield self.build_error(
-                        line_index=num - 1,
+                        line_index=num,
                         text='AAA06 comment in Act block',
                     )
 
