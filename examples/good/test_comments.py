@@ -1,3 +1,5 @@
+from typing import List
+
 # Example from AAA06 doc:
 # * inline comment is OK for marking
 
@@ -85,3 +87,13 @@ def test_string_act():
 """
 
     assert len(result) == 33
+
+
+# Comment are OK before the test
+
+
+# NOTE: igore this comment
+def test_empty() -> None:
+    result: List[int] = list()
+
+    assert len(result) == 0
