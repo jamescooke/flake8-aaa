@@ -97,6 +97,7 @@ class Function:
         yield from self.line_markers.check_arrange_act_spacing()
         yield from self.line_markers.check_act_assert_spacing()
         yield from self.line_markers.check_blank_lines()
+        yield from self.line_markers.check_comment_in_act()
 
     def mark_bl(self) -> int:
         """

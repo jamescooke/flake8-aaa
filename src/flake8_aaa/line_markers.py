@@ -144,7 +144,7 @@ class LineMarkers:
 
     def check_blank_lines(self) -> Generator[AAAError, None, None]:
         checked_blocks = (LineType.func_def, LineType.arrange, LineType.act, LineType._assert)
-        for num, line_type in list(enumerate(self.types)):
+        for num, line_type in enumerate(self.types):
             if (
                 line_type is LineType.blank_line and self.types[num - 1] in checked_blocks
                 and self.types[num - 1] == self.types[num + 1]
@@ -153,6 +153,15 @@ class LineMarkers:
                     line_index=num,
                     text='AAA05 blank line in block',
                 )
+
+    def check_comment_in_act(self) -> Generator[AAAError, None, None]:
+        for num, line_type in enumerate(self.types):
+            if line_type is LineType.act:
+                if self.types[num - 1] == LineType.comment:
+                    yield self.build_error(
+                        line_index=num - 1,
+                        text='AAA06 comment in Act block',
+                    )
 
     def build_error(self, line_index: int, text: str) -> AAAError:
         """
