@@ -28,7 +28,7 @@ lint:
 	@echo "=== flake8 ==="
 	flake8 $(lint_files)
 	@echo "=== mypy ==="
-	mypy src/flake8_aaa tests --ignore-missing-imports
+	MYPYPATH=stubs mypy src/flake8_aaa tests
 	@echo "=== isort ==="
 	isort --quiet --recursive --diff $(lint_files) > isort.out
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
