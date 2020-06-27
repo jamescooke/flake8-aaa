@@ -23,6 +23,12 @@ tox:
 
 # --- Tox recipes ---
 
+# Turn on checking for pytest. Extracted as its own recipe for use only when
+# running in tox. E.g. `make lint` works from outside of tox invocation.
+.PHONY: pytyped
+pytyped:
+	touch $$TOXDIR/src/pytest/src/pytest/py.typed $$TOXDIR/src/pytest/src/_pytest/py.typed
+
 .PHONY: lint
 lint:
 	@echo "=== flake8 ==="
@@ -38,7 +44,6 @@ lint:
 	restructuredtext-lint $(rst_files)
 	@echo "=== setup.py ==="
 	python setup.py check --metadata --strict
-
 
 .PHONY: fixlint
 fixlint:
