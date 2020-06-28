@@ -2,6 +2,8 @@ import ast
 import tokenize
 from typing import Generator, List, Optional
 
+from asttokens.util import Token as ASTToken
+
 from .act_node import ActNode
 from .block import Block
 from .exceptions import AAAError, EmptyBlock, ValidationError
@@ -37,7 +39,7 @@ class Function:
         to the test definition.
     """
 
-    def __init__(self, node: ast.FunctionDef, file_lines: List[str], file_tokens: List[tokenize.TokenInfo]):
+    def __init__(self, node: ast.FunctionDef, file_lines: List[str], file_tokens: List[ASTToken]):
         """
         Args:
             node

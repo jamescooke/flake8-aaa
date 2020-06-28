@@ -4,8 +4,8 @@ from typing import List
 
 import asttokens
 import pytest
-from flake8.defaults import MAX_LINE_LENGTH
-from flake8.processor import FileProcessor
+from flake8.defaults import MAX_LINE_LENGTH  # type: ignore
+from flake8.processor import FileProcessor  # type: ignore
 
 
 class FakeOptions:

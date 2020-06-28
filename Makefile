@@ -23,12 +23,21 @@ tox:
 
 # --- Tox recipes ---
 
+# Location in `.tox/{envdir}/lib/` of site-packages
+lib_dir = python$$(python --version | grep '.\..' -o)
+
+# Turn on checking for pytest. Extracted as its own recipe for use only when
+# running in tox. E.g. `make lint` works from outside of tox invocation.
+.PHONY: pytyped
+pytyped:
+	touch $$TOXDIR/lib/$(lib_dir)/site-packages/pytest/py.typed $$TOXDIR/lib/$(lib_dir)/site-packages/_pytest/py.typed
+
 .PHONY: lint
 lint:
 	@echo "=== flake8 ==="
 	flake8 $(lint_files)
 	@echo "=== mypy ==="
-	mypy src/flake8_aaa tests --ignore-missing-imports
+	MYPYPATH=stubs mypy src/flake8_aaa tests
 	@echo "=== isort ==="
 	isort --quiet --recursive --diff $(lint_files) > isort.out
 	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
@@ -38,7 +47,6 @@ lint:
 	restructuredtext-lint $(rst_files)
 	@echo "=== setup.py ==="
 	python setup.py check --metadata --strict
-
 
 .PHONY: fixlint
 fixlint:
