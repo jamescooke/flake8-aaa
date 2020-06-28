@@ -45,7 +45,7 @@ class Checker:
         if self.ast_tokens is None:
             raise TokensNotLoaded("ast_tokens is `None`")
         for f in find_test_functions(self.tree, skip_noqa=skip_noqa):
-            yield Function(f, self.lines, self.ast_tokens.get_tokens(f, include_extra=True))
+            yield Function(f, self.lines, list(self.ast_tokens.get_tokens(f, include_extra=True)))
 
     def run(self) -> Generator[Tuple[int, int, str, type], None, None]:
         """
