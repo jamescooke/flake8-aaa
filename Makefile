@@ -23,11 +23,14 @@ tox:
 
 # --- Tox recipes ---
 
+# Location in `.tox/{envdir}/lib/` of site-packages
+lib_dir = python$$(python --version | grep '.\..' -o)
+
 # Turn on checking for pytest. Extracted as its own recipe for use only when
 # running in tox. E.g. `make lint` works from outside of tox invocation.
 .PHONY: pytyped
 pytyped:
-	touch $$TOXDIR/src/pytest/src/pytest/py.typed $$TOXDIR/src/pytest/src/_pytest/py.typed
+	touch $$TOXDIR/lib/$(lib_dir)/site-packages/pytest/py.typed $$TOXDIR/lib/$(lib_dir)/site-packages/_pytest/py.typed
 
 .PHONY: lint
 lint:

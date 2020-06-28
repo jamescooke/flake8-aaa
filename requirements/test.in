@@ -6,7 +6,7 @@ isort
 mypy
 pygments
 # use pytest master for typing
--e git://github.com/pytest-dev/pytest/@7450b6dd95aa4dfb9c64c2442a173ca65143b442#egg=pytest
+git+https://github.com/pytest-dev/pytest@7450b6dd95aa4dfb9c64c2442a173ca65143b442#egg=pytest
 restructuredtext-lint
 six
 sphinx-rtd-theme
