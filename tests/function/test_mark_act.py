@@ -61,3 +61,36 @@ def test_raises_block(function_bl_cmt_def):
         LineType.blank_line,
         LineType.unprocessed,
     ]
+
+
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
+def test_pytest_assert_raises_in_block(hello_world_path):
+    with open(hello_world_path) as f:
+
+        with pytest.raises(io.UnsupportedOperation):
+            # Write hello back to file
+            f.write('hello back')
+
+        assert f.read() == 'Hello World!'
+'''
+    ]
+)
+def test_raises_block_with_comment(function_bl_cmt_def):
+    """
+    Act block can be marked even though there is a comment in the middle of it
+    """
+    result = function_bl_cmt_def.mark_act()
+
+    assert result == 3
+    assert function_bl_cmt_def.line_markers.types == [
+        LineType.func_def,
+        LineType.unprocessed,
+        LineType.blank_line,
+        LineType.act,
+        LineType.comment,
+        LineType.act,
+        LineType.blank_line,
+        LineType.unprocessed,
+    ]

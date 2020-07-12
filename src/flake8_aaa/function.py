@@ -174,7 +174,8 @@ class Function:
 
         Returns:
             Number of lines covered by the Act block (used for debugging /
-            testing only).
+            testing only). Includes any comment or blank lines already marked
+            inside the block's span.
 
         Raises:
             ValidationError: Muliple possible fatal errors:
