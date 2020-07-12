@@ -3,6 +3,8 @@ import pytest
 from flake8_aaa.exceptions import ValidationError
 from flake8_aaa.line_markers import LineMarkers
 from flake8_aaa.types import LineType
+
+
 """
           Mark as ...
         +-------+-------+-------+-------+-------+-------+
@@ -18,7 +20,7 @@ from flake8_aaa.types import LineType
 | ARR   | RAISE | RAISE | RAISE | RAISE | RAISE | RAISE |
 | ASS   | RAISE | RAISE | RAISE | RAISE | RAISE | RAISE |
 +-------+-------+-------+-------+-------+-------+-------+
-"""
+"""  # yapf: disable
 
 
 @pytest.mark.parametrize('new_type', [t for t in LineType if t != LineType.unprocessed])
