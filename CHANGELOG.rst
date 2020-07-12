@@ -14,6 +14,12 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Changed
+.......
+
+* Adjust rules for comments: no comments allowed in Act blocks. `#148
+  <https://github.com/jamescooke/flake8-aaa/issues/148>`_. 
+
 0.10.1_ - 2020/06/20
 --------------------
 
