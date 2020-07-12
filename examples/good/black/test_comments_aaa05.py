@@ -11,14 +11,6 @@ def test_arrange():
     assert result == 25
 
 
-def test_act():
-    nothing = None
-
-    with pytest.raises(AttributeError):
-        # You can't get something from nothing
-        nothing.get_something()
-
-
 def test_assert():
     result = list()
 

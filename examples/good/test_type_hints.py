@@ -8,11 +8,13 @@ def add_one(x: int) -> int:
 def test_add_one() -> None:
     """
     Addition of type hint in act block does not prevent act block being found
+
+    Note:
+        Comment above Act line removed as of AAA06.
     """
     # Arrange.
     data: int = 0
 
-    # Act.
     result: int = add_one(data)
 
     # Assert.

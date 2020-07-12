@@ -12,6 +12,14 @@ def test() -> None:
     assert shopping == ['cabbages', 'bananas', 'apples']
 
 
+def test_act():
+    nothing = None
+
+    with pytest.raises(AttributeError):
+        # You can't get something from nothing
+        nothing.get_something()
+
+
 # --- OTHERS ---
 
 
