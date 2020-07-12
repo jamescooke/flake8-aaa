@@ -1,6 +1,6 @@
 lint_files=setup.py src/flake8_aaa tests
 rst_files=README.rst CHANGELOG.rst
-good_examples = $(wildcard examples/good/*.py examples/good/noqa/test_cmd.py examples/good/black/noqa/test_cmd.py)
+good_examples = $(wildcard examples/good/*.py examples/good/noqa/*.py examples/good/black/noqa/*.py)
 bad_examples = $(wildcard examples/bad/*.py)
 
 
@@ -131,3 +131,7 @@ on_master:
 .PHONY: tag
 tag: on_master
 	git tag -a $$(python -c 'from src.flake8_aaa.__about__ import __version__; print("v{}".format(__version__))')
+
+.PHONY: black_examples
+black_examples:
+	$(MAKE) -C examples clean all
