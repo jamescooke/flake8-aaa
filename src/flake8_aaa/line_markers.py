@@ -25,21 +25,27 @@ class LineMarkers:
 
     def set(self, index: int, value: LineType) -> bool:
         """
-        Extended version of setitem to assert that item being replaced is
-        always an unprocessed line. If the item being replaced is blank line,
-        then do nothing.
+        Extended version of setitem to assert that rules for setting a line are
+        met:
+            * Existing line is unprocessed - line is set as new type.
+            * Existing line is blank line or comment and new line is function
+                defintion or an AAA block - line setting is ignored because
+                comments and blank lines can appear in func defs and blocks.
 
         Returns:
             An unprocessed line was replaced with a new line type.
 
         Raises:
             ValidationError: AAA99 marking caused a collision.
-            ValueError: passed ``value`` is not a LineType.
+            ValueError: passed ``value`` is unprocessed line or is not a
+                LineType.
         """
         if not isinstance(value, LineType):
             raise ValueError(f'"{value}" for line index {index} is not LineType')
+        if value is LineType.unprocessed:
+            raise ValueError(f'Can not revert line index {index} to "{value}"')
         current_type = self.types[index]
-        if current_type is LineType.blank_line:
+        if current_type is LineType.blank_line or current_type is LineType.comment:
             return False
         if current_type is not LineType.unprocessed:
             line_num = index + self.fn_offset
