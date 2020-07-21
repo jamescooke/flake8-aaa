@@ -10,7 +10,7 @@ cffi==1.14.0              # via cryptography
 chardet==3.0.4            # via -c test.txt, requests
 click==7.1.2              # via pip-tools
 colorama==0.4.3           # via twine
-cryptography==2.9.2       # via secretstorage
+cryptography==3.0         # via secretstorage
 docutils==0.16            # via -c test.txt, readme-renderer
 idna==2.10                # via -c test.txt, requests
 importlib-metadata==1.7.0  # via -c base.txt, -c test.txt, keyring, twine
@@ -28,7 +28,7 @@ requests==2.24.0          # via -c test.txt, requests-toolbelt, twine
 rfc3986==1.4.0            # via twine
 secretstorage==3.1.2      # via keyring
 six==1.15.0               # via -c base.txt, -c test.txt, bleach, cryptography, packaging, pip-tools, readme-renderer
-tqdm==4.46.1              # via twine
+tqdm==4.48.0              # via twine
 twine==3.2.0              # via -r dev.in
 urllib3==1.25.9           # via -c test.txt, requests
 webencodings==0.5.1       # via bleach
