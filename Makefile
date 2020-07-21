@@ -1,7 +1,11 @@
 lint_files=setup.py src/flake8_aaa tests
 rst_files=README.rst CHANGELOG.rst
-good_examples = $(wildcard examples/good/*.py examples/good/noqa/*.py examples/good/black/noqa/*.py)
-bad_examples = $(wildcard examples/bad/*.py)
+
+# Lists of examples to pass through command line checks
+# NOQA examples in /examples/good will fail because CMD does not respect noqa
+# comments in the same way that flake8 does.
+good_examples = $(wildcard examples/good/*.py examples/good/black/*.py)
+bad_examples = $(wildcard examples/good/noqa/*.py examples/good/black/noqa/*.py examples/bad/*.py)
 
 
 venv:
