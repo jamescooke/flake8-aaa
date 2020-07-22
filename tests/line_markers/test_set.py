@@ -4,7 +4,6 @@ from flake8_aaa.exceptions import ValidationError
 from flake8_aaa.line_markers import LineMarkers
 from flake8_aaa.types import LineType
 
-
 """
           Mark as ...
         +-------+-------+-------+-------+-------+-------+
