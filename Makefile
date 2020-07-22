@@ -4,8 +4,8 @@ rst_files=README.rst CHANGELOG.rst
 # Lists of examples to pass through command line checks
 # NOQA examples in /examples/good will fail because CMD does not respect noqa
 # comments in the same way that flake8 does.
-good_examples = $(wildcard examples/good/*.py examples/good/black/*.py)
-bad_examples = $(wildcard examples/good/noqa/*.py examples/good/black/noqa/*.py examples/bad/*.py)
+good_examples = $(wildcard examples/good/*.py examples/good/black/*.py) examples/good/noqa/test_cmd.py
+bad_examples = $(wildcard examples/good/noqa/test_0*.py examples/good/black/noqa/test_0*.py examples/bad/*.py)
 
 
 venv:
@@ -26,15 +26,6 @@ tox:
 	tox --skip-missing-interpreters true
 
 # --- Tox recipes ---
-
-# Location in `.tox/{envdir}/lib/` of site-packages
-lib_dir = python$$(python --version | grep '.\..' -o)
-
-# Turn on checking for pytest. Extracted as its own recipe for use only when
-# running in tox. E.g. `make lint` works from outside of tox invocation.
-.PHONY: pytyped
-pytyped:
-	touch $$TOXDIR/lib/$(lib_dir)/site-packages/pytest/py.typed $$TOXDIR/lib/$(lib_dir)/site-packages/_pytest/py.typed
 
 .PHONY: lint
 lint:
