@@ -133,6 +133,9 @@ ASS
 BL
     Line is considered a blank line for layout purposes.
 
+CMT
+    Line is a ``#`` comment.
+
 DEF
     Test function definition.
 

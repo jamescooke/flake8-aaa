@@ -46,14 +46,11 @@ def test(file_resource):
 ''',
     ]
 )
-def test_marked(function):
+def test_marked(function_bl_cmt_def):
     """
     Function has marked itself, but no errors passed
     """
-    function.mark_def()
-    function.mark_bl()
-
-    result = str(function)
+    result = str(function_bl_cmt_def)
 
     assert result == '''
 ------+------------------------------------------------------------------------

@@ -1,18 +1,6 @@
 import pytest
 
-from flake8_aaa.function import Function
 from flake8_aaa.types import LineType
-
-
-@pytest.fixture
-def function_marked_bl_def_act(function) -> Function:
-    function.mark_bl()
-    function.mark_def()
-    function.mark_act()
-    return function
-
-
-# --- TESTS ---
 
 
 @pytest.mark.parametrize(
@@ -27,14 +15,14 @@ def test(hello_world_path):
 '''
     ]
 )
-def test_simple(function_marked_bl_def_act):
+def test_simple(function_bl_cmt_def_act):
     """
     `with` statement is part of arrange. Blank lines are maintained around Act.
     """
-    result = function_marked_bl_def_act.mark_arrange()
+    result = function_bl_cmt_def_act.mark_arrange()
 
     assert result == 1
-    assert function_marked_bl_def_act.line_markers.types == [
+    assert function_bl_cmt_def_act.line_markers.types == [
         LineType.func_def,
         LineType.arrange,
         LineType.blank_line,
@@ -58,14 +46,14 @@ def test_extra_arrange(hello_world_path):
 '''
     ]
 )
-def test_extra(function_marked_bl_def_act):
+def test_extra(function_bl_cmt_def_act):
     """
     Any extra arrangement goes in the `with` block.
     """
-    result = function_marked_bl_def_act.mark_arrange()
+    result = function_bl_cmt_def_act.mark_arrange()
 
     assert result == 2
-    assert function_marked_bl_def_act.line_markers.types == [
+    assert function_bl_cmt_def_act.line_markers.types == [
         LineType.func_def,
         LineType.arrange,
         LineType.arrange,
@@ -91,14 +79,14 @@ def test_long_string():
 '''
     ]
 )
-def test_bl_in_str(function_marked_bl_def_act):
+def test_bl_in_str(function_bl_cmt_def_act):
     """
     String containing blank lines before Act is marked as Arrange
     """
-    result = function_marked_bl_def_act.mark_arrange()
+    result = function_bl_cmt_def_act.mark_arrange()
 
     assert result == 3
-    assert function_marked_bl_def_act.line_markers.types == [
+    assert function_bl_cmt_def_act.line_markers.types == [
         LineType.func_def,
         LineType.arrange,
         LineType.arrange,
@@ -116,14 +104,14 @@ def test_addition():
 
     assert result == 4
 '''])
-def test_no_arrange(function_marked_bl_def_act):
+def test_no_arrange(function_bl_cmt_def_act):
     """
     Function without arrange block does not cause failure
     """
-    result = function_marked_bl_def_act.mark_arrange()
+    result = function_bl_cmt_def_act.mark_arrange()
 
     assert result == 0
-    assert function_marked_bl_def_act.line_markers.types == [
+    assert function_bl_cmt_def_act.line_markers.types == [
         LineType.func_def,
         LineType.act,
         LineType.blank_line,

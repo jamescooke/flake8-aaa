@@ -22,7 +22,7 @@ pycodestyle==2.6.0        # via flake8
 pyflakes==2.2.0           # via flake8
 pyparsing==2.4.7          # via packaging
 pytest==5.4.3             # via -r examples.in
-regex==2020.6.8           # via black
+regex==2020.7.14          # via black
 six==1.15.0               # via packaging
 toml==0.10.1              # via black
 typed-ast==1.4.1          # via black, mypy

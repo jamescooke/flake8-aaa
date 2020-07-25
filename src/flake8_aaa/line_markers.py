@@ -1,4 +1,4 @@
-from typing import Generator, List
+from typing import Generator, List, Optional
 
 from .exceptions import AAAError, ValidationError
 from .helpers import first_non_blank_char
@@ -25,21 +25,27 @@ class LineMarkers:
 
     def set(self, index: int, value: LineType) -> bool:
         """
-        Extended version of setitem to assert that item being replaced is
-        always an unprocessed line. If the item being replaced is blank line,
-        then do nothing.
+        Extended version of setitem to assert that rules for setting a line are
+        met:
+            * Existing line is unprocessed - line is set as new type.
+            * Existing line is blank line or comment and new line is function
+                defintion or an AAA block - line setting is ignored because
+                comments and blank lines can appear in func defs and blocks.
 
         Returns:
             An unprocessed line was replaced with a new line type.
 
         Raises:
             ValidationError: AAA99 marking caused a collision.
-            ValueError: passed ``value`` is not a LineType.
+            ValueError: passed ``value`` is unprocessed line or is not a
+                LineType.
         """
         if not isinstance(value, LineType):
             raise ValueError(f'"{value}" for line index {index} is not LineType')
+        if value is LineType.unprocessed:
+            raise ValueError(f'Can not revert line index {index} to "{value}"')
         current_type = self.types[index]
-        if current_type is LineType.blank_line:
+        if current_type is LineType.blank_line or current_type is LineType.comment:
             return False
         if current_type is not LineType.unprocessed:
             line_num = index + self.fn_offset
@@ -78,6 +84,28 @@ class LineMarkers:
                 count += 1
 
         return count
+
+    def previous(self, num: int) -> Optional[LineType]:
+        """
+        Returns:
+            Previous line's type, relative to `num`. Returns `None` if we're at
+            the first line.
+        """
+        try:
+            return self.types[num - 1]
+        except IndexError:
+            return None
+
+    def next(self, num) -> Optional[LineType]:
+        """
+        Returns:
+            Next line's type, relative to `num`. Returns `None` if we're at the
+            last line.
+        """
+        try:
+            return self.types[num + 1]
+        except IndexError:
+            return None
 
     def check_arrange_act_spacing(self) -> Generator[AAAError, None, None]:
         """
@@ -144,7 +172,7 @@ class LineMarkers:
 
     def check_blank_lines(self) -> Generator[AAAError, None, None]:
         checked_blocks = (LineType.func_def, LineType.arrange, LineType.act, LineType._assert)
-        for num, line_type in list(enumerate(self.types)):
+        for num, line_type in enumerate(self.types):
             if (
                 line_type is LineType.blank_line and self.types[num - 1] in checked_blocks
                 and self.types[num - 1] == self.types[num + 1]
@@ -153,6 +181,15 @@ class LineMarkers:
                     line_index=num,
                     text='AAA05 blank line in block',
                 )
+
+    def check_comment_in_act(self) -> Generator[AAAError, None, None]:
+        for num, line_type in enumerate(self.types):
+            if line_type is LineType.comment:
+                if self.previous(num) == LineType.act or self.next(num) == LineType.act:
+                    yield self.build_error(
+                        line_index=num,
+                        text='AAA06 comment in Act block',
+                    )
 
     def build_error(self, line_index: int, text: str) -> AAAError:
         """

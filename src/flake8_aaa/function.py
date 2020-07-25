@@ -89,7 +89,9 @@ class Function:
             return
 
         self.mark_bl()
+        self.mark_comments()
         self.mark_def()
+
         self.mark_act()
         self.mark_arrange()
         self.mark_assert()
@@ -97,6 +99,73 @@ class Function:
         yield from self.line_markers.check_arrange_act_spacing()
         yield from self.line_markers.check_act_assert_spacing()
         yield from self.line_markers.check_blank_lines()
+        yield from self.line_markers.check_comment_in_act()
+
+    def mark_bl(self) -> int:
+        """
+        Mark unprocessed lines that have no content and no string nodes
+        covering them as blank line BL.
+
+        Returns:
+            Number of blank lines found.
+        """
+        counter = 0
+        previous = None
+        for t in self.tokens:
+            if t.type == tokenize.NL:
+                assert previous is not None, "Unexpected NL token before any other tokens seen"
+                if previous.type == tokenize.NL or previous.type == tokenize.NEWLINE:
+                    self.line_markers.types[t.start[0] - self.first_line_no] = LineType.blank_line
+                    counter += 1
+            previous = t
+
+        return counter
+
+    def mark_comments(self) -> int:
+        """
+        Mark unprocessed lines that are just `#` comments as CMT.
+
+        Returns:
+            Number of comment lines found.
+        """
+        counter = 0
+        previous = None
+        for t in self.tokens:
+            if t.type == tokenize.COMMENT:
+                assert previous is not None, "Unexpected COMMENT token before any other tokens seen"
+                if previous.type == tokenize.NL or previous.type == tokenize.NEWLINE:
+                    self.line_markers.types[t.start[0] - self.first_line_no] = LineType.comment
+                    counter += 1
+            previous = t
+
+        return counter
+
+    def mark_def(self) -> int:
+        """
+        Marks up this Function's definition lines (including decorators) into
+        the ``line_markers`` attribute.
+
+        Returns:
+            Number of lines found for the definition.
+
+        Note:
+            Does not spot the closing ``):`` of a function when it occurs on
+            its own line.
+
+        Note:
+            Can not use ``helpers.build_footprint()`` because function nodes
+            cover the whole function. In this case, just the def lines are
+            wanted with any decorators.
+        """
+        first_index = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
+        try:
+            end_token = get_last_token(self.node.args.args[-1])
+        except IndexError:
+            # Fn has no args, so end of function is the fn def itself...
+            end_token = get_first_token(self.node)
+        last_index = end_token.end[0] - self.first_line_no
+        self.line_markers.update(first_index, last_index, LineType.func_def)
+        return last_index - first_index + 1
 
     def mark_act(self) -> int:
         """
@@ -105,7 +174,8 @@ class Function:
 
         Returns:
             Number of lines covered by the Act block (used for debugging /
-            testing only).
+            testing only). Includes any comment or blank lines already marked
+            inside the block's span.
 
         Raises:
             ValidationError: Muliple possible fatal errors:
@@ -208,45 +278,3 @@ class Function:
                 )
 
         return act_nodes[0]
-
-    def mark_def(self) -> int:
-        """
-        Marks up this Function's definition lines (including decorators) into
-        the ``line_markers`` attribute.
-
-        Returns:
-            Number of lines found for the definition.
-
-        Note:
-            Does not spot the closing ``):`` of a function when it occurs on
-            its own line.
-        """
-        first_index = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
-        try:
-            end_token = get_last_token(self.node.args.args[-1])
-        except IndexError:
-            # Fn has no args, so end of function is the fn def itself...
-            end_token = get_first_token(self.node)
-        last_index = end_token.end[0] - self.first_line_no
-        self.line_markers.update(first_index, last_index, LineType.func_def)
-        return last_index - first_index + 1
-
-    def mark_bl(self) -> int:
-        """
-        Mark unprocessed lines that have no content and no string nodes
-        covering them as blank line BL.
-
-        Returns:
-            Number of blank lines found.
-        """
-        counter = 0
-        previous = None
-        for t in self.tokens:
-            if t.type == tokenize.NL:
-                assert previous is not None, "Unexpected NL token before any other tokens seen"
-                if previous.type == tokenize.NL or previous.type == tokenize.NEWLINE:
-                    self.line_markers.types[t.start[0] - self.first_line_no] = LineType.blank_line
-                    counter += 1
-            previous = t
-
-        return counter

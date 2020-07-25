@@ -5,8 +5,7 @@ flake8
 isort
 mypy
 pygments
-# use pytest master for typing
-git+https://github.com/pytest-dev/pytest@7450b6dd95aa4dfb9c64c2442a173ca65143b442#egg=pytest
+pytest==6.0.0rc1
 restructuredtext-lint
 six
 sphinx-rtd-theme
