@@ -34,8 +34,7 @@ lint:
 	@echo "=== mypy ==="
 	MYPYPATH=stubs mypy src/flake8_aaa tests
 	@echo "=== isort ==="
-	isort --quiet --recursive --diff $(lint_files) > isort.out
-	if [ "$$(wc -l isort.out)" != "0 isort.out" ]; then cat isort.out; exit 1; fi
+	isort --check --diff $(lint_files)
 	@echo "=== yapf ==="
 	yapf --recursive --diff $(lint_files)
 	@echo "=== rst ==="
