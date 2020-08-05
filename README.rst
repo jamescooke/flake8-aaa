@@ -75,6 +75,10 @@ therefore always easy to see the object behaviour each test is focused on.
 
 Further reading:
 
+* `Arrange-Act-Assert: A Pattern for Writing Good Tests
+  <https://automationpanda.com/2020/07/07/arrange-act-assert-a-pattern-for-writing-good-tests/>`_
+  - a great introduction to AAA from a Python perspective.
+
 * `Arrange Act Assert pattern for Python developers
   <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
   - information about the pattern and each part of a test.
@@ -152,9 +156,9 @@ string:
 .. code-block:: shell
 
     $ flake8 --version
-    3.7.9 (aaa: 0.9.0, mccabe: 0.6.1, pycodestyle: 2.5.0, pyflakes: 2.1.1) ...
+    3.8.3 (aaa: 0.11.0, mccabe: 0.6.1, pycodestyle: 2.6.0, pyflakes: 2.2.0) CPython 3.8.0 on Linux
 
-The ``aaa: 0.9.0`` part tells you that Flake8-AAA was installed successfully
+The ``aaa: 0.11.0`` part tells you that Flake8-AAA was installed successfully
 and its checks will be used by Flake8.
 
 Further reading:
@@ -214,7 +218,7 @@ Flake8 with ``--select``:
 
 Further reading:
 
-* `Using Flake8 <https://flake8.pycqa.org/en/latest/user/index.html>`_.
+* `Using Flake8 <https://flake8.pycqa.org/en/stable/user/index.html>`_.
 
 Via command line
 ................
