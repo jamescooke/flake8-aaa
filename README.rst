@@ -156,7 +156,7 @@ string:
 .. code-block:: shell
 
     $ flake8 --version
-    3.8.3 (aaa: 0.11.0, mccabe: 0.6.1, pycodestyle: 2.6.0, pyflakes: 2.2.0) CPython 3.8.0 on Linux
+    3.8.3 (aaa: 0.11.0, mccabe: 0.6.1, pycodestyle: 2.6.0, pyflakes: 2.2.0) ...
 
 The ``aaa: 0.11.0`` part tells you that Flake8-AAA was installed successfully
 and its checks will be used by Flake8.
