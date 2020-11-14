@@ -5,27 +5,27 @@
 #    pip-compile --output-file=examples.txt examples.in
 #
 appdirs==1.4.4            # via black
-attrs==19.3.0             # via black, pytest
-black==19.10b0            # via -r examples.in
+attrs==20.3.0             # via pytest
+black==20.8b1             # via -r examples.in
 click==7.1.2              # via black
-flake8==3.8.3             # via -r examples.in
-importlib-metadata==1.7.0  # via flake8, pluggy, pytest
+dataclasses==0.8          # via black
+flake8==3.8.4             # via -r examples.in
+importlib-metadata==2.0.0  # via flake8, pluggy, pytest
+iniconfig==1.1.1          # via pytest
 mccabe==0.6.1             # via flake8
-more-itertools==8.4.0     # via pytest
-mypy-extensions==0.4.3    # via mypy
-mypy==0.782               # via -r examples.in
+mypy-extensions==0.4.3    # via black, mypy
+mypy==0.790               # via -r examples.in
 packaging==20.4           # via pytest
-pathspec==0.8.0           # via black
+pathspec==0.8.1           # via black
 pluggy==0.13.1            # via pytest
 py==1.9.0                 # via pytest
 pycodestyle==2.6.0        # via flake8
 pyflakes==2.2.0           # via flake8
 pyparsing==2.4.7          # via packaging
-pytest==5.4.3             # via -r examples.in
-regex==2020.7.14          # via black
+pytest==6.1.2             # via -r examples.in
+regex==2020.11.13         # via black
 six==1.15.0               # via packaging
-toml==0.10.1              # via black
+toml==0.10.2              # via black, pytest
 typed-ast==1.4.1          # via black, mypy
-typing-extensions==3.7.4.2  # via mypy
-wcwidth==0.2.5            # via pytest
-zipp==3.1.0               # via importlib-metadata
+typing-extensions==3.7.4.3  # via black, mypy
+zipp==3.4.0               # via importlib-metadata
