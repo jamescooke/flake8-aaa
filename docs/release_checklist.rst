@@ -33,7 +33,8 @@ using the output of the ``cmd`` and ``cmdbad`` ``tox`` environments.
 Merge
 -----
 
-* When branch ``bump-vx.y.z`` is green, then merge it to ``master``.
+* When branch ``bump-vx.y.z`` is green, then merge it to ``master``. All pull
+  requests are "squash merged".
 
 * Update master locally and ensure that you remain on master for the rest of
   the process.

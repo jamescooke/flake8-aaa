@@ -8,21 +8,14 @@ good_examples = $(wildcard examples/good/*.py examples/good/black/*.py) examples
 bad_examples = $(wildcard examples/good/noqa/test_0*.py examples/good/black/noqa/test_0*.py examples/bad/*.py)
 
 
-venv:
-	virtualenv venv --python=python3
-	venv/bin/pip install -U pip
-
-venv/bin/pip-sync: venv
-	venv/bin/pip install pip-tools
-
 # Local dev: Install requirements
 .PHONY: dev
-dev: venv venv/bin/pip-sync
-	venv/bin/pip-sync requirements/base.txt requirements/test.txt requirements/dev.txt
+dev:
+	pip-sync requirements/base.txt requirements/test.txt requirements/dev.txt
 
 # Local dev: Run all tests for available Python versions
-.PHONY: tox
-tox:
+.PHONY: test
+test:
 	tox --skip-missing-interpreters true
 
 # --- Tox recipes ---
