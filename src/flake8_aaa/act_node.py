@@ -1,10 +1,12 @@
 import ast
+import re
 from typing import List, Type, TypeVar
 
 from .helpers import get_first_token, node_is_pytest_raises, node_is_result_assignment, node_is_unittest_raises
 from .types import ActNodeType
 
 AN = TypeVar('AN', bound='ActNode')  # Place holder for ActNode instances
+act_pattern = re.compile('# act$', re.IGNORECASE)
 
 
 class ActNode:
@@ -51,7 +53,7 @@ class ActNode:
             return [cls(node, ActNodeType.unittest_raises)]
 
         # Check if line marked with '# act'
-        if get_first_token(node).line.strip().endswith('# act'):
+        if act_pattern.search(get_first_token(node).line.strip()):
             return [cls(node, ActNodeType.marked_act)]
 
         # Recurse (downwards) if it's a context manager
