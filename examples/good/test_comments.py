@@ -27,6 +27,19 @@ def test_ignore_typing() -> None:
     assert shopping == ['cabbages', 'bananas', 'apples']
 
 
+# Example from docs:
+# mark the end of the line considered the Act block with ``# act`` (case insensitive)
+def test_Act() -> None:
+    """
+    Reverse shopping list operates in place (test of "# Act" marking)
+    """
+    shopping = ['apples', 'bananas', 'cabbages']
+
+    shopping.reverse()  # Act
+
+    assert shopping == ['cabbages', 'bananas', 'apples']
+
+
 # Comments are OK in Arrange and Assert.
 
 

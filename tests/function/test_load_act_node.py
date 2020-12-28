@@ -33,6 +33,23 @@ def test_act_marker(function):
     assert result.node.first_token.line == '    x = y + 1  # act\n'
 
 
+@pytest.mark.parametrize('code_str', ['''
+def test():
+    y = 3
+    x = y + 1  # Act
+    assert x == 4
+'''])
+def test_act_marker_case(function):
+    """
+    Act marker is case-insensitive
+    """
+    result = function.load_act_node()
+
+    assert isinstance(result, ActNode)
+    assert result.block_type == ActNodeType.marked_act
+    assert result.node.first_token.line == '    x = y + 1  # Act\n'
+
+
 @pytest.mark.parametrize(
     'code_str',
     [
