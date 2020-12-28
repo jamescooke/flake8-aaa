@@ -96,11 +96,11 @@ clean:
 	find . -name '*.pyc' -delete
 
 .PHONY: sdist
-sdist: tox
+sdist: test
 	python setup.py sdist
 
 .PHONY: bdist_wheel
-bdist_wheel: tox
+bdist_wheel: test
 	python setup.py bdist_wheel
 
 .PHONY: testpypi
