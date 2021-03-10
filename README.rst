@@ -1,9 +1,9 @@
 Flake8-AAA
 ==========
 
-.. image:: https://img.shields.io/travis/com/jamescooke/flake8-aaa/master.svg
-    :target: https://travis-ci.com/jamescooke/flake8-aaa/branches
-    :alt: Travis build
+.. image:: https://img.shields.io/github/workflow/status/jamescooke/flake8-aaa/Build
+    :alt: GitHub Workflow Status
+    :target: https://github.com/jamescooke/flake8-aaa/actions?query=branch%3Amaster
 
 .. image:: https://img.shields.io/readthedocs/flake8-aaa.svg
     :alt: Read the Docs
