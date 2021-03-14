@@ -79,6 +79,10 @@ Further reading:
   <https://automationpanda.com/2020/07/07/arrange-act-assert-a-pattern-for-writing-good-tests/>`_
   - a great introduction to AAA from a Python perspective.
 
+* `Anatomy of a test
+  <https://docs.pytest.org/en/latest/explanation/anatomy.html>`_ - a
+  description of Arrange Act Assert in the Pytest documentation.
+
 * `Arrange Act Assert pattern for Python developers
   <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
   - information about the pattern and each part of a test.
@@ -139,7 +143,7 @@ Install Flake8 with `pip <https://pip.pypa.io/en/stable/installing/>`_:
 
 .. code-block:: shell
 
-    $ pip install flake8
+    pip install flake8
 
 Installation
 ............
@@ -148,14 +152,17 @@ Install ``flake8-aaa``:
 
 .. code-block:: shell
 
-    $ pip install flake8-aaa
+    pip install flake8-aaa
 
 You can confirm that Flake8 recognises the plugin by checking its version
 string:
 
 .. code-block:: shell
 
-    $ flake8 --version
+    flake8 --version
+
+.. code-block::
+
     3.8.4 (aaa: 0.11.1, mccabe: 0.6.1, pycodestyle: 2.6.0, pyflakes: 2.2.0) ...
 
 The ``aaa: 0.11.1`` part tells you that Flake8-AAA was installed successfully
@@ -173,8 +180,8 @@ Let's check the good example from above. We expect Flake8 to return no errors:
 
 .. code-block:: shell
 
-    $ curl https://raw.githubusercontent.com/jamescooke/flake8-aaa/master/examples/good/test_example.py > test_example.py
-    $ flake8 test_example.py
+    curl https://raw.githubusercontent.com/jamescooke/flake8-aaa/master/examples/good/test_example.py > test_example.py
+    flake8 test_example.py
 
 Silence - just what we wanted.
 
@@ -182,8 +189,11 @@ Now let's see a failure from Flake8-AAA. We can use a bad example:
 
 .. code-block:: shell
 
-    $ curl https://raw.githubusercontent.com/jamescooke/flake8-aaa/master/examples/bad/test.py > test.py
-    $ flake8 test.py
+    curl https://raw.githubusercontent.com/jamescooke/flake8-aaa/master/examples/bad/test.py > test.py
+    flake8 test.py
+
+.. code-block::
+
     test.py:4:1: AAA01 no Act block found in test
 
 🎈 Usage
@@ -198,7 +208,7 @@ code and test suite:
 
 .. code-block:: shell
 
-    $ flake8 src tests
+    flake8 src tests
 
 If you're not already using Flake8 then you might consider:
 
@@ -214,7 +224,7 @@ Flake8 with ``--select``:
 
 .. code-block:: shell
 
-    $ flake8 --select AAA tests
+    flake8 --select AAA tests
 
 Further reading:
 
@@ -229,7 +239,7 @@ install Flake8.
 
 .. code-block:: shell
 
-    $ python -m flake8_aaa [test_file]
+    python -m flake8_aaa [test_file]
 
 Further reading:
 
