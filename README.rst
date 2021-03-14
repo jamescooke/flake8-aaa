@@ -79,6 +79,10 @@ Further reading:
   <https://automationpanda.com/2020/07/07/arrange-act-assert-a-pattern-for-writing-good-tests/>`_
   - a great introduction to AAA from a Python perspective.
 
+* `Anatomy of a test
+  <https://docs.pytest.org/en/latest/explanation/anatomy.html>`_ - a
+  description of Arrange Act Assert in the Pytest documentation.
+
 * `Arrange Act Assert pattern for Python developers
   <https://jamescooke.info/arrange-act-assert-pattern-for-python-developers.html>`_
   - information about the pattern and each part of a test.
