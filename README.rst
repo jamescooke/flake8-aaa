@@ -257,7 +257,7 @@ Flake8-AAA works with:
 
 * Mypy and type-annotated code.
 
-* Latest versions of Python 3 (3.6, 3.7 and 3.8).
+* Latest versions of Python 3 (3.6, 3.7, 3.8 and 3.9).
 
 Further reading:
 
