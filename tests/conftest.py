@@ -10,6 +10,7 @@ from flake8.processor import FileProcessor  # type: ignore
 
 class FakeOptions:
     hang_closing: bool
+    indent_size: int
     max_line_length: int
     max_doc_length: int
     verbose: bool
@@ -19,6 +20,7 @@ class FakeOptions:
 def fake_options() -> FakeOptions:
     options = FakeOptions()
     options.hang_closing = False
+    options.indent_size = 4
     options.max_line_length = MAX_LINE_LENGTH
     options.max_doc_length = MAX_LINE_LENGTH
     options.verbose = False
