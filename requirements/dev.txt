@@ -20,7 +20,7 @@ click==7.1.2
     # via pip-tools
 colorama==0.4.4
     # via twine
-cryptography==3.4.6
+cryptography==3.4.7
     # via secretstorage
 docutils==0.16
     # via
@@ -30,23 +30,26 @@ idna==2.10
     # via
     #   -c test.txt
     #   requests
-importlib-metadata==3.7.2
+importlib-metadata==3.10.0
     # via
     #   -c base.txt
     #   -c test.txt
     #   keyring
+    #   pep517
     #   twine
 jeepney==0.6.0
     # via
     #   keyring
     #   secretstorage
-keyring==23.0.0
+keyring==23.0.1
     # via twine
 packaging==20.9
     # via
     #   -c test.txt
     #   bleach
-pip-tools==5.5.0
+pep517==0.10.0
+    # via pip-tools
+pip-tools==6.0.1
     # via -r dev.in
 pkginfo==1.7.0
     # via twine
@@ -79,16 +82,20 @@ six==1.15.0
     #   -c test.txt
     #   bleach
     #   readme-renderer
-tqdm==4.59.0
+toml==0.10.2
+    # via
+    #   -c test.txt
+    #   pep517
+tqdm==4.60.0
     # via twine
-twine==3.3.0
+twine==3.4.1
     # via -r dev.in
 typing-extensions==3.7.4.3
     # via
     #   -c base.txt
     #   -c test.txt
     #   importlib-metadata
-urllib3==1.26.3
+urllib3==1.26.4
     # via
     #   -c test.txt
     #   requests
@@ -99,7 +106,7 @@ zipp==3.4.1
     #   -c base.txt
     #   -c test.txt
     #   importlib-metadata
+    #   pep517
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
-# setuptools
