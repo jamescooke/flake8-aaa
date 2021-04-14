@@ -13,6 +13,10 @@ Flake8-AAA
     :alt: PyPI
     :target: https://pypi.org/project/flake8-aaa/
 
+.. image:: https://img.shields.io/pypi/dm/flake8-aaa.svg
+    :alt: PyPI monthly downloads
+    :target: https://pypistats.org/packages/flake8-aaa
+
 .. image:: https://img.shields.io/pypi/pyversions/flake8-aaa.svg
     :alt: PyPI - Python Version
     :target: https://pypi.org/project/flake8-aaa/
