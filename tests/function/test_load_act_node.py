@@ -50,6 +50,24 @@ def test_act_marker_case(function):
     assert result.node.first_token.line == '    x = y + 1  # Act\n'
 
 
+@pytest.mark.parametrize('code_str', ['''
+def test() -> None:
+   validate_row(
+       {"total_number_of_users": "1", "number_of_new_users": "0"},
+       ["total_number_of_users", "number_of_new_users"],
+   )  # act
+'''])
+def test_act_marker_multi_line(function):
+    """
+    Act marker can be at end of bunch of lines
+    """
+    result = function.load_act_node()
+
+    assert isinstance(result, ActNode)
+    assert result.block_type == ActNodeType.marked_act
+    assert result.node.first_token.line == '    x = y + 1  # Act\n'
+
+
 @pytest.mark.parametrize(
     'code_str',
     [
