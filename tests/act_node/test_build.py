@@ -62,6 +62,22 @@ def test(expected_type, first_node_with_tokens):
 
 
 @pytest.mark.parametrize(
+    'code_str, expected_type', [
+        # ('result = do_thing(\n    1,\n)', ActNodeType.result_assignment),
+        ('do_thing(\n    1,\n)  # Act', ActNodeType.marked_act),
+    ]
+)
+def test_multi_line(expected_type, first_node_with_tokens):
+    result = ActNode.build(first_node_with_tokens)
+
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert isinstance(result[0], ActNode)
+    assert result[0].node == first_node_with_tokens
+    assert result[0].block_type == expected_type
+
+
+@pytest.mark.parametrize(
     'code_str', [
         "with mock.patch('stats.deletion_manager.deleted'):\n    result = existing_user.delete()",
     ]
