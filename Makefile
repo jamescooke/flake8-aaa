@@ -91,16 +91,17 @@ cmdbad:
 # --- Local dev: Building / Publishing ---
 
 .PHONY: clean
-clean:
+clean: dev
 	rm -rf dist build .tox .pytest_cache src/flake8_aaa.egg-info
 	find . -name '*.pyc' -delete
 
 .PHONY: sdist
-sdist: test
+sdist:
 	python setup.py sdist
 
 .PHONY: bdist_wheel
-bdist_wheel: test
+bdist_wheel:
+	pip install wheel
 	python setup.py bdist_wheel
 
 .PHONY: testpypi
