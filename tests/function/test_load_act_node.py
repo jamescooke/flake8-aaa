@@ -2,6 +2,8 @@ import pytest
 
 from flake8_aaa.act_node import ActNode
 from flake8_aaa.exceptions import ValidationError
+from flake8_aaa.function import Function
+from flake8_aaa.helpers import get_first_token
 from flake8_aaa.types import ActNodeType
 
 
@@ -50,14 +52,18 @@ def test_act_marker_case(function):
     assert result.node.first_token.line == '    x = y + 1  # Act\n'
 
 
-@pytest.mark.parametrize('code_str', ['''
+@pytest.mark.parametrize(
+    'code_str', [
+        '''
 def test() -> None:
    validate_row(
        {"total_number_of_users": "1", "number_of_new_users": "0"},
        ["total_number_of_users", "number_of_new_users"],
    )  # act
-'''])
-def test_act_marker_multi_line(function):
+'''
+    ]
+)
+def test_act_marker_multi_line(function: Function) -> None:
     """
     Act marker can be at end of bunch of lines
     """
@@ -65,7 +71,7 @@ def test_act_marker_multi_line(function):
 
     assert isinstance(result, ActNode)
     assert result.block_type == ActNodeType.marked_act
-    assert result.node.first_token.line == '    x = y + 1  # Act\n'
+    assert get_first_token(result.node).line == '   validate_row(\n'
 
 
 @pytest.mark.parametrize(
@@ -158,6 +164,11 @@ def test_creation(stub_user):
     ids=['marked act block in context manager'],
 )
 def test_marked_in_cm(function):
+    """
+    AAA looks inside CM first and finds marked line, rather than treating CM as
+    a node first and finding the mark on its last line. This means the node
+    first line is the `create()` line, rather than the `with ...` line.
+    """
     result = function.load_act_node()
 
     assert isinstance(result, ActNode)

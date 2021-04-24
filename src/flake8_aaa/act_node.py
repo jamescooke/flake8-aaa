@@ -61,15 +61,19 @@ class ActNode:
         if node_is_unittest_raises(node):
             return [cls(node, ActNodeType.unittest_raises)]
 
+        # Recurse (downwards) if it's a context manager - do this first before
+        # looking for any '# act' marked blocks because otherwise strange
+        # things happen with blocks like:
+        #   with open(path) as f:
+        #       f.do()  # act
+        if isinstance(node, ast.With):
+            return cls.build_body(node.body)
+
         # Check if first or last line is marked with '# act'
         if (
             act_pattern.search(get_first_token(node).line.strip())
             or act_pattern.search(get_last_token(node).line.strip())
         ):
             return [cls(node, ActNodeType.marked_act)]
-
-        # Recurse (downwards) if it's a context manager
-        if isinstance(node, ast.With):
-            return cls.build_body(node.body)
 
         return []

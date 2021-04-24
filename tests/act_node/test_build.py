@@ -63,11 +63,11 @@ def test(expected_type, first_node_with_tokens):
 
 @pytest.mark.parametrize(
     'code_str, expected_type', [
-        # ('result = do_thing(\n    1,\n)', ActNodeType.result_assignment),
+        ('do_thing(  # act\n    1,\n)', ActNodeType.marked_act),
         ('do_thing(\n    1,\n)  # Act', ActNodeType.marked_act),
     ]
 )
-def test_multi_line(expected_type, first_node_with_tokens):
+def test_multi_line(expected_type: ActNodeType, first_node_with_tokens):
     result = ActNode.build(first_node_with_tokens)
 
     assert isinstance(result, list)
