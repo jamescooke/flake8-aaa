@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 # Example from AAA06 doc:
 # * inline comment is OK for marking
@@ -67,7 +67,7 @@ def test_mark_last_line() -> None:
 
     AAA: last line of act can be marked
     """
-    shopping = ['apples', 'bananas', 'cabbages']
+    shopping: List[Union[str, List[str]]] = ['apples', 'bananas', 'cabbages']
 
     shopping.append([
         'dill',
