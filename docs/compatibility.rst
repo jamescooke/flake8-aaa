@@ -10,7 +10,7 @@ Python
 Works with Python 3.
 
 Flake8-AAA is fully compatible and tested against the latest versions of Python
-3. Currently that's 3.6, 3.7 and 3.8.
+3. Currently that's 3.6, 3.7, 3.8 and 3.9.
 
 The following versions of Python are no longer supported:
 
