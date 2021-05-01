@@ -2,7 +2,13 @@ import ast
 import re
 from typing import List, Type, TypeVar
 
-from .helpers import get_first_token, node_is_pytest_raises, node_is_result_assignment, node_is_unittest_raises
+from .helpers import (
+    get_first_token,
+    get_last_token,
+    node_is_pytest_raises,
+    node_is_result_assignment,
+    node_is_unittest_raises,
+)
 from .types import ActNodeType
 
 AN = TypeVar('AN', bound='ActNode')  # Place holder for ActNode instances
@@ -42,6 +48,9 @@ class ActNode:
         Starting at this ``node``, check if it's an act node. If it's a context
         manager, recurse into child nodes.
 
+        Finds "# act" marked Act nodes where the marker is on the first or last
+        line of the node.
+
         Returns:
             List of all act nodes found.
         """
@@ -52,12 +61,19 @@ class ActNode:
         if node_is_unittest_raises(node):
             return [cls(node, ActNodeType.unittest_raises)]
 
-        # Check if line marked with '# act'
-        if act_pattern.search(get_first_token(node).line.strip()):
-            return [cls(node, ActNodeType.marked_act)]
-
-        # Recurse (downwards) if it's a context manager
+        # Recurse (downwards) if it's a context manager - do this first before
+        # looking for any '# act' marked blocks because otherwise strange
+        # things happen with blocks like:
+        #   with open(path) as f:
+        #       f.do()  # act
         if isinstance(node, ast.With):
             return cls.build_body(node.body)
+
+        # Check if first or last line is marked with '# act'
+        if (
+            act_pattern.search(get_first_token(node).line.strip())
+            or act_pattern.search(get_last_token(node).line.strip())
+        ):
+            return [cls(node, ActNodeType.marked_act)]
 
         return []
