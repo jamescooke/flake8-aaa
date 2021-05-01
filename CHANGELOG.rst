@@ -14,6 +14,13 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Fixed
+.....
+
+* Fix marking of act blocks on multiple lines - allow ``# act`` markers to be
+  found on the last line of possible multi line act blocks. `#165
+  <https://github.com/jamescooke/flake8-aaa/issues/165>`_
+
 0.11.2_ - 2021/04/22
 --------------------
 
