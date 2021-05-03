@@ -23,8 +23,8 @@ Now is a good time to build and check the documentation locally:
 
 .. code-block:: shell
 
-    $ make doc
-    $ firefox docs/_build/html/index.html
+    make doc
+    firefox docs/_build/html/index.html
 
 
 Ensure that command line output examples are up to date. They can be updated

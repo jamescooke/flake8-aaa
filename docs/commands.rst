@@ -12,6 +12,9 @@ Explicitly marking blocks
 One can set the act block explicitly using the ``# act`` comment. This is
 necessary when there is no assignment possible.
 
+Link to = AAA01: no Act block found in test -> Resolution
+
+
 Disabling Flake8-AAA selectively
 ................................
 
