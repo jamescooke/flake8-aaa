@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 # Example from AAA06 doc:
 # * inline comment is OK for marking
@@ -31,13 +31,51 @@ def test_ignore_typing() -> None:
 # mark the end of the line considered the Act block with ``# act`` (case insensitive)
 def test_Act() -> None:
     """
-    Reverse shopping list operates in place (test of "# Act" marking)
+    Reverse shopping list operates in place
+
+    AAA: act can be marked with "# Act"
     """
     shopping = ['apples', 'bananas', 'cabbages']
 
     shopping.reverse()  # Act
 
     assert shopping == ['cabbages', 'bananas', 'apples']
+
+
+# Example from docs:
+# can be marked with ``# act`` on the first or last line.
+
+
+def test_mark_first_line() -> None:
+    """
+    Item can be added to list
+
+    AAA: first line of act can be marked
+    """
+    shopping = ['apples', 'bananas', 'cabbages']
+
+    shopping.append(  # act
+        'dill',
+    )
+
+    assert shopping == ['apples', 'bananas', 'cabbages', 'dill']
+
+
+def test_mark_last_line() -> None:
+    """
+    Item can be added to list
+
+    AAA: last line of act can be marked
+    """
+    shopping: List[Union[str, List[str]]] = ['apples', 'bananas', 'cabbages']
+
+    shopping.append([
+        'dill',
+        'eggs',
+        'fennel',
+    ])  # act
+
+    assert shopping == ['apples', 'bananas', 'cabbages', ['dill', 'eggs', 'fennel']]
 
 
 # Comments are OK in Arrange and Assert.

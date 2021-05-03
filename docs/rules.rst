@@ -41,10 +41,25 @@ pin it with a test::
 
     assert result is None
 
-If you can not assign a ``result``, then mark the end of the line considered
-the Act block with ``# act`` (case insensitive)::
+However, if your action's ``None`` return value is type-hinted ``action() ->
+None``, then ``mypy`` will complain if you try to assign a result. In this
+case, or any other where a you can not assign a ``result``, then mark the end
+of the line considered the Act block with ``# act`` (case insensitive)::
 
     data['new_key'] = 1  # act
+
+If the action spans multiple lines, then it can be marked with ``# act`` on the
+first or last line. Both of the following will work::
+
+    validate_row(  # act
+        {"total_number_of_users": "1", "number_of_new_users": "0"},
+        ["total_number_of_users", "number_of_new_users"],
+    )
+
+    validate_row(
+        {"total_number_of_users": "1", "number_of_new_users": "0"},
+        ["total_number_of_users", "number_of_new_users"],
+    )  # act
 
 Code blocks wrapped in ``pytest.raises()`` and ``unittest.assertRaises()``
 context managers are recognised as Act blocks.
