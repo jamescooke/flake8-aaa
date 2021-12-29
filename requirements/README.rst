@@ -17,7 +17,7 @@ Python:
     rm *.txt
     make
 
-Then build py36 requirements:
+Then build py36 test and examples requirements:
 
 .. code-block:: shell
 
@@ -25,4 +25,11 @@ Then build py36 requirements:
     vvv
     pip install pip-tools
     cd requirements/
-    make examples-py36.txt
+    make examples-py36.txt test-py36.txt
+
+Notes
+-----
+
+* There are dev requirements that can not be installed in py36.
+
+* py36 has its own test and example requirements.
