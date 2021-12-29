@@ -12,7 +12,7 @@ Explicitly marking blocks
 One can set the act block explicitly using the ``# act`` comment. This is
 necessary when there is no assignment possible.
 
-Link to = AAA01: no Act block found in test -> Resolution
+See :ref:`AAA01: no Act block found in test - Resolution <aaa01-resolution>`.
 
 
 Disabling Flake8-AAA selectively
@@ -50,14 +50,19 @@ Invocation, output and return value
 
 With Flake8-AAA installed, it can be called as a Python module::
 
-    $ python -m flake8_aaa [test_file]
+    python -m flake8_aaa [test_file]
 
 Where ``[test_file]`` is the path to a file to be checked.
 
 The return value of the execution is the number of errors found in the file,
-for example::
+for example:
 
-    $ python -m flake8_aaa test_example.py
+.. code-block:: shell
+
+    python -m flake8_aaa test_example.py
+
+::
+
     ------+------------------------------------------------------------------------
      1 DEF|def test():
      2 ARR|    x = 1
@@ -70,12 +75,23 @@ for example::
         1 | ERROR
     ======+========================================================================
             FAILED with 1 ERROR
-    $ echo "$?"
+
+.. code-block:: shell
+
+    echo "$?"
+
+::
+
     1
 
-And once the error above is fixed, the return value returns to zero::
+Once the error above is fixed the return value becomes zero:
 
-    $ python -m flake8_aaa test_example.py
+.. code-block:: shell
+
+    python -m flake8_aaa test_example.py
+
+::
+
     ------+------------------------------------------------------------------------
      1 DEF|def test():
      2 ARR|    x = 1
@@ -88,15 +104,21 @@ And once the error above is fixed, the return value returns to zero::
         0 | ERRORS
     ======+========================================================================
             PASSED!
+
+.. code-block:: shell
+
     $ echo "$?"
-    0 
+
+::
+
+    0
 
 Only one file can be passed to the command line at a time. So to test all files
 in a test suite, ``find`` should be used:
 
 .. code-block:: shell
 
-    $ find tests -name '*.py' | xargs -n 1 python -m flake8_aaa
+    find tests -name '*.py' | xargs -n 1 python -m flake8_aaa
 
 
 noqa and command line

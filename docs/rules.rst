@@ -28,6 +28,8 @@ An Act block is usually a line like ``result =`` or a check that an exception
 is raised. Flake8-AAA could not find an Act block in the indicated test
 function.
 
+.. _aaa01-resolution:
+
 Resolution
 ..........
 
@@ -35,7 +37,9 @@ Add an Act block to the test or mark a line that should be considered the
 action.
 
 Even if the result of a test action is ``None``, assign that result and
-pin it with a test::
+pin it with a test:
+
+.. code-block:: python
 
     result = action()
 
@@ -44,12 +48,16 @@ pin it with a test::
 However, if your action's ``None`` return value is type-hinted ``action() ->
 None``, then ``mypy`` will complain if you try to assign a result. In this
 case, or any other where a you can not assign a ``result``, then mark the end
-of the line considered the Act block with ``# act`` (case insensitive)::
+of the line considered the Act block with ``# act`` (case insensitive):
+
+.. code-block:: python
 
     data['new_key'] = 1  # act
 
 If the action spans multiple lines, then it can be marked with ``# act`` on the
-first or last line. Both of the following will work::
+first or last line. Both of the following will work:
+
+.. code-block:: python
 
     validate_row(  # act
         {"total_number_of_users": "1", "number_of_new_users": "0"},
