@@ -6,36 +6,34 @@
 #
 alabaster==0.7.12
     # via sphinx
-appdirs==1.4.4
-    # via virtualenv
-attrs==21.2.0
+attrs==21.4.0
     # via pytest
 babel==2.9.1
     # via sphinx
-certifi==2020.12.5
+certifi==2021.10.8
     # via requests
-chardet==4.0.0
+charset-normalizer==2.0.9
     # via requests
-distlib==0.3.1
+distlib==0.3.4
     # via virtualenv
-docutils==0.16
+docutils==0.17.1
     # via
     #   restructuredtext-lint
     #   sphinx
     #   sphinx-rtd-theme
-filelock==3.0.12
+filelock==3.4.1
     # via
     #   tox
     #   virtualenv
-flake8==3.9.2
+flake8==4.0.1
     # via
     #   -c base.txt
     #   -r test.in
-idna==2.10
+idna==3.3
     # via requests
-imagesize==1.2.0
+imagesize==1.3.0
     # via sphinx
-importlib-metadata==4.0.1
+importlib-metadata==4.2.0
     # via
     #   -c base.txt
     #   flake8
@@ -43,60 +41,60 @@ importlib-metadata==4.0.1
     #   pytest
     #   tox
     #   virtualenv
-importlib-resources==5.1.2
+importlib-resources==5.4.0
     # via virtualenv
 iniconfig==1.1.1
     # via pytest
-isort==5.8.0
+isort==5.10.1
     # via -r test.in
-jinja2==2.11.3
+jinja2==3.0.3
     # via sphinx
-markupsafe==1.1.1
-    # via
-    #   jinja2
-    #   sphinx
+markupsafe==2.0.1
+    # via jinja2
 mccabe==0.6.1
     # via
     #   -c base.txt
     #   flake8
-more-itertools==8.7.0
+more-itertools==8.12.0
     # via pytest
 mypy-extensions==0.4.3
     # via mypy
-mypy==0.812
+mypy==0.930
     # via -r test.in
-packaging==20.9
+packaging==21.3
     # via
     #   pytest
     #   sphinx
     #   tox
+platformdirs==2.4.0
+    # via virtualenv
 pluggy==0.13.1
     # via
     #   pytest
     #   tox
-py==1.10.0
+py==1.11.0
     # via
     #   pytest
     #   tox
-pycodestyle==2.7.0
+pycodestyle==2.8.0
     # via
     #   -c base.txt
     #   flake8
-pyflakes==2.3.1
+pyflakes==2.4.0
     # via
     #   -c base.txt
     #   flake8
-pygments==2.9.0
+pygments==2.10.0
     # via
     #   -r test.in
     #   sphinx
-pyparsing==2.4.7
+pyparsing==3.0.6
     # via packaging
 pytest==6.0.0rc1
     # via -r test.in
-pytz==2021.1
+pytz==2021.3
     # via babel
-requests==2.25.1
+requests==2.26.0
     # via sphinx
 restructuredtext-lint==1.3.2
     # via -r test.in
@@ -106,11 +104,11 @@ six==1.16.0
     #   -r test.in
     #   tox
     #   virtualenv
-snowballstemmer==2.1.0
+snowballstemmer==2.2.0
     # via sphinx
-sphinx-rtd-theme==0.5.2
+sphinx-rtd-theme==1.0.0
     # via -r test.in
-sphinx==4.0.0
+sphinx==4.3.2
     # via
     #   -r test.in
     #   sphinx-rtd-theme
@@ -118,34 +116,36 @@ sphinxcontrib-applehelp==1.0.2
     # via sphinx
 sphinxcontrib-devhelp==1.0.2
     # via sphinx
-sphinxcontrib-htmlhelp==1.0.3
+sphinxcontrib-htmlhelp==2.0.0
     # via sphinx
 sphinxcontrib-jsmath==1.0.1
     # via sphinx
 sphinxcontrib-qthelp==1.0.3
     # via sphinx
-sphinxcontrib-serializinghtml==1.1.4
+sphinxcontrib-serializinghtml==1.1.5
     # via sphinx
 toml==0.10.2
     # via
     #   pytest
     #   tox
-tox==3.23.1
-    # via -r test.in
-typed-ast==1.4.3
+tomli==1.2.3
     # via mypy
-typing-extensions==3.10.0.0
+tox==3.24.5
+    # via -r test.in
+typed-ast==1.5.1
+    # via mypy
+typing-extensions==4.0.1
     # via
     #   -c base.txt
     #   importlib-metadata
     #   mypy
-urllib3==1.26.4
+urllib3==1.26.7
     # via requests
-virtualenv==20.4.6
+virtualenv==20.11.2
     # via tox
-yapf==0.31.0
+yapf==0.32.0
     # via -r test.in
-zipp==3.4.1
+zipp==3.6.0
     # via
     #   -c base.txt
     #   importlib-metadata
