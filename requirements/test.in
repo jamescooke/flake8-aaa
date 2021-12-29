@@ -5,7 +5,7 @@ flake8
 isort
 mypy
 pygments
-pytest==6.0.0rc1
+pytest
 restructuredtext-lint
 six
 sphinx-rtd-theme
