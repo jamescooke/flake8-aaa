@@ -167,9 +167,9 @@ string:
 
 .. code-block::
 
-    3.8.4 (aaa: 0.11.1, mccabe: 0.6.1, pycodestyle: 2.6.0, pyflakes: 2.2.0) ...
+    4.0.1 (aaa: 0.12.0, mccabe: 0.6.1, pycodestyle: 2.8.0, pyflakes: 2.4.0) ...
 
-The ``aaa: 0.11.1`` part tells you that Flake8-AAA was installed successfully
+The ``aaa: 0.12.0`` part tells you that Flake8-AAA was installed successfully
 and its checks will be used by Flake8.
 
 Further reading:
