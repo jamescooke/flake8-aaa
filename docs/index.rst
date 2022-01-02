@@ -18,6 +18,6 @@ Continue here for more detail about using Flake8-AAA.
 
     compatibility
     discovery
-    rules
+    error_codes/all
     commands
     release_checklist
