@@ -2,10 +2,58 @@ AAA01: no Act block found in test
 ---------------------------------
 
 An Act block is usually a line like ``result =`` or a check that an exception
-is raised. Flake8-AAA could not find an Act block in the indicated test
-function.
+is raised. When Flake8-AAA raises ``AAA01`` it could not find an Act block in
+the indicated test function.
 
-.. _aaa01-resolution:
+Problematic code
+................
+
+.. code-block:: python
+
+    def test_some_text():
+        some = 'some'
+        text = 'text'
+
+        some_text = f'{some}_{text}'
+
+        assert some_text == 'some_text'
+
+Correct code 1
+..............
+
+Use ``result =``.
+
+.. code-block:: python
+
+    def test_some_text():
+        some = 'some'
+        text = 'text'
+
+        result = f'{some}_{some}'
+
+        assert result == 'some_text'
+
+Correct code 2
+..............
+
+Mark your Act block with the ``# act`` hint.
+
+.. code-block:: python
+
+    def test_some_text():
+        some = 'some'
+        text = 'text'
+
+        some_text = f'{some}_{text}'  # act
+
+        assert some_text == 'some_text'
+
+Rationale
+.........
+
+Exceptions
+..........
+
 
 Resolution
 ..........
@@ -23,7 +71,7 @@ pin it with a test:
     assert result is None
 
 However, if your action's ``None`` return value is type-hinted ``action() ->
-None``, then ``mypy`` will complain if you try to assign a result. In this
+None``, then ``mypy`` might complain if you try to assign a result. In this
 case, or any other where a you can not assign a ``result``, then mark the end
 of the line considered the Act block with ``# act`` (case insensitive):
 
