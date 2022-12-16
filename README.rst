@@ -1,7 +1,7 @@
 Flake8-AAA
 ==========
 
-.. image:: https://img.shields.io/github/workflow/status/jamescooke/flake8-aaa/Build
+.. image:: https://img.shields.io/github/actions/workflow/status/jamescooke/flake8-aaa/build.yml?branch=master
     :alt: GitHub Workflow Status
     :target: https://github.com/jamescooke/flake8-aaa/actions?query=branch%3Amaster
 
