@@ -14,6 +14,18 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Added
+.....
+
+* Support for Pytest context managers ``pytest.warns()`` and
+  ``pytest.deprecated_call()``. `#196
+  <https://github.com/jamescooke/flake8-aaa/issues/196>`_
+
+* Documentation note added for AAA01 with supporting "bad" example: context
+  managers will not be found if they aren't in the ``pytest`` namespace. To be
+  compatible with Flake8-AAA tests need to ``import pytest`` and not ``from
+  pytest import raises``.
+
 Changed
 .......
 
