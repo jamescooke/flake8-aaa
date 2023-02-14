@@ -1,0 +1,6 @@
+# Requirements for CI
+# Currently GitHub actions on their Ubuntu 22.04 images
+# These have Python 3.10.6 installed so compile these requirements with py310
+
+tox
+tox-gh-actions
