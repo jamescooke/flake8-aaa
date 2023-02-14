@@ -56,8 +56,9 @@ class ActNode:
         """
         if node_is_result_assignment(node):
             return [cls(node, ActNodeType.result_assignment)]
+        # TODO extend here to return the type of the raise
         if node_is_pytest_raises(node):
-            return [cls(node, ActNodeType.pytest_raises)]
+            return [cls(node, ActNodeType.pytest_context_manager)]
         if node_is_unittest_raises(node):
             return [cls(node, ActNodeType.unittest_raises)]
 

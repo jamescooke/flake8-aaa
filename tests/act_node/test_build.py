@@ -20,7 +20,7 @@ def test_pytest_raises_block(first_node_with_tokens):
     assert len(result) == 1
     assert isinstance(result[0], ActNode)
     assert result[0].node == first_node_with_tokens.body[0]
-    assert result[0].block_type == ActNodeType.pytest_raises
+    assert result[0].block_type == ActNodeType.pytest_context_manager
 
 
 @pytest.mark.parametrize(
@@ -45,7 +45,7 @@ def test_unittest_raises_block(first_node_with_tokens):
 @pytest.mark.parametrize(
     'code_str, expected_type', [
         ('result = do_thing()', ActNodeType.result_assignment),
-        ('with pytest.raises(Exception):\n    do_thing()', ActNodeType.pytest_raises),
+        ('with pytest.raises(Exception):\n    do_thing()', ActNodeType.pytest_context_manager),
         ('data[new_key] = value  # act', ActNodeType.marked_act),
         ('result: Thing = do_thing()', ActNodeType.result_assignment),
         ('result: List[int] = do_thing()', ActNodeType.result_assignment),
