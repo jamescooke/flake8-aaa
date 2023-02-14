@@ -5,7 +5,7 @@ from typing import List, Type, TypeVar
 from .helpers import (
     get_first_token,
     get_last_token,
-    node_is_pytest_raises,
+    node_is_pytest_context_manager,
     node_is_result_assignment,
     node_is_unittest_raises,
 )
@@ -56,8 +56,7 @@ class ActNode:
         """
         if node_is_result_assignment(node):
             return [cls(node, ActNodeType.result_assignment)]
-        # TODO extend here to return the type of the raise
-        if node_is_pytest_raises(node):
+        if node_is_pytest_context_manager(node):
             return [cls(node, ActNodeType.pytest_context_manager)]
         if node_is_unittest_raises(node):
             return [cls(node, ActNodeType.unittest_raises)]
