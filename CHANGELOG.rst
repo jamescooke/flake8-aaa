@@ -14,6 +14,18 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Changed
+.......
+
+* CI system (GitHub Actions) adjusted to install pinned requirements from
+  ``ci.txt`` rather than un-pinned / rolling requirements at "action time".
+  `#197 <https://github.com/jamescooke/flake8-aaa/pull/197>`_ . Also:
+
+  - Pinned Ubuntu GHA image to ``ubuntu-22.04``
+
+  - Fixed ``tox.ini`` config to use ``allowlist_externals``.
+
+
 0.12.2_ - 2022/01/02
 --------------------
 
