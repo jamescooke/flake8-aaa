@@ -7,15 +7,30 @@ from flake8_aaa.helpers import node_is_pytest_context_manager
 
 
 @pytest.mark.parametrize(
-    'code_str', [
+    'code_str',
+    [
+        # raises() with no vars
         '''
 def test():
     with pytest.raises(Exception):
         do_thing()
 ''',
+        # raises() with excinfo var
         '''
 def test_other():
     with pytest.raises(Exception) as excinfo:
+        do_thing()
+''',
+        # deprecated_call()
+        '''
+def test_api2_deprecated() -> None:
+    with pytest.deprecated_call():
+        api_call_v2()
+''',
+        # warns()
+        '''
+def test_thing_warning() -> None:
+    with pytest.warns(RuntimeWarning):
         do_thing()
 ''',
     ]
@@ -31,8 +46,6 @@ def test(first_node_with_tokens):
 @pytest.mark.parametrize('code_str', [
     '''with open('test.txt') as f:
     f.read()''',
-    '''with pytest.warns(Exception) as excinfo:
-    do_thing()''',
 ])
 def test_no(code_str):
     tree = ast.parse(code_str)
