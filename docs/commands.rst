@@ -12,7 +12,7 @@ Explicitly marking blocks
 One can set the act block explicitly using the ``# act`` comment. This is
 necessary when there is no assignment possible.
 
-See :ref:`AAA01: no Act block found in test - Resolution <aaa01-resolution>`.
+See :ref:`AAA01: no Act block found in test - Correct code 2 <aaa01-correct-code-2>`.
 
 
 Disabling Flake8-AAA selectively
