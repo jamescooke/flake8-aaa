@@ -10,13 +10,11 @@ AAA-style test.
 Valid tests
 -----------
 
-The goal is that all tests in both good and bad examples will target features
-of the Python 3 standard library. They will all be executable with a vanilla
-install of ``pytest``. Currently only the ``with`` statement examples support
-this.
+All good and bad tests are intended to work on Python 3 stdlib. They are tested
+with vanilla ``pytest`` to ensure they pass in the ``examples`` environment.
 
 Testing Flake8-AAA
 ------------------
 
-To prevent false negatives our test suite runs Flake8-AAA against this
-directory and checks no linting errors are raised.
+To prevent false negatives our test suite runs Flake8-AAA against all test
+modules in this directory and checks no linting errors are raised.
