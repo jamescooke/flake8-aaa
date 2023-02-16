@@ -17,13 +17,29 @@ See also `latest documentation
 Changed
 .......
 
-* CI system (GitHub Actions) adjusted to install pinned requirements from
+* ⛏️ CI system (GitHub Actions) adjusted to install pinned requirements from
   ``ci.txt`` rather than un-pinned / rolling requirements at "action time".
-  `#197 <https://github.com/jamescooke/flake8-aaa/pull/197>`_ . Also:
+  `Pull #197 <https://github.com/jamescooke/flake8-aaa/pull/197>`_ . Also:
 
   - Pinned Ubuntu GHA image to ``ubuntu-22.04``
 
   - Fixed ``tox.ini`` config to use ``allowlist_externals``.
+
+* 📕 Documentation for error ``AAA01`` no Act block found in test expanded to
+  contain problematic code / correct code examples. Progress on `Issue #149
+  <https://github.com/jamescooke/flake8-aaa/issues/149>`_, `pull #201
+  <https://github.com/jamescooke/flake8-aaa/pull/201>`_.
+
+Fixed
+.....
+
+* 📕 Added missing Python 3.6 compatibility notes missing from ``v0.12.2``
+  `documentation
+  <https://flake8-aaa.readthedocs.io/en/v0.12.2/compatibility.html>`_. `Pull
+  #201 <https://github.com/jamescooke/flake8-aaa/pull/201>`_.
+
+* 📕 Supported Python version list updated: remove 3.6 and add 3.10. `Pull #201
+  <https://github.com/jamescooke/flake8-aaa/pull/201>`_.
 
 
 0.12.2_ - 2022/01/02
