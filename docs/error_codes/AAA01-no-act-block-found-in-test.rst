@@ -1,50 +1,90 @@
 AAA01: no Act block found in test
----------------------------------
+=================================
 
 An Act block is usually a line like ``result =`` or a check that an exception
-is raised. Flake8-AAA could not find an Act block in the indicated test
-function.
+is raised. When Flake8-AAA raises ``AAA01`` it could not find an Act block in
+the indicated test function.
 
-.. _aaa01-resolution:
-
-Resolution
-..........
-
-Add an Act block to the test or mark a line that should be considered the
-action.
-
-Even if the result of a test action is ``None``, assign that result and
-pin it with a test:
+Problematic code
+................
 
 .. code-block:: python
 
-    result = action()
+    def test_some_text() -> None:
+        some = 'some'
+        text = 'text'
 
-    assert result is None
+        some_text = f'{some}_{text}'
 
-However, if your action's ``None`` return value is type-hinted ``action() ->
-None``, then ``mypy`` will complain if you try to assign a result. In this
-case, or any other where a you can not assign a ``result``, then mark the end
-of the line considered the Act block with ``# act`` (case insensitive):
-
-.. code-block:: python
-
-    data['new_key'] = 1  # act
-
-If the action spans multiple lines, then it can be marked with ``# act`` on the
-first or last line. Both of the following will work:
+        assert some_text == 'some_text'
 
 .. code-block:: python
 
-    validate_row(  # act
-        {"total_number_of_users": "1", "number_of_new_users": "0"},
-        ["total_number_of_users", "number_of_new_users"],
-    )
+    from pytest import raises
 
-    validate_row(
-        {"total_number_of_users": "1", "number_of_new_users": "0"},
-        ["total_number_of_users", "number_of_new_users"],
-    )  # act
+    def test() -> None:
+        with raises(IndexError):
+            list()[0]
+
+Correct code 1
+..............
+
+Use ``result =`` assignment to indicate the action in the test:
+
+.. code-block:: python
+
+    def test_some_text() -> None:
+        some = 'some'
+        text = 'text'
+
+        result = f'{some}_{some}'
+
+        assert result == 'some_text'
+
+Ensure all Pytest context managers are in the ``pytest`` namespace - use
+``pytest.raises()`` not just ``raises()``:
+
+.. code-block:: python
+
+    import pytest
+
+    def test() -> None:
+        with pytest.raises(IndexError):
+            list()[0]
+
+.. _aaa01-correct-code-2:
+
+Correct code 2
+..............
+
+Alternatively, mark your Act block with the ``# act`` hint to indicate the
+action in the test. This can be useful for scenarios where a result can not be
+assigned, such as tests on functions that return ``None``.
+
+.. code-block:: python
+
+    def test_some_text() -> None:
+        some = 'some'
+        text = 'text'
+
+        some_text = f'{some}_{text}'  # act
+
+        assert some_text == 'some_text'
+
+.. code-block:: python
+
+    from pytest import raises
+
+    def test() -> None:
+        with raises(IndexError):
+            list()[0]  # act
+
+Rationale
+.........
+
+The Act block carries out a single action on an object so it's important that
+Flake8-AAA can clearly distinguish which line or lines make up the Act block in
+every test.
 
 Code blocks wrapped in ``pytest.raises()`` and ``unittest.assertRaises()``
 context managers are recognised as Act blocks.

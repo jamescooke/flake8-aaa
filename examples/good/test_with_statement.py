@@ -3,6 +3,16 @@ from typing import Generator, List
 
 import pytest
 
+# --- Pytest context managers ---
+
+
+def test_pytest_raises() -> None:
+    with pytest.raises(IndexError):
+        list()[0]
+
+
+# --- Use of context managers in tests ---
+
 
 def test_simple(hello_world_path) -> None:
     """
