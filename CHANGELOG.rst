@@ -7,12 +7,27 @@ The format is based on `Keep a Changelog
 <http://keepachangelog.com/en/1.0.0/>`_ and this project adheres to `Semantic
 Versioning <http://semver.org/spec/v2.0.0.html>`_.
 
+Additional markers for types of change copied from ``README``:
+
+* 🎈: Features. Public facing changes to functionality.
+
+* 📕: Documentation. Public facing changes to documentation, but no
+  functionality changes.
+
+* ⛏️: Internal refactors. Internal technical changes with no downstream changes
+  to features.
 
 Unreleased_
 -----------
 
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
+
+Added
+.....
+
+* 📕 Extended Changelog entries to include markers indicating focus. `Pull #201
+  <https://github.com/jamescooke/flake8-aaa/pull/201>`_
 
 Changed
 .......
