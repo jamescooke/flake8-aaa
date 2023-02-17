@@ -29,6 +29,16 @@ Added
 * 📕 Extended Changelog entries to include markers indicating focus. `Pull #201
   <https://github.com/jamescooke/flake8-aaa/pull/201>`_
 
+* 🎈 Support for Pytest context managers ``pytest.warns()`` and
+  ``pytest.deprecated_call()``. `Issue #196
+  <https://github.com/jamescooke/flake8-aaa/issues/196>`_, `pull #199
+  <https://github.com/jamescooke/flake8-aaa/pull/199>`_.
+
+* ⛏️ "Bad" example added for scenario where manager will only be found if it is
+  in the ``pytest`` namespace. To be compatible with Flake8-AAA tests need to
+  ``import pytest`` and not ``from pytest import raises``. `Pull #199
+  <https://github.com/jamescooke/flake8-aaa/pull/199>`_.
+
 Changed
 .......
 

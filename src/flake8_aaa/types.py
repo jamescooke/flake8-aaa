@@ -4,7 +4,7 @@ ActNodeType = Enum(
     'ActNodeType',
     (
         'marked_act '  # Marked with "# act"
-        'pytest_raises '  # Wrapped in "pytest.raises" context manager.
+        'pytest_context_manager '  # Pytest context manager e.g. "pytest.raises"
         'result_assignment '  # Simple "result = "
         'unittest_raises '  # Wrapped in unittest's "assertRaises" context manager.
     ),

@@ -86,5 +86,7 @@ The Act block carries out a single action on an object so it's important that
 Flake8-AAA can clearly distinguish which line or lines make up the Act block in
 every test.
 
-Code blocks wrapped in ``pytest.raises()`` and ``unittest.assertRaises()``
-context managers are recognised as Act blocks.
+Flake8-AAA recognises code blocks wrapped in Pytest context managers like
+``pytest.raises()`` as Act blocks.
+
+It also recognises unittest's ``assertRaises()`` blocks as Act blocks.

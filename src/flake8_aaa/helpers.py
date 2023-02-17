@@ -77,16 +77,28 @@ def node_is_result_assignment(node: ast.AST) -> bool:
     return False
 
 
-def node_is_pytest_raises(node: ast.AST) -> bool:
+cm_exp = re.compile(r'^\s*with\ pytest\.(raises|deprecated_call|warns)\(')
+
+
+def node_is_pytest_context_manager(node: ast.AST) -> bool:
     """
+    Identify node as being one of the Pytest context managers used to catch
+    exceptions and warnings.
+
+    Pytest's context managers as of 7.2 are:
+
+    * pytest.raises()
+    * pytest.deprecated_call()
+    * pytest.warns()
+
     Args:
         node: An ``ast`` node, augmented with ASTTokens
 
     Returns:
         bool: ``node`` corresponds to a With node where the context manager is
-        ``pytest.raises``.
+            a Pytest context manager.
     """
-    return isinstance(node, ast.With) and get_first_token(node).line.strip().startswith('with pytest.raises')
+    return isinstance(node, ast.With) and bool(cm_exp.match(get_first_token(node).line))
 
 
 def node_is_unittest_raises(node: ast.AST) -> bool:

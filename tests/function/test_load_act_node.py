@@ -146,7 +146,7 @@ def test_raises_in_cm(function):
     result = function.load_act_node()
 
     assert isinstance(result, ActNode)
-    assert result.block_type == ActNodeType.pytest_raises
+    assert result.block_type == ActNodeType.pytest_context_manager
     assert result.node.first_token.line == '        with pytest.raises(ValidationError):\n'
 
 
