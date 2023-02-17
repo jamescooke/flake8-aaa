@@ -7,6 +7,15 @@ The format is based on `Keep a Changelog
 <http://keepachangelog.com/en/1.0.0/>`_ and this project adheres to `Semantic
 Versioning <http://semver.org/spec/v2.0.0.html>`_.
 
+Additional markers for types of change copied from ``README``:
+
+* 🎈: Features. Public facing changes to functionality.
+
+* 📕: Documentation. Public facing changes to documentation, but no
+  functionality changes.
+
+* ⛏️: Internal refactors. Internal technical changes with no downstream changes
+  to features.
 
 Unreleased_
 -----------
@@ -17,25 +26,46 @@ See also `latest documentation
 Added
 .....
 
-* Support for Pytest context managers ``pytest.warns()`` and
-  ``pytest.deprecated_call()``. `#196
-  <https://github.com/jamescooke/flake8-aaa/issues/196>`_
+* 📕 Extended Changelog entries to include markers indicating focus. `Pull #201
+  <https://github.com/jamescooke/flake8-aaa/pull/201>`_
 
-* Documentation note added for AAA01 with supporting "bad" example: context
-  managers will not be found if they aren't in the ``pytest`` namespace. To be
+* 🎈 Support for Pytest context managers ``pytest.warns()`` and
+  ``pytest.deprecated_call()``. `Issue #196
+  <https://github.com/jamescooke/flake8-aaa/issues/196>`_, `pull #199
+  <https://github.com/jamescooke/flake8-aaa/pull/199>`_.
+
+* 📕 Documentation note added for AAA01 with supporting "bad" example: context
+  managers will only be found if they are in the ``pytest`` namespace. To be
   compatible with Flake8-AAA tests need to ``import pytest`` and not ``from
-  pytest import raises``.
+  pytest import raises``. `Pull #199
+  <https://github.com/jamescooke/flake8-aaa/pull/199>`_.
 
 Changed
 .......
 
-* CI system (GitHub Actions) adjusted to install pinned requirements from
+* ⛏️ CI system (GitHub Actions) adjusted to install pinned requirements from
   ``ci.txt`` rather than un-pinned / rolling requirements at "action time".
-  `#197 <https://github.com/jamescooke/flake8-aaa/pull/197>`_ . Also:
+  `Pull #197 <https://github.com/jamescooke/flake8-aaa/pull/197>`_ . Also:
 
   - Pinned Ubuntu GHA image to ``ubuntu-22.04``
 
   - Fixed ``tox.ini`` config to use ``allowlist_externals``.
+
+* 📕 Documentation for error ``AAA01`` no Act block found in test expanded to
+  contain problematic code / correct code examples. Progress on `Issue #149
+  <https://github.com/jamescooke/flake8-aaa/issues/149>`_, `pull #201
+  <https://github.com/jamescooke/flake8-aaa/pull/201>`_.
+
+Fixed
+.....
+
+* 📕 Added missing Python 3.6 compatibility notes missing from ``v0.12.2``
+  `documentation
+  <https://flake8-aaa.readthedocs.io/en/v0.12.2/compatibility.html>`_. `Pull
+  #201 <https://github.com/jamescooke/flake8-aaa/pull/201>`_.
+
+* 📕 Supported Python version list updated: remove 3.6 and add 3.10. `Pull #201
+  <https://github.com/jamescooke/flake8-aaa/pull/201>`_.
 
 
 0.12.2_ - 2022/01/02

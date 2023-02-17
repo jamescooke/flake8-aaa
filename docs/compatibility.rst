@@ -10,29 +10,11 @@ Python
 Works with Python 3.
 
 Flake8-AAA is fully compatible and tested against the latest versions of Python
-3. Currently that's 3.6, 3.7, 3.8 and 3.9.
+3. Currently that's 3.7, 3.8, 3.9 and 3.10.
 
-The following versions of Python are no longer supported:
+.. admonition:: See also...
 
-Python 3.5
-..........
-
-Python 3.5 was supported up to ``v0.7.2``
-
-  * `v0.7.2 on PyPI <https://pypi.org/project/flake8-aaa/0.7.2/>`_
-  * `v0.7.2 Documentation <https://flake8-aaa.readthedocs.io/en/v0.7.2/>`_
-  * `Github v0.7.2 tag
-    <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.7.2>`_
-
-Python 2
-........
-
-Python 2 was supported up to ``v0.4.0``
-
-  * `v0.4.0 on PyPI <https://pypi.org/project/flake8-aaa/0.4.0/>`_
-  * `v0.4.0 Documentation <https://flake8-aaa.readthedocs.io/en/v0.4.0/>`_
-  * `Github v0.4.0 tag
-    <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.4.0>`_
+    :ref:`Previously supported Python versions <previous-python-versions>`.
 
 Flake8
 ------
@@ -44,12 +26,17 @@ specified in ``setup.py`` because users may only want to use the command line
 interface.
 
 Check that Flake8-AAA was installed correctly by asking ``flake8`` for its
-version signature::
+version signature:
 
-    $ flake8 --version
-    3.8.2 (aaa: 0.10.0, mccabe: 0.6.1, pycodestyle: 2.6.0, pyflakes: 2.2.0) CPython 3.6.10 on Linux
+.. code-block:: shell
 
-The ``aaa: 0.10.0`` part of that output tells you Flake8 found this plugin.
+    flake8 --version
+
+.. code-block::
+
+    4.0.1 (aaa: 0.12.2, mccabe: 0.6.1, pycodestyle: 2.8.0, pyflakes: 2.4.0) CPython 3.10.1 on Linux
+
+The ``aaa: 0.12.2`` part of that output tells you Flake8 found this plugin.
 
 Yapf
 ----
@@ -73,6 +60,12 @@ directory
 These tests are formatted with the latest version of Black in default mode.
 They are then checked to pass Flake8-AAA's linting.
 
+.. note::
+
+    We are aware that new management of blank lines released in Black
+    ``23.1.0`` cause ``AAA03`` errors to be raised and this is tracked `in
+    issue #200 <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
+
 Pytest
 ------
 
@@ -89,4 +82,42 @@ Python unittest style is supported.
 
 To pin this compatibility we include unittest-style tests in the `examples/good
 directory
-<https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_ -
+<https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_.
+
+.. _previous-python-versions:
+
+Previous Python versions
+------------------------
+
+The following versions of Python are no longer supported:
+
+Python 3.6
+..........
+
+Python 3.6 was supported up to ``v0.12.1``
+
+* `v0.12.1 on PyPI <https://pypi.org/project/flake8-aaa/0.12.1/>`_
+* `v0.12.1 Documentation <https://flake8-aaa.readthedocs.io/en/v0.12.1/>`_
+* `Github v0.12.1 tag
+  <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.12.1>`_
+
+
+Python 3.5
+..........
+
+Python 3.5 was supported up to ``v0.7.2``
+
+* `v0.7.2 on PyPI <https://pypi.org/project/flake8-aaa/0.7.2/>`_
+* `v0.7.2 Documentation <https://flake8-aaa.readthedocs.io/en/v0.7.2/>`_
+* `Github v0.7.2 tag
+  <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.7.2>`_
+
+Python 2
+........
+
+Python 2 was supported up to ``v0.4.0``
+
+* `v0.4.0 on PyPI <https://pypi.org/project/flake8-aaa/0.4.0/>`_
+* `v0.4.0 Documentation <https://flake8-aaa.readthedocs.io/en/v0.4.0/>`_
+* `Github v0.4.0 tag
+  <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.4.0>`_
