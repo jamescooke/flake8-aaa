@@ -34,10 +34,9 @@ Added
   <https://github.com/jamescooke/flake8-aaa/issues/196>`_, `pull #199
   <https://github.com/jamescooke/flake8-aaa/pull/199>`_.
 
-* 📕 Documentation note added for AAA01 with supporting "bad" example: context
-  managers will only be found if they are in the ``pytest`` namespace. To be
-  compatible with Flake8-AAA tests need to ``import pytest`` and not ``from
-  pytest import raises``. `Pull #199
+* ⛏️ "Bad" example added for scenario where manager will only be found if it is
+  in the ``pytest`` namespace. To be compatible with Flake8-AAA tests need to
+  ``import pytest`` and not ``from pytest import raises``. `Pull #199
   <https://github.com/jamescooke/flake8-aaa/pull/199>`_.
 
 Changed
