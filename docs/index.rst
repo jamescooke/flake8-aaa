@@ -17,7 +17,7 @@ Continue here for more detail about using Flake8-AAA.
     :caption: Contents
 
     compatibility
-    discovery
     error_codes/all
+    discovery
     commands
     release_checklist

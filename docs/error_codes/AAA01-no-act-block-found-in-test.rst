@@ -86,30 +86,7 @@ The Act block carries out a single action on an object so it's important that
 Flake8-AAA can clearly distinguish which line or lines make up the Act block in
 every test.
 
-Code blocks wrapped in ``pytest.raises()`` and ``unittest.assertRaises()``
-context managers are recognised as Act blocks.
+Flake8-AAA recognises code blocks wrapped in Pytest context managers like
+``pytest.raises()`` as Act blocks.
 
-.. note::
-
-    Only Pytest context managers imported within the ``pytest`` namespace will
-    be recognised when searching for Act blocks.
-
-    E.g Flake8-AAA can find this context manager in the pytest namespace:
-
-    .. code-block:: python
-
-        import pytest
-
-        def test() -> None:
-            with pytest.raises(TypeError0:
-                True[0]
-
-    But this context manager will *not* be discovered:
-
-    .. code-block:: python
-
-        def test_imported() -> None:
-            one_stuff = [1]
-
-            with raises(IndexError):
-                one_stuff[1]
+It also recognises unittest's ``assertRaises()`` blocks as Act blocks.

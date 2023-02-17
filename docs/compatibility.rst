@@ -14,7 +14,9 @@ Flake8-AAA is fully compatible and tested against the latest versions of Python
 
 .. admonition:: See also...
 
-    :ref:`Previously supported Python versions <previous-python-versions>`.
+    See :ref:`full list of previously supported Python versions
+    <previous-python-versions>` for links to the last supported packages and
+    documentation.
 
 Flake8
 ------
@@ -62,9 +64,10 @@ They are then checked to pass Flake8-AAA's linting.
 
 .. note::
 
-    We are aware that new management of blank lines released in Black
-    ``23.1.0`` cause ``AAA03`` errors to be raised and this is tracked `in
-    issue #200 <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
+    Black version ``23.1.0`` changed how it managed blank lines by default.
+    This change causes Flake8-AAA to raise ``AAA03`` errors on tests that
+    contain context managers and are formatted with Black. See `issue #200
+    <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
 
 Pytest
 ------
