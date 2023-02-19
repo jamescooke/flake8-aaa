@@ -23,6 +23,12 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Added
+.....
+
+* 🎈 Support for Python 3.11 `Pull #203
+  <https://github.com/jamescooke/flake8-aaa/pull/203>`_
+
 0.13.0_ - 2023/02/17
 --------------------
 
