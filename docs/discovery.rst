@@ -5,19 +5,30 @@ When running as a Flake8 plugin, Flake8-AAA filters the Python code passed to
 it by Flake8. It finds code that looks like test code and then checks that code
 matches the AAA pattern. When all checks pass, then no error is raised.
 
-Filtering
----------
+File filtering
+--------------
 
-First, the filename is checked. It must either ``test.py``, ``tests.py`` or
-start with ``test_``. For those files that match, every function that has a
-name that starts with "test" is checked. This includes class methods.
+First, the filename is checked. It must match one of the following patterns:
+
+* Is called ``test.py`` or ``tests.py``.
+
+* Starts with ``test_``, i.e match ``test_*.py``
+
+* Ends with ``_test.py``, i.e. match ``*_test.py``.
+
+For every file that matches the patterns above, Flake8-AAA checks every
+function and class method whose name starts with "test".
 
 Test functions and methods that contain only comments, docstrings or ``pass``
 are skipped.
 
-The aim of this process is to mirror Pytest's default collection strategy as
-closely as possible. It also aims to work with popular testing tutorials such
-as Django's `Writing your first Django app
+Rationale
+.........
+
+The aim of this process is to mirror `Pytest's default collection strategy
+<https://docs.pytest.org/en/7.2.x/explanation/goodpractices.html#test-discovery>`_
+as closely as possible. It also aims to work with popular testing tutorials
+such as Django's `Writing your first Django app
 <https://docs.djangoproject.com/en/3.0/intro/tutorial05/#create-a-test-to-expose-the-bug>`_
 which states:
 
