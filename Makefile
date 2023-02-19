@@ -91,7 +91,7 @@ cmdbad:
 # --- Local dev: Building / Publishing ---
 
 .PHONY: clean
-clean: dev
+clean:
 	rm -rf dist build .tox .pytest_cache src/flake8_aaa.egg-info
 	find . -name '*.pyc' -delete
 
