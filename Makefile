@@ -65,8 +65,8 @@ fixlintexamples:
 	@echo "=== black ==="
 	black examples/good/black
 
-.PHONY: doc
-doc:
+.PHONY: docs
+docs:
 	$(MAKE) -C docs html
 
 .PHONY: cmd
