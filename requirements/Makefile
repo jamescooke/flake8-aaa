@@ -8,5 +8,4 @@ all: $(outputs)
 	pip-compile --verbose --output-file $@ $<
 
 # Dependency chain
-test.txt: base.txt
-dev.txt: test.txt
+dev.txt: ci.txt

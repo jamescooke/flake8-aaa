@@ -4,15 +4,15 @@ Requirements management
 Summary
 -------
 
-* CI: Python 3.10
+* ``ci.in|txt``: Requirements for GitHub Actions built with Python 3.10.
 
-* dev: Python 3.8 (can't build on 3.7)
+* ``dev.in|txt``: Requirements for working on code. Build with Python 3.8
+  (can't build on 3.7)
 
-* Tox envs:
+* Tox environments use ``lint.in|txt``, ``test.in|txt`` and
+  ``examples.in|txt``, all built with Python 3.7.
 
-  * test: Python 3.7 - used by ``lint`` and ``test`` environments.
-
-  * docs: Python 3.10 (match RTD)
+* ``docs.in|txt``: Python 3.10 (match RTD)
 
 CI ``ci.txt`` py310
 -------------------
