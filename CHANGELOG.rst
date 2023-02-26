@@ -29,6 +29,19 @@ Added
 * 🎈 Support for Python 3.11 `Pull #203
   <https://github.com/jamescooke/flake8-aaa/pull/203>`_
 
+* ⛏️ Read the docs build added with supporting docs requirements. `Pull #205
+  <https://github.com/jamescooke/flake8-aaa/pull/205>`_.
+
+Changed
+.......
+
+* ⛏️ Tox configuration rebuilt with lint, test and meta labels. `Pull #205
+  <https://github.com/jamescooke/flake8-aaa/pull/205>`_.
+
+* ⛏ Requirements cleaned: base requirements removed, specific versions
+  indicated where builds are required on particular Python versions, README
+  added. `Pull #205 <https://github.com/jamescooke/flake8-aaa/pull/205>`_.
+
 0.13.0_ - 2023/02/17
 --------------------
 
