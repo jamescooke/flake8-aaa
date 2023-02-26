@@ -1,4 +1,5 @@
-black
+# py37
+black<23
 flake8
 mypy
 pytest

@@ -88,7 +88,7 @@ def test_in_arrange():
     # Let's make a 3, 4, 5 triangle
     y = 4
 
-    result = x ** 2 + y ** 2
+    result = x**2 + y**2
 
     assert result == 25
 
