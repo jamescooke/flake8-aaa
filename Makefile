@@ -66,6 +66,11 @@ cmdbad:
 
 # --- Local dev: Building / Publishing ---
 
+# Generate version signature used in README.rst
+.PHONY: signature
+signature:
+	tox e -e py311-meta_plugin -- flake8 --version
+
 .PHONY: clean
 clean:
 	rm -rf dist build .tox .pytest_cache src/flake8_aaa.egg-info
