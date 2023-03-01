@@ -20,15 +20,22 @@ Additional markers for types of change copied from ``README``:
 Unreleased_
 -----------
 
+See also `latest documentation
+<https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
+
+Added
+.....
+
+* 🎈 Files ending in ``_test.py`` are now linted. `Pull #204
+  <https://github.com/jamescooke/flake8-aaa/pull/204>`_ fixes `issue #185
+  <https://github.com/jamescooke/flake8-aaa/issues/185>`_.
+
 Changed
 .......
 
 * ⛏️ Release notes updated to use a better method of updating Flake8 version
   strings. Also reduce use of ``vx.y.z`` version strings - use just ``x.y.z``
-  instead.
-
-See also `latest documentation
-<https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
+  instead. `Pull #207 <https://github.com/jamescooke/flake8-aaa/pull/207>`_.
 
 0.13.1_ - 2023/02/27
 --------------------
