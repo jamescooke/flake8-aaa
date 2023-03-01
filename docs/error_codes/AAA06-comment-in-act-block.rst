@@ -6,7 +6,7 @@ Problematic code
 
 .. code-block:: python
 
-    def test() -> None:
+    def test_a() -> None:
         shopping = ['apples', 'bananas', 'cabbages']
 
         # Reverse shopping list operates in place
@@ -14,12 +14,22 @@ Problematic code
 
         assert shopping == ['cabbages', 'bananas', 'apples']
 
+.. code-block:: python
+
+    def test_b() -> None:
+        # NOTE: the most interesting thing about this test is this comment
+        result = 1 + 1
+
+        assert result == 2
+
 Correct code
 ............
 
+Use docstrings instead of hash-comments:
+
 .. code-block:: python
 
-    def test() -> None:
+    def test_a() -> None:
         """
         Reverse shopping list operates in place
         """
@@ -28,6 +38,27 @@ Correct code
         shopping.reverse()  # act
 
         assert shopping == ['cabbages', 'bananas', 'apples']
+
+.. code-block:: python
+
+    def test_b() -> None:
+        """
+        NOTE: the most interesting thing about this test is this comment
+        """
+        result = 1 + 1
+
+        assert result == 2
+
+Separate hash-comment line from Act block with a blank line:
+
+.. code-block:: python
+
+    def test_b() -> None:
+        # NOTE: the most interesting thing about this test is this comment
+
+        result = 1 + 1
+
+        assert result == 2
 
 Rationale
 .........
