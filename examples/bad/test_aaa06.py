@@ -3,7 +3,7 @@ import pytest
 # Example from AAA06 doc:
 
 
-def test() -> None:
+def test_a() -> None:
     shopping = ['apples', 'bananas', 'cabbages']
 
     # Reverse shopping list operates in place
@@ -12,15 +12,22 @@ def test() -> None:
     assert shopping == ['cabbages', 'bananas', 'apples']
 
 
-def test_act():
-    nothing = None
+def test_b() -> None:
+    # NOTE: the most interesting thing about this test is this comment
+    result = 1 + 1
 
-    with pytest.raises(AttributeError):
-        # You can't get something from nothing
-        nothing.get_something()
+    assert result == 2
 
 
 # --- OTHERS ---
+
+
+def test_act() -> None:
+    empty: list = []
+
+    with pytest.raises(IndexError):
+        # You can't get something from an empty bag
+        empty[0]
 
 
 def test_comment_after_act() -> None:
@@ -31,11 +38,3 @@ def test_comment_after_act() -> None:
     # Now check result
 
     assert result == 3
-
-
-def test_raises():
-    nothing = None
-
-    with pytest.raises(AttributeError):
-        # You can't get something from nothing
-        nothing.get_something()

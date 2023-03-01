@@ -11,16 +11,16 @@ examples/bad/test_aaa03_04.py:4:5: AAA04 expected 1 blank line before Assert blo
 examples/bad/test_aaa03_04.py:9:9: AAA03 expected 1 blank line before Act block, found none
 examples/bad/test_aaa04.py:12:5: AAA04 expected 1 blank line before Assert block, found none
 examples/bad/test_aaa04.py:5:5: AAA04 expected 1 blank line before Assert block, found none
-examples/bad/test_aaa05.py:24:1: AAA05 blank line in block
-examples/bad/test_aaa05.py:35:1: AAA05 blank line in block
-examples/bad/test_aaa05.py:41:1: AAA05 blank line in block
-examples/bad/test_aaa05.py:50:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:22:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:37:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:48:1: AAA05 blank line in block
 examples/bad/test_aaa05.py:54:1: AAA05 blank line in block
-examples/bad/test_aaa05.py:58:1: AAA05 blank line in block
-examples/bad/test_aaa05.py:9:1: AAA05 blank line in block
-examples/bad/test_aaa06.py:19:9: AAA06 comment in Act block
-examples/bad/test_aaa06.py:31:5: AAA06 comment in Act block
-examples/bad/test_aaa06.py:40:9: AAA06 comment in Act block
+examples/bad/test_aaa05.py:63:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:67:1: AAA05 blank line in block
+examples/bad/test_aaa05.py:71:1: AAA05 blank line in block
+examples/bad/test_aaa06.py:16:5: AAA06 comment in Act block
+examples/bad/test_aaa06.py:29:9: AAA06 comment in Act block
+examples/bad/test_aaa06.py:38:5: AAA06 comment in Act block
 examples/bad/test_aaa06.py:9:5: AAA06 comment in Act block
 examples/bad/test_example.py:4:5: AAA03 expected 1 blank line before Act block, found none
 examples/bad/test_noqa_flake8.py:11:17: E225 missing whitespace around operator

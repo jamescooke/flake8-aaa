@@ -30,12 +30,19 @@ Added
   <https://github.com/jamescooke/flake8-aaa/pull/204>`_ fixes `issue #185
   <https://github.com/jamescooke/flake8-aaa/issues/185>`_.
 
+* 📕: AAA06 hash comment resolution added to docs. `Pull #208
+  <https://github.com/jamescooke/flake8-aaa/pull/208>`_ fixes `issue #193
+  <https://github.com/jamescooke/flake8-aaa/issues/193>`_.
+
 Changed
 .......
 
 * ⛏️ Release notes updated to use a better method of updating Flake8 version
   strings. Also reduce use of ``vx.y.z`` version strings - use just ``x.y.z``
   instead. `Pull #207 <https://github.com/jamescooke/flake8-aaa/pull/207>`_.
+
+* ⛏️ AAA05 and AAA06 bad examples upgraded. `Pull #208
+  <https://github.com/jamescooke/flake8-aaa/pull/208>`_.
 
 0.13.1_ - 2023/02/27
 --------------------
