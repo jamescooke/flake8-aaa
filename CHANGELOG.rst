@@ -20,6 +20,13 @@ Additional markers for types of change copied from ``README``:
 Unreleased_
 -----------
 
+Changed
+.......
+
+* ⛏️ Release notes updated to use a better method of updating Flake8 version
+  strings. Also reduce use of ``vx.y.z`` version strings - use just ``x.y.z``
+  instead.
+
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
