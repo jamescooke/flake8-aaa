@@ -1,6 +1,6 @@
 __short_name__ = 'aaa'
 __iam__ = 'flake8-{}'.format(__short_name__)
-__version__ = '0.13.1'
+__version__ = '0.14.0'
 
 __author__ = 'James Cooke'
 __copyright__ = '2018 - 2020, {}'.format(__author__)

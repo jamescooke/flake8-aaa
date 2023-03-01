@@ -23,6 +23,9 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+0.14.0_ - 2023/03/01
+--------------------
+
 Added
 .....
 
@@ -500,7 +503,8 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.13.1...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.14.0...HEAD
+.. _0.14.0: https://github.com/jamescooke/flake8-aaa/compare/v0.13.1...v0.14.0
 .. _0.13.1: https://github.com/jamescooke/flake8-aaa/compare/v0.13.0...v0.13.1
 .. _0.13.0: https://github.com/jamescooke/flake8-aaa/compare/v0.12.2...v0.13.0
 .. _0.12.2: https://github.com/jamescooke/flake8-aaa/compare/v0.12.1...v0.12.2
