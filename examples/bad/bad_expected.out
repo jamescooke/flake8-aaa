@@ -18,9 +18,10 @@ examples/bad/test_aaa05.py:54:1: AAA05 blank line in block
 examples/bad/test_aaa05.py:63:1: AAA05 blank line in block
 examples/bad/test_aaa05.py:67:1: AAA05 blank line in block
 examples/bad/test_aaa05.py:71:1: AAA05 blank line in block
-examples/bad/test_aaa06.py:19:9: AAA06 comment in Act block
-examples/bad/test_aaa06.py:31:5: AAA06 comment in Act block
-examples/bad/test_aaa06.py:40:9: AAA06 comment in Act block
+examples/bad/test_aaa06.py:16:5: AAA06 comment in Act block
+examples/bad/test_aaa06.py:29:9: AAA06 comment in Act block
+examples/bad/test_aaa06.py:38:5: AAA06 comment in Act block
+examples/bad/test_aaa06.py:47:9: AAA06 comment in Act block
 examples/bad/test_aaa06.py:9:5: AAA06 comment in Act block
 examples/bad/test_example.py:4:5: AAA03 expected 1 blank line before Act block, found none
 examples/bad/test_noqa_flake8.py:11:17: E225 missing whitespace around operator
