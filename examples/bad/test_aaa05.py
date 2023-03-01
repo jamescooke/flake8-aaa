@@ -31,18 +31,18 @@ def test_act() -> None:
     """
     Blank line in Act Block
     """
-    nothing = None
+    empty: list = []
 
-    with pytest.raises(AttributeError):
+    with pytest.raises(IndexError):
 
-        nothing.get_something()
+        empty[0]
 
 
 def test_assert() -> None:
     """
     Blank line in Assert Block
     """
-    result = list()
+    result: list = list()
 
     assert not result
 
