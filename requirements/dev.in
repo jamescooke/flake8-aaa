@@ -1,5 +1,14 @@
--c base.txt
--c test.txt
+# py38
+# Requirements for local development in editor / outside tox
+# Can't be built by py37, target py38 for development. #198
 
+# Constrain with CI requirements so Tox versions match
+-c ci.txt
+
+flake8
+mypy
 pip-tools
+pytest
+tox
+yapf
 twine

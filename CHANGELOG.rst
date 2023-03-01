@@ -20,14 +20,37 @@ Additional markers for types of change copied from ``README``:
 Unreleased_
 -----------
 
+Changed
+.......
+
+* ⛏️ Release notes updated to use a better method of updating Flake8 version
+  strings. Also reduce use of ``vx.y.z`` version strings - use just ``x.y.z``
+  instead.
+
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
+
+0.13.1_ - 2023/02/27
+--------------------
 
 Added
 .....
 
 * 🎈 Support for Python 3.11 `Pull #203
   <https://github.com/jamescooke/flake8-aaa/pull/203>`_
+
+* ⛏️ Read the docs build added with supporting docs requirements. `Pull #205
+  <https://github.com/jamescooke/flake8-aaa/pull/205>`_.
+
+Changed
+.......
+
+* ⛏️ Tox configuration rebuilt with lint, test and meta labels. `Pull #205
+  <https://github.com/jamescooke/flake8-aaa/pull/205>`_.
+
+* ⛏ Requirements cleaned: base requirements removed, specific versions
+  indicated where builds are required on particular Python versions, README
+  added. `Pull #205 <https://github.com/jamescooke/flake8-aaa/pull/205>`_.
 
 0.13.0_ - 2023/02/17
 --------------------
@@ -463,7 +486,8 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.13.0...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.13.1...HEAD
+.. _0.13.1: https://github.com/jamescooke/flake8-aaa/compare/v0.13.0...v0.13.1
 .. _0.13.0: https://github.com/jamescooke/flake8-aaa/compare/v0.12.2...v0.13.0
 .. _0.12.2: https://github.com/jamescooke/flake8-aaa/compare/v0.12.1...v0.12.2
 .. _0.12.1: https://github.com/jamescooke/flake8-aaa/compare/v0.12.0...v0.12.1

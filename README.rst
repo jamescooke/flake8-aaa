@@ -167,10 +167,10 @@ string:
 
 .. code-block::
 
-    4.0.1 (aaa: 0.12.0, mccabe: 0.6.1, pycodestyle: 2.8.0, pyflakes: 2.4.0) ...
+    6.0.0 (flake8-aaa: 0.13.1, mccabe: 0.7.0, pycodestyle: 2.10.0, pyflakes: 3.0.1) CPython 3.11.0 on Linux
 
-The ``aaa: 0.12.0`` part tells you that Flake8-AAA was installed successfully
-and its checks will be used by Flake8.
+The ``flake8-aaa: 0.13.1`` part tells you that Flake8-AAA was installed
+successfully and its checks will be used by Flake8.
 
 Further reading:
 

@@ -7,17 +7,6 @@ rst_files=README.rst CHANGELOG.rst
 good_examples = $(wildcard examples/good/*.py examples/good/black/*.py) examples/good/noqa/test_cmd.py
 bad_examples = $(wildcard examples/good/noqa/test_0*.py examples/good/black/noqa/test_0*.py examples/bad/*.py)
 
-
-# Local dev: Install requirements
-.PHONY: dev
-dev:
-	pip-sync requirements/base.txt requirements/test.txt requirements/dev.txt
-
-# Local dev: Run all tests for available Python versions
-.PHONY: test
-test:
-	tox --skip-missing-interpreters true
-
 # --- Tox recipes ---
 
 .PHONY: lint
@@ -34,13 +23,6 @@ lint:
 	restructuredtext-lint $(rst_files)
 	@echo "=== setup.py ==="
 	python setup.py check --metadata --strict
-
-.PHONY: fixlint
-fixlint:
-	@echo "=== fixing isort ==="
-	isort --quiet --recursive $(lint_files)
-	@echo "=== fixing yapf ==="
-	yapf --recursive --in-place $(lint_files)
 
 .PHONY: lintexamples
 lintexamples:
@@ -60,13 +42,8 @@ lintexamplespy38:
 	@echo "=== mypy ==="
 	mypy examples/good_py38
 
-.PHONY: fixlintexamples
-fixlintexamples:
-	@echo "=== black ==="
-	black examples/good/black
-
-.PHONY: doc
-doc:
+.PHONY: docs
+docs:
 	$(MAKE) -C docs html
 
 .PHONY: cmd
@@ -87,8 +64,12 @@ cmdbad:
 		echo; \
 	done
 
-
 # --- Local dev: Building / Publishing ---
+
+# Generate version signature used in README.rst
+.PHONY: signature
+signature:
+	tox e -e py311-meta_plugin -- flake8 --version
 
 .PHONY: clean
 clean:
@@ -119,6 +100,18 @@ on_master:
 .PHONY: tag
 tag: on_master
 	git tag -a $$(python -c 'from src.flake8_aaa.__about__ import __version__; print("v{}".format(__version__))')
+
+.PHONY: fixlint
+fixlint:
+	@echo "=== fixing isort ==="
+	isort --quiet --recursive $(lint_files)
+	@echo "=== fixing yapf ==="
+	yapf --recursive --in-place $(lint_files)
+
+.PHONY: fixlintexamples
+fixlintexamples:
+	@echo "=== black ==="
+	black examples/good/black
 
 .PHONY: black_examples
 black_examples:

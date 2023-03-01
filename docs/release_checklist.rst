@@ -10,30 +10,25 @@ Versioning
 Given a new version called ``x.y.z``:
 
 * Create a branch for the new release. Usually called something like
-  ``bump-vx.y.z``.
+  ``bump-x.y.z``.
 
 * Run ``./bump_version.sh [x.y.z]``.
 
-* Commit changes and push ``bump-vx.y.z`` branch for testing.
+* Ensure command line output examples in ``README.rst`` are up to date. Run:
 
-Documentation
--------------
+  .. code-block:: shell
 
-Now is a good time to build and check the documentation locally:
+      make signature
 
-.. code-block:: shell
+  Update the version string in the README.
 
-    make doc
-    firefox docs/_build/html/index.html
-
-
-Ensure that command line output examples are up to date. They can be updated
-using the output of the ``cmd`` and ``cmdbad`` ``tox`` environments.
+* Commit changes and push ``bump-x.y.z`` branch for testing. Use ``Bump to
+  x.y.z`` as the PR title.
 
 Merge
 -----
 
-* When branch ``bump-vx.y.z`` is green, then merge it to ``master``. All pull
+* When branch ``bump-x.y.z`` is green, then merge it to ``master``. All pull
   requests are "squash merged".
 
 * Update master locally and ensure that you remain on master for the rest of

@@ -1,13 +1,8 @@
--c base.txt
-
-Sphinx
-flake8
+# py37
+flake8==4.0.1
 isort
-mypy
+mypy==0.930
 pygments
 pytest
 restructuredtext-lint
-six
-sphinx-rtd-theme
-tox
 yapf

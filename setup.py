@@ -28,7 +28,7 @@ setup(
     # --- Python ---
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    python_requires='>=3.7, <4',
+    python_requires='>=3.7',
     install_requires=[
         'asttokens >= 2',
     ],
