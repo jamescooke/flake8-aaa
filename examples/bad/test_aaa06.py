@@ -23,11 +23,11 @@ def test_b() -> None:
 
 
 def test_act() -> None:
-    nothing = None
+    empty: list = []
 
-    with pytest.raises(AttributeError):
-        # You can't get something from nothing
-        nothing.get_something()
+    with pytest.raises(IndexError):
+        # You can't get something from an empty bag
+        empty[0]
 
 
 def test_comment_after_act() -> None:
@@ -38,11 +38,3 @@ def test_comment_after_act() -> None:
     # Now check result
 
     assert result == 3
-
-
-def test_raises() -> None:
-    nothing = None
-
-    with pytest.raises(AttributeError):
-        # You can't get something from nothing
-        nothing.get_something()
