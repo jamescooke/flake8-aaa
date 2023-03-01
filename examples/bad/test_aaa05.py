@@ -1,7 +1,20 @@
 import pytest
 
 
-def test_arrange():
+@pytest.fixture
+def fixture_a() -> str:
+    return 'A pointless fixture'
+
+
+@pytest.fixture
+def fixture_b() -> str:
+    return 'Another pointless fixture'
+
+
+# --- TESTS ---
+
+
+def test_arrange() -> None:
     """
     Blank line in Arrange Block
     """
@@ -9,12 +22,12 @@ def test_arrange():
 
     y = 4
 
-    result = x ** 2 + y ** 2
+    result = x**2 + y**2
 
     assert result == 25
 
 
-def test_act():
+def test_act() -> None:
     """
     Blank line in Act Block
     """
@@ -25,7 +38,7 @@ def test_act():
         nothing.get_something()
 
 
-def test_assert():
+def test_assert() -> None:
     """
     Blank line in Assert Block
     """
@@ -37,10 +50,10 @@ def test_assert():
 
 
 def test_all(
-    fixture_a,
+    fixture_a: str,
 
-    fixture_b,
-):
+    fixture_b: str,
+) -> None:
     """
     Blank lines everywhere
 
