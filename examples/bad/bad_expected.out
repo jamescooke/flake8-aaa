@@ -1,3 +1,4 @@
+examples/bad/file_pattern_test.py:4:1: AAA01 no Act block found in test
 examples/bad/test.py:4:1: AAA01 no Act block found in test
 examples/bad/test_aaa01.py:8:1: AAA01 no Act block found in test
 examples/bad/test_aaa01_cm_import.py:11:1: AAA01 no Act block found in test

@@ -7,13 +7,13 @@ from typing import List
 
 from asttokens.util import Token
 
-test_file_pattern = re.compile(r'test(_.*|s)?\.py$')
+test_file_pattern = re.compile(r'^(test(_.*|s)?|.*_test)\.py$')
 
 
 def is_test_file(filename: str) -> bool:
     """
-    Check that path to file being checked passed by flake8 looks like a pytest
-    test file.
+    Returns:
+        Path to file passed by Flake8 looks like a Pytest test file.
     """
     return bool(test_file_pattern.match(os.path.basename(filename)))
 
