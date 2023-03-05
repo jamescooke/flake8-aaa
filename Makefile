@@ -111,8 +111,8 @@ fixlint:
 
 .PHONY: fixlintexamples
 fixlintexamples:
-	@echo "=== black ==="
-	black examples/good/black
+	@echo "=== Fixing black using tox env ==="
+	tox e -e py37-lint_examples -- black examples/good/black
 
 .PHONY: black_examples
 black_examples:
