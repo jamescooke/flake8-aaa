@@ -1,4 +1,7 @@
 from ast import AST
+import argparse
+
+from flake8.options.manager import OptionManager
 from typing import Generator, List, Optional, Tuple
 
 import asttokens
@@ -26,6 +29,24 @@ class Checker:
         self.lines = lines
         self.filename = filename
         self.ast_tokens: Optional[asttokens.ASTTokens] = None
+        self.cm_style = 'x'
+
+    @staticmethod
+    def add_options(option_manager: OptionManager) -> None:
+        option_manager.add_option(
+            '--cm-style',
+            parse_from_config=True,
+            default='thin',
+            help='Structure of context managers in tests. (Default: thin)',
+        )
+
+    @classmethod
+    def parse_options(cls, options: argparse.Namespace) -> None:
+        """
+        Parse custom configuration options given to flake8.
+        """
+        cls.cm_style = options.cm_style
+        print(cls.cm_style)
 
     def load(self) -> None:
         self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)
