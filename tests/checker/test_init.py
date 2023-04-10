@@ -20,3 +20,4 @@ def test(ast_example) -> None:
     assert result.lines == []
     assert result.filename == '__FILENAME__'
     assert result.ast_tokens is None
+    assert result.config is None
