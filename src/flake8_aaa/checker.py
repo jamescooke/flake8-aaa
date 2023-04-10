@@ -1,4 +1,7 @@
 from ast import AST
+from rich.traceback import install
+
+from .conf import Config
 import argparse
 
 from flake8.options.manager import OptionManager
@@ -11,6 +14,8 @@ from .exceptions import TokensNotLoaded, ValidationError
 from .function import Function
 from .helpers import find_test_functions, is_test_file
 
+install(show_locals=True)
+
 
 class Checker:
     """
@@ -19,6 +24,7 @@ class Checker:
         filename: Name of file under check.
         lines
         tree: Tree passed from flake8.
+        config: A Config instance containing passed options.
     """
 
     name = __short_name__
@@ -29,15 +35,15 @@ class Checker:
         self.lines = lines
         self.filename = filename
         self.ast_tokens: Optional[asttokens.ASTTokens] = None
-        self.cm_style = 'x'
+        self.config: Optional[Config] = None
 
     @staticmethod
     def add_options(option_manager: OptionManager) -> None:
         option_manager.add_option(
-            '--cm-style',
+            '--act-block-style',
             parse_from_config=True,
             default='thin',
-            help='Structure of context managers in tests. (Default: thin)',
+            help='Style of Act block parsing with respect to surrounding lines. (Default: thin)',
         )
 
     @classmethod
@@ -45,8 +51,8 @@ class Checker:
         """
         Parse custom configuration options given to flake8.
         """
-        cls.cm_style = options.cm_style
-        print(cls.cm_style)
+        # TODOBLACK: find a way to test this
+        cls.config = Config(act_block_style=options.act_block_style)
 
     def load(self) -> None:
         self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)
