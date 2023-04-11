@@ -10,6 +10,8 @@ docutils==0.19
     # via restructuredtext-lint
 exceptiongroup==1.1.0
     # via pytest
+faker==18.4.0
+    # via -r test.in
 flake8==4.0.1
     # via -r test.in
 importlib-metadata==4.2.0
@@ -39,8 +41,12 @@ pygments==2.14.0
     # via -r test.in
 pytest==7.2.1
     # via -r test.in
+python-dateutil==2.8.2
+    # via faker
 restructuredtext-lint==1.4.0
     # via -r test.in
+six==1.16.0
+    # via python-dateutil
 tomli==2.0.1
     # via
     #   mypy
@@ -49,6 +55,7 @@ typed-ast==1.5.4
     # via mypy
 typing-extensions==4.5.0
     # via
+    #   faker
     #   importlib-metadata
     #   mypy
 yapf==0.32.0

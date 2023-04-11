@@ -1,4 +1,5 @@
 # py37
+faker
 flake8==4.0.1
 isort
 mypy==0.930
