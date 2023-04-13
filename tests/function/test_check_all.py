@@ -15,8 +15,8 @@ from flake8_aaa.function import Function
     ],
     ids=['pass', 'docstring'],
 )
-def test_noop(function: Function, default_config: Config) -> None:
-    result = function.check_all(default_config)
+def test_noop(function: Function) -> None:
+    result = function.check_all(Config.default_options())
 
     assert isinstance(result, Generator)
     assert list(result) == []
@@ -39,8 +39,8 @@ def test(api_client, url):
     ''',
     ]
 )
-def test_context_manager(function: Function, default_config: Config) -> None:
-    result = list(function.check_all(default_config))
+def test_context_manager(function: Function) -> None:
+    result = list(function.check_all(Config.default_options()))
 
     assert result == []
 
@@ -68,8 +68,8 @@ def test_push(queue):
     ],
     ids=['no line before result= act', 'no line before marked act'],
 )
-def test_missing_space_before_act(function: Function, default_config: Config) -> None:
-    result = function.check_all(default_config)
+def test_missing_space_before_act(function: Function) -> None:
+    result = function.check_all(Config.default_options())
 
     assert isinstance(result, Generator)
     errors = list(result)
@@ -100,8 +100,8 @@ def test_push(queue):
     ],
     ids=['no line before assert', 'no line before assert with marked act'],
 )
-def test_missing_space_before_assert(function: Function, default_config: Config) -> None:
-    result = function.check_all(default_config)
+def test_missing_space_before_assert(function: Function) -> None:
+    result = function.check_all(Config.default_options())
 
     assert isinstance(result, Generator)
     errors = list(result)
@@ -121,11 +121,11 @@ def test(file_resource):
 ''',
     ]
 )
-def test_multi(function: Function, default_config: Config) -> None:
+def test_multi(function: Function) -> None:
     """
     No space before or after act - two errors are returned
     """
-    result = function.check_all(default_config)
+    result = function.check_all(Config.default_options())
 
     assert isinstance(result, Generator)
     errors = list(result)

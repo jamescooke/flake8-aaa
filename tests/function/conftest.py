@@ -1,13 +1,7 @@
 import pytest
 
-from flake8_aaa.conf import ActBlockStyle, Config
+from flake8_aaa.conf import Config
 from flake8_aaa.function import Function
-
-
-@pytest.fixture
-def default_config() -> Config:
-    return Config(act_block_style=ActBlockStyle.THIN)
-
 
 # Fixtures provide function instances in states of marking as per the order in
 # the `check_all()` method.
@@ -45,7 +39,7 @@ def function_bl_cmt_def(function_bl_cmt: Function) -> Function:
 
 @pytest.fixture
 def function_bl_cmt_def_act(function_bl_cmt_def: Function) -> Function:
-    function_bl_cmt_def.mark_act()
+    function_bl_cmt_def.mark_act(Config.default_options().act_block_style)
     return function_bl_cmt_def
 
 

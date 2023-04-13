@@ -83,8 +83,8 @@ def test(file_resource):
 ''',
     ]
 )
-def test_processed(function: Function, default_config: Config) -> None:
-    errors = list(function.check_all(default_config))
+def test_processed(function: Function) -> None:
+    errors = list(function.check_all(Config.default_options()))
 
     result = function.__str__(errors)
 
@@ -113,8 +113,8 @@ def test():
     assert result == 2
 ''']
 )
-def test_multi_spaces(function: Function, default_config: Config) -> None:
-    errors = list(function.check_all(default_config))
+def test_multi_spaces(function: Function) -> None:
+    errors = list(function.check_all(Config.default_options()))
 
     result = function.__str__(errors)
 
@@ -140,8 +140,8 @@ def test():
     result = x * 5
     assert result == 5
 '''])
-def test_multi_errors(function: Function, default_config: Config) -> None:
-    errors = list(function.check_all(default_config))
+def test_multi_errors(function: Function) -> None:
+    errors = list(function.check_all(Config.default_options()))
 
     result = function.__str__(errors)
 
