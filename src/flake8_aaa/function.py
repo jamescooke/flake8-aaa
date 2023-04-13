@@ -6,7 +6,7 @@ from asttokens.util import Token as ASTToken
 
 from .act_node import ActNode
 from .block import Block
-from .conf import Config
+from .conf import ActBlockStyle, Config
 from .exceptions import AAAError, EmptyBlock, ValidationError
 from .helpers import format_errors, function_is_noop, get_first_token, get_last_token, line_is_comment
 from .line_markers import LineMarkers
@@ -98,7 +98,7 @@ class Function:
         self.mark_comments()
         self.mark_def()
 
-        self.mark_act()
+        self.mark_act(config.act_block_style)
         self.mark_arrange()
         self.mark_assert()
 
@@ -173,10 +173,13 @@ class Function:
         self.line_markers.update(first_index, last_index, LineType.func_def)
         return last_index - first_index + 1
 
-    def mark_act(self) -> int:
+    def mark_act(self, act_block_style: ActBlockStyle) -> int:
         """
         Finds Act node, calculates its span and marks the associated lines in
         ``line_markers``.
+
+        Args:
+            act_block_style: Currently always THIN. TODO200
 
         Returns:
             Number of lines covered by the Act block (used for debugging /

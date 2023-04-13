@@ -1,5 +1,6 @@
 import pytest
 
+from flake8_aaa.function import Function
 from flake8_aaa.types import LineType
 
 
@@ -15,7 +16,7 @@ def test(hello_world_path):
 '''
     ]
 )
-def test_simple(function_bl_cmt_def_act):
+def test_simple(function_bl_cmt_def_act: Function) -> None:
     """
     `with` statement is part of arrange. Blank lines are maintained around Act.
     """
@@ -46,7 +47,7 @@ def test_extra_arrange(hello_world_path):
 '''
     ]
 )
-def test_extra(function_bl_cmt_def_act):
+def test_extra(function_bl_cmt_def_act: Function) -> None:
     """
     Any extra arrangement goes in the `with` block.
     """
@@ -79,7 +80,7 @@ def test_long_string():
 '''
     ]
 )
-def test_bl_in_str(function_bl_cmt_def_act):
+def test_bl_in_str(function_bl_cmt_def_act: Function) -> None:
     """
     String containing blank lines before Act is marked as Arrange
     """
@@ -104,7 +105,7 @@ def test_addition():
 
     assert result == 4
 '''])
-def test_no_arrange(function_bl_cmt_def_act):
+def test_no_arrange(function_bl_cmt_def_act: Function) -> None:
     """
     Function without arrange block does not cause failure
     """
