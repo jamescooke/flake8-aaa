@@ -1,20 +1,15 @@
-from ast import AST
-from rich.traceback import install
-
-from .conf import Config
 import argparse
-
-from flake8.options.manager import OptionManager
+from ast import AST
 from typing import Generator, List, Optional, Tuple
 
 import asttokens
+from flake8.options.manager import OptionManager  # type: ignore
 
 from .__about__ import __short_name__, __version__
+from .conf import Config
 from .exceptions import TokensNotLoaded, ValidationError
 from .function import Function
 from .helpers import find_test_functions, is_test_file
-
-install(show_locals=True)
 
 
 class Checker:
@@ -40,7 +35,7 @@ class Checker:
     @staticmethod
     def add_options(option_manager: OptionManager) -> None:
         option_manager.add_option(
-            '--act-block-style',
+            '--aaa-act-block-style',
             parse_from_config=True,
             default='thin',
             help='Style of Act block parsing with respect to surrounding lines. (Default: thin)',
@@ -49,10 +44,12 @@ class Checker:
     @classmethod
     def parse_options(cls, options: argparse.Namespace) -> None:
         """
-        Parse custom configuration options given to flake8.
+        Store options passed to flake8 in config instance.
+
+        Raises:
+            UnexpectedConfigValue: When config can't be loaded.
         """
-        # TODOBLACK: find a way to test this
-        cls.config = Config(act_block_style=options.act_block_style)
+        cls.config = Config.load_options(options)
 
     def load(self) -> None:
         self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)

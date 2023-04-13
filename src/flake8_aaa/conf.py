@@ -31,7 +31,7 @@ class Config:
     act_block_style: ActBlockStyle
 
     @classmethod
-    def load_options(cls, options: argparse.Namespace) -> None:
+    def load_options(cls, options: argparse.Namespace):
         """
         Parse custom configuration options given to flake8.
 
