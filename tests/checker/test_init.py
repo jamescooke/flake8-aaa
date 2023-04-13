@@ -3,6 +3,7 @@ import ast
 import pytest
 
 from flake8_aaa import Checker
+from flake8_aaa.conf import Config
 
 
 @pytest.fixture
@@ -20,4 +21,4 @@ def test(ast_example) -> None:
     assert result.lines == []
     assert result.filename == '__FILENAME__'
     assert result.ast_tokens is None
-    assert result.config is None
+    assert result.config == Config.default_options()

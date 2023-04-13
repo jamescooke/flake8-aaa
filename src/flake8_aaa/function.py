@@ -6,6 +6,7 @@ from asttokens.util import Token as ASTToken
 
 from .act_node import ActNode
 from .block import Block
+from .conf import Config
 from .exceptions import AAAError, EmptyBlock, ValidationError
 from .helpers import format_errors, function_is_noop, get_first_token, get_last_token, line_is_comment
 from .line_markers import LineMarkers
@@ -74,9 +75,14 @@ class Function:
             out += format_errors(len(errors))
         return out
 
-    def check_all(self) -> Generator[AAAError, None, None]:
+    def check_all(self, config: Config) -> Generator[AAAError, None, None]:
         """
-        Run everything required for checking this test.
+        Run everything required for checking this test. Selects relevant
+        options from received config instance to pass to each "mark_" and
+        "check_" method.
+
+        Args:
+            config: Instance of Config class.
 
         Returns:
             A generator of errors.

@@ -2,7 +2,9 @@ from collections.abc import Generator
 
 import pytest
 
+from flake8_aaa.conf import Config
 from flake8_aaa.exceptions import AAAError
+from flake8_aaa.function import Function
 
 
 @pytest.mark.parametrize(
@@ -13,8 +15,8 @@ from flake8_aaa.exceptions import AAAError
     ],
     ids=['pass', 'docstring'],
 )
-def test_noop(function):
-    result = function.check_all()
+def test_noop(function: Function, default_config: Config) -> None:
+    result = function.check_all(default_config)
 
     assert isinstance(result, Generator)
     assert list(result) == []
@@ -37,8 +39,8 @@ def test(api_client, url):
     ''',
     ]
 )
-def test_context_manager(function):
-    result = list(function.check_all())
+def test_context_manager(function: Function, default_config: Config) -> None:
+    result = list(function.check_all(default_config))
 
     assert result == []
 
@@ -66,8 +68,8 @@ def test_push(queue):
     ],
     ids=['no line before result= act', 'no line before marked act'],
 )
-def test_missing_space_before_act(function):
-    result = function.check_all()
+def test_missing_space_before_act(function: Function, default_config: Config) -> None:
+    result = function.check_all(default_config)
 
     assert isinstance(result, Generator)
     errors = list(result)
@@ -98,8 +100,8 @@ def test_push(queue):
     ],
     ids=['no line before assert', 'no line before assert with marked act'],
 )
-def test_missing_space_before_assert(function):
-    result = function.check_all()
+def test_missing_space_before_assert(function: Function, default_config: Config) -> None:
+    result = function.check_all(default_config)
 
     assert isinstance(result, Generator)
     errors = list(result)
@@ -119,11 +121,11 @@ def test(file_resource):
 ''',
     ]
 )
-def test_multi(function):
+def test_multi(function: Function, default_config: Config) -> None:
     """
     No space before or after act - two errors are returned
     """
-    result = function.check_all()
+    result = function.check_all(default_config)
 
     assert isinstance(result, Generator)
     errors = list(result)

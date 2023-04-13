@@ -3,7 +3,6 @@ from ast import AST
 from typing import Generator, List, Optional, Tuple
 
 import asttokens
-from flake8.options.manager import OptionManager  # type: ignore
 
 from .__about__ import __short_name__, __version__
 from .conf import Config
@@ -30,10 +29,10 @@ class Checker:
         self.lines = lines
         self.filename = filename
         self.ast_tokens: Optional[asttokens.ASTTokens] = None
-        self.config: Optional[Config] = None
+        self.config: Config = Config.default_options()
 
     @staticmethod
-    def add_options(option_manager: OptionManager) -> None:
+    def add_options(option_manager) -> None:
         option_manager.add_option(
             '--aaa-act-block-style',
             parse_from_config=True,
@@ -44,7 +43,8 @@ class Checker:
     @classmethod
     def parse_options(cls, options: argparse.Namespace) -> None:
         """
-        Store options passed to flake8 in config instance.
+        Store options passed to flake8 in config instance. Only called when
+        user passes flags or sets config.
 
         Raises:
             UnexpectedConfigValue: When config can't be loaded.
@@ -80,7 +80,7 @@ class Checker:
             self.load()
             for func in self.all_funcs():
                 try:
-                    for error in func.check_all():
+                    for error in func.check_all(self.config):
                         yield (error.line_number, error.offset, error.text, Checker)
                 except ValidationError as error:
                     yield error.to_flake8(Checker)
