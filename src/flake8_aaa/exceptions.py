@@ -1,5 +1,7 @@
 import typing
 
+from .helpers import flatten_list
+
 Flake8Error = typing.NamedTuple(
     'Flake8Error', [
         ('line_number', int),
@@ -18,6 +20,25 @@ AAAError = typing.NamedTuple('AAAError', [
 
 class Flake8AAAException(Exception):
     pass
+
+
+class UnexpectedConfigValue(Flake8AAAException):
+    """
+    Value of passed config is invalid.
+    """
+
+    def __init__(self, option_name: str, value: str, allowed_values: typing.List[str]) -> None:
+        self.option_name = option_name
+        self.value = value
+        self.allowed_values = allowed_values
+
+    def __str__(self) -> str:
+        return (
+            'Error loading option / configuration...\n'
+            f'    Option: {self.option_name}\n'
+            f'    Want:   {flatten_list(self.allowed_values)}\n'
+            f'    Got:    "{self.value}"\n'
+        )
 
 
 class TokensNotLoaded(Flake8AAAException):
