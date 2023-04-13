@@ -1,9 +1,11 @@
 import argparse
 import dataclasses
 import enum
-from typing import List
+from typing import List, Type, TypeVar
 
 from .exceptions import UnexpectedConfigValue
+
+_ActBlockStyle = TypeVar('_ActBlockStyle', bound='ActBlockStyle')
 
 
 @enum.unique
@@ -12,11 +14,14 @@ class ActBlockStyle(enum.Enum):
     # FAT = 'fat'  # TODO200
 
     @classmethod
-    def allowed_values(cls) -> List[str]:
+    def allowed_values(cls: Type[_ActBlockStyle]) -> List[str]:
         """
         List of allowed values for this setting
         """
         return [item.value for item in cls]
+
+
+_Config = TypeVar('_Config', bound='Config')
 
 
 @dataclasses.dataclass
@@ -31,7 +36,7 @@ class Config:
     act_block_style: ActBlockStyle
 
     @classmethod
-    def default_options(cls):
+    def default_options(cls: Type[_Config]) -> _Config:
         """
         Returns:
             Config instance with default options set.
@@ -39,7 +44,7 @@ class Config:
         return cls(act_block_style=ActBlockStyle.THIN)
 
     @classmethod
-    def load_options(cls, options: argparse.Namespace):
+    def load_options(cls: Type[_Config], options: argparse.Namespace) -> _Config:
         """
         Parse custom configuration options given to flake8.
 
