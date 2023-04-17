@@ -6,7 +6,7 @@ from flake8_aaa.conf import ActBlockStyle, Config
 from flake8_aaa.exceptions import UnexpectedConfigValue
 
 
-@pytest.mark.parametrize('value', ['thin', 'THIN', 'tHiN'])
+@pytest.mark.parametrize('value', ['default', 'DEFAULT', 'dEfAuLt'])
 def test(value: str) -> None:
     """
     Setting is case-insensitive
@@ -15,7 +15,7 @@ def test(value: str) -> None:
 
     result = Config.load_options(options)
 
-    assert result == Config(act_block_style=ActBlockStyle.THIN)
+    assert result == Config(act_block_style=ActBlockStyle.DEFAULT)
 
 
 # --- FAILURES ---
@@ -33,4 +33,4 @@ def test_unknown(faker) -> None:
 
     assert excinfo.value.option_name == 'aaa_act_block_style'
     assert excinfo.value.value == unknown_value
-    assert excinfo.value.allowed_values == ['thin']
+    assert excinfo.value.allowed_values == ['default']

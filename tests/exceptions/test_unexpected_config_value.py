@@ -1,7 +1,7 @@
 from flake8_aaa.exceptions import UnexpectedConfigValue
 
 
-def test_message():
+def test_message() -> None:
     exc = UnexpectedConfigValue(
         option_name='aaa_SOME_OPTION',
         value='__SOME_VALUE__',

@@ -10,8 +10,8 @@ _ActBlockStyle = TypeVar('_ActBlockStyle', bound='ActBlockStyle')
 
 @enum.unique
 class ActBlockStyle(enum.Enum):
-    THIN = 'thin'
-    # FAT = 'fat'  # TODO200
+    DEFAULT = 'default'
+    # LARGE = 'large'  # TODO200
 
     @classmethod
     def allowed_values(cls: Type[_ActBlockStyle]) -> List[str]:
@@ -41,7 +41,7 @@ class Config:
         Returns:
             Config instance with default options set.
         """
-        return cls(act_block_style=ActBlockStyle.THIN)
+        return cls(act_block_style=ActBlockStyle.DEFAULT)
 
     @classmethod
     def load_options(cls: Type[_Config], options: argparse.Namespace) -> _Config:

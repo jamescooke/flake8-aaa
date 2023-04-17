@@ -22,7 +22,7 @@ def test(first_node_with_tokens) -> None:
     with_mock_node = first_node_with_tokens.body[0]
     with_pytest_node = with_mock_node.body[0]
 
-    result = Block.build_act(with_pytest_node, first_node_with_tokens, ActBlockStyle.THIN)
+    result = Block.build_act(with_pytest_node, first_node_with_tokens, ActBlockStyle.DEFAULT)
 
     assert result.nodes == (with_pytest_node, )
     assert result.line_type == LineType.act

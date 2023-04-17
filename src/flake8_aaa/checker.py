@@ -33,15 +33,22 @@ class Checker:
 
     @staticmethod
     def add_options(option_manager) -> None:
+        """
+        Note:
+            No type annotation on `option_manager` because current flake8
+            version required to maintain support for py37 causes problems. This
+            should be fixed (or at the least rechecked) when py37 is dropped in
+            #198
+        """
         option_manager.add_option(
             '--aaa-act-block-style',
             parse_from_config=True,
-            default='thin',
-            help='Style of Act block parsing with respect to surrounding lines. (Default: thin)',
+            default='default',
+            help='Style of Act block parsing with respect to surrounding lines. (Default: default)',
         )
 
     @classmethod
-    def parse_options(cls, options: argparse.Namespace) -> None:
+    def parse_options(cls, option_manager, options: argparse.Namespace, args) -> None:
         """
         Store options passed to flake8 in config instance. Only called when
         user passes flags or sets config.
