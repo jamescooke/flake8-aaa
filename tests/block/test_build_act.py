@@ -1,6 +1,7 @@
 import pytest
 
 from flake8_aaa.block import Block
+from flake8_aaa.conf import ActBlockStyle
 from flake8_aaa.types import LineType
 
 
@@ -14,14 +15,14 @@ def test():
 '''
     ]
 )
-def test(first_node_with_tokens):
+def test(first_node_with_tokens) -> None:
     """
     `pytest.raises()` with statement is the Act node.
     """
     with_mock_node = first_node_with_tokens.body[0]
     with_pytest_node = with_mock_node.body[0]
 
-    result = Block.build_act(with_pytest_node)
+    result = Block.build_act(with_pytest_node, first_node_with_tokens, ActBlockStyle.THIN)
 
     assert result.nodes == (with_pytest_node, )
     assert result.line_type == LineType.act

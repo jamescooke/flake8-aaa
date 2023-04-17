@@ -179,7 +179,7 @@ class Function:
         ``line_markers``.
 
         Args:
-            act_block_style: Currently always THIN. TODO200
+            act_block_style: Currently only DEFAULT. TODO200
 
         Returns:
             Number of lines covered by the Act block (used for debugging /
@@ -194,7 +194,7 @@ class Function:
         """
         # Load act block and kick out when none is found
         self.act_node = self.load_act_node()
-        self.act_block = Block.build_act(self.act_node.node)
+        self.act_block = Block.build_act(self.act_node.node, self.node, act_block_style)
         # Get relative line numbers of Act block footprint
         # TODO store first and last line numbers in Block - use them instead of
         # asking for span.

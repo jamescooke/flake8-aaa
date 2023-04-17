@@ -1,6 +1,7 @@
 import ast
 from typing import Iterable, List, Tuple, Type, TypeVar
 
+from .conf import ActBlockStyle
 from .exceptions import EmptyBlock
 from .helpers import filter_arrange_nodes, get_first_token, get_last_token
 from .types import LineType
@@ -12,17 +13,17 @@ class Block:
     """
     An Arrange, Act or Assert block of code as parsed from the test function.
 
+    Act blocks are simply a single Act node in default mode. However, in a
+    future version (update TODO200), "large" Act blocks will include the Act
+    node and any context managers that wrap them.
+
     Note:
-        This may just become the Act Block *AND* since the Act Block is just a
-        single node, this might not even be required.
+        Blocks with no nodes are allowed (at the moment).
 
     Args:
         nodes: Nodes that make up this block.
         line_type: Type of line that this blocks writes into the line markers
             instance for the function.
-
-    Notes:
-        * Blocks with no nodes are allowed (at the moment).
     """
 
     def __init__(self, nodes: Iterable[ast.AST], lt: LineType) -> None:
@@ -30,9 +31,19 @@ class Block:
         self.line_type = lt
 
     @classmethod
-    def build_act(cls: Type[_Block], node: ast.stmt) -> _Block:
+    def build_act(
+        cls: Type[_Block],
+        node: ast.stmt,
+        test_func_node: ast.FunctionDef,  # use this in TODO200
+        act_block_style: ActBlockStyle,  # use this in TODO200
+    ) -> _Block:
         """
-        Act block is a single node.
+        Act block is a single node by default. TODO200
+
+        Args:
+            node: Act node already found by Function.mark_act()
+            test_func_node: Node of test function / method.
+            act_block_style: Currently always DEFAULT. TODO200
         """
         return cls([node], LineType.act)
 
