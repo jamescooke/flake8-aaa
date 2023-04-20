@@ -82,10 +82,10 @@ in a test suite, ``find`` should be used:
     find tests -name '*.py' | xargs -n 1 python -m flake8_aaa
 
 
-noqa and command line
----------------------
+Directives and command line
+---------------------------
 
-The ``# noqa`` comment marker works slightly differently when Flake8-AAA is
+The ``# noqa`` directive comment marker works slightly differently when Flake8-AAA is
 called on the command line rather than invoked through ``flake8``. When called
 on the command line, to skip linting a test function, mark the function
 definition with ``# noqa`` on the same line as the ``def``.
