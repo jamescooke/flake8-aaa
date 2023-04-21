@@ -18,9 +18,8 @@ def test() -> None:
     """
     option_manager = None  # Fake because it's not used by SUT
     options = argparse.Namespace(aaa_act_block_style='default')
-    args = []
 
-    result = Checker.parse_options(option_manager, options, args)
+    result = Checker.parse_options(option_manager, options, [])
 
     assert result is None
     assert isinstance(Checker.config, Config)
