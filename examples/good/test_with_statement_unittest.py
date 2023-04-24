@@ -6,7 +6,7 @@ import unittest
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.hello_world_path = pathlib.Path(__file__).parent.parent / 'data' / 'hello_world.txt'
+        self.hello_world_path = pathlib.Path(__file__).parent.parent / 'data' / 'hello_world.txt'  # noqa: E501
 
     def test_assert_raises_in_block(self):
         """

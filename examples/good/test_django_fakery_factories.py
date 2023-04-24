@@ -42,7 +42,10 @@ class TestUserFactory(TestCase):
                 with transaction.atomic():
                     UserFactory()
 
-        self.assertEqual(self.user_model.objects.count(), expected_num_created - 1)
+        self.assertEqual(
+            self.user_model.objects.count(),
+            expected_num_created - 1,
+        )
         self.assertIn('unique', str(cm.exception).lower())
         for u in self.user_model.objects.all():
             u.full_clean()
