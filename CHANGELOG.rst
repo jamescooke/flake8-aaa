@@ -23,6 +23,33 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Added
+.....
+
+* ⛏️ New ``--aaa-act-block-style`` option added with corresponding
+  ``aaa_act_block_style`` config value. Only default behaviour supported at
+  this stage, but makes room to fix the `Black formatting problems in issue
+  #200 <https://github.com/jamescooke/flake8-AAA/issues/200>`_.
+
+* 📕 New "Options and configuration" page added to documentation to support
+  `issue #200 <https://github.com/jamescooke/flake8-AAA/issues/200>`_.
+
+* ⛏️ New tox configuration added ``PIP_INDEX_URL`` pointed at locally running
+  `devpi server instance <https://github.com/devpi/devpi>`_.
+
+* ⛏️ Faker added to test requirements to generate random data.
+
+Changed
+.......
+
+* 📕 Previous documentation page "Controlling Flake8-AAA" contained information
+  on both code directives (``# noqa``, etc) and how to use the command line
+  tool. These have been split into two separate pages: "Directives" and
+  "Command line".
+
+* ⛏️ Documentation can be built locally with ``make docs`` recipe, but this has
+  been adjusted to call tox.
+
 0.14.0_ - 2023/03/01
 --------------------
 
@@ -33,7 +60,7 @@ Added
   <https://github.com/jamescooke/flake8-aaa/pull/204>`_ fixes `issue #185
   <https://github.com/jamescooke/flake8-aaa/issues/185>`_.
 
-* 📕: AAA06 hash comment resolution added to docs. `Pull #208
+* 📕 AAA06 hash comment resolution added to docs. `Pull #208
   <https://github.com/jamescooke/flake8-aaa/pull/208>`_ fixes `issue #193
   <https://github.com/jamescooke/flake8-aaa/issues/193>`_.
 
