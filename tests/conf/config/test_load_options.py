@@ -1,6 +1,7 @@
 import argparse
 
 import pytest
+from faker import Faker
 
 from flake8_aaa.conf import ActBlockStyle, Config
 from flake8_aaa.exceptions import UnexpectedConfigValue
@@ -21,7 +22,7 @@ def test(value: str) -> None:
 # --- FAILURES ---
 
 
-def test_unknown(faker) -> None:
+def test_unknown(faker: Faker) -> None:
     """
     Unknown value for setting raises
     """

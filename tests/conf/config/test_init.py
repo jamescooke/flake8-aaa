@@ -1,7 +1,9 @@
+from faker import Faker
+
 from flake8_aaa.conf import Config
 
 
-def test(faker) -> None:
+def test(faker: Faker) -> None:
     """
     Any value can be set via dunder init
     """
