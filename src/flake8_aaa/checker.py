@@ -1,9 +1,11 @@
+import argparse
 from ast import AST
 from typing import Generator, List, Optional, Tuple
 
 import asttokens
 
 from .__about__ import __short_name__, __version__
+from .conf import Config
 from .exceptions import TokensNotLoaded, ValidationError
 from .function import Function
 from .helpers import find_test_functions, is_test_file
@@ -16,6 +18,7 @@ class Checker:
         filename: Name of file under check.
         lines
         tree: Tree passed from flake8.
+        config: A Config instance containing passed options.
     """
 
     name = __short_name__
@@ -26,6 +29,34 @@ class Checker:
         self.lines = lines
         self.filename = filename
         self.ast_tokens: Optional[asttokens.ASTTokens] = None
+        self.config: Config = Config.default_options()
+
+    @staticmethod
+    def add_options(option_manager) -> None:
+        """
+        Note:
+            No type annotation on `option_manager` because current flake8
+            version required to maintain support for py37 causes problems. This
+            should be fixed (or at the least rechecked) when py37 is dropped in
+            #198
+        """
+        option_manager.add_option(
+            '--aaa-act-block-style',
+            parse_from_config=True,
+            default='default',
+            help='Style of Act block parsing with respect to surrounding lines. (Default: default)',
+        )
+
+    @classmethod
+    def parse_options(cls, option_manager, options: argparse.Namespace, args) -> None:
+        """
+        Store options passed to flake8 in config instance. Only called when
+        user passes flags or sets config.
+
+        Raises:
+            UnexpectedConfigValue: When config can't be loaded.
+        """
+        cls.config = Config.load_options(options)
 
     def load(self) -> None:
         self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)
@@ -56,7 +87,7 @@ class Checker:
             self.load()
             for func in self.all_funcs():
                 try:
-                    for error in func.check_all():
+                    for error in func.check_all(self.config):
                         yield (error.line_number, error.offset, error.text, Checker)
                 except ValidationError as error:
                     yield error.to_flake8(Checker)

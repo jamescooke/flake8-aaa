@@ -6,6 +6,7 @@ from asttokens.util import Token as ASTToken
 
 from .act_node import ActNode
 from .block import Block
+from .conf import ActBlockStyle, Config
 from .exceptions import AAAError, EmptyBlock, ValidationError
 from .helpers import format_errors, function_is_noop, get_first_token, get_last_token, line_is_comment
 from .line_markers import LineMarkers
@@ -74,9 +75,14 @@ class Function:
             out += format_errors(len(errors))
         return out
 
-    def check_all(self) -> Generator[AAAError, None, None]:
+    def check_all(self, config: Config) -> Generator[AAAError, None, None]:
         """
-        Run everything required for checking this test.
+        Run everything required for checking this test. Selects relevant
+        options from received config instance to pass to each "mark_" and
+        "check_" method.
+
+        Args:
+            config: Instance of Config class.
 
         Returns:
             A generator of errors.
@@ -92,7 +98,7 @@ class Function:
         self.mark_comments()
         self.mark_def()
 
-        self.mark_act()
+        self.mark_act(config.act_block_style)
         self.mark_arrange()
         self.mark_assert()
 
@@ -167,10 +173,13 @@ class Function:
         self.line_markers.update(first_index, last_index, LineType.func_def)
         return last_index - first_index + 1
 
-    def mark_act(self) -> int:
+    def mark_act(self, act_block_style: ActBlockStyle) -> int:
         """
         Finds Act node, calculates its span and marks the associated lines in
         ``line_markers``.
+
+        Args:
+            act_block_style: Currently only DEFAULT. TODO200
 
         Returns:
             Number of lines covered by the Act block (used for debugging /
@@ -185,7 +194,7 @@ class Function:
         """
         # Load act block and kick out when none is found
         self.act_node = self.load_act_node()
-        self.act_block = Block.build_act(self.act_node.node)
+        self.act_block = Block.build_act(self.act_node.node, self.node, act_block_style)
         # Get relative line numbers of Act block footprint
         # TODO store first and last line numbers in Block - use them instead of
         # asking for span.

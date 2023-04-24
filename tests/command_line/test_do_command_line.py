@@ -27,13 +27,13 @@ def test_other():
     return f
 
 
-def test_example_file_is_test(example_file):
+def test_example_file_is_test(example_file) -> None:
     result = is_test_file(example_file.name)
 
     assert result is False
 
 
-def test_example_file_has_functions(example_file):
+def test_example_file_has_functions(example_file) -> None:
     lines = example_file.readlines()
     tree = ast.parse(''.join(lines))
 
@@ -45,7 +45,7 @@ def test_example_file_has_functions(example_file):
 # --- TESTS ---
 
 
-def test(example_file, capsys):
+def test(example_file, capsys) -> None:
     with example_file.open() as f:
 
         result = do_command_line(f)

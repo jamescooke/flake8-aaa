@@ -24,7 +24,7 @@ def do_command_line(infile: typing.IO[str]) -> int:
 
     for func in checker.all_funcs(skip_noqa=True):
         try:
-            errors = list(func.check_all())
+            errors = list(func.check_all(checker.config))
         except ValidationError as error:
             errors = [error.to_aaa()]
         print(func.__str__(errors), end='')

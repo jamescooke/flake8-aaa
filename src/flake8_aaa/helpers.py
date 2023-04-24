@@ -178,3 +178,22 @@ def line_is_comment(line: str) -> bool:
         # Assume that a token error happens because this is *not* a comment
         return False
     return first_token.type == tokenize.COMMENT
+
+
+def flatten_list(items: List[str]) -> str:
+    """
+    Given a list of strings, flatten them to '"X", "Y" or "Z"' format.
+
+    Raises:
+        ValueError: When an empty list is received.
+    """
+    if len(items) == 1:
+        return f'"{items[0]}"'
+
+    try:
+        last = items[-1]
+    except IndexError:
+        # Empty list
+        raise ValueError('Empty list of values received')
+
+    return ', '.join(f'"{item}"' for item in items[:-1]) + f' or "{last}"'

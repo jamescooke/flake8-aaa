@@ -44,7 +44,7 @@ lintexamplespy38:
 
 .PHONY: docs
 docs:
-	$(MAKE) -C docs html
+	tox r -e py310-docs
 
 .PHONY: cmd
 cmd:
@@ -73,7 +73,7 @@ signature:
 
 .PHONY: clean
 clean:
-	rm -rf dist build .tox .pytest_cache src/flake8_aaa.egg-info
+	rm -rf dist build .tox .pytest_cache src/flake8_aaa.egg-info docs/_build/
 	find . -name '*.pyc' -delete
 
 .PHONY: sdist

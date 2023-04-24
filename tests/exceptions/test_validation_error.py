@@ -2,7 +2,7 @@ from flake8_aaa.checker import Checker
 from flake8_aaa.exceptions import ValidationError
 
 
-def test():
+def test() -> None:
     result = ValidationError(
         line_number=99,
         offset=777,

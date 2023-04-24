@@ -1,5 +1,6 @@
 import pytest
 
+from flake8_aaa.conf import Config
 from flake8_aaa.function import Function
 
 # Fixtures provide function instances in states of marking as per the order in
@@ -19,30 +20,30 @@ def function(first_node_with_tokens, lines, tokens) -> Function:
 
 
 @pytest.fixture
-def function_bl(function) -> Function:
+def function_bl(function: Function) -> Function:
     function.mark_bl()
     return function
 
 
 @pytest.fixture
-def function_bl_cmt(function_bl) -> Function:
+def function_bl_cmt(function_bl: Function) -> Function:
     function_bl.mark_comments()
     return function_bl
 
 
 @pytest.fixture
-def function_bl_cmt_def(function_bl_cmt) -> Function:
+def function_bl_cmt_def(function_bl_cmt: Function) -> Function:
     function_bl_cmt.mark_def()
     return function_bl_cmt
 
 
 @pytest.fixture
-def function_bl_cmt_def_act(function_bl_cmt_def) -> Function:
-    function_bl_cmt_def.mark_act()
+def function_bl_cmt_def_act(function_bl_cmt_def: Function) -> Function:
+    function_bl_cmt_def.mark_act(Config.default_options().act_block_style)
     return function_bl_cmt_def
 
 
 @pytest.fixture
-def function_bl_cmt_def_act_arr(function_bl_cmt_def_act) -> Function:
+def function_bl_cmt_def_act_arr(function_bl_cmt_def_act: Function) -> Function:
     function_bl_cmt_def_act.mark_arrange()
     return function_bl_cmt_def_act

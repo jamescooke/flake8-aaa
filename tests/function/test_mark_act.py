@@ -1,5 +1,7 @@
 import pytest
 
+from flake8_aaa.conf import ActBlockStyle
+from flake8_aaa.function import Function
 from flake8_aaa.types import LineType
 
 
@@ -15,11 +17,11 @@ def test(hello_world_path):
 '''
     ]
 )
-def test_simple(function_bl_cmt_def):
+def test_simple(function_bl_cmt_def: Function) -> None:
     """
     `with` statement is part of arrange. Blank lines are maintained around Act.
     """
-    result = function_bl_cmt_def.mark_act()
+    result = function_bl_cmt_def.mark_act(ActBlockStyle.DEFAULT)
 
     assert result == 1
     assert function_bl_cmt_def.line_markers.types == [
@@ -45,11 +47,11 @@ def test_pytest_assert_raises_in_block(hello_world_path):
 '''
     ]
 )
-def test_raises_block(function_bl_cmt_def):
+def test_raises_block(function_bl_cmt_def: Function) -> None:
     """
     Checking on a raise in a with block works with Pytest.
     """
-    result = function_bl_cmt_def.mark_act()
+    result = function_bl_cmt_def.mark_act(ActBlockStyle.DEFAULT)
 
     assert result == 2
     assert function_bl_cmt_def.line_markers.types == [
@@ -77,11 +79,11 @@ def test_pytest_assert_raises_in_block(hello_world_path):
 '''
     ]
 )
-def test_raises_block_with_comment(function_bl_cmt_def):
+def test_raises_block_with_comment(function_bl_cmt_def: Function) -> None:
     """
     Act block can be marked even though there is a comment in the middle of it
     """
-    result = function_bl_cmt_def.mark_act()
+    result = function_bl_cmt_def.mark_act(ActBlockStyle.DEFAULT)
 
     assert result == 3
     assert function_bl_cmt_def.line_markers.types == [

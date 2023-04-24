@@ -1,5 +1,8 @@
 import pytest
 
+from flake8_aaa.conf import Config
+from flake8_aaa.function import Function
+
 
 @pytest.mark.parametrize(
     'code_str', [
@@ -12,7 +15,7 @@ def test(file_resource):
 ''',
     ]
 )
-def test_unprocessed(function):
+def test_unprocessed(function: Function) -> None:
     """
     No parsing has happened, no errors are passed in, lines are marked with ???
     """
@@ -46,7 +49,7 @@ def test(file_resource):
 ''',
     ]
 )
-def test_marked(function_bl_cmt_def):
+def test_marked(function_bl_cmt_def: Function) -> None:
     """
     Function has marked itself, but no errors passed
     """
@@ -80,8 +83,8 @@ def test(file_resource):
 ''',
     ]
 )
-def test_processed(function):
-    errors = list(function.check_all())
+def test_processed(function: Function) -> None:
+    errors = list(function.check_all(Config.default_options()))
 
     result = function.__str__(errors)
 
@@ -110,8 +113,8 @@ def test():
     assert result == 2
 ''']
 )
-def test_multi_spaces(function):
-    errors = list(function.check_all())
+def test_multi_spaces(function: Function) -> None:
+    errors = list(function.check_all(Config.default_options()))
 
     result = function.__str__(errors)
 
@@ -137,8 +140,8 @@ def test():
     result = x * 5
     assert result == 5
 '''])
-def test_multi_errors(function):
-    errors = list(function.check_all())
+def test_multi_errors(function: Function) -> None:
+    errors = list(function.check_all(Config.default_options()))
 
     result = function.__str__(errors)
 
