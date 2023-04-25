@@ -38,9 +38,10 @@ version signature:
 
 .. code-block::
 
-    4.0.1 (aaa: 0.12.2, mccabe: 0.6.1, pycodestyle: 2.8.0, pyflakes: 2.4.0) CPython 3.10.1 on Linux
+    6.0.0 (flake8-aaa: 0.14.1, mccabe: 0.7.0, pycodestyle: 2.10.0, pyflakes: 3.0.1) CPython 3.11.0 on Linux
 
-The ``aaa: 0.12.2`` part of that output tells you Flake8 found this plugin.
+The ``flake8-aaa: 0.14.1`` part of that output tells you Flake8 found this
+plugin.
 
 Yapf
 ----
