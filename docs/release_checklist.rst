@@ -20,7 +20,7 @@ Given a new version called ``x.y.z``:
 
       make signature
 
-  Update the version string in the README.
+  Update the version string in the README and compatibility doc.
 
 * Commit changes and push ``bump-x.y.z`` branch for testing. Use ``Bump to
   x.y.z`` as the PR title.
