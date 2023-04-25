@@ -134,8 +134,10 @@ run a test suite.
 
 Further reading:
 
-* `Rules and error codes documentation
-  <https://flake8-aaa.readthedocs.io/en/stable/rules.html>`_.
+* `Error codes documentation
+  <https://flake8-aaa.readthedocs.io/en/stable/error_codes/all.html>`_: A list
+  of error codes raised by Flake8-AAA when a test doesn't match the AAA
+  pattern.
 
 🏁 Getting Started
 ------------------
@@ -167,9 +169,9 @@ string:
 
 .. code-block::
 
-    6.0.0 (flake8-aaa: 0.14.0, mccabe: 0.7.0, pycodestyle: 2.10.0, pyflakes: 3.0.1) CPython 3.11.0 on Linux
+    6.0.0 (flake8-aaa: 0.14.1, mccabe: 0.7.0, pycodestyle: 2.10.0, pyflakes: 3.0.1) CPython 3.11.0 on Linux
 
-The ``flake8-aaa: 0.13.1`` part tells you that Flake8-AAA was installed
+The ``flake8-aaa: 0.14.1`` part tells you that Flake8-AAA was installed
 successfully and its checks will be used by Flake8.
 
 Further reading:
@@ -248,7 +250,7 @@ install Flake8.
 Further reading:
 
 * `Command line documentation
-  <https://flake8-aaa.readthedocs.io/en/stable/commands.html#command-line>`_.
+  <https://flake8-aaa.readthedocs.io/en/stable/command_line.html>`_.
 
 ⛏️ Compatibility
 ----------------
@@ -261,7 +263,8 @@ Flake8-AAA works with:
 
 * Mypy and type-annotated code.
 
-* Latest versions of Python 3 (3.7, 3.8, 3.9 and 3.10).
+* Active versions of Python 3 as listed on the `python.org downloads page
+  <https://www.python.org/downloads/>`_.
 
 Further reading:
 

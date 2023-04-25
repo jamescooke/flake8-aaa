@@ -44,7 +44,7 @@ lintexamplespy38:
 
 .PHONY: docs
 docs:
-	tox r -e py310-docs
+	tox run -e py310-docs
 
 .PHONY: cmd
 cmd:
@@ -69,7 +69,7 @@ cmdbad:
 # Generate version signature used in README.rst
 .PHONY: signature
 signature:
-	tox e -e py311-meta_plugin -- flake8 --version
+	tox exec -e py311-meta_plugin_dogfood -- flake8 --version
 
 .PHONY: clean
 clean:
