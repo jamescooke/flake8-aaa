@@ -9,8 +9,9 @@ Python
 
 Works with Python 3.
 
-Flake8-AAA is fully compatible and tested against the latest versions of Python
-3. Currently that's 3.7, 3.8, 3.9 and 3.10.
+Flake8-AAA is fully compatible and tested against the active versions of Python
+3 as listed on the `python.org downloads page
+<https://www.python.org/downloads/>`_.
 
 .. admonition:: See also...
 
@@ -21,7 +22,8 @@ Flake8-AAA is fully compatible and tested against the latest versions of Python
 Flake8
 ------
 
-Works with Flake8 version 3 and later.
+Works with Flake8 version 3 and later. All integration tests run with the
+latest version of Flake8 they can find for the active version of Python.
 
 We use the newer plugin system implemented in Flake8 v3. This dependency is not
 specified in ``setup.py`` because users may only want to use the command line
