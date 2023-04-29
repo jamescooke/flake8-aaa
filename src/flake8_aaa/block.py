@@ -3,7 +3,7 @@ from typing import Iterable, List, Tuple, Type, TypeVar
 
 from .conf import ActBlockStyle
 from .exceptions import EmptyBlock
-from .helpers import filter_arrange_nodes, get_first_token, get_last_token
+from .helpers import add_node_parents, filter_arrange_nodes, get_first_token, get_last_token
 from .types import LineType
 
 _Block = TypeVar('_Block', bound='Block')
@@ -43,9 +43,21 @@ class Block:
         Args:
             node: Act node already found by Function.mark_act()
             test_func_node: Node of test function / method.
-            act_block_style: Currently always DEFAULT. TODO200
+            act_block_style: Default Act Blocks are just the Act node. Large
+                Act Blocks can absorb context managers that wrap them.
         """
-        return cls([node], LineType.act)
+        if act_block_style == ActBlockStyle.DEFAULT:
+            return cls([node], LineType.act)
+
+        # --- LARGE Act Block behaviour...
+
+        add_node_parents(test_func_node)
+        # Walk up the parent nodes of the parent node to find test's definition.
+        act_block_node = node
+        while act_block_node.parent != test_func_node:
+            act_block_node = act_block_node.parent
+
+        return cls([act_block_node], LineType.act)
 
     @classmethod
     def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], act_block_first_line: int) -> _Block:
