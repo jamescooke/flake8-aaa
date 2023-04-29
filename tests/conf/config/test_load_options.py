@@ -34,4 +34,4 @@ def test_unknown(faker: Faker) -> None:
 
     assert excinfo.value.option_name == 'aaa_act_block_style'
     assert excinfo.value.value == unknown_value
-    assert excinfo.value.allowed_values == ['default']
+    assert excinfo.value.allowed_values == ['default', 'large']
