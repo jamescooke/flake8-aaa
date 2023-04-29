@@ -150,7 +150,6 @@ def get_last_token(node: ast.AST) -> Token:
     return node.last_token  # type: ignore
 
 
-# TODO200 restore test from https://github.com/jamescooke/flake8-aaa/blob/f9e5edbd08161bc6620ce00f6eedd45899710a99/tests/helpers/test_add_node_parents.py
 def add_node_parents(root: ast.AST) -> None:
     """
     Adds "parent" attribute to all child nodes of passed node.
