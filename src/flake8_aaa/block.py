@@ -13,9 +13,8 @@ class Block:
     """
     An Arrange, Act or Assert block of code as parsed from the test function.
 
-    Act blocks are simply a single Act node in default mode. However, in a
-    future version (update TODO200), "large" Act blocks will include the Act
-    node and any context managers that wrap them.
+    Act blocks are simply a single Act node in default mode. However, "large"
+    Act blocks include the Act node and any context managers that wrap them.
 
     Note:
         Blocks with no nodes are allowed (at the moment).
@@ -34,11 +33,12 @@ class Block:
     def build_act(
         cls: Type[_Block],
         node: ast.stmt,
-        test_func_node: ast.FunctionDef,  # use this in TODO200
-        act_block_style: ActBlockStyle,  # use this in TODO200
+        test_func_node: ast.FunctionDef,
+        act_block_style: ActBlockStyle,
     ) -> _Block:
         """
-        Act block is a single node by default. TODO200
+        Using the provided `node` as Act Node, build the Act Block depending on
+        the `act_block_style`.
 
         Args:
             node: Act node already found by Function.mark_act()
