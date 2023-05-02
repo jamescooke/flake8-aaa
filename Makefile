@@ -75,6 +75,7 @@ signature:
 clean:
 	rm -rf dist build .tox .pytest_cache src/flake8_aaa.egg-info docs/_build/
 	find . -name '*.pyc' -delete
+	find src/ examples/ tests/ -name __pycache__ -type d -delete
 
 .PHONY: sdist
 sdist:
