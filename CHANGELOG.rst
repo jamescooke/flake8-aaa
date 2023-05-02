@@ -23,6 +23,10 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+* ⛏️ Move Black formatted test examples to their own directory. This will help
+  when running Flake8 against Black formatted tests which need
+  ``--aaa-act-block-style=large``.
+
 0.14.1_ - 2023/04/25
 --------------------
 
