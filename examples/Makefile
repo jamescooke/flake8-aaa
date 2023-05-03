@@ -1,14 +1,14 @@
 .PHONY: all
-all: good/black/noqa
+all: black/noqa
 
-good/black/noqa: good/black
-	mkdir good/black/noqa
-	cp good/noqa/*.py good/black/noqa/
+black/noqa: black
+	mkdir black/noqa
+	cp good/noqa/*.py black/noqa/
 
-good/black:
-	mkdir good/black
-	cp good/*.py good/black/
+black:
+	mkdir black
+	cp good/*.py black/
 
 .PHONY: clean
 clean:
-	rm -rf good/black
+	rm -rf black
