@@ -33,7 +33,7 @@ lintexamples:
 	mypy examples/conftest.py examples/good --ignore-missing-imports --exclude examples/good/black/
 	mypy examples/bad --ignore-missing-imports
 	@echo "=== black ==="
-	black --check --diff --verbose examples/good/black
+	black --check --diff --verbose examples/black
 
 .PHONY: lintexamplespy38
 lintexamplespy38:
