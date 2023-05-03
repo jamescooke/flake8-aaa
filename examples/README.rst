@@ -9,7 +9,8 @@ Layout
 * ``bad``: Examples that fail linting. Executed with default config.
 
 * ``black``: Examples formatted with Black. As of version ``23.1.0``, these
-  require ``--aaa-act-block-style=large`` to pass.
+  require ``--aaa-act-block-style=large`` to pass. See below for how to
+  generate these files.
 
 * ``data``
 
@@ -21,16 +22,11 @@ Layout
 Black formatted examples
 ------------------------
 
-To update the examples formatted with Black in ``good/black`` (run from project
-root)::
+To update the examples formatted with Black in ``examples/black`` (run from
+project root)::
 
-    pip install -r requirements/examples.txt
     make black_examples fixlintexamples
 
-Then check them with "local" lint::
+Then check them as part of the linting of example files::
 
-    make lintexamples
-
-Or run tox on the "example" environments::
-
-    tox -l | ag example
+    tox r -m lint_examples
