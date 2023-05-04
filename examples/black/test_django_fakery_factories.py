@@ -42,8 +42,9 @@ class TestUserFactory(TestCase):
                     UserFactory()
 
         self.assertEqual(
-            self.user_model.objects.count(), expected_num_created - 1
-        )  # A comment to make black wrap
+            self.user_model.objects.count(),
+            expected_num_created - 1,
+        )
         self.assertIn("unique", str(cm.exception).lower())
         for u in self.user_model.objects.all():
             u.full_clean()

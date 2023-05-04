@@ -1,7 +1,28 @@
 import io
+import warnings
 from typing import Generator, List
 
 import pytest
+
+# --- Pytest context managers ---
+
+
+def test_pytest_raises() -> None:
+    with pytest.raises(IndexError):
+        list()[0]
+
+
+def test_deprecation_warning():
+    with pytest.deprecated_call():
+        warnings.warn("deprecate warning", DeprecationWarning)
+
+
+def test_user_warning():
+    with pytest.warns(UserWarning):
+        warnings.warn("my warning", UserWarning)
+
+
+# --- Use of context managers in tests ---
 
 
 def test_simple(hello_world_path) -> None:

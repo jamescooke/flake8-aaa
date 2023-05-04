@@ -33,7 +33,7 @@ lintexamples:
 	mypy examples/conftest.py examples/good --ignore-missing-imports --exclude examples/good/black/
 	mypy examples/bad --ignore-missing-imports
 	@echo "=== black ==="
-	black --check --diff --verbose examples/good/black
+	black --check --diff --verbose examples/black
 
 .PHONY: lintexamplespy38
 lintexamplespy38:
@@ -75,6 +75,7 @@ signature:
 clean:
 	rm -rf dist build .tox .pytest_cache src/flake8_aaa.egg-info docs/_build/
 	find . -name '*.pyc' -delete
+	find src/ examples/ tests/ -name __pycache__ -type d -delete
 
 .PHONY: sdist
 sdist:
@@ -110,9 +111,10 @@ fixlint:
 
 .PHONY: fixlintexamples
 fixlintexamples:
-	@echo "=== black ==="
-	black examples/good/black
+	@echo "=== Fixing black using tox env ==="
+	tox e -e py37-lint_examples -- black examples/black
 
+# Trigger a new copy of Black-formatted examples to be generated
 .PHONY: black_examples
 black_examples:
 	$(MAKE) -C examples clean all
