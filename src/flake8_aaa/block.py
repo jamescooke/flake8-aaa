@@ -54,8 +54,8 @@ class Block:
         add_node_parents(test_func_node)
         # Walk up the parent nodes of the parent node to find test's definition.
         act_block_node = node
-        while act_block_node.parent != test_func_node:
-            act_block_node = act_block_node.parent
+        while act_block_node.parent != test_func_node:  # type: ignore[attr-defined]
+            act_block_node = act_block_node.parent  # type: ignore[attr-defined]
 
         return cls([act_block_node], LineType.act)
 

@@ -157,7 +157,7 @@ def add_node_parents(root: ast.AST) -> None:
     """
     for node in ast.walk(root):
         for child in ast.iter_child_nodes(node):
-            child.parent = node
+            child.parent = node  # type: ignore[attr-defined]
 
 
 def filter_arrange_nodes(nodes: List[ast.stmt], act_block_first_line_number: int) -> List[ast.stmt]:
