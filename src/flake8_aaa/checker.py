@@ -24,12 +24,15 @@ class Checker:
     name = __short_name__
     version = __version__
 
+    default_config = Config.default_options()
+
     def __init__(self, tree: AST, lines: List[str], filename: str):
         self.tree = tree
         self.lines = lines
         self.filename = filename
         self.ast_tokens: Optional[asttokens.ASTTokens] = None
-        self.config: Config = Config.default_options()
+
+        self.config: Config = self.default_config
 
     @staticmethod
     def add_options(option_manager) -> None:
@@ -56,7 +59,7 @@ class Checker:
         Raises:
             UnexpectedConfigValue: When config can't be loaded.
         """
-        cls.config = Config.load_options(options)
+        cls.default_config = Config.load_options(options)
 
     def load(self) -> None:
         self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)
