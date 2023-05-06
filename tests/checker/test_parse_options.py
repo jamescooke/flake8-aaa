@@ -3,7 +3,7 @@ import argparse
 import pytest
 
 from flake8_aaa import Checker
-from flake8_aaa.conf import ActBlockStyle, Config
+from flake8_aaa.conf import ActBlockStyle
 from flake8_aaa.exceptions import UnexpectedConfigValue
 
 
