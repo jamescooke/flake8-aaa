@@ -19,8 +19,8 @@ class FirstChildFinder(ast.NodeVisitor):
 
     def visit_With(self, node: ast.With) -> None:
         self.child_parent[node.body[0]] = node
-        for node in node.body:
-            self.visit(node)
+        for child_node in node.body:
+            self.visit(child_node)
 
 
 def find_first_child_nodes(tree: ast.AST) -> Dict[ast.AST, ast.With]:

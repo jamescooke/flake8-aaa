@@ -3,8 +3,9 @@ from typing import Iterable, List, Tuple, Type, TypeVar
 
 from .conf import ActBlockStyle
 from .exceptions import EmptyBlock
-from .helpers import add_node_parents, filter_arrange_nodes, get_first_token, get_last_token
+from .helpers import filter_arrange_nodes, get_first_token, get_last_token
 from .types import LineType
+from .visitors import find_first_child_nodes
 
 _Block = TypeVar('_Block', bound='Block')
 
@@ -51,13 +52,18 @@ class Block:
 
         # --- LARGE Act Block behaviour...
 
-        add_node_parents(test_func_node)
-        # Walk up the parent nodes of the parent node to find test's definition.
-        act_block_node = node
-        while act_block_node.parent != test_func_node:  # type: ignore[attr-defined]
-            act_block_node = act_block_node.parent  # type: ignore[attr-defined]
+        # Walk up the parent nodes of the act node, but only when act node is
+        # the first child. This allows act block to absorb context managers
+        # that have the act node first in their body.
+        child_parent_map = find_first_child_nodes(test_func_node)
 
-        return cls([act_block_node], LineType.act)
+        act_block_node = node
+
+        while True:
+            try:
+                act_block_node = child_parent_map[act_block_node]
+            except KeyError:
+                return cls([act_block_node], LineType.act)
 
     @classmethod
     def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], act_block_first_line: int) -> _Block:
