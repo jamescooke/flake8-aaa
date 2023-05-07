@@ -2,7 +2,6 @@ import ast
 from typing import List, Tuple, Type, TypeVar
 
 from .conf import ActBlockStyle
-from .exceptions import EmptyBlock
 from .helpers import filter_arrange_nodes, get_first_token, get_last_token
 from .types import LineType
 
@@ -66,24 +65,27 @@ class Block:
         """
         return cls(filter_arrange_nodes(nodes, act_block_first_line), LineType.arrange)
 
-    def get_span(self, first_line_no: int) -> Tuple[int, int]:
-        """
-        Args:
-            first_line_no: First line number of Block. Used to calculate
-                relative line numbers.
 
-        Returns:
-            First and last line covered by this block, counted relative to the
-            start of the Function.
+def get_span(first_node: ast.AST, last_node: ast.AST, func_first_line_no: int) -> Tuple[int, int]:
+    """
+    Calculate first and last line covered by first and last nodes provided,
+    counted relative to the start of the Function. The intention is that
+    either:
 
-        Raises:
-            EmptyBlock: when block has no nodes
-        """
-        if not self.nodes:
-            raise EmptyBlock(f'span requested from {self.line_type} block with no nodes')
-        # start and end are (<line number>, <indent>) pairs, so just the line
-        # numbers are picked out.
-        return (
-            get_first_token(self.nodes[0]).start[0] - first_line_no,
-            get_last_token(self.nodes[-1]).end[0] - first_line_no,
-        )
+    * Both nodes are the same and their span is calculated.
+
+    * The nodes are the first of a block and the last of the block and they are
+      checked to provide the span of the block.
+
+    Args:
+        nodes: Nodes from test function. When passing two nodes, they must be
+            in order they appear in the code.
+        func_first_line_no: First line number of Block. Used to calculate
+            relative line numbers.
+    """
+    # start and end are (<line number>, <indent>) pairs, so just the line
+    # numbers are picked out.
+    return (
+        get_first_token(first_node).start[0] - func_first_line_no,
+        get_last_token(last_node).end[0] - func_first_line_no,
+    )
