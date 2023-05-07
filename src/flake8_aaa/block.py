@@ -1,5 +1,5 @@
 import ast
-from typing import Iterable, List, Tuple, Type, TypeVar
+from typing import List, Tuple, Type, TypeVar
 
 from .conf import ActBlockStyle
 from .exceptions import EmptyBlock
@@ -13,21 +13,28 @@ class Block:
     """
     An Arrange, Act or Assert block of code as parsed from the test function.
 
-    Act blocks are simply a single Act node in default mode. However, in a
-    future version (update TODO200), "large" Act blocks will include the Act
-    node and any context managers that wrap them.
+    A block is simply a group of lines in the test function along with their
+    line type. It is represented by start and end line numbers relative to the
+    test function.
 
     Note:
+        TODO200: check on this. Can it be required that all blocks have at
+        least one line?
         Blocks with no nodes are allowed (at the moment).
 
-    Args:
-        nodes: Nodes that make up this block.
+    Attributes:
+        first_line_no
+        last_line_no: Last line number *inclusive*. So a one line Block
+            will have the same first and last line number.
         line_type: Type of line that this blocks writes into the line markers
             instance for the function.
     """
 
-    def __init__(self, nodes: Iterable[ast.AST], lt: LineType) -> None:
-        self.nodes = tuple(nodes)
+    def __init__(self, first_line_no: int, last_line_no: int, lt: LineType) -> None:
+        assert first_line_no > 0, 'Got first_line_no for Block which is before function start'
+        assert first_line_no <= last_line_no, 'Got last_line_no which is before first_line_no'
+        self.first_line_no = first_line_no
+        self.last_line_no = last_line_no
         self.line_type = lt
 
     @classmethod
