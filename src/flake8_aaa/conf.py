@@ -11,7 +11,7 @@ _ActBlockStyle = TypeVar('_ActBlockStyle', bound='ActBlockStyle')
 @enum.unique
 class ActBlockStyle(enum.Enum):
     DEFAULT = 'default'
-    # LARGE = 'large'  # TODO200
+    LARGE = 'large'
 
     @classmethod
     def allowed_values(cls: Type[_ActBlockStyle]) -> List[str]:

@@ -29,10 +29,12 @@ class TestFuncLister(ast.NodeVisitor):
     """
     Helper to walk the ast Tree and find functions that looks like tests.
     Matching function nodes are kept in ``_found_func`` attr.
+
+    TODO: move to visitors.py
     """
 
     def __init__(self, skip_noqa: bool):
-        super(TestFuncLister, self).__init__()
+        super().__init__()
         self.skip_noqa = skip_noqa
         self._found_funcs: List[ast.FunctionDef] = []
 

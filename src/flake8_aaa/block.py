@@ -5,6 +5,7 @@ from .conf import ActBlockStyle
 from .exceptions import EmptyBlock
 from .helpers import filter_arrange_nodes, get_first_token, get_last_token
 from .types import LineType
+from .visitors import find_first_child_nodes
 
 _Block = TypeVar('_Block', bound='Block')
 
@@ -38,18 +39,41 @@ class Block:
     def build_act(
         cls: Type[_Block],
         node: ast.stmt,
-        test_func_node: ast.FunctionDef,  # use this in TODO200
-        act_block_style: ActBlockStyle,  # use this in TODO200
+        test_func_node: ast.FunctionDef,
+        act_block_style: ActBlockStyle,
     ) -> _Block:
         """
-        Act block is a single node by default. TODO200
+        Using the provided `node` as Act Node, build the Act Block depending on
+        the `act_block_style`.
+
+        Act blocks are simply a single Act node in default mode. However,
+        "large" Act blocks include the Act node and any context managers that
+        wrap them.
 
         Args:
             node: Act node already found by Function.mark_act()
             test_func_node: Node of test function / method.
-            act_block_style: Currently always DEFAULT.
+            act_block_style: Default Act Blocks are just the Act node. Large
+                Act Blocks can absorb context managers that wrap them.
         """
-        first, last = get_span(node, node)
+        if act_block_style == ActBlockStyle.DEFAULT:
+            first, last = get_span(node, node)
+            return cls(first, last, LineType.act)
+
+        # --- LARGE Act Block behaviour...
+
+        # Walk up the parent nodes of the act node, but only when act node is
+        # the first child. This allows act block to absorb context managers
+        # that have the act node first in their body.
+        child_parent_map = find_first_child_nodes(test_func_node)
+        wrapper_node = node
+        while True:
+            try:
+                wrapper_node = child_parent_map[wrapper_node]
+            except KeyError:
+                break
+
+        first, last = get_span(wrapper_node, node)
         return cls(first, last, LineType.act)
 
     @classmethod

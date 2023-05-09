@@ -30,7 +30,7 @@ lintexamples:
 	flake8 examples/good examples/bad | sort > flake8.out
 	diff examples/bad/flake8_expected.out flake8.out
 	@echo "=== mypy ==="
-	mypy examples/conftest.py examples/good --ignore-missing-imports --exclude examples/good/black/
+	mypy examples/conftest.py examples/good --ignore-missing-imports --exclude examples/black/ --no-incremental
 	mypy examples/bad --ignore-missing-imports
 	@echo "=== black ==="
 	black --check --diff --verbose examples/black

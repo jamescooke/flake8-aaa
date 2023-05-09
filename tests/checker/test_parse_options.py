@@ -3,7 +3,7 @@ import argparse
 import pytest
 
 from flake8_aaa import Checker
-from flake8_aaa.conf import ActBlockStyle, Config
+from flake8_aaa.conf import ActBlockStyle
 from flake8_aaa.exceptions import UnexpectedConfigValue
 
 
@@ -17,13 +17,12 @@ def test() -> None:
         by this method.
     """
     option_manager = None  # Fake because it's not used by SUT
-    options = argparse.Namespace(aaa_act_block_style='default')
+    options = argparse.Namespace(aaa_act_block_style='Large')
 
     result = Checker.parse_options(option_manager, options, [])
 
     assert result is None
-    assert isinstance(Checker.config, Config)
-    assert Checker.config.act_block_style == ActBlockStyle.DEFAULT
+    assert Checker.default_config.act_block_style == ActBlockStyle.LARGE
 
 
 # --- FAILURES ---

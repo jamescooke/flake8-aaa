@@ -177,7 +177,7 @@ class Function:
         lines in ``line_markers``.
 
         Args:
-            act_block_style: Currently only DEFAULT. TODO200
+            act_block_style: Passed through to `build_act()` method.
 
         Returns:
             Number of lines covered by the Act block (used for debugging /
