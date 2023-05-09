@@ -157,26 +157,24 @@ class Function:
         Note:
             Does not spot the closing ``):`` of a function when it occurs on
             its own line.
-
-        Note:
-            Can not use ``helpers.build_footprint()`` because function nodes
-            cover the whole function. In this case, just the def lines are
-            wanted with any decorators.
         """
-        first_index = get_first_token(self.node).start[0] - self.first_line_no  # Should usually be 0
+        first_line_no = get_first_token(self.node).start[0]
+        assert first_line_no == self.first_line_no
+
         try:
             end_token = get_last_token(self.node.args.args[-1])
         except IndexError:
             # Fn has no args, so end of function is the fn def itself...
             end_token = get_first_token(self.node)
-        last_index = end_token.end[0] - self.first_line_no
-        self.line_markers.update(first_index, last_index, LineType.func_def)
-        return last_index - first_index + 1
+        last_line_no = end_token.end[0]
+
+        self.line_markers.update(first_line_no, last_line_no, LineType.func_def)
+        return last_line_no - first_line_no + 1
 
     def mark_act(self, act_block_style: ActBlockStyle) -> int:
         """
-        Finds Act node, calculates its span and marks the associated lines in
-        ``line_markers``.
+        Finds Act node, builds it into an Act block and marks the associated
+        lines in ``line_markers``.
 
         Args:
             act_block_style: Currently only DEFAULT. TODO200
@@ -194,13 +192,11 @@ class Function:
         """
         # Load act block and kick out when none is found
         self.act_node = self.load_act_node()
-        self.act_block = Block.build_act(self.act_node.node, self.node, act_block_style)
-        # Get relative line numbers of Act block footprint
-        # TODO store first and last line numbers in Block - use them instead of
-        # asking for span.
-        first_index, last_index = self.act_block.get_span(self.first_line_no)
-        self.line_markers.update(first_index, last_index, LineType.act)
-        return last_index - first_index + 1
+        self.act_block = Block.build_act(
+            node=self.act_node.node, test_func_node=self.node, act_block_style=act_block_style
+        )
+        self.line_markers.update(self.act_block.first_line_no, self.act_block.last_line_no, LineType.act)
+        return self.act_block.last_line_no - self.act_block.first_line_no + 1
 
     def mark_arrange(self) -> int:
         """
@@ -216,23 +212,16 @@ class Function:
             ValidationError: Marking caused a collision.
             ValueError: No Act block has been marked.
         """
-        # TODO get this from self.act_block
-        act_block_first_index = self.line_markers.types.index(LineType.act)
-        act_block_first_line_number = act_block_first_index + self.first_line_no
-        arrange_block = Block.build_arrange(self.node.body, act_block_first_line_number)
-
-        # First and lass offsets of Arrange block - if block is empty, then
-        # work is done.
         try:
-            first_index, last_index = arrange_block.get_span(self.first_line_no)
+            arrange_block = Block.build_arrange(self.node.body, self.act_block.first_line_no)
         except EmptyBlock:
             return 0
 
         # Prevent overhanging arrangement, for example in context manager. Stop
         # at line before Act block first line offset.
         return self.line_markers.update(
-            first_index,
-            min(last_index, act_block_first_index - 1),
+            arrange_block.first_line_no,
+            min(arrange_block.last_line_no, self.act_block.first_line_no - 1),
             LineType.arrange,
         )
 
