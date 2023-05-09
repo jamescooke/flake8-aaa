@@ -23,12 +23,12 @@ def test():  # Line 3
 '''
     ]
 )
-def test(first_node_with_tokens: ast.AST) -> None:
+def test(first_node_with_tokens: ast.FunctionDef) -> None:
     """
     `pytest.raises()` with statement is the Act node.
     """
     with_mock_node = first_node_with_tokens.body[1]
-    with_pytest_node = with_mock_node.body[0]
+    with_pytest_node = with_mock_node.body[0]  # type: ignore[attr-defined]
 
     result = Block.build_act(
         node=with_pytest_node,

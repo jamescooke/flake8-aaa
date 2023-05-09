@@ -19,7 +19,7 @@ def test() -> None:
     # line 17
     """
     line_markers = LineMarkers(6 * [''], 11)
-    line_markers.types[0]=  LineType.func_def
+    line_markers.types[0] = LineType.func_def
     line_markers.types[2] = LineType.blank_line
 
     result = line_markers.update(12, 14, LineType.act)

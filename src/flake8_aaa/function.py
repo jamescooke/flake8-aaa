@@ -212,6 +212,7 @@ class Function:
             ValidationError: Marking caused a collision.
             ValueError: No Act block has been marked.
         """
+        assert self.act_block is not None
         try:
             arrange_block = Block.build_arrange(self.node.body, self.act_block.first_line_no)
         except EmptyBlock:

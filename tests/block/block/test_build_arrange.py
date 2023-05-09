@@ -18,7 +18,7 @@ def test():
     assert result == 2
 ''']
 )
-def test_simple(first_node_with_tokens: ast.AST) -> None:
+def test_simple(first_node_with_tokens: ast.FunctionDef) -> None:
     result = Block.build_arrange(first_node_with_tokens.body, 6)
 
     assert result.first_line_no == 3
@@ -43,7 +43,7 @@ def test(api_client, url):
     ''',
     ]
 )
-def test_context(first_node_with_tokens: ast.AST) -> None:
+def test_context(first_node_with_tokens: ast.FunctionDef) -> None:
     """
     When context manager is in Arrange, the last line can include the Act line
     """
@@ -63,7 +63,7 @@ def test():
 
     assert result == 1
 '''])
-def test_none(first_node_with_tokens: ast.AST) -> None:
+def test_none(first_node_with_tokens: ast.FunctionDef) -> None:
     """
     When no Arrange Block is found, EmptyBlock is raised
     """

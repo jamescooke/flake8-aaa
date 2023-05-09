@@ -28,7 +28,7 @@ def test():  # Line 5
 '''
     ]
 )
-def test(first_node_with_tokens: ast.AST) -> None:
+def test(first_node_with_tokens: ast.FunctionDef) -> None:
     """
     For a block that contains the whole body of the test, first and last line
     numbers are returned.
