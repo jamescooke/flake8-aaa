@@ -28,6 +28,13 @@ See also `latest documentation
   ``--aaa-act-block-style=large``. Also fix up associated Makefile recipes and
   update example README file.
 
+* ⛏️ Remove list of nodes from ``Block`` class and instead keep the start and
+  end line numbers of the block, relative to the test function. This allows for
+  any structural discoveries while doing AST node traversal (e.g. when parsing
+  Large style Act blocks) to be used to calculate the size of the Act block
+  itself. The alternative would be to store the list of nodes in the Act block,
+  and then re-walk them when working out the block's span.
+
 0.14.1_ - 2023/04/25
 --------------------
 
