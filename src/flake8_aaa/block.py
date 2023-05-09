@@ -1,5 +1,5 @@
 import ast
-from typing import Iterable, List, Tuple, Type, TypeVar
+from typing import List, Tuple, Type, TypeVar
 
 from .conf import ActBlockStyle
 from .exceptions import EmptyBlock
@@ -14,20 +14,25 @@ class Block:
     """
     An Arrange, Act or Assert block of code as parsed from the test function.
 
-    Act blocks are simply a single Act node in default mode. However, "large"
-    Act blocks include the Act node and any context managers that wrap them.
+    A Block is simply a group of lines in the test function. It has start and
+    end line numbers (inclusive), along with line type.
 
     Note:
-        Blocks with no nodes are allowed (at the moment).
+        All Blocks require at least one line. If an empty block is discovered
+        while building, this is passed as the ``EmptyBlock`` exception.
 
-    Args:
-        nodes: Nodes that make up this block.
+    Attributes:
+        first_line_no: First line of Block inclusive.
+        last_line_no: Last line of Block inclusive..
         line_type: Type of line that this blocks writes into the line markers
             instance for the function.
     """
 
-    def __init__(self, nodes: Iterable[ast.AST], lt: LineType) -> None:
-        self.nodes = tuple(nodes)
+    def __init__(self, first_line_no: int, last_line_no: int, lt: LineType) -> None:
+        assert first_line_no > 0, 'First line before start of file'
+        assert first_line_no <= last_line_no, 'Got last line is before first line of Block'
+        self.first_line_no = first_line_no
+        self.last_line_no = last_line_no
         self.line_type = lt
 
     @classmethod
@@ -41,6 +46,10 @@ class Block:
         Using the provided `node` as Act Node, build the Act Block depending on
         the `act_block_style`.
 
+        Act blocks are simply a single Act node in default mode. However,
+        "large" Act blocks include the Act node and any context managers that
+        wrap them.
+
         Args:
             node: Act node already found by Function.mark_act()
             test_func_node: Node of test function / method.
@@ -48,7 +57,8 @@ class Block:
                 Act Blocks can absorb context managers that wrap them.
         """
         if act_block_style == ActBlockStyle.DEFAULT:
-            return cls([node], LineType.act)
+            first, last = get_span(node, node)
+            return cls(first, last, LineType.act)
 
         # --- LARGE Act Block behaviour...
 
@@ -56,14 +66,15 @@ class Block:
         # the first child. This allows act block to absorb context managers
         # that have the act node first in their body.
         child_parent_map = find_first_child_nodes(test_func_node)
-
-        act_block_node = node
-
+        wrapper_node = node
         while True:
             try:
-                act_block_node = child_parent_map[act_block_node]
+                wrapper_node = child_parent_map[wrapper_node]
             except KeyError:
-                return cls([act_block_node], LineType.act)
+                break
+
+        first, last = get_span(wrapper_node, node)
+        return cls(first, last, LineType.act)
 
     @classmethod
     def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], act_block_first_line: int) -> _Block:
@@ -74,27 +85,40 @@ class Block:
         Args:
             nodes: Body of test function / method.
             act_block_first_line
-        """
-        return cls(filter_arrange_nodes(nodes, act_block_first_line), LineType.arrange)
-
-    def get_span(self, first_line_no: int) -> Tuple[int, int]:
-        """
-        Args:
-            first_line_no: First line number of Block. Used to calculate
-                relative line numbers.
-
-        Returns:
-            First and last line covered by this block, counted relative to the
-            start of the Function.
 
         Raises:
-            EmptyBlock: when block has no nodes
+            EmptyBlock: When no arrange nodes are found, there is no Arrange
+                Block.
         """
-        if not self.nodes:
-            raise EmptyBlock(f'span requested from {self.line_type} block with no nodes')
-        # start and end are (<line number>, <indent>) pairs, so just the line
-        # numbers are picked out.
-        return (
-            get_first_token(self.nodes[0]).start[0] - first_line_no,
-            get_last_token(self.nodes[-1]).end[0] - first_line_no,
-        )
+        nodes = filter_arrange_nodes(nodes, act_block_first_line)
+        if not nodes:
+            raise EmptyBlock()
+
+        first, last = get_span(nodes[0], nodes[-1])
+        return cls(first, last, LineType.arrange)
+
+
+def get_span(first_node: ast.AST, last_node: ast.AST) -> Tuple[int, int]:
+    """
+    Generate span of a Block as line numbers.
+
+    First and last line covered by first and last nodes provided. The intention
+    is that either:
+
+    * For Blocks with a single node, that node is passed as first and last
+      node. Therefore both nodes are the same and their span is calculated.
+
+    * For Blocks with multiple nodes, the first and last of the Block are
+      checked to provide the span of the Block. The caller has to manage which
+      is the first and last node.
+
+    Args:
+        first_node: First node in Block.
+        last_node: Last node in Block.
+    """
+    # start and end are (<line number>, <indent>) pairs, so just the line
+    # numbers are picked out.
+    return (
+        get_first_token(first_node).start[0],
+        get_last_token(last_node).end[0],
+    )

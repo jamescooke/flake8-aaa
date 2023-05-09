@@ -155,6 +155,7 @@ def get_last_token(node: ast.AST) -> Token:
 def filter_arrange_nodes(nodes: List[ast.stmt], act_block_first_line_number: int) -> List[ast.stmt]:
     """
     Args:
+        nodes: List of body nodes of test function.
         act_block_first_line_number: Real line number of Act block first line.
 
     Returns:

@@ -24,6 +24,9 @@ class FirstChildFinder(ast.NodeVisitor):
 
 
 def find_first_child_nodes(tree: ast.AST) -> Dict[ast.AST, ast.With]:
+    """
+    Wrapper for FirstChildFinder visitor - see docstring above
+    """
     first_child_finder = FirstChildFinder()
     first_child_finder.visit(tree)
     return first_child_finder.child_parent
