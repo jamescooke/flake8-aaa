@@ -15,7 +15,7 @@ def test_other():
 
 # All done :D
 '''])
-def test(first_node_with_tokens, lines, tokens):
+def test(first_node_with_tokens, lines, tokens) -> None:
     result = Function(first_node_with_tokens, lines, tokens)
 
     assert result.node == first_node_with_tokens

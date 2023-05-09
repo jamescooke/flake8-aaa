@@ -1,5 +1,6 @@
 import pytest
 
+from flake8_aaa.function import Function
 from flake8_aaa.types import LineType
 
 
@@ -11,7 +12,7 @@ def test():
     assert result == 1
 ''',
 ])
-def test(function_bl_cmt):
+def test(function_bl_cmt: Function) -> None:
     result = function_bl_cmt.mark_def()
 
     assert result == 1
@@ -40,7 +41,7 @@ def test(value):
 ''',
     ]
 )
-def test_decorated(function_bl_cmt):
+def test_decorated(function_bl_cmt: Function) -> None:
     result = function_bl_cmt.mark_def()
 
     assert result == 7
@@ -77,7 +78,7 @@ def test(value):
 ''',
     ]
 )
-def test_decorated_comment(function_bl_cmt):
+def test_decorated_comment(function_bl_cmt: Function) -> None:
     result = function_bl_cmt.mark_def()
 
     assert result == 8
@@ -115,7 +116,7 @@ def test(value):
 ''',
     ]
 )
-def test_decorated_blank(function_bl_cmt):
+def test_decorated_blank(function_bl_cmt: Function) -> None:
     result = function_bl_cmt.mark_def()
 
     assert result == 8
@@ -148,7 +149,7 @@ def test(
 ''',
     ]
 )
-def test_multi(function_bl_cmt):
+def test_multi(function_bl_cmt: Function) -> None:
     result = function_bl_cmt.mark_def()
 
     assert result == 4
