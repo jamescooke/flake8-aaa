@@ -22,7 +22,6 @@ class TestItemFactory(TestCase):
 
 
 class TestUserFactory(TestCase):
-
     user_model = get_user_model()
 
     def test_default(self):

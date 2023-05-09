@@ -14,7 +14,6 @@ class Test(unittest.TestCase):
         Checking on a raise in a with block works with unittest.
         """
         with open(self.hello_world_path) as f:
-
             with self.assertRaises(io.UnsupportedOperation):
                 f.write("hello back")
 
