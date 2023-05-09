@@ -32,12 +32,11 @@ def test(first_node_with_tokens: ast.AST) -> None:
 
     result = Block.build_act(
         node=with_pytest_node,
-        func_first_line_no=3,
         test_func_node=first_node_with_tokens,
         act_block_style=ActBlockStyle.DEFAULT,
     )
 
     assert isinstance(result, Block)
-    assert result.first_line_offset == 5
-    assert result.last_line_offset == 6
+    assert result.first_line_no == 8
+    assert result.last_line_no == 9
     assert result.line_type == LineType.act

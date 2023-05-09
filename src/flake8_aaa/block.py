@@ -2,6 +2,7 @@ import ast
 from typing import List, Tuple, Type, TypeVar
 
 from .conf import ActBlockStyle
+from .exceptions import EmptyBlock
 from .helpers import filter_arrange_nodes, get_first_token, get_last_token
 from .types import LineType
 
@@ -12,38 +13,31 @@ class Block:
     """
     An Arrange, Act or Assert block of code as parsed from the test function.
 
-    A block is simply a group of lines in the test function along with their
-    line type. It is represented by start and end line numbers relative to the
-    test function.
+    A Block is simply a group of lines in the test function. It has start and
+    end line numbers (inclusive), along with line type.
 
     Note:
-        TODO200: check on this. Can it be required that all blocks have at
-        least one line?
-        Blocks with no nodes are allowed (at the moment).
+        All Blocks require at least one line. If an empty block is discovered
+        while building, this is passed as the ``EmptyBlock`` exception.
 
     Attributes:
-        first_line_offset: First line of block relative to function `def` line.
-            Therefore the line immediately after the func `def` is offset 1.
-            See `get_span()` docstring below for more.
-        last_line_offset: Last line number relative to first line of test
-            definition. This is *inclusive*. So a one line Block will have the
-            same first and last line number.
+        first_line_no: First line of Block inclusive.
+        last_line_no: Last line of Block inclusive..
         line_type: Type of line that this blocks writes into the line markers
             instance for the function.
     """
 
-    def __init__(self, first_line_offset: int, last_line_offset: int, lt: LineType) -> None:
-        assert first_line_offset > 0, 'Got first_line_offset for Block which is before function start'
-        assert first_line_offset <= last_line_offset, 'Got last_line_offset which is before first_line_offset'
-        self.first_line_offset = first_line_offset
-        self.last_line_offset = last_line_offset
+    def __init__(self, first_line_no: int, last_line_no: int, lt: LineType) -> None:
+        assert first_line_no > 0, 'First line before start of file'
+        assert first_line_no <= last_line_no, 'Got last line is before first line of Block'
+        self.first_line_no = first_line_no
+        self.last_line_no = last_line_no
         self.line_type = lt
 
     @classmethod
     def build_act(
         cls: Type[_Block],
         node: ast.stmt,
-        func_first_line_no: int,
         test_func_node: ast.FunctionDef,  # use this in TODO200
         act_block_style: ActBlockStyle,  # use this in TODO200
     ) -> _Block:
@@ -52,12 +46,11 @@ class Block:
 
         Args:
             node: Act node already found by Function.mark_act()
-            func_first_line_no: First line number of test function.
             test_func_node: Node of test function / method.
-            act_block_style: Currently always DEFAULT. TODO200
+            act_block_style: Currently always DEFAULT.
         """
-        first_line_offset, last_line_offset = get_span(node, node, func_first_line_no)
-        return cls(first_line_offset, last_line_offset, LineType.act)
+        first, last = get_span(node, node)
+        return cls(first, last, LineType.act)
 
     @classmethod
     def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], act_block_first_line: int) -> _Block:
@@ -68,23 +61,25 @@ class Block:
         Args:
             nodes: Body of test function / method.
             act_block_first_line
+
+        Raises:
+            EmptyBlock: When no arrange nodes are found, there is no Arrange
+                Block.
         """
-        return cls(filter_arrange_nodes(nodes, act_block_first_line), LineType.arrange)
+        nodes = filter_arrange_nodes(nodes, act_block_first_line)
+        if not nodes:
+            raise EmptyBlock()
+
+        first, last = get_span(nodes[0], nodes[-1])
+        return cls(first, last, LineType.arrange)
 
 
-def get_span(first_node: ast.AST, last_node: ast.AST, func_first_line_no: int) -> Tuple[int, int]:
+def get_span(first_node: ast.AST, last_node: ast.AST) -> Tuple[int, int]:
     """
-    Generate span of a Block as offsets.
+    Generate span of a Block as line numbers.
 
-    First and last line covered by first and last nodes provided, counted
-    relative to the start of the Function `def` line. This means that offsets
-    are generated::
-
-        def test() -> None:   # offset 0
-            result = None     # offset 1
-            ...               # offset 2
-
-    The intention is that either:
+    First and last line covered by first and last nodes provided. The intention
+    is that either:
 
     * For Blocks with a single node, that node is passed as first and last
       node. Therefore both nodes are the same and their span is calculated.
@@ -94,14 +89,12 @@ def get_span(first_node: ast.AST, last_node: ast.AST, func_first_line_no: int) -
       is the first and last node.
 
     Args:
-        first_node: First node in the Block.
-        last_node: Last node in the Block.
-        func_first_line_no: First line number of Block. Used to calculate
-            offsets.
+        first_node: First node in Block.
+        last_node: Last node in Block.
     """
     # start and end are (<line number>, <indent>) pairs, so just the line
     # numbers are picked out.
     return (
-        get_first_token(first_node).start[0] - func_first_line_no,
-        get_last_token(last_node).end[0] - func_first_line_no,
+        get_first_token(first_node).start[0],
+        get_last_token(last_node).end[0],
     )
