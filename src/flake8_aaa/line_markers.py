@@ -7,15 +7,18 @@ from .types import LineType
 
 class LineMarkers:
     """
-    Marks each line of a test function with the ``LineType`` assigned to that
-    line.
+    List of line types set for each line of test function.
+
+    Externally, line markers are accessed using a line number. Internally, this
+    class uses offsets / indices.
 
     Attributes:
         lines: Lines of code that make up test. Used to calculate offset in
             raised error.
         types: List of types for each line in test.
-        fn_offset: First line number of test so that line type indices can be
-            converted back to line numbers in exceptions.
+        fn_offset: First line number of test so lines can be marked using a
+            line number and indices can be converted back to line numbers in
+            exceptions.
     """
 
     def __init__(self, lines: List[str], fn_offset: int) -> None:
@@ -25,12 +28,15 @@ class LineMarkers:
 
     def set(self, index: int, value: LineType) -> bool:
         """
-        Extended version of setitem to assert that rules for setting a line are
+        Internal version of setitem to assert that rules for setting a line are
         met:
             * Existing line is unprocessed - line is set as new type.
             * Existing line is blank line or comment and new line is function
                 defintion or an AAA block - line setting is ignored because
                 comments and blank lines can appear in func defs and blocks.
+
+        Note:
+            Uses *indices* rather than line numbers.
 
         Returns:
             An unprocessed line was replaced with a new line type.
@@ -51,25 +57,28 @@ class LineMarkers:
             line_num = index + self.fn_offset
             raise ValidationError(
                 line_num,
-                1,
+                1,  # col offset
                 f'AAA99 collision when marking line {line_num} (index={index}) as {value}, was already {current_type}',
             )
         self.types[index] = value
         return True
 
-    def update(self, a: int, b: int, line_type: LineType) -> int:
+    def update(self, first_line_no: int, last_line_no: int, line_type: LineType) -> int:
         """
-        Updates line types from index ``a`` to index ``b`` inclusively. Indexes
-        are relative.
+        Externally used method to update lines in function from
+        ``first_line_no`` to ``last_line_no`` inclusively.
+
+        Note:
+            Operates with line numbers, not indices / offsets.
 
         Args:
-            a: First line index.
-            b: Last line index.
+            first_line_no: First line number.
+            last_line_no: Last line number.
             line_type: New type of line.
 
         Returns:
-            Number of lines updated. This may not be equal to ``b - a + 1``
-                because lines that are blank are skipped.
+            Number of lines updated. This may not be equal to ``last_line_no -
+            first_line_no + 1`` because lines that are blank are skipped.
 
         Raises:
             ValidationError: A special error on collision. This prevents Flake8
@@ -77,9 +86,12 @@ class LineMarkers:
                 but it indicates to the user that something went wrong with
                 processing the function.
         """
+        first_index = first_line_no - self.fn_offset
+        last_index = last_line_no - self.fn_offset
+
         count = 0
 
-        for i in range(a, b + 1):
+        for i in range(first_index, last_index + 1):
             if self.set(i, line_type):
                 count += 1
 
@@ -144,14 +156,14 @@ class LineMarkers:
             ``check_act_assert_spacing()``.
         """
         numbered_lines = list(enumerate(self.types))
-        first_block_lines = filter(lambda l: l[1] is first_block_type, numbered_lines)
+        first_block_lines = filter(lambda lt: lt[1] is first_block_type, numbered_lines)
         try:
             first_block_lineno = list(first_block_lines)[-1][0]
         except IndexError:
             # First block has no lines
             return
 
-        second_block_lines = filter(lambda l: l[1] is second_block_type, numbered_lines)
+        second_block_lines = filter(lambda lt: lt[1] is second_block_type, numbered_lines)
         try:
             second_block_lineno = next(second_block_lines)[0]
         except StopIteration:
