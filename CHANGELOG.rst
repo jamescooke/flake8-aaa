@@ -23,17 +23,22 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
-* ⛏️ Move Black formatted test examples to their own directory. This will help
+* 🎈 New "large" Act block style option added. This allows context managers to
+  join the Act block when they directly wrap the Act node. This behaviour is
+  provided to provide compatibility with Black versions ``23.*``. Fixes `issue
+  200 <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
+
+* ⛏️ Moved Black formatted test examples to their own directory. This helps
   when running Flake8 against Black formatted tests which need
   ``--aaa-act-block-style=large``. Also fix up associated Makefile recipes and
   update example README file.
 
-* ⛏️ Remove list of nodes from ``Block`` class and instead keep the start and
+* ⛏️ Removed list of nodes from ``Block`` class and instead kept the start and
   end line numbers of the block. This allows for any structural discoveries
   while doing AST node traversal (e.g. when parsing Large style Act blocks) to
   be used to calculate the size of the Act block itself. The alternative would
-  be to store the list of nodes in the Act block, and then re-walk them when
-  working out the block's span, which would be duplication of effort.
+  have been to store the list of nodes in the Act block, and then re-walk them
+  when working out the block's span, which would be duplication of effort.
 
 * ⛏️ Remove unused ``MultiNodeBlock``.
 

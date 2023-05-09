@@ -6,6 +6,12 @@ debugging. Its goal is to show the state of analysed test functions, which
 lines are considered to be parts of which blocks and any errors that have been
 found.
 
+.. warning::
+
+    Command line mode does not support ``--aaa-act-block-style=large`` option
+    or associated configuration. `Issue regarding this is open on GitHub
+    <https://github.com/jamescooke/flake8-aaa/issues/217>`_.
+
 Invocation, output and return value
 -----------------------------------
 
