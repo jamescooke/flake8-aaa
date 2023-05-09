@@ -22,24 +22,28 @@ class Block:
         Blocks with no nodes are allowed (at the moment).
 
     Attributes:
-        first_line_no
-        last_line_no: Last line number *inclusive*. So a one line Block
-            will have the same first and last line number.
+        first_line_offset: First line of block relative to function `def` line.
+            Therefore the line immediately after the func `def` is offset 1.
+            See `get_span()` docstring below for more.
+        last_line_offset: Last line number relative to first line of test
+            definition. This is *inclusive*. So a one line Block will have the
+            same first and last line number.
         line_type: Type of line that this blocks writes into the line markers
             instance for the function.
     """
 
-    def __init__(self, first_line_no: int, last_line_no: int, lt: LineType) -> None:
-        assert first_line_no > 0, 'Got first_line_no for Block which is before function start'
-        assert first_line_no <= last_line_no, 'Got last_line_no which is before first_line_no'
-        self.first_line_no = first_line_no
-        self.last_line_no = last_line_no
+    def __init__(self, first_line_offset: int, last_line_offset: int, lt: LineType) -> None:
+        assert first_line_offset > 0, 'Got first_line_offset for Block which is before function start'
+        assert first_line_offset <= last_line_offset, 'Got last_line_offset which is before first_line_offset'
+        self.first_line_offset = first_line_offset
+        self.last_line_offset = last_line_offset
         self.line_type = lt
 
     @classmethod
     def build_act(
         cls: Type[_Block],
         node: ast.stmt,
+        func_first_line_no: int,
         test_func_node: ast.FunctionDef,  # use this in TODO200
         act_block_style: ActBlockStyle,  # use this in TODO200
     ) -> _Block:
@@ -48,10 +52,12 @@ class Block:
 
         Args:
             node: Act node already found by Function.mark_act()
+            func_first_line_no: First line number of test function.
             test_func_node: Node of test function / method.
             act_block_style: Currently always DEFAULT. TODO200
         """
-        return cls([node], LineType.act)
+        first_line_offset, last_line_offset = get_span(node, node, func_first_line_no)
+        return cls(first_line_offset, last_line_offset, LineType.act)
 
     @classmethod
     def build_arrange(cls: Type[_Block], nodes: List[ast.stmt], act_block_first_line: int) -> _Block:
@@ -68,20 +74,30 @@ class Block:
 
 def get_span(first_node: ast.AST, last_node: ast.AST, func_first_line_no: int) -> Tuple[int, int]:
     """
-    Calculate first and last line covered by first and last nodes provided,
-    counted relative to the start of the Function. The intention is that
-    either:
+    Generate span of a Block as offsets.
 
-    * Both nodes are the same and their span is calculated.
+    First and last line covered by first and last nodes provided, counted
+    relative to the start of the Function `def` line. This means that offsets
+    are generated::
 
-    * The nodes are the first of a block and the last of the block and they are
-      checked to provide the span of the block.
+        def test() -> None:   # offset 0
+            result = None     # offset 1
+            ...               # offset 2
+
+    The intention is that either:
+
+    * For Blocks with a single node, that node is passed as first and last
+      node. Therefore both nodes are the same and their span is calculated.
+
+    * For Blocks with multiple nodes, the first and last of the Block are
+      checked to provide the span of the Block. The caller has to manage which
+      is the first and last node.
 
     Args:
-        nodes: Nodes from test function. When passing two nodes, they must be
-            in order they appear in the code.
+        first_node: First node in the Block.
+        last_node: Last node in the Block.
         func_first_line_no: First line number of Block. Used to calculate
-            relative line numbers.
+            offsets.
     """
     # start and end are (<line number>, <indent>) pairs, so just the line
     # numbers are picked out.
