@@ -1,8 +1,8 @@
 AAA06: comment in Act block
----------------------------
+===========================
 
 Problematic code
-................
+----------------
 
 .. code-block:: python
 
@@ -23,7 +23,7 @@ Problematic code
         assert result == 2
 
 Correct code
-............
+------------
 
 Use docstrings instead of hash-comments:
 
@@ -61,7 +61,7 @@ Separate hash-comment line from Act block with a blank line:
         assert result == 2
 
 Rationale
-.........
+---------
 
 The Act block carries out a single action on an object. It is the focus of each
 test. Therefore any comments on this single action are really comments on the
@@ -77,9 +77,9 @@ By placing these important comments in the docstring we can:
   are lifted to the top of the test.
 
 Exceptions
-..........
+----------
 
-Inline comments used to pass information to linters are OK:
+Directives in the form of inline comments are OK, for example:
 
 * Marking the Act block:
 
