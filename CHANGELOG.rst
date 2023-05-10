@@ -28,6 +28,9 @@ See also `latest documentation
   provided to provide compatibility with Black versions ``23.*``. Fixes `issue
   200 <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
 
+* 📕: New docs added for "large" Act block style. `Issue 200
+  <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
+
 * ⛏️ Moved Black formatted test examples to their own directory. This helps
   when running Flake8 against Black formatted tests which need
   ``--aaa-act-block-style=large``. Also fix up associated Makefile recipes and

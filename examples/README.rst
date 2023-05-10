@@ -22,6 +22,11 @@ Layout
 Black formatted examples
 ------------------------
 
+The example tests in ``examples/black`` are copies of the ``examples/good``
+tests which are then formatted with the latest version of Black in default
+mode. They are then linted with Flake8-AAA using Large-style Act blocks so that
+Black's formatting of context managers passes lint.
+
 To update the examples formatted with Black in ``examples/black`` (run from
 project root)::
 

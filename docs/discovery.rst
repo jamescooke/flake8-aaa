@@ -116,6 +116,9 @@ There are four recognised types of Act block:
 Flake8-AAA searches each test function for lines that look like Act blocks. It
 will raise an error when a function does not have exactly 1 Act block.
 
+The "act block style" configuration allows for a "large" style of Act block to
+be specified, which changes how Act blocks are built in relation to context managers. See ...
+
 Build Arrange and Assert blocks
 ...............................
 
