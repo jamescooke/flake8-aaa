@@ -46,31 +46,26 @@ plugin.
 Yapf
 ----
 
-Yapf is used to format Flake8-AAA code and tests. It is the primary formatter
-focused on for compatibility.
+`Yapf <https://github.com/google/yapf>`_ is used to format Flake8-AAA code and
+tests. It is the primary formatter focused on for compatibility.
 
 Black
 -----
 
-Flake8-AAA is compatible with tests formatted with Black.
+Flake8-AAA is compatible with tests formatted with `Black
+<https://github.com/psf/black>`_.
 
-    The coding style used by Black can be viewed as a strict subset of PEP8.
+Black version ``23.1.0`` changed how it managed blank lines by default. Set
+:ref:`"large" Act block style option or configuration <act-block-style>` when
+running via Flake8 for best compatibility with Black:
 
-The AAA pattern is PEP8 compatible so it makes sense that Flake8-AAA should
-work with PEP8 compatible formatters.
+.. code-block:: shell
 
-This compatibility is pinned by the test examples in the `examples/good/black
-directory
-<https://github.com/jamescooke/flake8-aaa/tree/master/examples/good/black>`_.
-These tests are formatted with the latest version of Black in default mode.
-They are then checked to pass Flake8-AAA's linting.
+    flake8 --aaa-act-block-style=large
 
-.. note::
-
-    Black version ``23.1.0`` changed how it managed blank lines by default.
-    This change causes Flake8-AAA to raise ``AAA03`` errors on tests that
-    contain context managers and are formatted with Black. See `issue #200
-    <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
+See also `Black formatted example tests
+<https://github.com/jamescooke/flake8-aaa/tree/master/examples/#black-formatted-examples>`_
+in Flake8-AAA's test suite.
 
 Pytest
 ------

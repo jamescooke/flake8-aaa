@@ -7,6 +7,8 @@ configuration files.
 All names of Flake8-AAA's options and configuration values are prefixed with
 "aaa". E.g. ``--aaa-act-block-style``.
 
+.. _act-block-style:
+
 Act block style
 ---------------
 
