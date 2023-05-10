@@ -6,7 +6,7 @@ is raised. When Flake8-AAA raises ``AAA01`` it could not find an Act block in
 the indicated test function.
 
 Problematic code
-................
+----------------
 
 .. code-block:: python
 
@@ -27,7 +27,7 @@ Problematic code
             list()[0]
 
 Correct code 1
-..............
+--------------
 
 Use ``result =`` assignment to indicate the action in the test:
 
@@ -55,7 +55,7 @@ Ensure all Pytest context managers are in the ``pytest`` namespace - use
 .. _aaa01-correct-code-2:
 
 Correct code 2
-..............
+--------------
 
 Alternatively, mark your Act block with the ``# act`` hint to indicate the
 action in the test. This can be useful for scenarios where a result can not be
@@ -80,7 +80,7 @@ assigned, such as tests on functions that return ``None``.
             list()[0]  # act
 
 Rationale
-.........
+---------
 
 The Act block carries out a single action on an object so it's important that
 Flake8-AAA can clearly distinguish which line or lines make up the Act block in
