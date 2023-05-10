@@ -56,8 +56,8 @@ Flake8-AAA is compatible with tests formatted with `Black
 <https://github.com/psf/black>`_.
 
 Black version ``23.1.0`` changed how it managed blank lines by default. Set
-:ref:`"large" Act block style option or configuration <act-block-style>` when
-running via Flake8 for best compatibility with Black:
+:ref:`"large" Act block style option or configuration <large-act-block-style>`
+when running via Flake8 for best compatibility with Black:
 
 .. code-block:: shell
 

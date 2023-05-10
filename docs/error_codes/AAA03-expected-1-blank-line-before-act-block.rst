@@ -12,7 +12,7 @@ This rule works best with `pycodestyle
 ensures that there are not multiple blank lines between the blocks.
 
 If test code is formatted with Black, then it's best to set :ref:`"large" Act
-block style <act-block-style>`.
+block style <large-act-block-style>`.
 
 Problematic code
 ----------------
@@ -41,7 +41,8 @@ between it and the ``result =`` Act block.
         assert result == 'Hello World!\n'
 
 Alternatively, if you want the context manager to be treated as part of the Act
-block, the :ref:`"large" Act block style <act-block-style>` as mentioned above.
+block, the :ref:`"large" Act block style <large-act-block-style>` as mentioned
+above.
 
 Rationale
 ---------
