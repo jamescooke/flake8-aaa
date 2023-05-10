@@ -104,7 +104,7 @@ checks provided by plugins, of which Flake8-AAA is one.
 
 Further reading:
 
-* `Flake8's documentation <https://flake8.pycqa.org/en/latest/>`_ 
+* `Flake8's documentation <https://flake8.pycqa.org/en/latest/>`_.
 
 * `Awesome Flake8 Extensions
   <https://github.com/DmytroLitvinov/awesome-flake8-extensions/>`_ - a curated
@@ -234,6 +234,9 @@ Flake8 with ``--select``:
 
 Further reading:
 
+* `Flake8-AAA options and configuration
+  <https://flake8-aaa.readthedocs.io/en/stable/options.html>`_.
+
 * `Using Flake8 <https://flake8.pycqa.org/en/stable/user/index.html>`_.
 
 Via command line
@@ -270,7 +273,8 @@ Further reading:
 
 * `Full compatibility list
   <https://flake8-aaa.readthedocs.io/en/stable/compatibility.html>`_ - includes
-  information on support for older versions of Python.
+  how to configure Flake8-AAA to work with Black and information on support for
+  older versions of Python.
 
 📕 Resources
 ------------
@@ -284,3 +288,5 @@ Further reading:
 * `Licensed on MIT <https://github.com/jamescooke/flake8-aaa/blob/master/LICENSE>`_
 
 * `Changelog <https://github.com/jamescooke/flake8-aaa/blob/master/CHANGELOG.rst>`_
+
+* `#flake8_aaa hashtag on Mastodon <https://fosstodon.org/tags/flake8_aaa>`_
