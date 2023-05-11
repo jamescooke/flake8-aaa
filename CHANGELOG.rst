@@ -23,6 +23,9 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+0.15.0_ - 2023/05/11
+--------------------
+
 * 🎈 New "large" Act block style option added. This allows context managers to
   join the Act block when they directly wrap the Act node. This behaviour is
   provided to provide compatibility with Black versions ``23.*``. Fixes `issue
@@ -555,7 +558,8 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.14.1...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.15.0...HEAD
+.. _0.15.0: https://github.com/jamescooke/flake8-aaa/compare/v0.14.1...v0.15.0
 .. _0.14.1: https://github.com/jamescooke/flake8-aaa/compare/v0.14.0...v0.14.1
 .. _0.14.0: https://github.com/jamescooke/flake8-aaa/compare/v0.13.1...v0.14.0
 .. _0.13.1: https://github.com/jamescooke/flake8-aaa/compare/v0.13.0...v0.13.1
