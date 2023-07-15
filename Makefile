@@ -35,13 +35,6 @@ lintexamples:
 	@echo "=== black ==="
 	black --check --diff --verbose examples/black
 
-.PHONY: lintexamplespy38
-lintexamplespy38:
-	@echo "=== flake8 ==="
-	flake8 examples/good_py38
-	@echo "=== mypy ==="
-	mypy examples/good_py38
-
 .PHONY: docs
 docs:
 	tox run -e py310-docs
