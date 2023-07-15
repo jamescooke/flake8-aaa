@@ -40,7 +40,7 @@ version signature:
 
     6.0.0 (flake8-aaa: 0.15.0, mccabe: 0.7.0, pycodestyle: 2.10.0, pyflakes: 3.0.1) CPython 3.11.0 on Linux
 
-The ``flake8-aaa: 0.14.1`` part of that output tells you Flake8 found this
+The ``flake8-aaa: 0.15.0`` part of that output tells you Flake8 found this
 plugin.
 
 Yapf
@@ -91,6 +91,16 @@ Previous Python versions
 ------------------------
 
 The following versions of Python are no longer supported:
+
+Python 3.7
+..........
+
+Python 3.7 was supported up to ``v0.15.0``
+
+* `v0.15.0 on PyPI <https://pypi.org/project/flake8-aaa/0.15.0/>`_
+* `v0.15.0 Documentation <https://flake8-aaa.readthedocs.io/en/v0.15.0/>`_
+* `Github v0.15.0 tag
+  <https://github.com/jamescooke/flake8-aaa/releases/tag/v0.15.0>`_
 
 Python 3.6
 ..........
