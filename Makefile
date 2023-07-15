@@ -112,7 +112,7 @@ fixlint:
 .PHONY: fixlintexamples
 fixlintexamples:
 	@echo "=== Fixing black using tox env ==="
-	tox e -e py37-lint_examples -- black examples/black
+	tox e -e py38-lint_examples -- black examples/black
 
 # Trigger a new copy of Black-formatted examples to be generated
 .PHONY: black_examples
