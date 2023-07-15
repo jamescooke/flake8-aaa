@@ -17,14 +17,35 @@ Additional markers for types of change copied from ``README``:
 * ⛏️: Internal refactors. Internal technical changes with no downstream changes
   to features.
 
+* 🔥: Breaking change.
+
 Unreleased_
 -----------
 
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Added
+.....
+
+* 📕: Notes added in docs about latest versions that supported Python 3.7.
+
+Changed
+.......
+
+* ⛏️: Examples that were for Python 3.8 only (assignment operator focused) were
+  merged into one suite of examples.
+
+Removed
+.......
+
+* 🔥: Python 3.7 support removed.
+
 0.15.0_ - 2023/05/11
 --------------------
+
+Added
+.....
 
 * 🎈 New "large" Act block style option added. This allows context managers to
   join the Act block when they directly wrap the Act node. This behaviour is
@@ -34,10 +55,16 @@ See also `latest documentation
 * 📕: New docs added for "large" Act block style. `Issue 200
   <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
 
+Changed
+.......
+
 * ⛏️ Moved Black formatted test examples to their own directory. This helps
   when running Flake8 against Black formatted tests which need
   ``--aaa-act-block-style=large``. Also fix up associated Makefile recipes and
   update example README file.
+
+Removed
+.......
 
 * ⛏️ Removed list of nodes from ``Block`` class and instead kept the start and
   end line numbers of the block. This allows for any structural discoveries
