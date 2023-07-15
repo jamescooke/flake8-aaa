@@ -35,13 +35,6 @@ lintexamples:
 	@echo "=== black ==="
 	black --check --diff --verbose examples/black
 
-.PHONY: lintexamplespy38
-lintexamplespy38:
-	@echo "=== flake8 ==="
-	flake8 examples/good_py38
-	@echo "=== mypy ==="
-	mypy examples/good_py38
-
 .PHONY: docs
 docs:
 	tox run -e py310-docs
@@ -112,7 +105,7 @@ fixlint:
 .PHONY: fixlintexamples
 fixlintexamples:
 	@echo "=== Fixing black using tox env ==="
-	tox e -e py37-lint_examples -- black examples/black
+	tox e -e py38-lint_examples -- black examples/black
 
 # Trigger a new copy of Black-formatted examples to be generated
 .PHONY: black_examples

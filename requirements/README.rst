@@ -4,13 +4,13 @@ Requirements management
 Summary
 -------
 
-* ``ci.in|txt``: Requirements for GitHub Actions built with Python 3.10.
+* ``ci.in|txt``: Packages for GitHub Actions built with Python 3.10.
 
-* ``dev.in|txt``: Requirements for working on code. Build with Python 3.8
-  (can't build on 3.7)
+* ``dev.in|txt``: Packages for working on code. Build with Python 3.8.
 
-* Tox environments use ``test.in|txt`` and ``examples.in|txt``, all built with
-  Python 3.7.
+* ``test.in|txt``: Test packages for Tox environments. Build with Python 3.8.
+
+* ``examples.in|txt``: Test packages for Tox, also Python 3.8.
 
 * ``docs.in|txt``: Python 3.10 (match RTD)
 
@@ -38,8 +38,7 @@ Development requirements
 
 ``dev.txt``: Python 3.8
 
-Targets Python 3.8 because it's the oldest version that is easy to build these
-requirements for (Python 3.7 fails to build this list with no constraints).
+Targets Python 3.8 because it's the oldest supported Python version.
 
 All tools for local development. Tests are run in Tox, so no Pytest. But
 linters are run in editor, so those are installed.
