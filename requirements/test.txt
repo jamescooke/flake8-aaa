@@ -10,7 +10,7 @@ exceptiongroup==1.1.2
     # via pytest
 faker==19.1.0
     # via -r test.in
-flake8==4.0.1
+flake8==6.0.0
     # via -r test.in
 icdiff==2.0.6
     # via pytest-icdiff
@@ -20,23 +20,23 @@ iniconfig==2.0.0
     # via pytest
 isort==5.12.0
     # via -r test.in
-mccabe==0.6.1
+mccabe==0.7.0
     # via flake8
-mypy==0.930
+mypy==1.4.1
     # via -r test.in
 mypy-extensions==1.0.0
     # via mypy
 packaging==23.1
     # via pytest
-platformdirs==3.9.0
+platformdirs==3.9.1
     # via yapf
 pluggy==1.2.0
     # via pytest
 pprintpp==0.4.0
     # via pytest-icdiff
-pycodestyle==2.8.0
+pycodestyle==2.10.0
     # via flake8
-pyflakes==2.4.0
+pyflakes==3.0.1
     # via flake8
 pygments==2.15.1
     # via -r test.in
