@@ -1,4 +1,5 @@
 import argparse
+from flake8.options.manager import OptionManager
 from ast import AST
 from typing import Generator, List, Optional, Tuple
 
@@ -35,14 +36,7 @@ class Checker:
         self.config: Config = self.default_config
 
     @staticmethod
-    def add_options(option_manager) -> None:
-        """
-        Note:
-            No type annotation on `option_manager` because current flake8
-            version required to maintain support for py37 causes problems. This
-            should be fixed (or at the least rechecked) when py37 is dropped in
-            #198
-        """
+    def add_options(option_manager: OptionManager) -> None:
         option_manager.add_option(
             '--aaa-act-block-style',
             parse_from_config=True,
