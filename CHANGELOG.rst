@@ -30,11 +30,17 @@ Added
 
 * 📕: Notes added in docs about latest versions that supported Python 3.7.
 
+* ⛏️: Syntax upgrades on named tuples and f-strings.
+
+* ⛏️: Type hint added for Flake8 config manager.
+
 Changed
 .......
 
 * ⛏️: Examples that were for Python 3.8 only (assignment operator focused) were
   merged into one suite of examples.
+
+* ⛏️: Test requirements unpinned from old Flake8 and Mypy.
 
 Removed
 .......
