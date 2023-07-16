@@ -131,7 +131,7 @@ def format_errors(num_errors: int) -> str:
     """
     if num_errors == 1:
         return '    1 | ERROR\n'
-    return ' {:>4} | ERRORS\n'.format(num_errors)
+    return f' {num_errors:>4} | ERRORS\n'
 
 
 def get_first_token(node: ast.AST) -> Token:

@@ -2,20 +2,16 @@ import typing
 
 from .helpers import flatten_list
 
-Flake8Error = typing.NamedTuple(
-    'Flake8Error', [
-        ('line_number', int),
-        ('offset', int),
-        ('text', str),
-        ('checker_cls', type),
-    ]
-)
+class Flake8Error(typing.NamedTuple):
+    line_number: int
+    offset: int
+    text: str
+    checker_cls: type
 
-AAAError = typing.NamedTuple('AAAError', [
-    ('line_number', int),
-    ('offset', int),
-    ('text', str),
-])
+class AAAError(typing.NamedTuple):
+    line_number: int
+    offset: int
+    text: str
 
 
 class Flake8AAAException(Exception):
