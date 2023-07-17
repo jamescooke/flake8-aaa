@@ -2,11 +2,13 @@ import typing
 
 from .helpers import flatten_list
 
+
 class Flake8Error(typing.NamedTuple):
     line_number: int
     offset: int
     text: str
     checker_cls: type
+
 
 class AAAError(typing.NamedTuple):
     line_number: int
