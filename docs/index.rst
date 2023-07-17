@@ -21,5 +21,4 @@ Continue here for more detail about using Flake8-AAA.
     options
     directives
     discovery
-    command_line
     release_checklist

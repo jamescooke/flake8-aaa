@@ -1,9 +1,9 @@
 Test discovery and analysis
 ===========================
 
-When running as a Flake8 plugin, Flake8-AAA filters the Python code passed to
-it by Flake8. It finds code that looks like test code and then checks that code
-matches the AAA pattern. When all checks pass, then no error is raised.
+Flake8-AAA filters the Python code passed to it by Flake8. It finds lines that
+looks like test code and then checks those lines match the AAA pattern. When
+all checks pass no error is raised.
 
 File filtering
 --------------
@@ -117,7 +117,8 @@ Flake8-AAA searches each test function for lines that look like Act blocks. It
 will raise an error when a function does not have exactly 1 Act block.
 
 The "act block style" configuration allows for a "large" style of Act block to
-be specified, which changes how Act blocks are built in relation to context managers. See ...
+be specified, which changes how Act blocks are built in relation to context
+managers. See ... # TODO225 fix this ref
 
 Build Arrange and Assert blocks
 ...............................
