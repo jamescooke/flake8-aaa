@@ -9,15 +9,15 @@ Versioning <http://semver.org/spec/v2.0.0.html>`_.
 
 Additional markers for types of change copied from ``README``:
 
-* 🎈: Features. Public facing changes to functionality.
+* 🎈 Features. Public facing changes to functionality.
 
-* 📕: Documentation. Public facing changes to documentation, but no
+* 📕 Documentation. Public facing changes to documentation, but no
   functionality changes.
 
-* ⛏️: Internal refactors. Internal technical changes with no downstream changes
+* ⛏️ Internal refactors. Internal technical changes with no downstream changes
   to features.
 
-* 🔥: Breaking change.
+* 🔥 Breaking change.
 
 Unreleased_
 -----------
@@ -25,19 +25,28 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Added
+.....
+
+* ⛏️ Syntax upgrades on named tuples and f-strings.
+
+* ⛏️ Type hint added for Flake8 config manager.
+
 Changed
 .......
 
-* 📕: Readme updated to reflect re-focus on only operating as a Flake8 plugin.
+* 📕 Readme updated to reflect re-focus on only operating as a Flake8 plugin.
+
+* ⛏️ Test requirements unpinned from old Flake8 and Mypy.
 
 Removed
 .......
 
-* 🔥: Command line support dropped. `Issue 225
+* 🔥 Command line support dropped. `Issue 225
   <https://github.com/jamescooke/flake8-aaa/issues/225>`_. In addition:
 
-    * 📕: Command line documentation removed.
-    * ⛏️: Tests and tox environments for command line code removed.
+    * 📕 Command line documentation removed.
+    * ⛏️ Tests and tox environments for command line code removed.
 
 0.16.0_ - 2023/07/16
 --------------------
@@ -45,26 +54,20 @@ Removed
 Added
 .....
 
-* 📕: Notes added in docs about latest versions that supported Python 3.7.
+* 📕 Notes added in docs about latest versions that supported Python 3.7.
   `Issue 198 <https://github.com/jamescooke/flake8-aaa/issues/198>`_.
-
-* ⛏️: Syntax upgrades on named tuples and f-strings.
-
-* ⛏️: Type hint added for Flake8 config manager.
 
 Changed
 .......
 
-* ⛏️: Examples that were for Python 3.8 only (assignment operator focused) were
+* ⛏️ Examples that were for Python 3.8 only (assignment operator focused) were
   merged into one suite of examples. `Issue 198
   <https://github.com/jamescooke/flake8-aaa/issues/198>`_.
-
-* ⛏️: Test requirements unpinned from old Flake8 and Mypy.
 
 Removed
 .......
 
-* 🔥: Python 3.7 support removed. `Issue 198
+* 🔥 Python 3.7 support removed. `Issue 198
   <https://github.com/jamescooke/flake8-aaa/issues/198>`_.
 
 0.15.0_ - 2023/05/11
@@ -78,7 +81,7 @@ Added
   provided to provide compatibility with Black versions ``23.*``. Fixes `issue
   200 <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
 
-* 📕: New docs added for "large" Act block style. `Issue 200
+* 📕 New docs added for "large" Act block style. `Issue 200
   <https://github.com/jamescooke/flake8-aaa/issues/200>`_.
 
 Changed
