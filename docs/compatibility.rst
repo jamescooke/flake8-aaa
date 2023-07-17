@@ -22,12 +22,10 @@ Flake8-AAA is fully compatible and tested against the active versions of Python
 Flake8
 ------
 
-Works with Flake8 version 3 and later. All integration tests run with the
-latest version of Flake8 they can find for the active version of Python.
+Requires Flake8 version 3 and later. All integration tests run with the latest
+version of Flake8 for the active version of Python.
 
-We use the newer plugin system implemented in Flake8 v3. This dependency is not
-specified in ``setup.py`` because users may only want to use the command line
-interface.
+We use the newer plugin system implemented in Flake8 v3.
 
 Check that Flake8-AAA was installed correctly by asking ``flake8`` for its
 version signature:
