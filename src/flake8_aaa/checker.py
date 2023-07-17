@@ -59,6 +59,7 @@ class Checker:
         # ASTTokens.__init__(tree) kwarg is too strictly annotated as a Module,
         # but really I think it should be an ast.AST *or* whatever astroid
         # returns.
+        # https://github.com/gristlabs/asttokens/blob/2e7470e/asttokens/asttokens.py#L110
         # We have received `tree` as `ast.AST` from Flake8 as per plugins:
         # https://github.com/PyCQA/flake8/blob/b3cee18653dff5258644963f18144c4acfe3e659/src/flake8/plugins/pyflakes.py#L75
         self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)  # type: ignore[arg-type]
