@@ -1,9 +1,9 @@
 import argparse
-from flake8.options.manager import OptionManager
 from ast import AST
 from typing import Generator, List, Optional, Tuple
 
 import asttokens
+from flake8.options.manager import OptionManager
 
 from .__about__ import __short_name__, __version__
 from .conf import Config
@@ -45,7 +45,7 @@ class Checker:
         )
 
     @classmethod
-    def parse_options(cls, option_manager, options: argparse.Namespace, args) -> None:
+    def parse_options(cls, option_manager: OptionManager, options: argparse.Namespace, args) -> None:
         """
         Store options passed to flake8 in config instance. Only called when
         user passes flags or sets config.
@@ -56,7 +56,12 @@ class Checker:
         cls.default_config = Config.load_options(options)
 
     def load(self) -> None:
-        self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)
+        # ASTTokens.__init__(tree) kwarg is too strictly annotated as a Module,
+        # but really I think it should be an ast.AST *or* whatever astroid
+        # returns.
+        # We have received `tree` as `ast.AST` from Flake8 as per plugins:
+        # https://github.com/PyCQA/flake8/blob/b3cee18653dff5258644963f18144c4acfe3e659/src/flake8/plugins/pyflakes.py#L75
+        self.ast_tokens = asttokens.ASTTokens(''.join(self.lines), tree=self.tree)  # type: ignore[arg-type]
 
     def all_funcs(self, skip_noqa: bool = False) -> Generator[Function, None, None]:
         """
