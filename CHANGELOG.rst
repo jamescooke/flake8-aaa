@@ -25,10 +25,28 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Changed
+.......
+
+* 📕: Readme updated to reflect re-focus on only operating as a Flake8 plugin.
+
+Removed
+.......
+
+* 🔥: Command line support dropped. `Issue 225
+  <https://github.com/jamescooke/flake8-aaa/issues/225>`_. In addition:
+
+    * 📕: Command line documentation removed.
+    * ⛏️: Tests and tox environments for command line code removed.
+
+0.16.0_ - 2023/07/16
+--------------------
+
 Added
 .....
 
 * 📕: Notes added in docs about latest versions that supported Python 3.7.
+  `Issue 198 <https://github.com/jamescooke/flake8-aaa/issues/198>`_.
 
 * ⛏️: Syntax upgrades on named tuples and f-strings.
 
@@ -38,14 +56,16 @@ Changed
 .......
 
 * ⛏️: Examples that were for Python 3.8 only (assignment operator focused) were
-  merged into one suite of examples.
+  merged into one suite of examples. `Issue 198
+  <https://github.com/jamescooke/flake8-aaa/issues/198>`_.
 
 * ⛏️: Test requirements unpinned from old Flake8 and Mypy.
 
 Removed
 .......
 
-* 🔥: Python 3.7 support removed.
+* 🔥: Python 3.7 support removed. `Issue 198
+  <https://github.com/jamescooke/flake8-aaa/issues/198>`_.
 
 0.15.0_ - 2023/05/11
 --------------------
@@ -591,7 +611,8 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.15.0...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.16.0...HEAD
+.. _0.16.0: https://github.com/jamescooke/flake8-aaa/compare/v0.15.0...v0.16.0
 .. _0.15.0: https://github.com/jamescooke/flake8-aaa/compare/v0.14.1...v0.15.0
 .. _0.14.1: https://github.com/jamescooke/flake8-aaa/compare/v0.14.0...v0.14.1
 .. _0.14.0: https://github.com/jamescooke/flake8-aaa/compare/v0.13.1...v0.14.0

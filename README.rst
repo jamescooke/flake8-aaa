@@ -62,7 +62,7 @@ For example, a simple test on the behaviour of add ``+``:
 
 .. code-block:: python
 
-    def test():
+    def test() -> None:
        x = 1
        y = 1
 
@@ -142,15 +142,6 @@ Further reading:
 🏁 Getting Started
 ------------------
 
-Prerequisites
-.............
-
-Install Flake8 with `pip <https://pip.pypa.io/en/stable/installing/>`_:
-
-.. code-block:: shell
-
-    pip install flake8
-
 Installation
 ............
 
@@ -159,6 +150,8 @@ Install ``flake8-aaa``:
 .. code-block:: shell
 
     pip install flake8-aaa
+
+This will install Flake8-AAA and its dependencies, which include Flake8.
 
 You can confirm that Flake8 recognises the plugin by checking its version
 string:
@@ -169,9 +162,9 @@ string:
 
 .. code-block::
 
-    6.0.0 (flake8-aaa: 0.15.0, mccabe: 0.7.0, pycodestyle: 2.10.0, pyflakes: 3.0.1) CPython 3.11.0 on Linux
+    6.0.0 (flake8-aaa: 0.16.0, mccabe: 0.7.0, pycodestyle: 2.10.0, pyflakes: 3.0.1) CPython 3.11.0 on Linux
 
-The ``flake8-aaa: 0.14.1`` part tells you that Flake8-AAA was installed
+The ``flake8-aaa: 0.16.0`` part tells you that Flake8-AAA was installed
 successfully and its checks will be used by Flake8.
 
 Further reading:
@@ -205,10 +198,7 @@ Now let's see a failure from Flake8-AAA. We can use a bad example:
 🎈 Usage
 --------
 
-Via Flake8
-..........
-
-Since Flake8-AAA is primarily a Flake8 plugin, the majority of its usage is
+Since Flake8-AAA is a Flake8 plugin, the majority of its usage is
 dependent on how you use Flake8. In general you can point it at your source
 code and test suite:
 
@@ -238,22 +228,6 @@ Further reading:
   <https://flake8-aaa.readthedocs.io/en/stable/options.html>`_.
 
 * `Using Flake8 <https://flake8.pycqa.org/en/stable/user/index.html>`_.
-
-Via command line
-................
-
-Flake8-AAA also provides a command line interface. Although this is primarily
-for debugging, it can be used to check individual files if you don't want to
-install Flake8.
-
-.. code-block:: shell
-
-    python -m flake8_aaa [test_file]
-
-Further reading:
-
-* `Command line documentation
-  <https://flake8-aaa.readthedocs.io/en/stable/command_line.html>`_.
 
 ⛏️ Compatibility
 ----------------
