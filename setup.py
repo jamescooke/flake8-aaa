@@ -31,6 +31,7 @@ setup(
     python_requires='>=3.8',
     install_requires=[
         'asttokens >= 2',
+        'flake8 >= 3',
     ],
     entry_points={
         'flake8.extension': [
