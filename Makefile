@@ -8,7 +8,7 @@ lint:
 	@echo "=== flake8 ==="
 	flake8 $(lint_files)
 	@echo "=== mypy ==="
-	MYPYPATH=stubs mypy src/flake8_aaa tests
+	mypy src/flake8_aaa tests
 	@echo "=== isort ==="
 	isort --check --diff $(lint_files)
 	@echo "=== yapf ==="

@@ -1,8 +1,8 @@
-# py37
+# py38
 faker
-flake8==4.0.1
+flake8
 isort
-mypy==0.930
+mypy
 pygments
 pytest
 pytest-icdiff
