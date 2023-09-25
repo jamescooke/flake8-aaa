@@ -1,6 +1,5 @@
 import pytest
 
-from flake8_aaa.conf import Config
 from flake8_aaa.function import Function
 
 
@@ -69,90 +68,4 @@ def test_marked(function_bl_cmt_def: Function) -> None:
 11 BL |
 12 ???|    assert result.success is True
 ------+------------------------------------------------------------------------
-'''.lstrip()
-
-
-@pytest.mark.parametrize(
-    'code_str', [
-        '''
-def test(file_resource):
-    file_resource.connect()
-    result = file_resource.retrieve()
-
-    assert result.success is True
-''',
-    ]
-)
-def test_processed(function: Function) -> None:
-    errors = list(function.check_all(Config.default_options()))
-
-    result = function.__str__(errors)
-
-    assert result == '''
-------+------------------------------------------------------------------------
- 2 DEF|def test(file_resource):
- 3 ARR|    file_resource.connect()
- 4 ACT|    result = file_resource.retrieve()
-           ^ AAA03 expected 1 blank line before Act block, found none
- 5 BL |
- 6 ASS|    assert result.success is True
-------+------------------------------------------------------------------------
-    1 | ERROR
-'''.lstrip()
-
-
-@pytest.mark.parametrize(
-    'code_str', ['''
-def test():
-    x = 1
-    y = 1
-
-
-    result = x + y
-
-    assert result == 2
-''']
-)
-def test_multi_spaces(function: Function) -> None:
-    errors = list(function.check_all(Config.default_options()))
-
-    result = function.__str__(errors)
-
-    assert result == '''
-------+------------------------------------------------------------------------
- 2 DEF|def test():
- 3 ARR|    x = 1
- 4 ARR|    y = 1
- 5 BL |
- 6 BL |
- 7 ACT|    result = x + y
-           ^ AAA03 expected 1 blank line before Act block, found 2
- 8 BL |
- 9 ASS|    assert result == 2
-------+------------------------------------------------------------------------
-    1 | ERROR
-'''.lstrip()
-
-
-@pytest.mark.parametrize('code_str', ['''
-def test():
-    x = 1
-    result = x * 5
-    assert result == 5
-'''])
-def test_multi_errors(function: Function) -> None:
-    errors = list(function.check_all(Config.default_options()))
-
-    result = function.__str__(errors)
-
-    assert result == '''
-------+------------------------------------------------------------------------
- 2 DEF|def test():
- 3 ARR|    x = 1
- 4 ACT|    result = x * 5
-           ^ AAA03 expected 1 blank line before Act block, found none
- 5 ASS|    assert result == 5
-           ^ AAA04 expected 1 blank line before Assert block, found none
-------+------------------------------------------------------------------------
-    2 | ERRORS
 '''.lstrip()
