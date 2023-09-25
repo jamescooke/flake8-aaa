@@ -32,6 +32,9 @@ Added
 
 * ⛏️ Type hint added for Flake8 config manager.
 
+* 🎈 Explicit support added for Python 3.12. `Issue 228
+  <https://github.com/jamescooke/flake8-aaa/issues/228>`_.
+
 Changed
 .......
 
@@ -47,6 +50,10 @@ Removed
 
     * 📕 Command line documentation removed.
     * ⛏️ Tests and tox environments for command line code removed.
+    * ⛏️ ``Function.__str__`` method cleaned up.
+
+* ⛏️ Old style ``setup.py check`` lint call removed so that Python 3.12 can pass
+  without complicated work arounds.
 
 0.16.0_ - 2023/07/16
 --------------------

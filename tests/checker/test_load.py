@@ -9,5 +9,5 @@ def test(checker) -> None:
 
     # TODO strip ignores
     assert len(checker.tree.body) == 1  # type: ignore
-    assert type(checker.tree.body[0]) == ast.Assert  # type: ignore
+    assert isinstance(checker.tree.body[0], ast.Assert)
     assert len(checker.ast_tokens.tokens) == 8  # type: ignore

@@ -8,7 +8,7 @@ from .act_node import ActNode
 from .block import Block
 from .conf import ActBlockStyle, Config
 from .exceptions import AAAError, EmptyBlock, ValidationError
-from .helpers import format_errors, function_is_noop, get_first_token, get_last_token, line_is_comment
+from .helpers import function_is_noop, get_first_token, get_last_token, line_is_comment
 from .line_markers import LineMarkers
 from .types import ActNodeType, LineType
 
@@ -58,7 +58,7 @@ class Function:
         self.line_markers = LineMarkers(self.lines, self.first_line_no)
         self.tokens = file_tokens
 
-    def __str__(self, errors: Optional[List[AAAError]] = None) -> str:
+    def __str__(self) -> str:
         out = '------+------------------------------------------------------------------------\n'
         for i, line in enumerate(self.lines):
             out += '{line_no:>2} {block}|{line}'.format(
@@ -66,13 +66,7 @@ class Function:
                 block=str(self.line_markers.types[i]),
                 line=line,
             )
-            if errors:
-                for error in errors:
-                    if error[0] == i + self.first_line_no:
-                        out += '       {}^ {}\n'.format(error[1] * ' ', error[2])
         out += '------+------------------------------------------------------------------------\n'
-        if errors is not None:
-            out += format_errors(len(errors))
         return out
 
     def check_all(self, config: Config) -> Generator[AAAError, None, None]:
