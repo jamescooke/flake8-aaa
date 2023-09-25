@@ -15,8 +15,9 @@ lint:
 	yapf --recursive --diff $(lint_files)
 	@echo "=== rst ==="
 	restructuredtext-lint $(rst_files)
-	@echo "=== setup.py ==="
-	python setup.py check --metadata --strict
+	# --- Disabling for now, will move to pyproject.toml in #228
+	# @echo "=== setup.py ==="
+	# python setup.py check --metadata --strict
 
 .PHONY: lintexamples
 lintexamples:
