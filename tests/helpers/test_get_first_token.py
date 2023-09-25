@@ -51,7 +51,7 @@ def test_f_string(first_node_with_tokens) -> None:
 @pytest.mark.parametrize('code_str', ['''
 f"hello world"
 '''])
-def test_f_string_tokens(first_node_with_tokens, expected: str) -> None:
+def test_f_string_tokens(first_node_with_tokens) -> None:
     """
     Python 3.12 has tokens for f-strings, where previous versions didn't.
 
