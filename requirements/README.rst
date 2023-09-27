@@ -1,6 +1,16 @@
 Requirements management
 =======================
 
+TL;DR
+-----
+
+To update all requirements:
+
+.. code-block:: shell
+
+    rm requirements/*.txt
+    tox -m requirements
+
 Summary
 -------
 

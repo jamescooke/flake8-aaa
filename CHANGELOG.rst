@@ -35,12 +35,18 @@ Added
 * 🎈 Explicit support added for Python 3.12. `Issue 228
   <https://github.com/jamescooke/flake8-aaa/issues/228>`_.
 
+* ⛏️ Tox label added to help with dependency bumping. `Pull #231
+  <:ttps://github.com/jamescooke/flake8-aaa/pull/231>`_.
+
 Changed
 .......
 
 * 📕 Readme updated to reflect re-focus on only operating as a Flake8 plugin.
 
 * ⛏️ Test requirements unpinned from old Flake8 and Mypy.
+
+* ⛏️ All requirements bumped. `Issue 227
+  <https://github.com/jamescooke/flake8-aaa/issues/227>`_.
 
 Removed
 .......
