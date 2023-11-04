@@ -39,7 +39,7 @@ docs:
 # Generate version signature used in README.rst
 .PHONY: signature
 signature:
-	tox exec -e py311-meta_plugin_dogfood -- flake8 --version
+	tox exec -e py312-meta_plugin_dogfood -- flake8 --version
 
 .PHONY: clean
 clean:
@@ -58,11 +58,11 @@ bdist_wheel:
 
 .PHONY: testpypi
 testpypi: clean sdist bdist_wheel
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+	twine upload --username=__token__ --repository-url https://test.pypi.org/legacy/ dist/*
 
 .PHONY: pypi
 pypi: sdist bdist_wheel
-	twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+	twine upload --username=__token__ --repository-url https://upload.pypi.org/legacy/ dist/*
 
 .PHONY: on_master
 on_master:
@@ -70,7 +70,7 @@ on_master:
 
 .PHONY: tag
 tag: on_master
-	git tag -a $$(python -c 'from src.flake8_aaa.__about__ import __version__; print("v{}".format(__version__))')
+	git tag -a v$$(grep -E "^__version__ = .*" -- src/flake8_aaa/__about__.py | grep -Eo '[0-9\.]*')
 
 .PHONY: fixlint
 fixlint:

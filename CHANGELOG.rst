@@ -25,6 +25,14 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Changed
+.......
+
+* 📕 Version signatures now run on Python 3.12, upgraded from Python 3.11.
+
+* ⛏️ Make tag recipe fixed to work using grep. `Issue 224
+  <https://github.com/jamescooke/flake8-aaa/issues/224>`_.
+
 0.17.0_ - 2023/10/30
 --------------------
 
