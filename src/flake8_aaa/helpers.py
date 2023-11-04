@@ -125,15 +125,6 @@ def function_is_noop(function_node: ast.FunctionDef) -> bool:
     return all(node_is_noop(n) for n in function_node.body)
 
 
-def format_errors(num_errors: int) -> str:
-    """
-    Formats a Function's errors for command line use.
-    """
-    if num_errors == 1:
-        return '    1 | ERROR\n'
-    return f' {num_errors:>4} | ERRORS\n'
-
-
 def get_first_token(node: ast.AST) -> Token:
     """
     Wrapper to solve typing errors. mypy complains that ``ast.AST`` has no

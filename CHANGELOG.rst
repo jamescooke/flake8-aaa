@@ -25,6 +25,17 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Changed
+.......
+
+* 📕 Version signatures now run on Python 3.12, upgraded from Python 3.11.
+
+* ⛏️ Make tag recipe fixed to work using grep. `Issue 224
+  <https://github.com/jamescooke/flake8-aaa/issues/224>`_.
+
+0.17.0_ - 2023/10/30
+--------------------
+
 Added
 .....
 
@@ -32,12 +43,21 @@ Added
 
 * ⛏️ Type hint added for Flake8 config manager.
 
+* 🎈 Explicit support added for Python 3.12. `Issue 228
+  <https://github.com/jamescooke/flake8-aaa/issues/228>`_.
+
+* ⛏️ Tox label added to help with dependency bumping. `Pull #231
+  <:ttps://github.com/jamescooke/flake8-aaa/pull/231>`_.
+
 Changed
 .......
 
 * 📕 Readme updated to reflect re-focus on only operating as a Flake8 plugin.
 
 * ⛏️ Test requirements unpinned from old Flake8 and Mypy.
+
+* ⛏️ All requirements bumped. `Issue 227
+  <https://github.com/jamescooke/flake8-aaa/issues/227>`_.
 
 Removed
 .......
@@ -47,6 +67,10 @@ Removed
 
     * 📕 Command line documentation removed.
     * ⛏️ Tests and tox environments for command line code removed.
+    * ⛏️ ``Function.__str__`` method cleaned up.
+
+* ⛏️ Old style ``setup.py check`` lint call removed so that Python 3.12 can pass
+  without complicated work arounds.
 
 0.16.0_ - 2023/07/16
 --------------------
@@ -614,7 +638,8 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.16.0...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.17.0...HEAD
+.. _0.17.0: https://github.com/jamescooke/flake8-aaa/compare/v0.16.0...v0.17.0
 .. _0.16.0: https://github.com/jamescooke/flake8-aaa/compare/v0.15.0...v0.16.0
 .. _0.15.0: https://github.com/jamescooke/flake8-aaa/compare/v0.14.1...v0.15.0
 .. _0.14.1: https://github.com/jamescooke/flake8-aaa/compare/v0.14.0...v0.14.1
