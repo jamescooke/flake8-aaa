@@ -59,7 +59,9 @@ Mark blank lines
 Mark all lines in the test that have no characters and are not part of a
 string. For example, the following snipped contains only one blank line (line 3
 - in the middle of the list), the second at line 9 is part of a string and
-therefore not counted::
+therefore not counted:
+
+.. code-block:: python
 
     assert result == [
         1,
@@ -92,23 +94,32 @@ Find the Act block
 There are four recognised types of Act block:
 
 ``marked_act``
-    Action is marked with Marked with ``# act`` comment::
+    Action is marked with Marked with ``# act`` comment:
+
+    .. code-block:: python
 
         do_thing()  # act
 
 ``pytest_raises``
-    Action is wrapped in ``pytest.raises`` context manager::
+    Action is wrapped in one of Pytest's context managers: ``pytest.raises()``,
+    ``pytest.warns()`` or ``pytest.deprecated_call()``:
+
+    .. code-block:: python
 
         with pytest.raises(ValueError):
             do_thing()
 
 ``result_assignment``
-    ``result =`` action::
+    ``result =`` action:
+
+    .. code-block:: python
 
         result = do_thing()
 
 ``unittest_raises``
-    Action is wrapped in unittest's ``assertRaises`` context manager::
+    Action is wrapped in unittest's ``assertRaises`` context manager:
+
+    .. code-block:: python
 
         with self.assertRaises(ValueError):
             do_thing()
@@ -116,9 +127,14 @@ There are four recognised types of Act block:
 Flake8-AAA searches each test function for lines that look like Act blocks. It
 will raise an error when a function does not have exactly 1 Act block.
 
+However, note assertions that exceptions are raised can also be used in Assert
+blocks. When Flake8-AAA finds a suitable ``marked_act`` or
+``result_assignment`` node, it will allow ``pytest_raises`` nodes in the Assert
+block.
+
 The "act block style" configuration allows for a "large" style of Act block to
 be specified, which changes how Act blocks are built in relation to context
-managers. See ... # TODO225 fix this ref
+managers. See :ref:`Act block style option <option-act-block-style>`.
 
 Build Arrange and Assert blocks
 ...............................
