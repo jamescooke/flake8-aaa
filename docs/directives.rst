@@ -23,7 +23,9 @@ returned.
 If you just want to ignore a particular error, then you can use the more
 specific code and indicate the exact error to be ignored. For example, to
 ignore the check for a space before the Act block, we can mark the Act block
-with ``# noqa: AAA03``::
+with ``# noqa: AAA03``:
+
+.. code-block:: python
 
     def test():
         x = 1
