@@ -1,4 +1,4 @@
-def test():  # noqa: AAA02
+def test() -> None:  # noqa: AAA02
     result = 1
 
     assert result == 1
