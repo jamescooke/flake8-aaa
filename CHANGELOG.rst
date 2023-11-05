@@ -30,6 +30,10 @@ Changed
 
 * 📕 Version signatures now run on Python 3.12, upgraded from Python 3.11.
 
+* 📕 Build out individual documentation pages for error ``AAA02`` and
+  ``AAA04``. Completes work on `Issue 149
+  <https://github.com/jamescooke/flake8-aaa/issues/149>`_.
+
 * ⛏️ Make tag recipe fixed to work using grep. `Issue 224
   <https://github.com/jamescooke/flake8-aaa/issues/224>`_.
 
