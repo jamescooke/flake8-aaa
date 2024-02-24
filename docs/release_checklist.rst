@@ -4,6 +4,18 @@ Release checklist
 The following tasks need to be completed for each release of Flake8-AAA. They
 are mainly for the maintainer's use.
 
+Bumping packages
+----------------
+
+This is handled by ``tox`` which calls the ``requirements/Makefile``. Trigger a
+full rebuild of requirements by deleting all compiled ``.txt`` files and asking
+for a compilation:
+
+.. code-block:: shell
+
+    rm requirements/*.txt
+    tox r -m requirements
+
 Versioning
 ----------
 

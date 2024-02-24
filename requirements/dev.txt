@@ -6,19 +6,19 @@
 #
 build==1.0.3
     # via pip-tools
-cachetools==5.3.1
+cachetools==5.3.2
     # via
     #   -c requirements/ci.txt
     #   tox
-certifi==2023.7.22
+certifi==2024.2.2
     # via requests
-cffi==1.15.1
+cffi==1.16.0
     # via cryptography
 chardet==5.2.0
     # via
     #   -c requirements/ci.txt
     #   tox
-charset-normalizer==3.2.0
+charset-normalizer==3.3.2
     # via requests
 click==8.1.7
     # via pip-tools
@@ -26,42 +26,42 @@ colorama==0.4.6
     # via
     #   -c requirements/ci.txt
     #   tox
-cryptography==41.0.4
+cryptography==42.0.5
     # via secretstorage
-distlib==0.3.7
+distlib==0.3.8
     # via
     #   -c requirements/ci.txt
     #   virtualenv
 docutils==0.20.1
     # via readme-renderer
-exceptiongroup==1.1.3
+exceptiongroup==1.2.0
     # via pytest
-filelock==3.12.4
+filelock==3.13.1
     # via
     #   -c requirements/ci.txt
     #   tox
     #   virtualenv
-flake8==6.1.0
+flake8==7.0.0
     # via -r requirements/dev.in
-idna==3.4
+idna==3.6
     # via requests
-importlib-metadata==6.8.0
+importlib-metadata==7.0.1
     # via
     #   build
     #   keyring
     #   twine
     #   yapf
-importlib-resources==6.1.0
+importlib-resources==6.1.1
     # via keyring
 iniconfig==2.0.0
     # via pytest
-jaraco-classes==3.3.0
+jaraco-classes==3.3.1
     # via keyring
 jeepney==0.8.0
     # via
     #   keyring
     #   secretstorage
-keyring==24.2.0
+keyring==24.3.0
     # via twine
 markdown-it-py==3.0.0
     # via rich
@@ -69,43 +69,43 @@ mccabe==0.7.0
     # via flake8
 mdurl==0.1.2
     # via markdown-it-py
-more-itertools==10.1.0
+more-itertools==10.2.0
     # via jaraco-classes
-mypy==1.5.1
+mypy==1.8.0
     # via -r requirements/dev.in
 mypy-extensions==1.0.0
     # via mypy
-nh3==0.2.14
+nh3==0.2.15
     # via readme-renderer
-packaging==23.1
+packaging==23.2
     # via
     #   -c requirements/ci.txt
     #   build
     #   pyproject-api
     #   pytest
     #   tox
-pip-tools==7.3.0
+pip-tools==7.4.0
     # via -r requirements/dev.in
 pkginfo==1.9.6
     # via twine
-platformdirs==3.10.0
+platformdirs==4.2.0
     # via
     #   -c requirements/ci.txt
     #   tox
     #   virtualenv
     #   yapf
-pluggy==1.3.0
+pluggy==1.4.0
     # via
     #   -c requirements/ci.txt
     #   pytest
     #   tox
-pycodestyle==2.11.0
+pycodestyle==2.11.1
     # via flake8
 pycparser==2.21
     # via cffi
-pyflakes==3.1.0
+pyflakes==3.2.0
     # via flake8
-pygments==2.16.1
+pygments==2.17.2
     # via
     #   readme-renderer
     #   rich
@@ -114,8 +114,10 @@ pyproject-api==1.6.1
     #   -c requirements/ci.txt
     #   tox
 pyproject-hooks==1.0.0
-    # via build
-pytest==7.4.2
+    # via
+    #   build
+    #   pip-tools
+pytest==8.0.1
     # via -r requirements/dev.in
 readme-renderer==42.0
     # via twine
@@ -127,7 +129,7 @@ requests-toolbelt==1.0.0
     # via twine
 rfc3986==2.0.0
     # via twine
-rich==13.5.3
+rich==13.7.0
     # via twine
 secretstorage==3.3.3
     # via keyring
@@ -142,25 +144,25 @@ tomli==2.0.1
     #   pytest
     #   tox
     #   yapf
-tox==4.11.3
+tox==4.13.0
     # via
     #   -c requirements/ci.txt
     #   -r requirements/dev.in
-twine==4.0.2
+twine==5.0.0
     # via -r requirements/dev.in
-typing-extensions==4.8.0
+typing-extensions==4.9.0
     # via
     #   mypy
     #   rich
-urllib3==2.0.5
+urllib3==2.2.1
     # via
     #   requests
     #   twine
-virtualenv==20.24.5
+virtualenv==20.25.1
     # via
     #   -c requirements/ci.txt
     #   tox
-wheel==0.41.2
+wheel==0.42.0
     # via pip-tools
 yapf==0.40.2
     # via -r requirements/dev.in
