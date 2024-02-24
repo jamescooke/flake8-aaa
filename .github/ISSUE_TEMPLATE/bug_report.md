@@ -4,30 +4,49 @@ about: Create a report to help us improve
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+<!--
 
-**Share debugging output**
-Please run `python -m flake8_aaa` on your test file and share the output for the test that is failing here. For more information see the [Command line documentation](https://flake8-aaa.readthedocs.io/en/latest/commands.html#command-line)
+👋 Thanks for visiting Flake8-AAA GitHub.
 
-```
-[paste command line output here]
-```
+📝 Here's a template to help fill out a bug report
 
-If you are running via Flake8, please send Flake8's version signature - that's the output of `flake8 --version`:
+-->
 
-```
-[paste flake8's version string here]
-```
+## Current behaviour
+<!--
+Please provide a clear and concise description of what the bug is.
 
-Please share the Python version and platform you are using:
+If you can copy and paste a test file, or the test itself that is unexpectedly
+passing or failing here, that would be great.
+-->
 
-* Python version (output of `python --version`):
-* Platform (GNU Linux / Mac OSX / Windows):
-
-**Expected behavior**
+## Expected behaviour
+<!--
 A clear and concise description of what you expected to happen.
+-->
 
-**Additional context**
-* Please share your test file if possible.
-* Please share the content of your Python environment (the output of `pip freeze`)
+
+## Debugging info
+<!--
+Add some extra information about your system here if possible.
+-->
+
+Output of `python --version`:
+
+```
+[paste python version string from above command here]
+```
+
+Output of `flake8 --version`:
+
+```
+[paste flake8's version string from above command here]
+```
+
+## Additional context
+<!--
+Please share any extra helpful content if possible
+
+Output of `pip freeze` or other installed packages / system information is
+helpful.
+-->
