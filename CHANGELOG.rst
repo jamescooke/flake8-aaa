@@ -37,6 +37,9 @@ Added
 Changed
 .......
 
+* ⛏️ Release process recipes and packages upgraded. `PR 241
+  <https://github.com/jamescooke/flake8-aaa/pull/241>`_.
+
 * 📕 Version signatures now run on Python 3.12, upgraded from Python 3.11.
 
 * 📕 Build out individual documentation pages for error ``AAA02`` and
