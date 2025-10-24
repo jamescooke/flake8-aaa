@@ -58,11 +58,11 @@ bdist_wheel:
 
 .PHONY: testpypi
 testpypi: clean sdist bdist_wheel
-	twine upload --username=__token__ --repository-url https://test.pypi.org/legacy/ dist/*
+	twine upload --verbose --username=__token__ -r testpypi dist/*
 
 .PHONY: pypi
 pypi: sdist bdist_wheel
-	twine upload --username=__token__ --repository-url https://upload.pypi.org/legacy/ dist/*
+	twine upload --username=__token__ -r pypi dist/*
 
 .PHONY: on_master
 on_master:
