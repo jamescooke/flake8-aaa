@@ -6,12 +6,12 @@ on:
 jobs:
   build:
     # Ubuntu 22.04 is on py 3.10.6
-    # https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md
+    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
     runs-on: "ubuntu-22.04"
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
 
