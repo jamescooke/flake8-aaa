@@ -25,6 +25,15 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+0.17.1_ - 2025/10/24
+--------------------
+
+Added
+.....
+
+* 🎈 Explicit support added for Python 3.13. `PR 240
+  <https://github.com/jamescooke/flake8-aaa/pull/240>`_
+
 Changed
 .......
 
@@ -642,7 +651,8 @@ Fixed
 
 Initial alpha release.
 
-.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.17.0...HEAD
+.. _Unreleased: https://github.com/jamescooke/flake8-aaa/compare/v0.17.1...HEAD
+.. _0.17.1: https://github.com/jamescooke/flake8-aaa/compare/v0.17.0...v0.17.1
 .. _0.17.0: https://github.com/jamescooke/flake8-aaa/compare/v0.16.0...v0.17.0
 .. _0.16.0: https://github.com/jamescooke/flake8-aaa/compare/v0.15.0...v0.16.0
 .. _0.15.0: https://github.com/jamescooke/flake8-aaa/compare/v0.14.1...v0.15.0
