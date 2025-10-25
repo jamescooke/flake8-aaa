@@ -38,6 +38,8 @@ Changed
   deprecated in Python 3.8. `Issue 239
   <https://github.com/jamescooke/flake8-aaa/issues/239>`_.
 
+* 📕 Version signatures now run on Python 3.14, upgraded from Python 3.12.
+
 0.17.1_ - 2025/10/24
 --------------------
 

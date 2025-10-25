@@ -39,7 +39,7 @@ docs:
 # Generate version signature used in README.rst
 .PHONY: signature
 signature:
-	tox exec -e py312-meta_plugin_dogfood -- flake8 --version
+	tox exec -e py314-meta_plugin_dogfood -- flake8 --version
 
 .PHONY: clean
 clean:
