@@ -25,6 +25,19 @@ Unreleased_
 See also `latest documentation
 <https://flake8-aaa.readthedocs.io/en/latest/#__unreleased_marker__>`_.
 
+Added
+.....
+
+* 🎈 Explicit support added for Python 3.14. `PR 242
+  <https://github.com/jamescooke/flake8-aaa/pull/242>`_.
+
+Changed
+.......
+
+* ⛏️ Fixes usage of ``ast.Str``, replaced with ``ast.Constant``. This was
+  deprecated in Python 3.8. `Issue 239
+  <https://github.com/jamescooke/flake8-aaa/issues/239>`_.
+
 0.17.1_ - 2025/10/24
 --------------------
 
