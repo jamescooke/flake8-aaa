@@ -115,7 +115,7 @@ def node_is_noop(node: ast.AST) -> bool:
     """
     Node does nothing.
     """
-    return isinstance(node.value, ast.Str) if isinstance(node, ast.Expr) else isinstance(node, ast.Pass)
+    return isinstance(node.value, ast.Constant) if isinstance(node, ast.Expr) else isinstance(node, ast.Pass)
 
 
 def function_is_noop(function_node: ast.FunctionDef) -> bool:
@@ -155,7 +155,7 @@ def filter_arrange_nodes(nodes: List[ast.stmt], act_block_first_line_number: int
     """
     return [
         node for node in nodes if node.lineno < act_block_first_line_number and not isinstance(node, ast.Pass)
-        and not (isinstance(node, ast.Expr) and isinstance(node.value, ast.Str))
+        and not (isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant))
     ]
 
 
