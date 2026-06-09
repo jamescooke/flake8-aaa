@@ -3,7 +3,7 @@ import io
 import os
 import re
 import tokenize
-from typing import List
+from typing import List, Union
 
 from asttokens.util import Token
 
@@ -36,18 +36,24 @@ class TestFuncLister(ast.NodeVisitor):
     def __init__(self, skip_noqa: bool):
         super().__init__()
         self.skip_noqa = skip_noqa
-        self._found_funcs: List[ast.FunctionDef] = []
+        self._found_funcs: List[Union[ast.AsyncFunctionDef, ast.FunctionDef]] = []
+
+    def visit_AsyncFunctionDef(self, node):
+        self._visit_function_node(node)
 
     def visit_FunctionDef(self, node):
+        self._visit_function_node(node)
+
+    def _visit_function_node(self, node):
         if node.name.startswith('test'):
             if not self.skip_noqa or not node.first_token.line.strip().endswith('# noqa'):
                 self._found_funcs.append(node)
 
-    def get_found_funcs(self) -> List[ast.FunctionDef]:
+    def get_found_funcs(self) -> List[Union[ast.AsyncFunctionDef, ast.FunctionDef]]:
         return self._found_funcs
 
 
-def find_test_functions(tree: ast.AST, skip_noqa: bool = False) -> List[ast.FunctionDef]:
+def find_test_functions(tree: ast.AST, skip_noqa: bool = False) -> List[Union[ast.AsyncFunctionDef, ast.FunctionDef]]:
     """
     Collect functions that look like tests.
 
@@ -118,7 +124,7 @@ def node_is_noop(node: ast.AST) -> bool:
     return isinstance(node.value, ast.Constant) if isinstance(node, ast.Expr) else isinstance(node, ast.Pass)
 
 
-def function_is_noop(function_node: ast.FunctionDef) -> bool:
+def function_is_noop(function_node: Union[ast.AsyncFunctionDef, ast.FunctionDef]) -> bool:
     """
     Function does nothing - is just ``pass`` or docstring.
     """

@@ -1,5 +1,5 @@
 import ast
-from typing import List, Tuple, Type, TypeVar
+from typing import List, Tuple, Type, TypeVar, Union
 
 from .conf import ActBlockStyle
 from .exceptions import EmptyBlock
@@ -39,7 +39,7 @@ class Block:
     def build_act(
         cls: Type[_Block],
         node: ast.stmt,
-        test_func_node: ast.FunctionDef,
+        test_func_node: Union[ast.AsyncFunctionDef, ast.FunctionDef],
         act_block_style: ActBlockStyle,
     ) -> _Block:
         """

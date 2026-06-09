@@ -49,6 +49,25 @@ def test_thing(a_number):
     assert [fn.name for fn in result] == ['test', 'test_thing']
 
 
+def test_async_some():
+    tree = make_tree_with_tokens(
+        """
+async def test():
+    pass
+
+
+async def test_thing():
+    result = await a_number()
+
+    assert result == 1
+"""
+    )
+
+    result = find_test_functions(tree)
+
+    assert [fn.name for fn in result] == ['test', 'test_thing']
+
+
 def test_skip_noqa():
     tree = make_tree_with_tokens(
         """
@@ -64,6 +83,31 @@ def test_two(a_number):  # noqa
 
 def test_three(noqa):
     result = noqa.works()
+
+    assert result is True
+"""
+    )
+
+    result = find_test_functions(tree, skip_noqa=True)
+
+    assert [fn.name for fn in result] == ['test_one', 'test_three']
+
+
+def test_skip_async_noqa():
+    tree = make_tree_with_tokens(
+        """
+async def test_one():
+    pass
+
+
+async def test_two(a_number):  # noqa
+    result = await a_number()
+
+    assert result == 1
+
+
+async def test_three(noqa):
+    result = await noqa.works()
 
     assert result is True
 """

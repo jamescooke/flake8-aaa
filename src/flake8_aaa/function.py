@@ -1,6 +1,6 @@
 import ast
 import tokenize
-from typing import Generator, List, Optional
+from typing import Generator, List, Optional, Union
 
 from asttokens.util import Token as ASTToken
 
@@ -40,7 +40,12 @@ class Function:
         to the test definition.
     """
 
-    def __init__(self, node: ast.FunctionDef, file_lines: List[str], file_tokens: List[ASTToken]):
+    def __init__(
+        self,
+        node: Union[ast.AsyncFunctionDef, ast.FunctionDef],
+        file_lines: List[str],
+        file_tokens: List[ASTToken],
+    ):
         """
         Args:
             node
