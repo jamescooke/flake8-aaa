@@ -28,3 +28,10 @@ class Test(unittest.TestCase):
                 pass
 
         self.assertIn('invalid mode', str(cm.exception))
+
+    def test_assert_raises_multi_item_with(self):
+        """
+        assertRaises in a multi-item with statement is recognised as Act.
+        """
+        with open(self.hello_world_path) as f, self.assertRaises(io.UnsupportedOperation):
+            f.write('hello back')

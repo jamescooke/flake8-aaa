@@ -43,6 +43,25 @@ def test_unittest_raises_block(first_node_with_tokens):
 
 
 @pytest.mark.parametrize(
+    'code_str', [
+        """
+def test_multi_item(self):
+    with open('/dev/null') as f, self.assertRaises(OSError):
+        os.fstat(f.fileno())
+"""
+    ]
+)
+def test_unittest_raises_multi_item(first_node_with_tokens):
+    result = ActNode.build(first_node_with_tokens.body[0])
+
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert isinstance(result[0], ActNode)
+    assert result[0].node == first_node_with_tokens.body[0]
+    assert result[0].block_type == ActNodeType.unittest_raises
+
+
+@pytest.mark.parametrize(
     'code_str, expected_type', [
         ('result = do_thing()', ActNodeType.result_assignment),
         ('with pytest.raises(Exception):\n    do_thing()', ActNodeType.pytest_context_manager),
