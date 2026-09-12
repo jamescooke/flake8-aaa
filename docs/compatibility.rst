@@ -77,8 +77,8 @@ fooding).
 Unittest
 --------
 
-Python unittest is supported with one known exception:
-[subtests](https://docs.python.org/3/library/unittest.html#distinguishing-test-iterations-using-subtests)
+Python unittest is supported with one known exception: `subtests
+<https://docs.python.org/3/library/unittest.html#distinguishing-test-iterations-using-subtests>`_
 are not supported.
 
 To pin compatibility with unittest, we include unittest-style tests in the

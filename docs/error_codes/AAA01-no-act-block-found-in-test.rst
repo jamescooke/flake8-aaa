@@ -90,3 +90,9 @@ Flake8-AAA recognises code blocks wrapped in Pytest context managers like
 ``pytest.raises()`` as Act blocks.
 
 It also recognises unittest's ``assertRaises()`` blocks as Act blocks.
+
+.. note::
+
+    Flake-AAA does *not* recognise unittest tests that use ``.subTest()``. You
+    should use ``noqa: AAA`` to ignore Flake8-AAA errors on these tests. See
+    :ref:`disabling-flake8-aaa-selectively`.

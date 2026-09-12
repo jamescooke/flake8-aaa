@@ -12,6 +12,8 @@ necessary when there is no assignment possible.
 
 See :ref:`AAA01: no Act block found in test - Correct code 2 <aaa01-correct-code-2>`.
 
+.. _disabling-flake8-aaa-selectively:
+
 Disabling Flake8-AAA selectively
 --------------------------------
 
