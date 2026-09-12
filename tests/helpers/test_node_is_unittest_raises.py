@@ -18,6 +18,21 @@ def test_other(self):
     with self.assertRaises(ValueError) as cm:
         do_thing()
 ''',
+        '''
+def test_multi_item(self):
+    with open('/dev/null') as f, self.assertRaises(OSError):
+        os.fstat(f.fileno())
+''',
+        '''
+def test_multi_item_regex(self):
+    with open('/dev/null') as f, self.assertRaisesRegex(OSError, 'Bad'):
+        os.fstat(f.fileno())
+''',
+        '''
+def test_assert_raises_regexp(self):
+    with self.assertRaisesRegexp(ValueError, 'bad'):
+        do_thing()
+''',
     ]
 )
 def test(first_node_with_tokens):

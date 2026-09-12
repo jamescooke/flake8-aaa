@@ -103,12 +103,36 @@ def node_is_pytest_context_manager(node: ast.AST) -> bool:
     return isinstance(node, ast.With) and bool(cm_exp.match(get_first_token(node).line))
 
 
+_UNITTEST_RAISES_ATTRS = frozenset({
+    'assertRaises',
+    'assertRaisesRegex',
+    'assertRaisesRegexp',
+})
+
+
+def _is_self_unittest_raises_call(node: ast.AST) -> bool:
+    """
+    ``node`` is a Call of ``self.assertRaises`` / ``assertRaisesRegex`` /
+    ``assertRaisesRegexp``.
+    """
+    if not isinstance(node, ast.Call):
+        return False
+    func = node.func
+    return (
+        isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name) and func.value.id == 'self'
+        and func.attr in _UNITTEST_RAISES_ATTRS
+    )
+
+
 def node_is_unittest_raises(node: ast.AST) -> bool:
     """
-    ``node`` corresponds to a With node where the context manager is unittest's
-    ``self.assertRaises``.
+    ``node`` corresponds to a With node where any context manager is unittest's
+    ``self.assertRaises`` (including ``assertRaisesRegex`` /
+    ``assertRaisesRegexp``), including multi-item ``with`` statements.
     """
-    return isinstance(node, ast.With) and get_first_token(node).line.strip().startswith('with self.assertRaises')
+    if not isinstance(node, ast.With):
+        return False
+    return any(_is_self_unittest_raises_call(item.context_expr) for item in node.items)
 
 
 def node_is_noop(node: ast.AST) -> bool:
