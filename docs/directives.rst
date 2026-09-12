@@ -12,6 +12,8 @@ necessary when there is no assignment possible.
 
 See :ref:`AAA01: no Act block found in test - Correct code 2 <aaa01-correct-code-2>`.
 
+.. _disabling-flake8-aaa-selectively:
+
 Disabling Flake8-AAA selectively
 --------------------------------
 
@@ -32,3 +34,17 @@ with ``# noqa: AAA03``:
         result = x + 1  # noqa: AAA03
 
         assert result == 2
+
+If you're working with ``unittest.TestCase.subTest()`` (currently unsupported),
+you can use ``noqa: AAA`` on the test method declaration line to ignore each
+test that has subtests.
+
+.. code-block:: python
+
+    def test_even(self) -> None:  # noqa: AAA
+        """
+        Example from stdlib docs: Test that numbers between 0 and 5 are all even.
+        """
+        for i in range(0, 6):
+            with self.subTest(i=i):
+                self.assertEqual(i % 2, 0)
