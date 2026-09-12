@@ -70,18 +70,21 @@ Pytest
 
 Pytest is fully supported.
 
-To pin this compatibility we use the latest version of Pytest in the
+To pin Pytest compatibility we use the latest version of Pytest in the
 Flake8-AAA test suite and lint that test suite with Flake8-AAA (aka. dog
 fooding).
 
 Unittest
 --------
 
-Python unittest style is supported.
+Python unittest is supported with one known exception:
+[subtests](https://docs.python.org/3/library/unittest.html#distinguishing-test-iterations-using-subtests)
+are not supported.
 
-To pin this compatibility we include unittest-style tests in the `examples/good
-directory
-<https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_.
+To pin compatibility with unittest, we include unittest-style tests in the
+`examples/good directory
+<https://github.com/jamescooke/flake8-aaa/tree/master/examples/good>`_,
+including examples using ``noqa:`` to skip subtests.
 
 .. _previous-python-versions:
 
