@@ -12,7 +12,7 @@ class TestBad(unittest.TestCase):
 
     def test_even(self) -> None:  # noqa: AAA
         """
-        Example from stdlib docs: Test that numbers between 0 and 5 are all even.
+        stdlib docs example: Test that numbers between 0 and 5 are all even.
         """
         for i in range(0, 6):
             with self.subTest(i=i):
